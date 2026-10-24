@@ -18,7 +18,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 .brand img{width:36px;height:36px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.35);background:#fff}
 .search{margin-top:10px;background:#fff;border-radius:24px;padding:4px 8px 4px 16px;box-shadow:0 3px 10px rgba(0,0,0,.25);display:flex;gap:8px;align-items:center}
 .search input{border:0;outline:0;font-size:15px;width:100%;padding:8px 0;color:#333;background:transparent}
-.sug{position:absolute;top:104px;left:12px;right:12px;z-index:8;background:#fff;border-radius:16px;box-shadow:0 8px 22px rgba(0,0,0,.32);max-height:46vh;overflow:auto;display:none}
+.sug{position:absolute;top:100%;margin-top:6px;left:12px;right:12px;z-index:8;background:#fff;border-radius:16px;box-shadow:0 8px 22px rgba(0,0,0,.32);max-height:46vh;overflow:auto;display:none}
 .sugItem{display:flex;gap:10px;align-items:center;padding:11px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer}
 .sugItem:last-child{border-bottom:0}
 .sugItem .nm{font-size:14.5px;font-weight:700;color:#14342B;line-height:1.2}
@@ -27,13 +27,13 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 .chip{border:0;background:rgba(255,255,255,.97);border-radius:18px;padding:7px 13px;font-size:13px;font-weight:700;color:#333;box-shadow:0 2px 5px rgba(0,0,0,.25);display:flex;align-items:center;gap:5px;cursor:pointer}
 .chip.on{background:#0E7C66;color:#fff}
 .dot{width:9px;height:9px;border-radius:50%}
-.views{position:absolute;top:308px;right:12px;z-index:6;display:flex;border-radius:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.35)}
+.views{position:absolute;top:196px;right:12px;z-index:6;display:flex;border-radius:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.35)}
 .views button{border:0;padding:8px 10px;font-size:13px;font-weight:800;background:#fff;color:#444;cursor:pointer}
 .views button.on{background:#14342B;color:#fff}
-.gpsbtn{position:absolute;top:358px;right:12px;z-index:6;border:0;border-radius:20px;padding:9px 15px;font-size:13px;font-weight:800;background:#fff;color:#444;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer}
+.gpsbtn{position:absolute;top:234px;right:12px;z-index:6;border:0;border-radius:20px;padding:9px 15px;font-size:13px;font-weight:800;background:#fff;color:#444;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer}
 .gpsbtn.on{background:#0E7C66;color:#fff}
-.brujula{position:absolute;top:462px;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.zoomBtn{position:absolute;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;font-size:24px;font-weight:800;color:#333}
+.brujula{position:absolute;top:314px;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.zoomBtn{position:absolute;right:12px;z-index:6;width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;font-size:19px;font-weight:800;color:#333}
 .logoBox{width:54px;height:54px;border-radius:15px;flex:none;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .logoBox svg{width:30px;height:30px}
 .perfilBtn{flex:1;border:0;border-radius:11px;padding:8px 0;font-size:13px;font-weight:700;background:#EEF2EE;color:#444;cursor:pointer}
@@ -74,33 +74,34 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 .btn.call{background:#0E7C66}.btn.wa{background:#25D366}.btn.go{background:#14342B}
 .btn.iniciar{background:#0E7C66}.btn.terminar{background:#C0392B}
 .attr{position:absolute;right:10px;bottom:196px;z-index:5;font-size:10px;color:rgba(255,255,255,.95);text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.catBtn{flex:1;border:0;border-radius:13px;padding:10px 0;font-size:14.5px;font-weight:800;background:#0E7C66;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer}
+.ciudadSeg{display:flex;border-radius:13px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.ciudadSeg button{border:0;padding:10px 13px;font-size:13.5px;font-weight:800;background:#fff;color:#444;cursor:pointer}
+.ciudadSeg button.on{background:#14342B;color:#fff}
+.catRow{display:flex;gap:12px;align-items:center;padding:12px 4px;border-bottom:1px solid #eee;cursor:pointer}
+.catRow:last-child{border-bottom:0}
+.catRow .nm{font-size:15.5px;font-weight:700;color:#14342B}
+.catRow .ct{font-size:12.5px;color:#888}
+.listaRow{display:flex;gap:11px;align-items:flex-start;padding:11px 2px;border-bottom:1px solid #eee;cursor:pointer}
+.listaRow:last-child{border-bottom:0}
+.listaRow .nm{font-size:15px;font-weight:700;color:#14342B;line-height:1.25}
+.sortBtn{border:0;border-radius:11px;padding:7px 11px;font-size:12.5px;font-weight:800;background:#EEF2EE;color:#444;cursor:pointer;flex:none}
+.sortBtn.on{background:#0E7C66;color:#fff}
+.badge24{background:#0E7C66;color:#fff;border-radius:8px;padding:2px 7px;font-weight:800;font-size:12px;white-space:nowrap}
 </style></head><body>
 <div id="map"></div>
 <div class="topbar">
   <div class="brand"><img src="icono-512.png" alt="Mascotas">Mascotas cerca de ti</div>
   <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="buscador" type="text" placeholder="Buscar veterinarias, tiendas, zoológicos, restaurantes…"></div>
   <div id="sug" class="sug"></div>
-  <div class="chips" id="chips">
-    <button class="chip catChip on" data-cat="todos">Todos</button>
-    <button class="chip catChip" data-cat="vet"><span class="dot" style="background:#22A355"></span>Veterinarias</button>
-    <button class="chip catChip" data-cat="tienda"><span class="dot" style="background:#F5A800"></span>Tiendas</button>
-    <button class="chip catChip" data-cat="farma"><span class="dot" style="background:#E5322D"></span>Farmacias</button>
-  </div>
-  <div class="chips" id="chips2" style="margin-top:6px;flex-wrap:nowrap;overflow-x:auto">
-    <button class="chip catChip" data-cat="zoo"><span class="dot" style="background:#7C3AED"></span>Zoológicos</button>
-    <button class="chip catChip" data-cat="granja"><span class="dot" style="background:#B45309"></span>Granjas</button>
-    <button class="chip catChip" data-cat="refugio"><span class="dot" style="background:#0F766E"></span>Refugios</button>
-    <button class="chip catChip" data-cat="adopcion"><span class="dot" style="background:#EC4899"></span>Adopciones</button>
-    <button class="chip catChip" data-cat="facultad"><span class="dot" style="background:#1D4ED8"></span>Facultades</button>
-    <button class="chip catChip" data-cat="resto"><span class="dot" style="background:#F97316"></span>Restaurantes</button>
-    <button class="chip catChip" data-cat="evento"><span class="dot" style="background:#0891B2"></span>Eventos</button>
-  </div>
-  <div class="chips" id="ciudades" style="margin-top:6px">
-    <button class="chip ciudadBtn on" data-ciudad="ibague">Ibagué</button>
-    <button class="chip ciudadBtn" data-ciudad="charlotte">Charlotte</button>
+  <div style="display:flex;gap:8px;margin-top:10px">
+    <button class="catBtn" id="bCategorias"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>Categorías</button>
+    <div class="ciudadSeg" id="ciudades">
+      <button class="ciudadBtn on" data-ciudad="ibague">Ibagué</button>
+      <button class="ciudadBtn" data-ciudad="charlotte">Charlotte</button>
+    </div>
   </div>
   <div class="chips" id="acciones" style="margin-top:6px">
-    <button class="chip" id="bEventos">Eventos</button>
     <button class="chip" id="bVisitas">Mis visitas</button>
     <button class="chip" id="bMascota">Mi mascota</button>
     <button class="chip" id="bEEUU">Lugares en EE. UU.</button>
@@ -110,11 +111,11 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
   <button id="vIlus" class="on">Ilustrado</button><button id="vSat">Satélite</button><button id="v3d">Mapa 3D</button><button id="vActual">Actual</button>
 </div>
 <button id="btnGps" class="gpsbtn on">Modo GPS</button>
-<button id="btnYo" class="gpsbtn" style="top:408px">Mi ubicación</button>
+<button id="btnYo" class="gpsbtn" style="top:272px">Mi ubicación</button>
 <button id="btnBrujula" class="brujula" title="Norte"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
-<button id="btnZoomMas" class="zoomBtn" style="top:522px">+</button>
-<button id="btnZoomMenos" class="zoomBtn" style="top:576px">−</button>
-<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v5</div>
+<button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
+<button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
+<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v6</div>
 <div class="card" id="card">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div class="ocultarViaje" style="display:flex;gap:11px;align-items:center">
@@ -150,10 +151,19 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
     <button class="btn shareBtn" id="bRutaCompleta">Ver ruta completa</button>
   </div>
 </div>
-<div class="panel" id="panelEventos" style="display:none">
-  <div style="display:flex;justify-content:space-between;align-items:center"><h3>Eventos de animales cerca de ti</h3><button class="chip" onclick="document.getElementById('panelEventos').style.display='none'">Cerrar</button></div>
-  <div id="listaEventos"></div>
-  <div style="margin-top:12px;border-top:2px solid #eee;padding-top:10px">
+<div class="panel" id="panelCategorias" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3>¿Qué buscas?</h3><button class="chip" id="bCerrarCategorias">Cerrar</button></div>
+  <div id="listaCategorias"></div>
+</div>
+<div class="panel" id="panelLista" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
+    <h3 id="listaTitulo" style="flex:1;min-width:0">Lugares</h3>
+    <button class="sortBtn on" id="sortMejor">Mejor valorados</button>
+    <button class="sortBtn" id="sortCerca">Cerca de mí</button>
+    <button class="chip" id="bCerrarLista">Cerrar</button>
+  </div>
+  <div id="listaCuerpo"></div>
+  <div id="listaEventosForm" style="display:none;margin-top:12px;border-top:2px solid #eee;padding-top:10px">
     <div style="font-weight:800;font-size:14px;margin-bottom:6px">Publica tu evento</div>
     <input class="inputTxt" id="evNombre" placeholder="Nombre del evento">
     <div style="display:flex;gap:8px;margin-top:8px"><input class="inputTxt" id="evFecha" placeholder="Fecha (ej. 15 nov)"><input class="inputTxt" id="evHora" placeholder="Hora (ej. 10 a. m.)"></div>
@@ -444,8 +454,11 @@ function cargarCiudad(id,volar){
   marcadores.length=0;
   crearPines();
   if(id==='charlotte')crearPinesEventos();
+  crearPinesEventosUsuario();
   document.querySelectorAll('.ciudadBtn').forEach(x=>x.classList.toggle('on',x.dataset.ciudad===id));
   aplicarFiltros();
+  if(document.getElementById('panelLista').style.display==='block')renderLista();
+  if(document.getElementById('panelCategorias').style.display==='block')renderCategorias();
   if(volar) window.map.easeTo({center:c.centro,zoom:c.zoom});
   seleccionar(NEGOCIOS[0],false);
 }
@@ -489,12 +502,29 @@ function actualizarRestante(){
   if(snap.dist>60){contadorDesvio++;} else {contadorDesvio=0;}
   if(contadorDesvio>=2){contadorDesvio=0; recalcularRuta();}
 }
+let llegadaRegistrada=false;
+function registrarLlegada(b){
+  const v=leerVisitas(), k=claveVisita(b);
+  const ant=v[k]||{n:b.n,cat:b.cat,dir:b.dir,veces:0,estrellas:0,llegadas:0,ultima:''};
+  ant.veces++; ant.llegadas=(ant.llegadas||0)+1; ant.ultima=new Date().toLocaleDateString('es-CO');
+  v[k]=ant; guardarVisitas(v);
+  actualizarVisitasInfo(); renderVisitas();
+  return ant;
+}
 function llegar(){
   if(!seleccionado)return;
   tripActivo=false;
   llegadaEn=[seleccionado.lng,seleccionado.lat];
+  let confirm='';
+  if(!llegadaRegistrada){
+    llegadaRegistrada=true;
+    const ant=registrarLlegada(seleccionado);
+    confirm=`¡Llegaste a ${seleccionado.n}! +1 estrella por llegar · Has venido ${ant.veces} ${ant.veces===1?'vez':'veces'}`;
+  }else{
+    confirm=`¡Llegaste a ${seleccionado.n}!`;
+  }
   document.getElementById('bannerTurno').style.display='none';
-  document.getElementById('cDist').innerHTML=`¡Llegaste a <b>${seleccionado.n}</b>!`;
+  document.getElementById('cDist').innerHTML=`<b>${confirm}</b>`;
   window.map.easeTo({pitch:0,bearing:0,offset:[0,0],duration:700});
   mostrarBotonesViaje();
 }
@@ -507,7 +537,7 @@ function terminarViaje(){
 }
 function iniciarViaje(){
   if(!seleccionado)return;
-  tripActivo=true; llegadaEn=null; follow=true; followPausado=false;
+  tripActivo=true; llegadaEn=null; llegadaRegistrada=false; follow=true; followPausado=false;
   camBearing=window.map.getBearing();
   document.getElementById('btnGps').classList.add('on');
   trackPts=[[...YOU]]; actualizarTrack();
@@ -561,6 +591,9 @@ function seleccionar(b,volar){
   if(tripActivo)terminarViaje();
   llegadaEn=null;
   seleccionado=b;
+  document.getElementById('panelLista').style.display='none';
+  document.getElementById('panelCategorias').style.display='none';
+  document.getElementById('card').style.display='block';
   marcadores.forEach(m=>m.el.classList.toggle('sel',m.b===b));
   if(typeof marcadoresOSM!=='undefined')marcadoresOSM.forEach(m=>m.el.classList.toggle('sel',m.b===b));
   document.getElementById('cNombre').textContent=b.n;
@@ -568,7 +601,9 @@ function seleccionar(b,volar){
   document.getElementById('cLogo').innerHTML=glyph(CAT[b.cat].g,'#fff');
   document.getElementById('cEstrellas').textContent=b.rating?('★'.repeat(Math.round(b.rating))+' '+b.rating.toFixed(1)):'';
   let estado='';
-  if(b.horas){
+  if(b.h24){
+    estado=`<b>Abierto ahora</b> · <span class="badge24">24/7</span>`;
+  }else if(b.horas){
     const h=horaCiudad(),abierto=h>=b.horas[0]&&h<b.horas[1];
     estado=abierto?`<b>Abierto ahora</b> · cierra ${fmtHora(b.horas[1])}`:`<span class="cerrado">Cerrado ahora</span> · abre ${fmtHora(b.horas[0])}`;
   }
@@ -601,35 +636,206 @@ document.getElementById('bTerminar').addEventListener('click',()=>terminarViaje(
 
 /* ---------- Filtros y buscador con sugerencias ---------- */
 let filtroCat='todos', filtroTxt='';
+function es24h(b){return b.h24===true;}
+function pasaCat(b){return filtroCat==='todos'||(filtroCat==='h24'?es24h(b):b.cat===filtroCat);}
 function aplicarFiltros(){
-  marcadores.forEach(m=>{
-    const okCat=filtroCat==='todos'||m.b.cat===filtroCat;
-    const okTxt=!filtroTxt||m.b.n.toLowerCase().includes(filtroTxt);
-    m.el.style.display=(okCat&&okTxt)?'':'none';
-  });
+  const okTxt=b=>!filtroTxt||puntajeBusqueda(b,filtroTxt)!=null;
+  const ok=b=>pasaCat(b)&&okTxt(b);
+  marcadores.forEach(m=>{m.el.style.display=ok(m.b)?'':'none';});
+  marcadoresOSM.forEach(m=>{m.el.style.display=ok(m.b)?'':'none';});
+  marcadoresUsuario.forEach(m=>{m.el.style.display=(filtroCat==='todos'||filtroCat==='evento')?'':'none';});
 }
-function onChipCategoria(e){
-  const btn=e.target.closest('.catChip');if(!btn)return;
-  document.querySelectorAll('.catChip').forEach(c=>c.classList.toggle('on',c===btn));
-  filtroCat=btn.dataset.cat;aplicarFiltros();
+
+/* ---------- Menú unificado de categorías + lista ordenada ---------- */
+const CAT_LABEL={todos:'Todos los lugares',h24:'Abierto 24/7',vet:'Veterinarias',tienda:'Tiendas de mascotas',farma:'Farmacias',zoo:'Zoológicos y acuarios',granja:'Granjas para visitar',refugio:'Refugios y perreras',adopcion:'Adopciones',facultad:'Facultades de veterinaria',resto:'Restaurantes pet-friendly',evento:'Eventos de animales'};
+const CATS_ORDEN=['todos','h24','vet','tienda','farma','zoo','granja','refugio','adopcion','facultad','resto','evento'];
+function distanciaA(b){const dx=(b.lng-YOU[0])*M_LNG, dy=(b.lat-YOU[1])*M_LAT; return Math.hypot(dx,dy);}
+function eventosDeCiudad(){
+  const base=ciudadActual==='charlotte'?(typeof EVENTOS_CHARLOTTE!=='undefined'?EVENTOS_CHARLOTTE:[]):[];
+  const propios=leerEventosUsuario().filter(e=>e.ciudad===ciudadActual||(!e.ciudad&&distanciaA(e)<80000));
+  return [...propios.map(e=>({...e,propio:true})),...base.map(e=>({...e,propio:false}))];
 }
-document.getElementById('chips').addEventListener('click',onChipCategoria);
-document.getElementById('chips2').addEventListener('click',onChipCategoria);
-document.getElementById('buscador').addEventListener('input',e=>{filtroTxt=e.target.value.trim().toLowerCase();aplicarFiltros();renderSug();});
+function conteoCat(c){
+  if(c==='todos')return NEGOCIOS.length;
+  if(c==='evento')return eventosDeCiudad().length;
+  if(c==='h24')return NEGOCIOS.filter(b=>b.h24===true).length;
+  return NEGOCIOS.filter(b=>b.cat===c).length;
+}
+function renderCategorias(){
+  const box=document.getElementById('listaCategorias'); if(!box)return;
+  box.innerHTML=CATS_ORDEN.map(c=>{
+    const col=c==='todos'?'#0E7C66':(c==='h24'?'#0E7C66':CAT[c].col);
+    const ico=c==='todos'?`<svg width="30" height="30" viewBox="0 0 24 24" fill="${col}"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="3" fill="#fff"/></svg>`:c==='h24'?`<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="${col}" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round"/></svg>`:glyph(CAT[c].g,col);
+    const n=conteoCat(c);
+    return `<div class="catRow" data-cat="${c}"><span class="logoBox" style="background:${col}1f;width:48px;height:48px">${ico}</span><span style="flex:1"><span class="nm">${CAT_LABEL[c]}</span><br><span class="ct">${n} ${n===1?'lugar':'lugares'} en ${CIUDADES[ciudadActual].nombre}</span></span><span style="font-size:22px;color:#999">›</span></div>`;
+  }).join('');
+  box.querySelectorAll('.catRow').forEach(row=>row.addEventListener('click',()=>elegirCategoria(row.dataset.cat)));
+}
+function elegirCategoria(cat){
+  filtroCat=cat; aplicarFiltros();
+  document.getElementById('panelCategorias').style.display='none';
+  document.getElementById('card').style.display='none';
+  document.getElementById('panelLista').style.display='block';
+  renderLista();
+}
+let sortMode='mejor';
+function visitasDe(b){return leerVisitas()[claveVisita(b)]||null;}
+function ordenarLista(lista){
+  const R=b=>b.rating!=null?b.rating:-1;
+  const V=b=>{const v=visitasDe(b);return v?v.veces:0;};
+  if(sortMode==='cerca')return lista.slice().sort((a,b)=>distanciaA(a)-distanciaA(b)||R(b)-R(a));
+  return lista.slice().sort((a,b)=>R(b)-R(a)||V(b)-V(a)||distanciaA(a)-distanciaA(b));
+}
+function estrellasTxt(n){const k=Math.max(0,Math.min(5,Math.round(n||0)));return '★'.repeat(k)+'☆'.repeat(5-k);}
+function lineaVisitas(b){
+  const v=visitasDe(b); if(!v)return 'Aún no registras visitas aquí';
+  let t=`Tus visitas: <b>${v.veces} ${v.veces===1?'vez':'veces'}</b> · tu calificación: <span class="stars">${estrellasTxt(v.estrellas)}</span>`;
+  if(v.llegadas)t+=` · llegadas con GPS: <b>${v.llegadas}</b> (+${v.llegadas} estrella${v.llegadas===1?'':'s'})`;
+  return t;
+}
+function renderLista(){
+  const titulo=document.getElementById('listaTitulo');
+  const cuerpo=document.getElementById('listaCuerpo');
+  const form=document.getElementById('listaEventosForm');
+  const sM=document.getElementById('sortMejor'), sC=document.getElementById('sortCerca');
+  sM.classList.toggle('on',sortMode==='mejor');
+  sC.classList.toggle('on',sortMode==='cerca');
+  sM.style.display=filtroCat==='evento'?'none':'';
+  sC.style.display=filtroCat==='evento'?'none':'';
+  if(filtroCat==='evento'){
+    titulo.textContent='Eventos de animales';
+    form.style.display='block';
+    const evs=eventosDeCiudad();
+    if(!evs.length){
+      cuerpo.innerHTML=`<div class="meta" style="padding:10px 2px">Aún no hay eventos publicados en ${CIUDADES[ciudadActual].nombre}. Publica el primero con el formulario de abajo.</div>`;
+    }else{
+      cuerpo.innerHTML=evs.map((e,i)=>`<div class="listaRow" data-ev="${i}"><span class="logoBox" style="background:#0891B2;width:48px;height:48px">${glyph('evento','#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${e.n}</span>${e.propio?' <span class="meta">(tu evento)</span>':''}<br><span class="meta">${e.fecha||'Fecha por confirmar'}${e.hora?' · '+e.hora:''}</span><br><span class="meta">${e.dir||''}${e.nota?' · '+e.nota:''}</span></span></div>`).join('');
+      cuerpo.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
+        const e=evs[+row.dataset.ev];
+        if(e.lat!=null&&e.lng!=null)seleccionar(e,true);
+      }));
+    }
+    return;
+  }
+  form.style.display='none';
+  titulo.textContent=CAT_LABEL[filtroCat]+' · '+CIUDADES[ciudadActual].nombre;
+  let lista;
+  if(filtroCat==='h24')lista=ordenarLista(NEGOCIOS.filter(es24h));
+  else lista=ordenarLista(NEGOCIOS.filter(b=>filtroCat==='todos'||b.cat===filtroCat));
+  if(!lista.length){cuerpo.innerHTML=filtroCat==='h24'?'<div class="meta" style="padding:10px 2px">No hay lugares 24/7 verificados en esta ciudad todavía.</div>':'<div class="meta" style="padding:10px 2px">No hay lugares de esta categoría en esta ciudad todavía.</div>';return;}
+  cuerpo.innerHTML=lista.map(b=>{
+    const c=CAT[b.cat];
+    const g=b.rating!=null?`<span class="stars">${estrellasTxt(b.rating)}</span> ${b.rating.toFixed(1)} <span style="color:#888">(Google)</span>`:'<span style="color:#888">Sin calificación en Google</span>';
+    const badge=b.h24?' <span class="badge24">24/7</span>':'';
+    let estado='';
+    if(b.h24)estado=' · <b>Abierto ahora</b>';
+    else if(b.horas){const h=horaCiudad(),ab=b.horas[0]<=h&&h<b.horas[1];estado=ab?' · <b>Abierto ahora</b>':` · <span class="cerrado">Cerrado ahora</span>`;}
+    return `<div class="listaRow" data-n="${b.n.replace(/"/g,'&quot;')}"><span class="logoBox" style="background:${c.col};width:48px;height:48px">${glyph(c.g,'#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${b.n}</span>${badge}<br><span class="meta">${g} · a <b>${fmtDist(distanciaA(b))}</b>${estado}</span><br><span class="meta">${lineaVisitas(b)}</span></span></div>`;
+  }).join('');
+  cuerpo.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
+    const b=NEGOCIOS.find(x=>x.n===row.dataset.n);
+    if(b)seleccionar(b,true);
+  }));
+}
+document.getElementById('bCategorias').addEventListener('click',()=>{
+  renderCategorias();
+  const p=document.getElementById('panelCategorias');
+  const abrir=p.style.display!=='block';
+  p.style.display=abrir?'block':'none';
+  if(abrir){document.getElementById('panelLista').style.display='none';document.getElementById('card').style.display='block';}
+});
+document.getElementById('bCerrarCategorias').addEventListener('click',()=>{document.getElementById('panelCategorias').style.display='none';});
+document.getElementById('bCerrarLista').addEventListener('click',()=>{
+  document.getElementById('panelLista').style.display='none';
+  document.getElementById('card').style.display='block';
+});
+document.getElementById('sortMejor').addEventListener('click',()=>{sortMode='mejor';renderLista();});
+document.getElementById('sortCerca').addEventListener('click',()=>{sortMode='cerca';renderLista();});
+document.getElementById('buscador').addEventListener('input',e=>{
+  filtroTxt=e.target.value.trim().toLowerCase();
+  if(filtroTxt){
+    filtroCat='todos';
+    document.getElementById('panelLista').style.display='none';
+    document.getElementById('panelCategorias').style.display='none';
+  }
+  aplicarFiltros();renderSug();
+});
+/* ---------- Búsqueda por relevancia ---------- */
+function normalizar(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+const SINONIMOS={
+  vet:['veterinaria','veterinarias','veterinario','veterinary','vet','clinica','salud','doctor'],
+  tienda:['tienda','tiendas','pet shop','petshop','comida','alimento','juguete','accesorio'],
+  farma:['farmacia','farmacias','medicina','medicamento','agropecuaria','drogueria'],
+  zoo:['zoo','zoologico','acuario','safari'],
+  granja:['granja','granjas','finca'],
+  refugio:['refugio','refugios','perrera','perreras','perdido','perdidos'],
+  adopcion:['adopcion','adopciones','adoptar'],
+  facultad:['facultad','facultades','universidad','instituto','estudiar'],
+  resto:['restaurante','restaurantes','comer','bar','cerveceria','cafe','cafeteria','pet-friendly','pet friendly'],
+  evento:['evento','eventos','fiesta','feria','festival']
+};
+function categoriaDeBusqueda(q){
+  const nq=normalizar(q);
+  for(const c in SINONIMOS){if(SINONIMOS[c].some(w=>nq.includes(normalizar(w))))return c;}
+  return null;
+}
+function esUrgencia(q){return /urgencia|emergencia|24\s*h|24\/7|abierto ahora/.test(normalizar(q));}
+function esNoche(){const h=horaCiudad();return h>=20||h<7;}
+function abiertoAhora(b){
+  if(es24h(b))return true;
+  if(!b.horas)return false;
+  const h=horaCiudad();return h>=b.horas[0]&&h<b.horas[1];
+}
+function puntajeBusqueda(b,q){
+  const nq=normalizar((q||'').trim());
+  if(!nq)return null;
+  const cat=categoriaDeBusqueda(nq);
+  let score=0;
+  if(cat&&b.cat===cat)score+=100;
+  if(normalizar(b.n).includes(nq))score+=80;
+  if(normalizar(CAT[b.cat].nombre).includes(nq))score+=60;
+  if(normalizar(b.nota||'').includes(nq))score+=40;
+  if(esUrgencia(nq)){
+    if(es24h(b))score+=90;
+    else if(normalizar(b.nota||'').includes('urgencia'))score+=70;
+  }
+  if(score<=0)return null;
+  if(esNoche()&&es24h(b))score+=50;
+  if(abiertoAhora(b))score+=20;
+  return {score,rating:b.rating!=null?b.rating:-1,dist:distanciaA(b)};
+}
 function renderSug(){
   const box=document.getElementById('sug');
-  let lista=NEGOCIOS.filter(b=>!filtroTxt||b.n.toLowerCase().includes(filtroTxt));
-  lista=lista.map(b=>{const dx=(b.lng-YOU[0])*M_LNG, dy=(b.lat-YOU[1])*M_LAT; return {b,d:Math.hypot(dx,dy)};}).sort((x,y)=>x.d-y.d);
-  if(!lista.length||document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
-  box.innerHTML=lista.map(({b,d})=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span><br><span class="cat">${c.nombre} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(d)}</span></div>`;}).join('');
+  const q=filtroTxt;
+  let html='';
+  if(q&&categoriaDeBusqueda(q)==='evento'){
+    html+=`<div class="sugItem" data-ev="1"><span class="dot" style="background:#0891B2;flex:none"></span><span><span class="nm">Ver eventos de animales</span><br><span class="cat">Eventos en ${CIUDADES[ciudadActual].nombre}</span></span></div>`;
+  }
+  let lista;
+  if(!q){
+    lista=NEGOCIOS.filter(pasaCat).map(b=>({b,d:distanciaA(b)})).sort((x,y)=>x.d-y.d).slice(0,8);
+    if(document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
+    box.innerHTML=lista.map(({b,d})=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span>${es24h(b)?' <span class="badge24">24/7</span>':''}<br><span class="cat">${c.nombre} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(d)}</span></div>`;}).join('');
+    box.style.display='block';
+    return;
+  }
+  lista=NEGOCIOS.map(b=>({b,p:puntajeBusqueda(b,q)})).filter(x=>x.p!=null&&pasaCat(x.b));
+  lista.sort((x,y)=>y.p.score-x.p.score||y.p.rating-x.p.rating||x.p.dist-y.p.dist);
+  lista=lista.slice(0,8);
+  if(!lista.length&&!html){box.style.display='none';return;}
+  if(document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
+  html+=lista.map(({b,p})=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span>${es24h(b)?' <span class="badge24">24/7</span>':''}<br><span class="cat">${c.nombre} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(p.dist)}</span></div>`;}).join('');
+  box.innerHTML=html;
   box.style.display='block';
 }
 document.getElementById('buscador').addEventListener('focus',()=>renderSug());
 document.getElementById('sug').addEventListener('click',e=>{
   const item=e.target.closest('.sugItem'); if(!item)return;
-  const b=NEGOCIOS[+item.dataset.i];
   document.getElementById('sug').style.display='none';
   document.getElementById('buscador').blur();
+  if(item.dataset.ev){elegirCategoria('evento');return;}
+  const b=NEGOCIOS[+item.dataset.i];
+  if(!b)return;
   seleccionar(b,true);
 });
 document.addEventListener('click',e=>{
@@ -711,7 +917,12 @@ function actualizarVisitasInfo(){
   const info=document.getElementById('visitasInfo'); if(!info)return;
   if(!seleccionado){info.textContent='';return;}
   const v=leerVisitas()[claveVisita(seleccionado)];
-  info.innerHTML=v?`Has venido <b>${v.veces} ${v.veces===1?'vez':'veces'}</b> aquí · tu calificación: <span class="stars">${'★'.repeat(v.estrellas)}${'☆'.repeat(5-v.estrellas)}</span>`:'Aún no registras visitas aquí. Toca una estrella cuando vengas.';
+  if(!v){info.innerHTML='Aún no registras visitas aquí. Toca una estrella cuando vengas.';}
+  else{
+    let t=`Has venido <b>${v.veces} ${v.veces===1?'vez':'veces'}</b> aquí · tu calificación: <span class="stars">${estrellasTxt(v.estrellas)}</span>`;
+    if(v.llegadas)t+=` · llegadas con GPS: <b>${v.llegadas}</b> (+${v.llegadas} estrella${v.llegadas===1?'':'s'} por llegar)`;
+    info.innerHTML=t;
+  }
   document.querySelectorAll('#filaVisitas .starBtn').forEach(s=>s.classList.toggle('on',!!v&&+s.dataset.v<=v.estrellas));
 }
 function registrarVisita(estrellas){
@@ -726,7 +937,7 @@ function renderVisitas(){
   const box=document.getElementById('listaVisitas'); if(!box)return;
   const lista=Object.values(leerVisitas()).sort((a,b)=>b.veces-a.veces);
   if(!lista.length){box.innerHTML='<div class="meta">Todavía no registras visitas. Abre un lugar y toca una estrella cuando lo visites.</div>';return;}
-  box.innerHTML=lista.map(x=>`<div class="panelRow"><span style="width:12px;height:12px;border-radius:50%;background:${(CAT[x.cat]||CAT.vet).col};flex:none"></span><span><b>${x.n}</b><br><span class="meta">${x.veces} ${x.veces===1?'visita':'visitas'} · <span class="stars">${'★'.repeat(x.estrellas)}${'☆'.repeat(5-x.estrellas)}</span> · última: ${x.ultima}</span></span></div>`).join('');
+  box.innerHTML=lista.map(x=>`<div class="panelRow"><span style="width:12px;height:12px;border-radius:50%;background:${(CAT[x.cat]||CAT.vet).col};flex:none"></span><span><b>${x.n}</b><br><span class="meta">${x.veces} ${x.veces===1?'visita':'visitas'} · <span class="stars">${estrellasTxt(x.estrellas)}</span> · última: ${x.ultima}${x.llegadas?` · llegadas con GPS: <b>${x.llegadas}</b> (+${x.llegadas}★)`:''}</span></span></div>`).join('');
 }
 document.querySelectorAll('#filaVisitas .starBtn').forEach(s=>s.addEventListener('click',()=>registrarVisita(+s.dataset.v)));
 const mascotaLS='mascotas_mascota_v1';
@@ -761,34 +972,29 @@ document.getElementById('bGuardarMascota').addEventListener('click',()=>{
   document.getElementById('panelMascota').style.display='none';
 });
 function leerEventosUsuario(){try{return JSON.parse(localStorage.getItem('mascotas_eventos_v1'))||[]}catch(e){return []}}
-function renderEventos(){
-  const box=document.getElementById('listaEventos'); if(!box)return;
-  const base=(typeof EVENTOS_CHARLOTTE!=='undefined'?EVENTOS_CHARLOTTE:[]);
-  const todos=[...leerEventosUsuario().map(e=>({...e,propio:true})),...base.map(e=>({...e,propio:false}))];
-  if(!todos.length){box.innerHTML='<div class="meta">Aún no hay eventos. Publica el primero abajo.</div>';return;}
-  box.innerHTML=todos.map((e,i)=>`<div class="panelRow" data-ev="${i}"><span style="width:12px;height:12px;border-radius:50%;background:#0891B2;flex:none"></span><span><b>${e.n}</b>${e.propio?' <span class="meta">(tu evento)</span>':''}<br><span class="meta">${e.fecha||''}${e.hora?' · '+e.hora:''} · ${e.dir||e.lugar||''}${e.nota?' · '+e.nota:''}</span></span></div>`).join('');
-  box.querySelectorAll('.panelRow').forEach(row=>row.addEventListener('click',()=>{
-    const e=todos[+row.dataset.ev];
-    if(e.lat!=null&&e.lng!=null){document.getElementById('panelEventos').style.display='none';seleccionar(e,true);}
-  }));
-}
 const marcadoresUsuario=[];
+function crearPinesEventosUsuario(){
+  marcadoresUsuario.forEach(m=>m.mk.remove()); marcadoresUsuario.length=0;
+  leerEventosUsuario().filter(e=>e.ciudad===ciudadActual||(!e.ciudad&&distanciaA(e)<80000)).forEach(ev=>{
+    const c=CAT.evento;
+    const el=document.createElement('div');el.className='pin2 '+c.cls;
+    el.innerHTML=`<span class="in">${glyph(c.g,c.col)}</span>`; el.title=ev.n;
+    const mk=new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat([ev.lng,ev.lat]).addTo(window.map);
+    el.addEventListener('click',()=>seleccionar(ev,false));
+    marcadoresUsuario.push({b:ev,el,mk});
+  });
+}
 document.getElementById('bPublicarEvento').addEventListener('click',()=>{
   const n=document.getElementById('evNombre').value.trim();
   const f=document.getElementById('evFecha').value.trim();
   const h=document.getElementById('evHora').value.trim();
   const l=document.getElementById('evLugar').value.trim();
   if(!n){alert('Escribe el nombre del evento');return;}
-  const ev={n,cat:'evento',fecha:f,hora:h,dir:l,lat:YOU[1],lng:YOU[0],tel:null,horas:null,nota:'Publicado por la comunidad'};
+  const ev={n,cat:'evento',fecha:f,hora:h,dir:l,lat:YOU[1],lng:YOU[0],tel:null,horas:null,nota:'Publicado por la comunidad',ciudad:ciudadActual};
   const arr=leerEventosUsuario(); arr.push(ev); localStorage.setItem('mascotas_eventos_v1',JSON.stringify(arr));
-  const c=CAT.evento;
-  const el=document.createElement('div');el.className='pin2 '+c.cls;
-  el.innerHTML=`<span class="in">${glyph(c.g,c.col)}</span>`; el.title=ev.n;
-  const mk=new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat([ev.lng,ev.lat]).addTo(window.map);
-  el.addEventListener('click',()=>seleccionar(ev,false));
-  marcadoresUsuario.push({b:ev,el,mk});
+  crearPinesEventosUsuario();
   ['evNombre','evFecha','evHora','evLugar'].forEach(id=>document.getElementById(id).value='');
-  renderEventos();
+  if(filtroCat==='evento')renderLista();
 });
 const marcadoresOSM=[];
 let osmCargando=false;
@@ -831,15 +1037,14 @@ async function cargarOSM(){
 }
 document.getElementById('bEEUU').addEventListener('click',cargarOSM);
 function mostrarPanel(id){
-  ['panelEventos','panelVisitas','panelMascota'].forEach(p=>{const el=document.getElementById(p); if(el)el.style.display=(p===id&&el.style.display!=='block')?'block':'none';});
+  ['panelVisitas','panelMascota'].forEach(p=>{const el=document.getElementById(p); if(el)el.style.display=(p===id&&el.style.display!=='block')?'block':'none';});
   if(id==='panelVisitas')renderVisitas();
-  if(id==='panelEventos')renderEventos();
   if(id==='panelMascota'){document.getElementById('petNombre').value=petNombre;renderColoresMascota();}
 }
-document.getElementById('bEventos').addEventListener('click',()=>mostrarPanel('panelEventos'));
 document.getElementById('bVisitas').addEventListener('click',()=>mostrarPanel('panelVisitas'));
 document.getElementById('bMascota').addEventListener('click',()=>mostrarPanel('panelMascota'));
 cargarMascota();
+crearPinesEventosUsuario();
 
 /* ---------- La mascota: parte de TU ubicación y te sigue en el viaje ---------- */
 const dogEl=document.createElement('div');
