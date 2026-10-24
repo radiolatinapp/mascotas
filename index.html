@@ -125,7 +125,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v9</div>
+<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v10</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div class="ocultarViaje" style="display:flex;gap:11px;align-items:center">
@@ -1766,6 +1766,50 @@ function irAtras(){
 window.addEventListener('popstate',()=>{if(capaAbierta)cerrarCapa();});
 document.getElementById('btnAtras').addEventListener('click',irAtras);
 
+/* ---------- v10: apertura siempre desde cero (como Google Maps) ----------
+   En el teléfono, al tocar el enlace con la app ya abierta (o al volver con
+   el botón atrás del sistema), Chrome restaura la página con su estado vivo:
+   el mapa quedaba en la última ciudad, con la búsqueda o la ruta anterior.
+   No es localStorage (nada de eso se guarda): es la restauración de la
+   pestaña / bfcache. Al restaurar (pageshow con persisted) o al volver tras
+   más de 30 s oculta, se restablece el estado limpio: sin tarjeta, sin
+   búsqueda, sin ruta, sin paneles, centrada en el GPS real. Un viaje activo
+   nunca se corta. Visitas, mascota, idioma y eventos propios se conservan. */
+let ocultoDesde=0;
+function resetEstadoLimpio(){
+  try{
+    if(tripActivo)terminarViaje();
+    if(seleccionado)deseleccionar();
+    capaAbierta=null;
+    ['panelCategorias','panelLista','panelVisitas','panelMascota'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+    document.getElementById('card').style.display='none';
+    document.getElementById('bannerTurno').style.display='none';
+    const bq=document.getElementById('buscador'); if(bq){bq.value='';bq.blur();}
+    const sg=document.getElementById('sug'); if(sg)sg.style.display='none';
+    ['evNombre','evFecha','evHora','evLugar'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    filtroTxt=''; geoResultados=[]; geoPara=''; geoPendiente=false;
+    if(typeof filtroCat!=='undefined'&&filtroCat!=='todos'){filtroCat='todos';}
+    if(typeof aplicarFiltros==='function')aplicarFiltros();
+    follow=true; followPausado=false;
+    const bg=document.getElementById('btnGps'); if(bg)bg.classList.add('on');
+    actualizarBotonAtras();
+    window.map.easeTo({center:YOU,zoom:14.7,pitch:0,bearing:0,offset:[0,0],duration:600});
+    cargarZona(true);
+  }catch(e){}
+}
+window.addEventListener('pageshow',e=>{
+  const bq0=document.getElementById('buscador'); if(bq0)bq0.value='';
+  if(e.persisted)resetEstadoLimpio();
+});
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){ocultoDesde=Date.now();}
+  else{
+    const ausente=ocultoDesde?Date.now()-ocultoDesde:0; ocultoDesde=0;
+    if(!tripActivo&&ausente>30000)resetEstadoLimpio();
+    else if(zonaError)cargarZona(true);
+  }
+});
+
 /* ---------- Filtros y buscador con sugerencias ---------- */
 let filtroCat='todos', filtroTxt='';
 function es24h(b){return b.h24===true;}
@@ -2200,19 +2244,26 @@ function mostrarZonaEstado(txt,ms){const p=document.getElementById('zonaEstado')
 document.getElementById('zonaEstado').addEventListener('click',()=>{if(zonaError)cargarZona(true);});
 
 const OVERPASS_URLS=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter'];
-async function consultarOverpass(q){
-  let ultimoErr=null;
-  for(const u of OVERPASS_URLS){
-    try{
+/* v10: carrera con arranque escalonado entre los 3 espejos Overpass.
+   El principal (.de) se satura y tarda 20+s; esperar a que falle cada espejo
+   en serie dejaba la pill en "Buscando..." más de 90 s. Ahora el primero
+   arranca al instante, los otros a los 6 s y 12 s si nadie respondió;
+   gana el primero que responde y los demás se ignoran. */
+function consultarOverpass(q){
+  return new Promise((resolve,reject)=>{
+    let done=false, fails=0; const total=OVERPASS_URLS.length;
+    const intentar=(u)=>{
       const ctl=new AbortController();
       const to=setTimeout(()=>ctl.abort(),30000);
-      const r=await fetch(u,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(q),signal:ctl.signal});
-      clearTimeout(to);
-      if(!r.ok)throw new Error('http '+r.status);
-      return await r.json();
-    }catch(e){ultimoErr=e;}
-  }
-  throw ultimoErr||new Error('overpass');
+      fetch(u,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(q),signal:ctl.signal})
+        .then(r=>{clearTimeout(to);if(!r.ok)throw new Error('http '+r.status);return r.json();})
+        .then(j=>{if(!done){done=true;resolve(j);}})
+        .catch(e=>{clearTimeout(to);if(done)return;if(++fails>=total)reject(e);});
+    };
+    intentar(OVERPASS_URLS[0]);
+    setTimeout(()=>{if(!done)intentar(OVERPASS_URLS[1]);},6000);
+    setTimeout(()=>{if(!done)intentar(OVERPASS_URLS[2]);},12000);
+  });
 }
 function esTextoLugar(q){
   if(!q)return false;
@@ -2274,9 +2325,18 @@ async function cargarZona(forzar){
       todosLugares().forEach(x=>{const d=Math.hypot((x.lng-c.lng)*M_LNG,(x.lat-c.lat)*M_LAT);if(d<md)md=d;});
       mostrarZonaEstado(t('zonaVacia')+' · '+t('masCercanoA',{d:fmtDist(md)}),6000);
     }
+    cargarZona._reintentos=0;
+    const bAhora=window.map.getBounds();
+    if(bAhora&&!zonaContenida(bAhora))setTimeout(()=>cargarZona(false),300);
   }catch(err){
     zonaError=true;
-    mostrarZonaEstado(t('zonaError')+' · '+t('reintentar'),8000);
+    if((cargarZona._reintentos||0)<1){
+      cargarZona._reintentos=(cargarZona._reintentos||0)+1;
+      zonaCargando=false;
+      setTimeout(()=>{if(!zonaCargando)cargarZona(true);},5000);
+      return;
+    }
+    mostrarZonaEstado(t('zonaError')+' · '+t('reintentar'));
   }
   zonaCargando=false;
 }
