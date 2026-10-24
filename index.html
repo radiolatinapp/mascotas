@@ -28,7 +28,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .chip{border:0;background:rgba(255,255,255,.97);border-radius:18px;padding:7px 13px;font-size:13px;font-weight:700;color:#333;box-shadow:0 2px 5px rgba(0,0,0,.25);display:flex;align-items:center;gap:5px;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
 .chip:active{transform:scale(.96)}
-.zonaEstado{position:absolute;top:238px;left:12px;z-index:6;border:0;background:rgba(20,52,43,.88);color:#fff;border-radius:18px;padding:7px 13px;font-size:12.5px;font-weight:700;box-shadow:0 2px 5px rgba(0,0,0,.25);display:flex;align-items:center;white-space:nowrap;max-width:72vw;overflow:hidden;text-overflow:ellipsis;animation:fadeIn .25s ease}
+.zonaEstado{position:absolute;top:238px;left:12px;z-index:6;border:0;background:rgba(20,52,43,.88);color:#fff;border-radius:18px;padding:7px 13px;font-size:12.5px;font-weight:700;box-shadow:0 2px 5px rgba(0,0,0,.25);display:flex;align-items:center;white-space:normal;line-height:1.35;cursor:pointer;max-width:58vw;text-align:left;animation:fadeIn .25s ease}
 .chip.on{background:#0E7C66;color:#fff}
 .dot{width:9px;height:9px;border-radius:50%}
 .views{position:absolute;top:196px;right:12px;z-index:6;display:flex;border-radius:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.35)}
@@ -36,6 +36,8 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .views button.on{background:#14342B;color:#fff}
 .gpsbtn{position:absolute;top:234px;right:12px;z-index:6;border:0;border-radius:20px;padding:9px 15px;font-size:13px;font-weight:800;background:#fff;color:#444;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer;transition:transform .15s ease,background .2s ease}
 .gpsbtn:active,.brujula:active,.zoomBtn:active{transform:scale(.93)}
+.atrasBtn{position:absolute;top:196px;left:12px;z-index:7;border:0;border-radius:20px;padding:8px 13px;font-size:13.5px;font-weight:800;background:#fff;color:#14342B;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer;display:flex;align-items:center;gap:6px;transition:transform .15s ease}
+.atrasBtn:active{transform:scale(.96)}
 .gpsbtn.on{background:#0E7C66;color:#fff}
 .brujula{position:absolute;top:314px;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .zoomBtn{position:absolute;right:12px;z-index:6;width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;font-size:19px;font-weight:800;color:#333}
@@ -117,13 +119,14 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <div class="views">
   <button id="vIlus" class="on" data-i18n="viewIlus">Ilustrado</button><button id="vSat" data-i18n="viewSat">Satélite</button><button id="v3d" data-i18n="view3d">Mapa 3D</button><button id="vActual" data-i18n="viewActual">Actual</button>
 </div>
+<button id="btnAtras" class="atrasBtn" style="display:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg><span data-i18n="btnAtras">Atrás</span></button>
 <button id="btnGps" class="gpsbtn on" data-i18n="btnGps">Modo GPS</button>
 <button id="btnYo" class="gpsbtn" style="top:272px" data-i18n="btnYo">Mi ubicación</button>
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v8</div>
-<div class="card" id="card">
+<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v9</div>
+<div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div class="ocultarViaje" style="display:flex;gap:11px;align-items:center">
     <div id="cLogo" class="logoBox"></div>
@@ -180,11 +183,11 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
   </div>
 </div>
 <div class="panel" id="panelVisitas" style="display:none">
-  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelVisitas">Mis visitas</h3><button class="chip" data-i18n="btnCerrar" onclick="document.getElementById('panelVisitas').style.display='none'">Cerrar</button></div>
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelVisitas">Mis visitas</h3><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Cerrar</button></div>
   <div id="listaVisitas"></div>
 </div>
 <div class="panel" id="panelMascota" style="display:none">
-  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelMascota">Mi mascota</h3><button class="chip" data-i18n="btnCerrar" onclick="document.getElementById('panelMascota').style.display='none'">Cerrar</button></div>
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelMascota">Mi mascota</h3><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Cerrar</button></div>
   <label style="font-size:13px;font-weight:700;color:#555" data-i18n="petNombreLabel">Nombre de tu mascota</label>
   <input class="inputTxt" id="petNombre" data-i18n-ph="petNombrePh" placeholder="Ej. Max, Luna…" style="margin-top:6px">
   <div style="font-size:13px;font-weight:700;color:#555;margin:12px 0 6px" data-i18n="petColorLabel">Color de tu mascota</div>
@@ -322,7 +325,14 @@ const I18N={
   "osmGuarderia": "Guardería",
   "evAlerta": "Escribe el nombre del evento",
   "copiado": "¡Copiado!",
-  "comunidad": "Publicado por la comunidad"
+  "comunidad": "Publicado por la comunidad",
+  "masCercanoA": "El más cercano está a {d}",
+  "btnAtras": "Atrás",
+  "irA": "Ir a {lugar}",
+  "buscandoLugar": "Buscando lugar…",
+  "zonaError": "No se pudo cargar esta zona",
+  "reintentar": "Toca para reintentar",
+  "sinResultados": "Sin resultados por aquí"
  },
  "en": {
   "appTitle": "Pets Near You",
@@ -450,7 +460,14 @@ const I18N={
   "osmGuarderia": "Boarding",
   "evAlerta": "Write the event name",
   "copiado": "Copied!",
-  "comunidad": "Posted by the community"
+  "comunidad": "Posted by the community",
+  "masCercanoA": "Nearest is {d} away",
+  "btnAtras": "Back",
+  "irA": "Go to {lugar}",
+  "buscandoLugar": "Searching place…",
+  "zonaError": "Couldn't load this area",
+  "reintentar": "Tap to retry",
+  "sinResultados": "No results here"
  },
  "pt": {
   "appTitle": "Animais perto de você",
@@ -578,7 +595,14 @@ const I18N={
   "osmGuarderia": "Hospedagem",
   "evAlerta": "Escreva o nome do evento",
   "copiado": "Copiado!",
-  "comunidad": "Publicado pela comunidade"
+  "comunidad": "Publicado pela comunidade",
+  "masCercanoA": "O mais próximo está a {d}",
+  "btnAtras": "Voltar",
+  "irA": "Ir para {lugar}",
+  "buscandoLugar": "Procurando lugar…",
+  "zonaError": "Não foi possível carregar esta zona",
+  "reintentar": "Toque para tentar novamente",
+  "sinResultados": "Sem resultados por aqui"
  },
  "fr": {
   "appTitle": "Animaux près de chez vous",
@@ -706,7 +730,14 @@ const I18N={
   "osmGuarderia": "Garderie",
   "evAlerta": "Écrivez le nom de l'événement",
   "copiado": "Copié !",
-  "comunidad": "Publié par la communauté"
+  "comunidad": "Publié par la communauté",
+  "masCercanoA": "Le plus proche est à {d}",
+  "btnAtras": "Retour",
+  "irA": "Aller à {lugar}",
+  "buscandoLugar": "Recherche du lieu…",
+  "zonaError": "Impossible de charger cette zone",
+  "reintentar": "Touchez pour réessayer",
+  "sinResultados": "Aucun résultat ici"
  },
  "de": {
   "appTitle": "Haustiere in deiner Nähe",
@@ -834,7 +865,14 @@ const I18N={
   "osmGuarderia": "Tierpension",
   "evAlerta": "Schreibe den Namen der Veranstaltung",
   "copiado": "Kopiert!",
-  "comunidad": "Von der Community veröffentlicht"
+  "comunidad": "Von der Community veröffentlicht",
+  "masCercanoA": "Der nächste ist {d} entfernt",
+  "btnAtras": "Zurück",
+  "irA": "Zu {lugar}",
+  "buscandoLugar": "Ort wird gesucht…",
+  "zonaError": "Dieser Bereich konnte nicht geladen werden",
+  "reintentar": "Zum Wiederholen tippen",
+  "sinResultados": "Keine Ergebnisse hier"
  },
  "it": {
   "appTitle": "Animali vicino a te",
@@ -962,7 +1000,14 @@ const I18N={
   "osmGuarderia": "Pensione",
   "evAlerta": "Scrivi il nome dell'evento",
   "copiado": "Copiato!",
-  "comunidad": "Pubblicato dalla comunità"
+  "comunidad": "Pubblicato dalla comunità",
+  "masCercanoA": "Il più vicino è a {d}",
+  "btnAtras": "Indietro",
+  "irA": "Vai a {lugar}",
+  "buscandoLugar": "Ricerca del luogo…",
+  "zonaError": "Impossibile caricare questa zona",
+  "reintentar": "Tocca per riprovare",
+  "sinResultados": "Nessun risultato qui"
  },
  "nl": {
   "appTitle": "Huisdieren bij jou in de buurt",
@@ -1090,7 +1135,14 @@ const I18N={
   "osmGuarderia": "Dierenpension",
   "evAlerta": "Schrijf de naam van het evenement",
   "copiado": "Gekopieerd!",
-  "comunidad": "Geplaatst door de community"
+  "comunidad": "Geplaatst door de community",
+  "masCercanoA": "De dichtstbijzijnde is {d} hiervandaan",
+  "btnAtras": "Terug",
+  "irA": "Ga naar {lugar}",
+  "buscandoLugar": "Plaats zoeken…",
+  "zonaError": "Dit gebied kon niet worden geladen",
+  "reintentar": "Tik om opnieuw te proberen",
+  "sinResultados": "Geen resultaten hier"
  },
  "pl": {
   "appTitle": "Zwierzaki blisko Ciebie",
@@ -1218,7 +1270,14 @@ const I18N={
   "osmGuarderia": "Hotel dla zwierząt",
   "evAlerta": "Wpisz nazwę wydarzenia",
   "copiado": "Skopiowano!",
-  "comunidad": "Opublikowane przez społeczność"
+  "comunidad": "Opublikowane przez społeczność",
+  "masCercanoA": "Najbliższe jest {d} stąd",
+  "btnAtras": "Wstecz",
+  "irA": "Idź do {lugar}",
+  "buscandoLugar": "Wyszukiwanie miejsca…",
+  "zonaError": "Nie udało się wczytać tego obszaru",
+  "reintentar": "Dotknij, aby ponowić",
+  "sinResultados": "Brak wyników tutaj"
  }
 };
 let idioma='es';
@@ -1602,7 +1661,7 @@ if(navigator.geolocation){
     if(!aceptarFix(p.coords.latitude,p.coords.longitude,p.coords.accuracy))return;
     YOU[0]=p.coords.longitude; YOU[1]=p.coords.latitude; youMarker.setLngLat(YOU);
     actualizarMLng();
-    if(!gpsListo){gpsListo=true; window.map.easeTo({center:YOU,zoom:Math.max(window.map.getZoom(),13),duration:900}); cargarZona(true); if(seleccionado&&!tripActivo)seleccionar(seleccionado,false);}
+    if(!gpsListo){gpsListo=true; window.map.easeTo({center:YOU,zoom:Math.max(window.map.getZoom(),13),duration:900}); cargarZona(true);}
   },()=>{},{enableHighAccuracy:true,timeout:10000});
   navigator.geolocation.watchPosition(p=>{
     if(!aceptarFix(p.coords.latitude,p.coords.longitude,p.coords.accuracy))return;
@@ -1629,6 +1688,7 @@ function seleccionar(b,volar){
   if(tripActivo)terminarViaje();
   llegadaEn=null;
   seleccionado=b;
+  fijarCapa('card');
   document.getElementById('panelLista').style.display='none';
   document.getElementById('panelCategorias').style.display='none';
   document.getElementById('card').style.display='block';
@@ -1665,6 +1725,47 @@ document.getElementById('bIr').addEventListener('click',()=>{if(seleccionado)sel
 document.getElementById('bIniciar').addEventListener('click',()=>iniciarViaje());
 document.getElementById('bTerminar').addEventListener('click',()=>terminarViaje());
 
+/* ---------- v9: deselección y botón ATRÁS con historial ---------- */
+function deseleccionar(){
+  seleccionado=null; llegadaEn=null;
+  document.getElementById('card').style.display='none';
+  document.getElementById('bannerTurno').style.display='none';
+  marcadores.forEach(m=>m.el.classList.remove('sel'));
+  if(typeof marcadoresOSM!=='undefined')marcadoresOSM.forEach(m=>m.el.classList.remove('sel'));
+  RUTA=[]; rutaEsReal=false; rutaDistancia=null; estadoRuta='calculando'; pasos=[]; pasosAlong=[];
+  pintarDatosRuta(); aplicarEstiloCarretera();
+}
+let capaAbierta=null;
+function actualizarBotonAtras(){
+  const b=document.getElementById('btnAtras');
+  if(b)b.style.display=(capaAbierta||tripActivo)?'flex':'none';
+}
+function fijarCapa(tipo){
+  if(!capaAbierta){
+    capaAbierta=tipo;
+    try{history.pushState({mascotas:true,capa:tipo},'');}catch(e){}
+  }else{capaAbierta=tipo;}
+  actualizarBotonAtras();
+}
+function cerrarCapa(){
+  if(!capaAbierta)return;
+  const tipo=capaAbierta; capaAbierta=null;
+  document.getElementById('card').style.display='none';
+  ['panelCategorias','panelLista','panelVisitas','panelMascota'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  if(tipo==='card')deseleccionar();
+  else if(seleccionado)document.getElementById('card').style.display='block';
+  actualizarBotonAtras();
+}
+function irAtras(){
+  if(tripActivo){terminarViaje();return;}
+  if(!capaAbierta)return;
+  const conHistorial=!!(history.state&&history.state.mascotas);
+  cerrarCapa();
+  if(conHistorial){try{history.back();}catch(e){}}
+}
+window.addEventListener('popstate',()=>{if(capaAbierta)cerrarCapa();});
+document.getElementById('btnAtras').addEventListener('click',irAtras);
+
 /* ---------- Filtros y buscador con sugerencias ---------- */
 let filtroCat='todos', filtroTxt='';
 function es24h(b){return b.h24===true;}
@@ -1686,11 +1787,17 @@ function eventosCercanos(){
   const propios=leerEventosUsuario().filter(dentro).map(e=>({...e,propio:true}));
   return [...propios,...base].sort((a,b)=>distanciaA(a)-distanciaA(b));
 }
-function conteoCat(c){
-  if(c==='todos')return NEGOCIOS.length;
+
+function todosLugares(){return NEGOCIOS.concat(marcadoresOSM.map(m=>m.b));}
+function lugaresEnVista(){
+  const b=window.map.getBounds(); if(!b)return [];
+  return todosLugares().filter(x=>x.lng>=b.getWest()&&x.lng<=b.getEast()&&x.lat>=b.getSouth()&&x.lat<=b.getNorth());
+}function conteoCat(c){
   if(c==='evento')return eventosCercanos().length;
-  if(c==='h24')return NEGOCIOS.filter(b=>b.h24===true).length;
-  return NEGOCIOS.filter(b=>b.cat===c).length;
+  const vista=lugaresEnVista();
+  if(c==='todos')return vista.length;
+  if(c==='h24')return vista.filter(b=>b.h24===true).length;
+  return vista.filter(b=>b.cat===c).length;
 }
 function renderCategorias(){
   const box=document.getElementById('listaCategorias'); if(!box)return;
@@ -1707,6 +1814,7 @@ function elegirCategoria(cat){
   document.getElementById('panelCategorias').style.display='none';
   document.getElementById('card').style.display='none';
   document.getElementById('panelLista').style.display='block';
+  fijarCapa('lista');
   renderLista();
 }
 let sortMode='mejor';
@@ -1752,7 +1860,8 @@ function renderLista(){
   titulo.textContent=etiquetaCat(filtroCat);
   let lista;
   if(filtroCat==='h24')lista=ordenarLista(NEGOCIOS.filter(es24h));
-  else lista=ordenarLista(NEGOCIOS.filter(b=>filtroCat==='todos'||b.cat===filtroCat));
+  else lista=ordenarLista(todosLugares().filter(b=>filtroCat==='todos'||b.cat===filtroCat));
+  lista=lista.slice(0,60);
   if(!lista.length){cuerpo.innerHTML=filtroCat==='h24'?'<div class="meta" style="padding:10px 2px">'+t('sin24')+'</div>':'<div class="meta" style="padding:10px 2px">'+t('sinCat')+'</div>';return;}
   cuerpo.innerHTML=lista.map(b=>{
     const c=CAT[b.cat];
@@ -1764,32 +1873,31 @@ function renderLista(){
     return `<div class="listaRow" data-k="${claveLugar(b)}"><span class="logoBox" style="background:${c.col};width:48px;height:48px">${glyph(c.g,'#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${b.n}</span>${badge}<br><span class="meta">${g} · a <b>${fmtDist(distanciaA(b))}</b>${estado}</span><br><span class="meta">${lineaVisitas(b)}</span></span></div>`;
   }).join('');
   cuerpo.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
-    const b=NEGOCIOS.find(x=>claveLugar(x)===row.dataset.k);
+    const b=todosLugares().find(x=>claveLugar(x)===row.dataset.k);
     if(b)seleccionar(b,true);
   }));
 }
 document.getElementById('bCategorias').addEventListener('click',()=>{
-  renderCategorias();
   const p=document.getElementById('panelCategorias');
-  const abrir=p.style.display!=='block';
-  p.style.display=abrir?'block':'none';
-  if(abrir){document.getElementById('panelLista').style.display='none';document.getElementById('card').style.display='block';}
-});
-document.getElementById('bCerrarCategorias').addEventListener('click',()=>{document.getElementById('panelCategorias').style.display='none';});
-document.getElementById('bCerrarLista').addEventListener('click',()=>{
+  if(p.style.display==='block'){irAtras();return;}
+  renderCategorias();
   document.getElementById('panelLista').style.display='none';
-  document.getElementById('card').style.display='block';
+  document.getElementById('card').style.display='none';
+  p.style.display='block';
+  fijarCapa('categorias');
 });
+document.getElementById('bCerrarCategorias').addEventListener('click',()=>irAtras());
+document.getElementById('bCerrarLista').addEventListener('click',()=>irAtras());
 document.getElementById('sortMejor').addEventListener('click',()=>{sortMode='mejor';renderLista();});
 document.getElementById('sortCerca').addEventListener('click',()=>{sortMode='cerca';renderLista();});
 document.getElementById('buscador').addEventListener('input',e=>{
   filtroTxt=e.target.value.trim().toLowerCase();
   if(filtroTxt){
     filtroCat='todos';
-    document.getElementById('panelLista').style.display='none';
-    document.getElementById('panelCategorias').style.display='none';
+    if(!tripActivo&&capaAbierta&&capaAbierta!=='card')irAtras();
+    else{document.getElementById('panelLista').style.display='none';document.getElementById('panelCategorias').style.display='none';}
   }
-  aplicarFiltros();renderSug();
+  aplicarFiltros();renderSug();programarGeo();
 });
 /* ---------- Búsqueda por relevancia ---------- */
 function normalizar(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
@@ -1835,7 +1943,51 @@ function puntajeBusqueda(b,q){
   if(abiertoAhora(b))score+=20;
   return {score,rating:b.rating!=null?b.rating:-1,dist:distanciaA(b)};
 }
-function renderSug(){
+
+let geoPara='', geoResultados=[], geoPendiente=false, geoTimer=null, geoSeq=0;
+async function buscarLugar(q){
+  try{
+    const r=await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&addressdetails=1&accept-language='+encodeURIComponent(idioma)+',en&q='+encodeURIComponent(q));
+    if(!r.ok)return [];
+    const j=await r.json();
+    const lugares=(j||[]).filter(x=>x.lat&&x.lon);
+    const preferidos=lugares.filter(x=>x.class==='place'||x.class==='boundary');
+    return (preferidos.length?preferidos:lugares).slice(0,3).map(x=>({n:x.display_name.split(',').slice(0,2).join(', '),full:x.display_name,lat:+x.lat,lng:+x.lon,bb:x.boundingbox?[+x.boundingbox[0],+x.boundingbox[2],+x.boundingbox[1],+x.boundingbox[3]]:null}));
+  }catch(e){return [];}
+}
+function limpiarBusqueda(){
+  const inp=document.getElementById('buscador'); if(inp)inp.value='';
+  filtroTxt=''; aplicarFiltros();
+}
+function irALugar(g){
+  document.getElementById('sug').style.display='none';
+  document.getElementById('buscador').blur();
+  limpiarBusqueda();
+  let chico=false;
+  if(g.bb){const sp=Math.max(g.bb[3]-g.bb[1],g.bb[2]-g.bb[0]);chico=sp<0.05;}
+  if(chico){window.map.fitBounds([[g.bb[1],g.bb[0]],[g.bb[3],g.bb[2]]],{padding:50,maxZoom:15,duration:900});}
+  else window.map.easeTo({center:[g.lng,g.lat],zoom:13.5,duration:1000});
+  setTimeout(()=>cargarZona(true),1100);
+}
+function programarGeo(){
+  clearTimeout(geoTimer);
+  const q=filtroTxt;
+  if(!q||q.length<3||categoriaDeBusqueda(q)){geoPara='';geoResultados=[];return;}
+  geoTimer=setTimeout(async()=>{
+    if(filtroTxt!==q)return;
+    const seq=++geoSeq;
+    geoPendiente=true; geoPara=q;
+    if(document.activeElement===document.getElementById('buscador'))renderSug();
+    const res=await buscarLugar(q);
+    if(seq!==geoSeq||filtroTxt!==q)return;
+    geoPendiente=false; geoResultados=res;
+    if(document.activeElement===document.getElementById('buscador'))renderSug();
+  },600);
+}
+function sugRow(b,d){
+  const c=CAT[b.cat];
+  return `<div class="sugItem" data-k="${claveLugar(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span>${es24h(b)?' <span class="badge24">24/7</span>':''}<br><span class="cat">${catName(b.cat)} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(d)}</span></div>`;
+}function renderSug(){
   const box=document.getElementById('sug');
   const q=filtroTxt;
   let html='';
@@ -1844,18 +1996,25 @@ function renderSug(){
   }
   let lista;
   if(!q){
-    lista=NEGOCIOS.filter(pasaCat).map(b=>({b,d:distanciaA(b)})).sort((x,y)=>x.d-y.d).slice(0,8);
+    lista=todosLugares().map(b=>({b,d:distanciaA(b)})).sort((x,y)=>x.d-y.d).slice(0,8);
     if(document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
-    box.innerHTML=lista.map(({b,d})=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span>${es24h(b)?' <span class="badge24">24/7</span>':''}<br><span class="cat">${catName(b.cat)} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(d)}</span></div>`;}).join('');
+    box.innerHTML=lista.map(({b,d})=>sugRow(b,d)).join('');
     box.style.display='block';
     return;
   }
-  lista=NEGOCIOS.map(b=>({b,p:puntajeBusqueda(b,q)})).filter(x=>x.p!=null&&pasaCat(x.b));
+  lista=todosLugares().map(b=>({b,p:puntajeBusqueda(b,q)})).filter(x=>x.p!=null&&pasaCat(x.b));
   lista.sort((x,y)=>y.p.score-x.p.score||y.p.rating-x.p.rating||x.p.dist-y.p.dist);
   lista=lista.slice(0,8);
-  if(!lista.length&&!html){box.style.display='none';return;}
   if(document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
-  html+=lista.map(({b,p})=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span>${es24h(b)?' <span class="badge24">24/7</span>':''}<br><span class="cat">${catName(b.cat)} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(p.dist)}</span></div>`;}).join('');
+  html+=lista.map(({b,p})=>sugRow(b,p.dist)).join('');
+  if(geoPara===q&&geoResultados.length&&lista.length<3){
+    html+=geoResultados.map((g,i)=>`<div class="sugItem" data-geo="${i}"><span style="flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="#0E7C66"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="3" fill="#fff"/></svg></span><span><span class="nm">${t('irA',{lugar:g.n})}</span><br><span class="cat">${g.full}</span></span></div>`).join('');
+  }else if(geoPara===q&&geoPendiente){
+    html+=`<div class="sugItem"><span class="cat">${t('buscandoLugar')}</span></div>`;
+  }else if(!lista.length&&!html&&geoPara===q&&!geoResultados.length){
+    html+=`<div class="sugItem"><span class="cat">${t('sinResultados')}</span></div>`;
+  }
+  if(!lista.length&&!geoResultados.length&&!geoPendiente&&!html){box.style.display='none';return;}
   box.innerHTML=html;
   box.style.display='block';
 }
@@ -1865,14 +2024,21 @@ document.getElementById('sug').addEventListener('click',e=>{
   document.getElementById('sug').style.display='none';
   document.getElementById('buscador').blur();
   if(item.dataset.ev){elegirCategoria('evento');return;}
-  const b=NEGOCIOS[+item.dataset.i];
+  if(item.dataset.geo!=null&&item.dataset.geo!==''){const g=geoResultados[+item.dataset.geo]; if(g)irALugar(g); return;}
+  const b=todosLugares().find(x=>claveLugar(x)===item.dataset.k);
   if(!b)return;
   seleccionar(b,true);
 });
 document.addEventListener('click',e=>{
   if(!e.target.closest('.search')&&!e.target.closest('#sug'))document.getElementById('sug').style.display='none';
 });
-document.getElementById('buscador').addEventListener('keydown',e=>{if(e.key==='Escape'){document.getElementById('sug').style.display='none';e.target.blur();}});
+document.getElementById('buscador').addEventListener('keydown',e=>{
+  if(e.key==='Escape'){document.getElementById('sug').style.display='none';e.target.blur();}
+  else if(e.key==='Enter'){
+    if(geoResultados.length){irALugar(geoResultados[0]);}
+    else{const first=document.querySelector('#sug .sugItem[data-k]'); if(first)first.click();}
+  }
+});
 
 /* ---------- Vistas ---------- */
 function vista(btn,style,opts){
@@ -2031,7 +2197,36 @@ let zonaCargando=false, zonaTimer=null;
 const zonasCargadas=[];
 function zonaContenida(b){return zonasCargadas.some(z=>b.getWest()>=z[0]-0.15&&b.getSouth()>=z[1]-0.15&&b.getEast()<=z[2]+0.15&&b.getNorth()<=z[3]+0.15);}
 function mostrarZonaEstado(txt,ms){const p=document.getElementById('zonaEstado');if(!p)return;p.textContent=txt;p.style.display=txt?'':'none';if(ms){clearTimeout(p._t);p._t=setTimeout(()=>{p.style.display='none';},ms);}}
-function agregarPinOSM(b,osmId){
+document.getElementById('zonaEstado').addEventListener('click',()=>{if(zonaError)cargarZona(true);});
+
+const OVERPASS_URLS=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter'];
+async function consultarOverpass(q){
+  let ultimoErr=null;
+  for(const u of OVERPASS_URLS){
+    try{
+      const ctl=new AbortController();
+      const to=setTimeout(()=>ctl.abort(),30000);
+      const r=await fetch(u,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(q),signal:ctl.signal});
+      clearTimeout(to);
+      if(!r.ok)throw new Error('http '+r.status);
+      return await r.json();
+    }catch(e){ultimoErr=e;}
+  }
+  throw ultimoErr||new Error('overpass');
+}
+function esTextoLugar(q){
+  if(!q)return false;
+  if(categoriaDeBusqueda(q))return false;
+  if(NEGOCIOS.some(b=>normalizar(b.n).includes(normalizar(q))))return false;
+  return true;
+}
+function contarEnVista(){
+  const b=window.map.getBounds(); if(!b)return 0;
+  let n=0;
+  todosLugares().forEach(x=>{if(x.lng>=b.getWest()&&x.lng<=b.getEast()&&x.lat>=b.getSouth()&&x.lat<=b.getNorth())n++;});
+  return n;
+}
+let zonaError=false;function agregarPinOSM(b,osmId){
   if(marcadoresOSM.some(m=>m.osmId===osmId))return false;
   if(NEGOCIOS.some(c=>c.n.toLowerCase()===b.n.toLowerCase()&&Math.abs(c.lat-b.lat)<0.001&&Math.abs(c.lng-b.lng)<0.001))return false;
   const c=CAT[b.cat];
@@ -2047,15 +2242,14 @@ async function cargarZona(forzar){
   const z=window.map.getZoom();
   if(z<11){mostrarZonaEstado(t('acercateZona'));return;}
   const b=window.map.getBounds();
-  if(!forzar&&zonaContenida(b)){mostrarZonaEstado('');return;}
+  if(!forzar&&zonaContenida(b))return;
   let w=b.getWest(),s2=b.getSouth(),e=b.getEast(),n=b.getNorth();
   if(e-w>3){const c=(w+e)/2;w=c-1.5;e=c+1.5;}
   if(n-s2>3){const c=(s2+n)/2;s2=c-1.5;n=c+1.5;}
-  zonaCargando=true; mostrarZonaEstado(t('buscandoZona'));
+  zonaCargando=true; zonaError=false; mostrarZonaEstado(t('buscandoZona'));
   try{
     const q=`[out:json][timeout:25];(node["amenity"~"veterinary|animal_shelter|zoo|animal_boarding"](${s2},${w},${n},${e});way["amenity"~"veterinary|animal_shelter|zoo|animal_boarding"](${s2},${w},${n},${e});node["shop"="pet"](${s2},${w},${n},${e});way["shop"="pet"](${s2},${w},${n},${e}););out center 150;`;
-    const r=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(q)});
-    const j=await r.json();
+    const j=await consultarOverpass(q);
     let nuevos=0;
     (j.elements||[]).forEach(el=>{
       const tg=el.tags||{}; if(!tg.name)return;
@@ -2070,19 +2264,30 @@ async function cargarZona(forzar){
       if(agregarPinOSM(b2,el.type+el.id))nuevos++;
     });
     zonasCargadas.push([w,s2,e,n]);
+    if(esTextoLugar(filtroTxt))limpiarBusqueda();
     aplicarFiltros();
-    if(marcadoresOSM.length)mostrarZonaEstado(t('zonaOk',{n:marcadoresOSM.length}),4000);
-    else mostrarZonaEstado(t('zonaVacia'),4000);
+    const enVista=contarEnVista();
+    if(enVista)mostrarZonaEstado(t('zonaOk',{n:enVista}),4000);
+    else{
+      const c=window.map.getCenter();
+      let md=1e12;
+      todosLugares().forEach(x=>{const d=Math.hypot((x.lng-c.lng)*M_LNG,(x.lat-c.lat)*M_LAT);if(d<md)md=d;});
+      mostrarZonaEstado(t('zonaVacia')+' · '+t('masCercanoA',{d:fmtDist(md)}),6000);
+    }
   }catch(err){
-    mostrarZonaEstado(t('osmError'),5000);
+    zonaError=true;
+    mostrarZonaEstado(t('zonaError')+' · '+t('reintentar'),8000);
   }
   zonaCargando=false;
 }
 window.map.on('moveend',()=>{if(tripActivo)return;clearTimeout(zonaTimer);zonaTimer=setTimeout(()=>cargarZona(false),600);crearPinesEventosUsuario();});
 function mostrarPanel(id){
-  ['panelVisitas','panelMascota'].forEach(p=>{const el=document.getElementById(p); if(el)el.style.display=(p===id&&el.style.display!=='block')?'block':'none';});
+  const el=document.getElementById(id);
+  if(el&&el.style.display==='block'){irAtras();return;}
+  ['panelVisitas','panelMascota'].forEach(p=>{const e2=document.getElementById(p); if(e2)e2.style.display=(p===id)?'block':'none';});
   if(id==='panelVisitas')renderVisitas();
   if(id==='panelMascota'){document.getElementById('petNombre').value=petNombre;renderColoresMascota();}
+  fijarCapa(id==='panelVisitas'?'visitas':'mascota');
 }
 document.getElementById('bVisitas').addEventListener('click',()=>mostrarPanel('panelVisitas'));
 document.getElementById('bMascota').addEventListener('click',()=>mostrarPanel('panelMascota'));
@@ -2129,5 +2334,4 @@ requestAnimationFrame(loop);
 detectarIdioma();
 document.getElementById('selIdioma').addEventListener('change',e=>setLang(e.target.value));
 applyLang();
-seleccionar(NEGOCIOS[0],false);
 </script></body></html>
