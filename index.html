@@ -101,14 +101,6 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .sortBtn{border:0;border-radius:11px;padding:7px 11px;font-size:12.5px;font-weight:800;background:#EEF2EE;color:#444;cursor:pointer;flex:none}
 .sortBtn.on{background:#0E7C66;color:#fff}
 .badge24{background:#0E7C66;color:#fff;border-radius:8px;padding:2px 7px;font-weight:800;font-size:12px;white-space:nowrap}
-.fotoAlerta{width:100%;border-radius:14px;display:block;margin:6px 0;max-height:220px;object-fit:cover}
-.fotoAlerta.sinFoto{background:#f2f2f2;color:#888;display:flex;align-items:center;justify-content:center;min-height:64px;font-weight:700}
-.campoLabel{display:block;font-weight:800;font-size:13px;margin:10px 0 4px}
-.especieBtn.on{background:#C0392B!important;color:#fff!important}
-.avItem{display:flex;gap:8px;padding:6px 0;border-top:1px solid #f0f0f0}
-.avDot{width:8px;height:8px;border-radius:50%;background:#C0392B;margin-top:6px;flex:none}
-.pin2.pinPerdida{animation:pinPop .3s ease,pinPulse 2.4s infinite}
-@keyframes pinPulse{0%,100%{box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 0 0 rgba(192,57,43,.45)}50%{box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 0 12px rgba(192,57,43,0)}}
 </style></head><body>
 <div id="map"></div>
 <div class="topbar">
@@ -121,7 +113,6 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
   <div class="chips" id="acciones" style="margin-top:6px">
     <button class="chip" id="bVisitas" data-i18n="btnVisitas">Mis visitas</button>
     <button class="chip" id="bMascota" data-i18n="btnMascota">Mi mascota</button>
-    <button class="chip" id="bPerdidas" data-i18n="btnPerdida">Mascota perdida</button>
     <span id="zonaEstado" class="zonaEstado" style="display:none"></span><select id="selIdioma" class="chip" style="appearance:none;-webkit-appearance:none" aria-label="Idioma"><option value="es">Español</option><option value="en">English</option><option value="pt">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="nl">Nederlands</option><option value="pl">Polski</option></select>
   </div>
 </div>
@@ -134,7 +125,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v10.1</div>
+<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v10</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div class="ocultarViaje" style="display:flex;gap:11px;align-items:center">
@@ -169,99 +160,6 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
     <button class="btn shareBtn" id="bCompartir" data-i18n="btnCompartir">Compartir</button>
     <button class="btn shareBtn" id="bRutaCompleta" data-i18n="btnRuta">Ver ruta completa</button>
   </div>
-</div>
-<div class="card" id="cardPerdida" style="display:none">
-  <img id="apFoto" class="fotoAlerta" style="display:none" alt="">
-  <div id="apSinFoto" class="fotoAlerta sinFoto"><span data-i18n="alSinFoto">Sin foto</span></div>
-  <div style="display:flex;gap:11px;align-items:center">
-    <div id="apLogo" class="logoBox" style="background:#C0392B"></div>
-    <div style="flex:1;min-width:0">
-      <h3 id="apNombre"></h3>
-      <div><span class="meta" id="apHace"></span> · <span class="meta" id="apDist"></span></div>
-      <div><span class="meta" id="apCaduca"></span></div>
-    </div>
-  </div>
-  <div class="meta" id="apDemo" style="display:none;color:#B45309;font-weight:800" data-i18n="alDemo">Alerta de prueba</div>
-  <p id="apDesc" style="margin:8px 0"></p>
-  <div class="meta" id="apZona"></div>
-  <div class="meta" id="apAvist"></div>
-  <div class="meta" id="apSinContacto" data-i18n="alSinContacto">Sin contacto — avisa con «La vi aquí».</div>
-  <div class="btns">
-    <a class="btn wa" id="apContacto" style="display:none" target="_blank" rel="noopener">WhatsApp</a>
-    <a class="btn go" id="apLlegar" target="_blank" rel="noopener" data-i18n="btnComoLlegar">Cómo llegar</a>
-    <button class="btn iniciar" id="apLaVi" data-i18n="btnLaVi">La vi aquí</button>
-  </div>
-  <div class="btns">
-    <button class="btn shareBtn" id="apCompartir" data-i18n="btnCompartir">Compartir</button>
-    <button class="btn" id="apReportar" style="background:#888" data-i18n="btnReportar">Reportar</button>
-  </div>
-  <div id="apAvForm" style="display:none;margin-top:10px">
-    <div class="meta" style="font-weight:800" data-i18n="avTitulo">¿La viste? Cuéntanos dónde</div>
-    <div class="meta" data-i18n="avPuntoAyuda">Mueve el mapa al punto exacto donde la viste.</div>
-    <textarea id="apAvNota" class="inputTxt" rows="2" style="margin-top:6px" data-i18n-ph="avNotaPh"></textarea>
-    <div class="btns">
-      <button class="btn iniciar" id="apEnviarAv" data-i18n="avEnviar">Enviar avistamiento</button>
-      <button class="btn" id="apCancelarAv" style="background:#888">✕</button>
-    </div>
-  </div>
-  <div id="apAvLista"></div>
-  <div id="apRepForm" style="display:none;margin-top:10px">
-    <div class="meta" style="font-weight:800" data-i18n="repTitulo">Reportar esta alerta</div>
-    <div class="btns" style="flex-wrap:wrap">
-      <button class="btn repBtn" data-motivo="falso" style="background:#888" data-i18n="repFalso">Contenido falso</button>
-      <button class="btn repBtn" data-motivo="venta" style="background:#888" data-i18n="repVenta">Es una venta</button>
-      <button class="btn repBtn" data-motivo="ofensivo" style="background:#888" data-i18n="repOfensivo">Contenido ofensivo</button>
-      <button class="btn repBtn" data-motivo="otro" style="background:#888" data-i18n="repOtro">Otro motivo</button>
-    </div>
-  </div>
-  <div id="apDuenio" style="display:none;margin-top:10px;border-top:1px solid #eee;padding-top:8px">
-    <div class="btns">
-      <button class="btn iniciar" id="apEncontrada" data-i18n="btnEncontrada">Marcar como encontrada</button>
-      <button class="btn" id="apRenovar" style="background:#0E7C66" data-i18n="btnRenovar">Renovar 30 días</button>
-      <button class="btn" id="apBorrar" style="background:#C0392B" data-i18n="btnBorrarAlerta">Borrar alerta</button>
-    </div>
-  </div>
-</div>
-<div class="panel" id="panelPerdidas" style="display:none">
-  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelPerdidas">Mascotas perdidas</h3><button class="chip" id="bCerrarPerdidas" data-i18n="btnCerrar">Cerrar</button></div>
-  <button class="btn iniciar" id="bPubPerdida" style="width:100%;margin-top:8px" data-i18n="pubTitulo">Publicar mascota perdida</button>
-  <div class="meta" id="notaModoLocal" style="display:none;margin-top:8px" data-i18n="alModoLocal">Las alertas se guardan solo en este teléfono hasta conectar la base de datos.</div>
-  <div style="font-weight:800;font-size:14px;margin:12px 0 6px" data-i18n="perdidasCerca">Perdidas cerca de mí</div>
-  <div id="listaPerdidas"></div>
-  <div style="font-weight:800;font-size:14px;margin:12px 0 6px" data-i18n="misAlertas">Mis alertas publicadas</div>
-  <div id="listaMisAlertas"></div>
-</div>
-<div class="panel" id="panelPerdidaForm" style="display:none">
-  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="pubTitulo">Publicar mascota perdida</h3><button class="chip" id="bCerrarFormPerdida" data-i18n="btnCerrar">Cerrar</button></div>
-  <label class="campoLabel" data-i18n="pubFoto">Foto de la mascota</label>
-  <button class="btn iniciar" id="pubFotoBtn" style="padding:11px 18px" data-i18n="pubFotoBtn">Elegir foto</button>
-  <input type="file" id="pubFotoInput" accept="image/*" style="display:none">
-  <img id="pubFotoPrev" class="fotoAlerta" style="display:none" alt="">
-  <div class="meta" data-i18n="pubFotoAviso">Revisa la foto: que no se vea tu dirección, tu placa ni a otras personas.</div>
-  <label class="campoLabel" data-i18n="pubEspecie">Especie</label>
-  <div style="display:flex;gap:8px">
-    <button class="btn especieBtn on" data-especie="perro" data-i18n="pubPerro">Perro</button>
-    <button class="btn especieBtn" data-especie="gato" style="background:#888" data-i18n="pubGato">Gato</button>
-    <button class="btn especieBtn" data-especie="otro" style="background:#888" data-i18n="pubOtro">Otro</button>
-  </div>
-  <label class="campoLabel" data-i18n="pubNombre">Nombre (si se sabe)</label>
-  <input id="pubNombre" class="inputTxt" type="text" data-i18n-ph="pubNombrePh" placeholder="Ej. Max">
-  <label class="campoLabel" data-i18n="pubDesc">Descripción: color, tamaño, señas, collar…</label>
-  <textarea id="pubDesc" class="inputTxt" rows="3" data-i18n-ph="pubDescPh" placeholder="Ej. Café, mediano, collar rojo, asustado"></textarea>
-  <label class="campoLabel" data-i18n="pubFecha">Fecha en que se perdió</label>
-  <input id="pubFecha" class="inputTxt" type="date">
-  <label class="campoLabel" data-i18n="pubPunto">Punto donde se vio por última vez</label>
-  <div class="meta" data-i18n="pubPuntoAyuda">Mueve el mapa para poner el punto en la calle o parque donde se vio. No pongas tu dirección.</div>
-  <label class="campoLabel" data-i18n="pubZona">Zona (sin dirección exacta)</label>
-  <input id="pubZona" class="inputTxt" type="text">
-  <div class="meta" data-i18n="pubAvisoDireccion">No escribas tu dirección exacta, solo la zona.</div>
-  <label class="campoLabel" data-i18n="pubContacto">Contacto (opcional)</label>
-  <div style="display:flex;gap:14px;flex-wrap:wrap">
-    <label><input type="radio" name="pubContacto" value="ninguno" checked> <span data-i18n="pubSinContacto">Sin contacto (solo avisos en la app)</span></label>
-    <label><input type="radio" name="pubContacto" value="whatsapp"> <span data-i18n="pubWhatsapp">WhatsApp</span></label>
-  </div>
-  <div id="pubNumeroWrap" style="display:none;margin-top:6px"><input id="pubNumero" class="inputTxt" type="tel" data-i18n-ph="pubNumeroPh" placeholder="Número de WhatsApp"></div>
-  <div style="margin-top:12px"><button class="btn iniciar" id="bPublicarPerdida" style="width:100%" data-i18n="pubPublicar">Publicar alerta</button></div>
 </div>
 <div class="panel" id="panelCategorias" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelQueBuscas">¿Qué buscas?</h3><button class="chip" id="bCerrarCategorias" data-i18n="btnCerrar">Cerrar</button></div>
@@ -434,83 +332,7 @@ const I18N={
   "buscandoLugar": "Buscando lugar…",
   "zonaError": "No se pudo cargar esta zona",
   "reintentar": "Toca para reintentar",
-  "sinResultados": "Sin resultados por aquí",
-  "btnPerdida": "Mascota perdida",
-  "panelPerdidas": "Mascotas perdidas",
-  "perdidasCerca": "Perdidas cerca de mí",
-  "cat.perdida": "Mascota perdida",
-  "misAlertas": "Mis alertas publicadas",
-  "misAlertasVacias": "No has publicado alertas todavía.",
-  "sinAlertas": "No hay mascotas perdidas por aquí.",
-  "pubTitulo": "Publicar mascota perdida",
-  "pubFoto": "Foto de la mascota",
-  "pubFotoBtn": "Elegir foto",
-  "pubFotoAviso": "Revisa la foto: que no se vea tu dirección, tu placa ni a otras personas.",
-  "pubEspecie": "Especie",
-  "pubPerro": "Perro",
-  "pubGato": "Gato",
-  "pubOtro": "Otro",
-  "pubNombre": "Nombre (si se sabe)",
-  "pubNombrePh": "Ej. Max",
-  "pubDesc": "Descripción: color, tamaño, señas, collar…",
-  "pubDescPh": "Ej. Café, mediano, collar rojo, asustado",
-  "pubFecha": "Fecha en que se perdió",
-  "pubPunto": "Punto donde se vio por última vez",
-  "pubZona": "Zona (sin dirección exacta)",
-  "pubPuntoAyuda": "Mueve el mapa para poner el punto en la calle o parque donde se vio. No pongas tu dirección.",
-  "pubContacto": "Contacto (opcional)",
-  "pubSinContacto": "Sin contacto (solo avisos en la app)",
-  "pubWhatsapp": "WhatsApp",
-  "pubNumeroPh": "Número de WhatsApp",
-  "pubAvisoDireccion": "No escribas tu dirección exacta, solo la zona.",
-  "pubConfirmDireccion": "Tu descripción parece tener una dirección exacta. Publica solo la zona, nunca tu dirección. ¿Seguir?",
-  "pubPublicar": "Publicar alerta",
-  "pubPublicada": "¡Alerta publicada! Ya se ve en el mapa.",
-  "pubError": "No se pudo publicar. Revisa tu conexión e intenta de nuevo.",
-  "pubFaltaDesc": "Escribe una descripción corta de la mascota.",
-  "alPerdidaHace": "Se perdió {d}",
-  "alEncontradaHace": "Se encontró {d}",
-  "alHoy": "hoy",
-  "alHace1": "hace 1 día",
-  "alHaceN": "hace {n} días",
-  "alAvistamientos": "{n} avistamientos",
-  "alAvistamientos1": "1 avistamiento",
-  "alSinAvistamientos": "Aún nadie la ha visto. Sé el primero en avisar.",
-  "alCaduca": "Caduca en {d} días",
-  "alCaduca1": "Caduca mañana",
-  "alRenovarAviso": "Tu alerta caduca en {d} días. ¿Quieres renovarla 30 días más?",
-  "alRenovada": "Alerta renovada por 30 días más.",
-  "alYaRenovada": "Ya renovaste esta alerta una vez.",
-  "alZona": "Zona: {z}",
-  "alSinContacto": "Sin contacto — avisa con «La vi aquí».",
-  "alSinFoto": "Sin foto",
-  "alTipoPerdida": "Perdida",
-  "alTipoEncontrada": "Encontrada",
-  "btnLaVi": "La vi aquí",
-  "btnReportar": "Reportar",
-  "btnEncontrada": "Marcar como encontrada",
-  "btnBorrarAlerta": "Borrar alerta",
-  "btnRenovar": "Renovar 30 días",
-  "btnComoLlegar": "Cómo llegar",
-  "alConfirmEncontrada": "¿Seguro? La alerta dejará de verse.",
-  "alConfirmBorrar": "¿Borrar esta alerta para siempre?",
-  "avTitulo": "¿La viste? Cuéntanos dónde",
-  "avNota": "Nota (opcional)",
-  "avNotaPh": "Ej. estaba junto a la tienda, asustado",
-  "avEnviar": "Enviar avistamiento",
-  "avGracias": "¡Gracias! Tu avistamiento quedó registrado.",
-  "avLista": "Avistamientos",
-  "avPuntoAyuda": "Mueve el mapa al punto exacto donde la viste.",
-  "repTitulo": "Reportar esta alerta",
-  "repFalso": "Contenido falso",
-  "repVenta": "Es una venta",
-  "repOfensivo": "Contenido ofensivo",
-  "repOtro": "Otro motivo",
-  "repGracias": "Gracias por reportar.",
-  "repOculta": "Esta alerta fue ocultada por reportes de la comunidad.",
-  "alModoLocal": "Las alertas se guardan solo en este teléfono hasta conectar la base de datos.",
-  "alErrorCargar": "No se pudieron cargar las alertas.",
-  "alDemo": "Alerta de prueba"
+  "sinResultados": "Sin resultados por aquí"
  },
  "en": {
   "appTitle": "Pets Near You",
@@ -645,83 +467,7 @@ const I18N={
   "buscandoLugar": "Searching place…",
   "zonaError": "Couldn't load this area",
   "reintentar": "Tap to retry",
-  "sinResultados": "No results here",
-  "btnPerdida": "Lost pet",
-  "panelPerdidas": "Lost pets",
-  "perdidasCerca": "Lost pets near me",
-  "cat.perdida": "Lost pet",
-  "misAlertas": "My posted alerts",
-  "misAlertasVacias": "You haven't posted any alerts yet.",
-  "sinAlertas": "No lost pets around here.",
-  "pubTitulo": "Post a lost pet",
-  "pubFoto": "Pet photo",
-  "pubFotoBtn": "Choose photo",
-  "pubFotoAviso": "Check the photo: no home address, license plate or other people in it.",
-  "pubEspecie": "Species",
-  "pubPerro": "Dog",
-  "pubGato": "Cat",
-  "pubOtro": "Other",
-  "pubNombre": "Name (if known)",
-  "pubNombrePh": "E.g. Max",
-  "pubDesc": "Description: color, size, markings, collar…",
-  "pubDescPh": "E.g. Brown, medium, red collar, scared",
-  "pubFecha": "Date it went missing",
-  "pubPunto": "Last seen location",
-  "pubZona": "Area (no exact address)",
-  "pubPuntoAyuda": "Move the map to pin the street or park where it was last seen. Don't use your home address.",
-  "pubContacto": "Contact (optional)",
-  "pubSinContacto": "No contact (app sightings only)",
-  "pubWhatsapp": "WhatsApp",
-  "pubNumeroPh": "WhatsApp number",
-  "pubAvisoDireccion": "Don't write your exact address, just the area.",
-  "pubConfirmDireccion": "Your description seems to include an exact address. Post only the area, never your address. Continue?",
-  "pubPublicar": "Post alert",
-  "pubPublicada": "Alert posted! It's now on the map.",
-  "pubError": "Couldn't post. Check your connection and try again.",
-  "pubFaltaDesc": "Write a short description of the pet.",
-  "alPerdidaHace": "Lost {d}",
-  "alEncontradaHace": "Found {d}",
-  "alHoy": "today",
-  "alHace1": "1 day ago",
-  "alHaceN": "{n} days ago",
-  "alAvistamientos": "{n} sightings",
-  "alAvistamientos1": "1 sighting",
-  "alSinAvistamientos": "No one has seen it yet. Be the first to report.",
-  "alCaduca": "Expires in {d} days",
-  "alCaduca1": "Expires tomorrow",
-  "alRenovarAviso": "Your alert expires in {d} days. Renew it for 30 more days?",
-  "alRenovada": "Alert renewed for 30 more days.",
-  "alYaRenovada": "You already renewed this alert once.",
-  "alZona": "Area: {z}",
-  "alSinContacto": "No contact — report with “I saw it”.",
-  "alSinFoto": "No photo",
-  "alTipoPerdida": "Lost",
-  "alTipoEncontrada": "Found",
-  "btnLaVi": "I saw it",
-  "btnReportar": "Report",
-  "btnEncontrada": "Mark as found",
-  "btnBorrarAlerta": "Delete alert",
-  "btnRenovar": "Renew 30 days",
-  "btnComoLlegar": "Directions",
-  "alConfirmEncontrada": "Sure? The alert will stop showing.",
-  "alConfirmBorrar": "Delete this alert forever?",
-  "avTitulo": "Did you see it? Tell us where",
-  "avNota": "Note (optional)",
-  "avNotaPh": "E.g. it was by the store, scared",
-  "avEnviar": "Send sighting",
-  "avGracias": "Thank you! Your sighting was saved.",
-  "avLista": "Sightings",
-  "avPuntoAyuda": "Move the map to the exact spot where you saw it.",
-  "repTitulo": "Report this alert",
-  "repFalso": "False content",
-  "repVenta": "It's a sale",
-  "repOfensivo": "Offensive content",
-  "repOtro": "Other reason",
-  "repGracias": "Thanks for reporting.",
-  "repOculta": "This alert was hidden after community reports.",
-  "alModoLocal": "Alerts are saved only on this phone until the database is connected.",
-  "alErrorCargar": "Couldn't load the alerts.",
-  "alDemo": "Test alert"
+  "sinResultados": "No results here"
  },
  "pt": {
   "appTitle": "Animais perto de você",
@@ -856,83 +602,7 @@ const I18N={
   "buscandoLugar": "Procurando lugar…",
   "zonaError": "Não foi possível carregar esta zona",
   "reintentar": "Toque para tentar novamente",
-  "sinResultados": "Sem resultados por aqui",
-  "btnPerdida": "Animal perdido",
-  "panelPerdidas": "Animais perdidos",
-  "perdidasCerca": "Perdidos perto de você",
-  "cat.perdida": "Animal perdido",
-  "misAlertas": "Meus alertas publicados",
-  "misAlertasVacias": "Você ainda não publicou alertas.",
-  "sinAlertas": "Não há animais perdidos por aqui.",
-  "pubTitulo": "Publicar animal perdido",
-  "pubFoto": "Foto do animal",
-  "pubFotoBtn": "Escolher foto",
-  "pubFotoAviso": "Confira a foto: sem endereço, placa ou outras pessoas.",
-  "pubEspecie": "Espécie",
-  "pubPerro": "Cachorro",
-  "pubGato": "Gato",
-  "pubOtro": "Outro",
-  "pubNombre": "Nome (se souber)",
-  "pubNombrePh": "Ex. Max",
-  "pubDesc": "Descrição: cor, tamanho, marcas, coleira…",
-  "pubDescPh": "Ex. Marrom, médio, coleira vermelha, assustado",
-  "pubFecha": "Data em que se perdeu",
-  "pubPunto": "Último local visto",
-  "pubZona": "Região (sem endereço exato)",
-  "pubPuntoAyuda": "Mova o mapa para marcar a rua ou o parque onde foi visto pela última vez. Não use seu endereço.",
-  "pubContacto": "Contato (opcional)",
-  "pubSinContacto": "Sem contato (só avisos no app)",
-  "pubWhatsapp": "WhatsApp",
-  "pubNumeroPh": "Número do WhatsApp",
-  "pubAvisoDireccion": "Não escreva seu endereço exato, só a região.",
-  "pubConfirmDireccion": "Sua descrição parece ter um endereço exato. Publique só a região, nunca seu endereço. Continuar?",
-  "pubPublicar": "Publicar alerta",
-  "pubPublicada": "Alerta publicado! Já está no mapa.",
-  "pubError": "Não foi possível publicar. Confira sua conexão e tente de novo.",
-  "pubFaltaDesc": "Escreva uma descrição curta do animal.",
-  "alPerdidaHace": "Perdido {d}",
-  "alEncontradaHace": "Encontrado {d}",
-  "alHoy": "hoje",
-  "alHace1": "há 1 dia",
-  "alHaceN": "há {n} dias",
-  "alAvistamientos": "{n} avistamentos",
-  "alAvistamientos1": "1 avistamento",
-  "alSinAvistamientos": "Ninguém viu ainda. Seja o primeiro a avisar.",
-  "alCaduca": "Expira em {d} dias",
-  "alCaduca1": "Expira amanhã",
-  "alRenovarAviso": "Seu alerta expira em {d} dias. Renovar por mais 30 dias?",
-  "alRenovada": "Alerta renovado por mais 30 dias.",
-  "alYaRenovada": "Você já renovou este alerta uma vez.",
-  "alZona": "Região: {z}",
-  "alSinContacto": "Sem contato — avise com “Eu vi”.",
-  "alSinFoto": "Sem foto",
-  "alTipoPerdida": "Perdido",
-  "alTipoEncontrada": "Encontrado",
-  "btnLaVi": "Eu vi",
-  "btnReportar": "Denunciar",
-  "btnEncontrada": "Marcar como encontrado",
-  "btnBorrarAlerta": "Excluir alerta",
-  "btnRenovar": "Renovar 30 dias",
-  "btnComoLlegar": "Como chegar",
-  "alConfirmEncontrada": "Certeza? O alerta deixará de aparecer.",
-  "alConfirmBorrar": "Excluir este alerta para sempre?",
-  "avTitulo": "Você viu? Conte onde",
-  "avNota": "Observação (opcional)",
-  "avNotaPh": "Ex. estava perto da loja, assustado",
-  "avEnviar": "Enviar avistamento",
-  "avGracias": "Obrigado! Seu avistamento foi registrado.",
-  "avLista": "Avistamentos",
-  "avPuntoAyuda": "Mova o mapa para o ponto exato onde você viu.",
-  "repTitulo": "Denunciar este alerta",
-  "repFalso": "Conteúdo falso",
-  "repVenta": "É uma venda",
-  "repOfensivo": "Conteúdo ofensivo",
-  "repOtro": "Outro motivo",
-  "repGracias": "Obrigado por denunciar.",
-  "repOculta": "Este alerta foi ocultado após denúncias da comunidade.",
-  "alModoLocal": "Os alertas ficam só neste telefone até conectar o banco de dados.",
-  "alErrorCargar": "Não foi possível carregar os alertas.",
-  "alDemo": "Alerta de teste"
+  "sinResultados": "Sem resultados por aqui"
  },
  "fr": {
   "appTitle": "Animaux près de chez vous",
@@ -1067,83 +737,7 @@ const I18N={
   "buscandoLugar": "Recherche du lieu…",
   "zonaError": "Impossible de charger cette zone",
   "reintentar": "Touchez pour réessayer",
-  "sinResultados": "Aucun résultat ici",
-  "btnPerdida": "Animal perdu",
-  "panelPerdidas": "Animaux perdus",
-  "perdidasCerca": "Perdus près de vous",
-  "cat.perdida": "Animal perdu",
-  "misAlertas": "Mes alertes publiées",
-  "misAlertasVacias": "Vous n'avez pas encore publié d'alerte.",
-  "sinAlertas": "Aucun animal perdu par ici.",
-  "pubTitulo": "Publier un animal perdu",
-  "pubFoto": "Photo de l'animal",
-  "pubFotoBtn": "Choisir une photo",
-  "pubFotoAviso": "Vérifiez la photo : pas d'adresse, de plaque ni d'autres personnes.",
-  "pubEspecie": "Espèce",
-  "pubPerro": "Chien",
-  "pubGato": "Chat",
-  "pubOtro": "Autre",
-  "pubNombre": "Nom (si connu)",
-  "pubNombrePh": "Ex. Max",
-  "pubDesc": "Description : couleur, taille, signes, collier…",
-  "pubDescPh": "Ex. Marron, moyen, collier rouge, effrayé",
-  "pubFecha": "Date de la perte",
-  "pubPunto": "Dernier lieu vu",
-  "pubZona": "Quartier (sans adresse exacte)",
-  "pubPuntoAyuda": "Déplacez la carte pour marquer la rue ou le parc où il a été vu. N'utilisez pas votre adresse.",
-  "pubContacto": "Contact (facultatif)",
-  "pubSinContacto": "Sans contact (signalements dans l'app uniquement)",
-  "pubWhatsapp": "WhatsApp",
-  "pubNumeroPh": "Numéro WhatsApp",
-  "pubAvisoDireccion": "N'écrivez pas votre adresse exacte, juste le quartier.",
-  "pubConfirmDireccion": "Votre description semble contenir une adresse exacte. Publiez seulement le quartier, jamais votre adresse. Continuer ?",
-  "pubPublicar": "Publier l'alerte",
-  "pubPublicada": "Alerte publiée ! Elle est sur la carte.",
-  "pubError": "Publication impossible. Vérifiez votre connexion et réessayez.",
-  "pubFaltaDesc": "Écrivez une courte description de l'animal.",
-  "alPerdidaHace": "Perdu {d}",
-  "alEncontradaHace": "Trouvé {d}",
-  "alHoy": "aujourd'hui",
-  "alHace1": "il y a 1 jour",
-  "alHaceN": "il y a {n} jours",
-  "alAvistamientos": "{n} signalements",
-  "alAvistamientos1": "1 signalement",
-  "alSinAvistamientos": "Personne ne l'a encore vu. Soyez le premier à signaler.",
-  "alCaduca": "Expire dans {d} jours",
-  "alCaduca1": "Expire demain",
-  "alRenovarAviso": "Votre alerte expire dans {d} jours. La renouveler pour 30 jours ?",
-  "alRenovada": "Alerte renouvelée pour 30 jours de plus.",
-  "alYaRenovada": "Vous avez déjà renouvelé cette alerte une fois.",
-  "alZona": "Quartier : {z}",
-  "alSinContacto": "Sans contact — signalez avec « Je l'ai vu ».",
-  "alSinFoto": "Sans photo",
-  "alTipoPerdida": "Perdu",
-  "alTipoEncontrada": "Trouvé",
-  "btnLaVi": "Je l'ai vu",
-  "btnReportar": "Signaler",
-  "btnEncontrada": "Marquer comme retrouvé",
-  "btnBorrarAlerta": "Supprimer l'alerte",
-  "btnRenovar": "Renouveler 30 jours",
-  "btnComoLlegar": "Itinéraire",
-  "alConfirmEncontrada": "Certain ? L'alerte ne s'affichera plus.",
-  "alConfirmBorrar": "Supprimer cette alerte pour toujours ?",
-  "avTitulo": "Vous l'avez vu ? Dites-nous où",
-  "avNota": "Note (facultatif)",
-  "avNotaPh": "Ex. il était près du magasin, effrayé",
-  "avEnviar": "Envoyer le signalement",
-  "avGracias": "Merci ! Votre signalement est enregistré.",
-  "avLista": "Signalements",
-  "avPuntoAyuda": "Déplacez la carte à l'endroit exact où vous l'avez vu.",
-  "repTitulo": "Signaler cette alerte",
-  "repFalso": "Contenu faux",
-  "repVenta": "C'est une vente",
-  "repOfensivo": "Contenu offensant",
-  "repOtro": "Autre motif",
-  "repGracias": "Merci de l'avoir signalé.",
-  "repOculta": "Cette alerte a été masquée après des signalements de la communauté.",
-  "alModoLocal": "Les alertes restent sur ce téléphone jusqu'à la connexion de la base de données.",
-  "alErrorCargar": "Impossible de charger les alertes.",
-  "alDemo": "Alerte de test"
+  "sinResultados": "Aucun résultat ici"
  },
  "de": {
   "appTitle": "Haustiere in deiner Nähe",
@@ -1278,83 +872,7 @@ const I18N={
   "buscandoLugar": "Ort wird gesucht…",
   "zonaError": "Dieser Bereich konnte nicht geladen werden",
   "reintentar": "Zum Wiederholen tippen",
-  "sinResultados": "Keine Ergebnisse hier",
-  "btnPerdida": "Vermisstes Tier",
-  "panelPerdidas": "Vermisste Tiere",
-  "perdidasCerca": "Vermisst in meiner Nähe",
-  "cat.perdida": "Vermisstes Tier",
-  "misAlertas": "Meine Meldungen",
-  "misAlertasVacias": "Du hast noch keine Meldung veröffentlicht.",
-  "sinAlertas": "Keine vermissten Tiere hier.",
-  "pubTitulo": "Vermisstes Tier melden",
-  "pubFoto": "Foto des Tieres",
-  "pubFotoBtn": "Foto wählen",
-  "pubFotoAviso": "Prüfe das Foto: keine Adresse, kein Kennzeichen, keine anderen Personen.",
-  "pubEspecie": "Art",
-  "pubPerro": "Hund",
-  "pubGato": "Katze",
-  "pubOtro": "Andere",
-  "pubNombre": "Name (falls bekannt)",
-  "pubNombrePh": "Z. B. Max",
-  "pubDesc": "Beschreibung: Farbe, Größe, Merkmale, Halsband…",
-  "pubDescPh": "Z. B. Braun, mittelgroß, rotes Halsband, ängstlich",
-  "pubFecha": "Datum des Verschwindens",
-  "pubPunto": "Zuletzt gesehener Ort",
-  "pubZona": "Gegend (keine genaue Adresse)",
-  "pubPuntoAyuda": "Bewege die Karte, um die Straße oder den Park zu markieren, wo es zuletzt gesehen wurde. Keine Wohnadresse.",
-  "pubContacto": "Kontakt (optional)",
-  "pubSinContacto": "Kein Kontakt (nur Meldungen in der App)",
-  "pubWhatsapp": "WhatsApp",
-  "pubNumeroPh": "WhatsApp-Nummer",
-  "pubAvisoDireccion": "Schreibe keine genaue Adresse, nur die Gegend.",
-  "pubConfirmDireccion": "Deine Beschreibung scheint eine genaue Adresse zu enthalten. Gib nur die Gegend an, nie deine Adresse. Fortfahren?",
-  "pubPublicar": "Meldung veröffentlichen",
-  "pubPublicada": "Meldung veröffentlicht! Sie ist jetzt auf der Karte.",
-  "pubError": "Veröffentlichung fehlgeschlagen. Prüfe deine Verbindung und versuche es erneut.",
-  "pubFaltaDesc": "Schreibe eine kurze Beschreibung des Tieres.",
-  "alPerdidaHace": "Vermisst {d}",
-  "alEncontradaHace": "Gefunden {d}",
-  "alHoy": "heute",
-  "alHace1": "vor 1 Tag",
-  "alHaceN": "vor {n} Tagen",
-  "alAvistamientos": "{n} Sichtungen",
-  "alAvistamientos1": "1 Sichtung",
-  "alSinAvistamientos": "Niemand hat es bisher gesehen. Melde dich als Erste/r.",
-  "alCaduca": "Läuft in {d} Tagen ab",
-  "alCaduca1": "Läuft morgen ab",
-  "alRenovarAviso": "Deine Meldung läuft in {d} Tagen ab. Für 30 weitere Tage verlängern?",
-  "alRenovada": "Meldung um 30 weitere Tage verlängert.",
-  "alYaRenovada": "Du hast diese Meldung bereits einmal verlängert.",
-  "alZona": "Gegend: {z}",
-  "alSinContacto": "Kein Kontakt — melde dich mit „Ich habe es gesehen“.",
-  "alSinFoto": "Kein Foto",
-  "alTipoPerdida": "Vermisst",
-  "alTipoEncontrada": "Gefunden",
-  "btnLaVi": "Ich habe es gesehen",
-  "btnReportar": "Melden",
-  "btnEncontrada": "Als gefunden markieren",
-  "btnBorrarAlerta": "Meldung löschen",
-  "btnRenovar": "30 Tage verlängern",
-  "btnComoLlegar": "Route",
-  "alConfirmEncontrada": "Sicher? Die Meldung wird nicht mehr angezeigt.",
-  "alConfirmBorrar": "Diese Meldung für immer löschen?",
-  "avTitulo": "Hast du es gesehen? Sag uns wo",
-  "avNota": "Notiz (optional)",
-  "avNotaPh": "Z. B. es war beim Laden, ängstlich",
-  "avEnviar": "Sichtung senden",
-  "avGracias": "Danke! Deine Sichtung wurde gespeichert.",
-  "avLista": "Sichtungen",
-  "avPuntoAyuda": "Bewege die Karte genau dorthin, wo du es gesehen hast.",
-  "repTitulo": "Diese Meldung melden",
-  "repFalso": "Falscher Inhalt",
-  "repVenta": "Es ist ein Verkauf",
-  "repOfensivo": "Beleidigender Inhalt",
-  "repOtro": "Anderer Grund",
-  "repGracias": "Danke für deine Meldung.",
-  "repOculta": "Diese Meldung wurde nach Meldungen aus der Community ausgeblendet.",
-  "alModoLocal": "Meldungen bleiben nur auf diesem Telefon, bis die Datenbank verbunden ist.",
-  "alErrorCargar": "Meldungen konnten nicht geladen werden.",
-  "alDemo": "Testmeldung"
+  "sinResultados": "Keine Ergebnisse hier"
  },
  "it": {
   "appTitle": "Animali vicino a te",
@@ -1489,83 +1007,7 @@ const I18N={
   "buscandoLugar": "Ricerca del luogo…",
   "zonaError": "Impossibile caricare questa zona",
   "reintentar": "Tocca per riprovare",
-  "sinResultados": "Nessun risultato qui",
-  "btnPerdida": "Animale smarrito",
-  "panelPerdidas": "Animali smarriti",
-  "perdidasCerca": "Smarriti vicino a te",
-  "cat.perdida": "Animale smarrito",
-  "misAlertas": "I miei avvisi pubblicati",
-  "misAlertasVacias": "Non hai ancora pubblicato avvisi.",
-  "sinAlertas": "Nessun animale smarrito qui.",
-  "pubTitulo": "Pubblica un animale smarrito",
-  "pubFoto": "Foto dell'animale",
-  "pubFotoBtn": "Scegli foto",
-  "pubFotoAviso": "Controlla la foto: niente indirizzo, targa o altre persone.",
-  "pubEspecie": "Specie",
-  "pubPerro": "Cane",
-  "pubGato": "Gatto",
-  "pubOtro": "Altro",
-  "pubNombre": "Nome (se noto)",
-  "pubNombrePh": "Es. Max",
-  "pubDesc": "Descrizione: colore, taglia, segni, collare…",
-  "pubDescPh": "Es. Marrone, medio, collare rosso, spaventato",
-  "pubFecha": "Data dello smarrimento",
-  "pubPunto": "Ultimo luogo visto",
-  "pubZona": "Zona (senza indirizzo esatto)",
-  "pubPuntoAyuda": "Sposta la mappa per segnare la strada o il parco dove è stato visto l'ultima volta. Non usare il tuo indirizzo.",
-  "pubContacto": "Contatto (facoltativo)",
-  "pubSinContacto": "Nessun contatto (solo segnalazioni nell'app)",
-  "pubWhatsapp": "WhatsApp",
-  "pubNumeroPh": "Numero WhatsApp",
-  "pubAvisoDireccion": "Non scrivere l'indirizzo esatto, solo la zona.",
-  "pubConfirmDireccion": "La descrizione sembra contenere un indirizzo esatto. Pubblica solo la zona, mai il tuo indirizzo. Continuare?",
-  "pubPublicar": "Pubblica avviso",
-  "pubPublicada": "Avviso pubblicato! Ora è sulla mappa.",
-  "pubError": "Pubblicazione non riuscita. Controlla la connessione e riprova.",
-  "pubFaltaDesc": "Scrivi una breve descrizione dell'animale.",
-  "alPerdidaHace": "Smarrito {d}",
-  "alEncontradaHace": "Trovato {d}",
-  "alHoy": "oggi",
-  "alHace1": "1 giorno fa",
-  "alHaceN": "{n} giorni fa",
-  "alAvistamientos": "{n} avvistamenti",
-  "alAvistamientos1": "1 avvistamento",
-  "alSinAvistamientos": "Nessuno l'ha ancora visto. Sii il primo a segnalarlo.",
-  "alCaduca": "Scade tra {d} giorni",
-  "alCaduca1": "Scade domani",
-  "alRenovarAviso": "Il tuo avviso scade tra {d} giorni. Rinnovarlo per altri 30 giorni?",
-  "alRenovada": "Avviso rinnovato per altri 30 giorni.",
-  "alYaRenovada": "Hai già rinnovato questo avviso una volta.",
-  "alZona": "Zona: {z}",
-  "alSinContacto": "Nessun contatto — segnala con «L'ho visto».",
-  "alSinFoto": "Senza foto",
-  "alTipoPerdida": "Smarrito",
-  "alTipoEncontrada": "Trovato",
-  "btnLaVi": "L'ho visto",
-  "btnReportar": "Segnala",
-  "btnEncontrada": "Segna come ritrovato",
-  "btnBorrarAlerta": "Elimina avviso",
-  "btnRenovar": "Rinnova 30 giorni",
-  "btnComoLlegar": "Indicazioni",
-  "alConfirmEncontrada": "Sicuro? L'avviso non sarà più visibile.",
-  "alConfirmBorrar": "Eliminare questo avviso per sempre?",
-  "avTitulo": "L'hai visto? Dicci dove",
-  "avNota": "Nota (facoltativa)",
-  "avNotaPh": "Es. era vicino al negozio, spaventato",
-  "avEnviar": "Invia avvistamento",
-  "avGracias": "Grazie! Il tuo avvistamento è stato salvato.",
-  "avLista": "Avvistamenti",
-  "avPuntoAyuda": "Sposta la mappa nel punto esatto dove l'hai visto.",
-  "repTitulo": "Segnala questo avviso",
-  "repFalso": "Contenuto falso",
-  "repVenta": "È una vendita",
-  "repOfensivo": "Contenuto offensivo",
-  "repOtro": "Altro motivo",
-  "repGracias": "Grazie per la segnalazione.",
-  "repOculta": "Questo avviso è stato nascosto dopo segnalazioni della community.",
-  "alModoLocal": "Gli avvisi restano solo su questo telefono finché il database non è collegato.",
-  "alErrorCargar": "Impossibile caricare gli avvisi.",
-  "alDemo": "Avviso di prova"
+  "sinResultados": "Nessun risultato qui"
  },
  "nl": {
   "appTitle": "Huisdieren bij jou in de buurt",
@@ -1700,83 +1142,7 @@ const I18N={
   "buscandoLugar": "Plaats zoeken…",
   "zonaError": "Dit gebied kon niet worden geladen",
   "reintentar": "Tik om opnieuw te proberen",
-  "sinResultados": "Geen resultaten hier",
-  "btnPerdida": "Vermist huisdier",
-  "panelPerdidas": "Vermiste huisdieren",
-  "perdidasCerca": "Vermist bij jou in de buurt",
-  "cat.perdida": "Vermist huisdier",
-  "misAlertas": "Mijn geplaatste meldingen",
-  "misAlertasVacias": "Je hebt nog geen meldingen geplaatst.",
-  "sinAlertas": "Geen vermiste huisdieren hier.",
-  "pubTitulo": "Vermist huisdier melden",
-  "pubFoto": "Foto van het dier",
-  "pubFotoBtn": "Kies foto",
-  "pubFotoAviso": "Controleer de foto: geen adres, kenteken of andere mensen.",
-  "pubEspecie": "Soort",
-  "pubPerro": "Hond",
-  "pubGato": "Kat",
-  "pubOtro": "Anders",
-  "pubNombre": "Naam (indien bekend)",
-  "pubNombrePh": "Bijv. Max",
-  "pubDesc": "Beschrijving: kleur, grootte, kenmerken, halsband…",
-  "pubDescPh": "Bijv. Bruin, middelgroot, rode halsband, bang",
-  "pubFecha": "Datum van vermissing",
-  "pubPunto": "Laatst geziene plek",
-  "pubZona": "Buurt (geen exact adres)",
-  "pubPuntoAyuda": "Verplaats de kaart om de straat of het park te markeren waar hij voor het laatst is gezien. Gebruik je thuisadres niet.",
-  "pubContacto": "Contact (optioneel)",
-  "pubSinContacto": "Geen contact (alleen meldingen in de app)",
-  "pubWhatsapp": "WhatsApp",
-  "pubNumeroPh": "WhatsApp-nummer",
-  "pubAvisoDireccion": "Schrijf je exacte adres niet, alleen de buurt.",
-  "pubConfirmDireccion": "Je beschrijving lijkt een exact adres te bevatten. Plaats alleen de buurt, nooit je adres. Doorgaan?",
-  "pubPublicar": "Melding plaatsen",
-  "pubPublicada": "Melding geplaatst! Hij staat nu op de kaart.",
-  "pubError": "Plaatsen mislukt. Controleer je verbinding en probeer het opnieuw.",
-  "pubFaltaDesc": "Schrijf een korte beschrijving van het dier.",
-  "alPerdidaHace": "Vermist {d}",
-  "alEncontradaHace": "Gevonden {d}",
-  "alHoy": "vandaag",
-  "alHace1": "1 dag geleden",
-  "alHaceN": "{n} dagen geleden",
-  "alAvistamientos": "{n} waarnemingen",
-  "alAvistamientos1": "1 waarneming",
-  "alSinAvistamientos": "Niemand heeft hem nog gezien. Wees de eerste die het meldt.",
-  "alCaduca": "Verloopt over {d} dagen",
-  "alCaduca1": "Verloopt morgen",
-  "alRenovarAviso": "Je melding verloopt over {d} dagen. Met 30 dagen verlengen?",
-  "alRenovada": "Melding met 30 dagen verlengd.",
-  "alYaRenovada": "Je hebt deze melding al één keer verlengd.",
-  "alZona": "Buurt: {z}",
-  "alSinContacto": "Geen contact — meld met “Ik heb hem gezien”.",
-  "alSinFoto": "Geen foto",
-  "alTipoPerdida": "Vermist",
-  "alTipoEncontrada": "Gevonden",
-  "btnLaVi": "Ik heb hem gezien",
-  "btnReportar": "Melden",
-  "btnEncontrada": "Markeer als gevonden",
-  "btnBorrarAlerta": "Melding verwijderen",
-  "btnRenovar": "Verleng 30 dagen",
-  "btnComoLlegar": "Route",
-  "alConfirmEncontrada": "Zeker? De melding wordt niet meer getoond.",
-  "alConfirmBorrar": "Deze melding voorgoed verwijderen?",
-  "avTitulo": "Heb je hem gezien? Vertel waar",
-  "avNota": "Opmerking (optioneel)",
-  "avNotaPh": "Bijv. hij was bij de winkel, bang",
-  "avEnviar": "Waarneming versturen",
-  "avGracias": "Bedankt! Je waarneming is opgeslagen.",
-  "avLista": "Waarnemingen",
-  "avPuntoAyuda": "Verplaats de kaart naar de exacte plek waar je hem zag.",
-  "repTitulo": "Deze melding melden",
-  "repFalso": "Valse inhoud",
-  "repVenta": "Het is een verkoop",
-  "repOfensivo": "Beledigende inhoud",
-  "repOtro": "Andere reden",
-  "repGracias": "Bedankt voor je melding.",
-  "repOculta": "Deze melding is verborgen na meldingen van de community.",
-  "alModoLocal": "Meldingen blijven alleen op deze telefoon tot de database is verbonden.",
-  "alErrorCargar": "Meldingen konden niet worden geladen.",
-  "alDemo": "Testmelding"
+  "sinResultados": "Geen resultaten hier"
  },
  "pl": {
   "appTitle": "Zwierzaki blisko Ciebie",
@@ -1911,83 +1277,7 @@ const I18N={
   "buscandoLugar": "Wyszukiwanie miejsca…",
   "zonaError": "Nie udało się wczytać tego obszaru",
   "reintentar": "Dotknij, aby ponowić",
-  "sinResultados": "Brak wyników tutaj",
-  "btnPerdida": "Zaginione zwierzę",
-  "panelPerdidas": "Zaginione zwierzęta",
-  "perdidasCerca": "Zaginione w pobliżu",
-  "cat.perdida": "Zaginione zwierzę",
-  "misAlertas": "Moje opublikowane zgłoszenia",
-  "misAlertasVacias": "Nie opublikowałeś jeszcze żadnych zgłoszeń.",
-  "sinAlertas": "Brak zaginionych zwierząt w okolicy.",
-  "pubTitulo": "Zgłoś zaginione zwierzę",
-  "pubFoto": "Zdjęcie zwierzęcia",
-  "pubFotoBtn": "Wybierz zdjęcie",
-  "pubFotoAviso": "Sprawdź zdjęcie: bez adresu, tablicy rejestracyjnej i innych osób.",
-  "pubEspecie": "Gatunek",
-  "pubPerro": "Pies",
-  "pubGato": "Kot",
-  "pubOtro": "Inne",
-  "pubNombre": "Imię (jeśli znane)",
-  "pubNombrePh": "Np. Max",
-  "pubDesc": "Opis: kolor, rozmiar, znaki, obroża…",
-  "pubDescPh": "Np. Brązowy, średni, czerwona obroża, przestraszony",
-  "pubFecha": "Data zaginięcia",
-  "pubPunto": "Ostatnie widziane miejsce",
-  "pubZona": "Okolica (bez dokładnego adresu)",
-  "pubPuntoAyuda": "Przesuń mapę, aby zaznaczyć ulicę lub park, gdzie widziano je po raz ostatni. Nie podawaj adresu domowego.",
-  "pubContacto": "Kontakt (opcjonalny)",
-  "pubSinContacto": "Bez kontaktu (tylko zgłoszenia w aplikacji)",
-  "pubWhatsapp": "WhatsApp",
-  "pubNumeroPh": "Numer WhatsApp",
-  "pubAvisoDireccion": "Nie wpisuj dokładnego adresu, tylko okolicę.",
-  "pubConfirmDireccion": "Twój opis wygląda na dokładny adres. Podawaj tylko okolicę, nigdy swój adres. Kontynuować?",
-  "pubPublicar": "Opublikuj zgłoszenie",
-  "pubPublicada": "Zgłoszenie opublikowane! Jest już na mapie.",
-  "pubError": "Nie udało się opublikować. Sprawdź połączenie i spróbuj ponownie.",
-  "pubFaltaDesc": "Napisz krótki opis zwierzęcia.",
-  "alPerdidaHace": "Zaginął {d}",
-  "alEncontradaHace": "Znaleziony {d}",
-  "alHoy": "dzisiaj",
-  "alHace1": "1 dzień temu",
-  "alHaceN": "{n} dni temu",
-  "alAvistamientos": "{n} obserwacji",
-  "alAvistamientos1": "1 obserwacja",
-  "alSinAvistamientos": "Nikt go jeszcze nie widział. Bądź pierwszy i zgłoś.",
-  "alCaduca": "Wygasa za {d} dni",
-  "alCaduca1": "Wygasa jutro",
-  "alRenovarAviso": "Twoje zgłoszenie wygasa za {d} dni. Odnowić na kolejne 30 dni?",
-  "alRenovada": "Zgłoszenie odnowione na kolejne 30 dni.",
-  "alYaRenovada": "Odnowiłeś już to zgłoszenie raz.",
-  "alZona": "Okolica: {z}",
-  "alSinContacto": "Bez kontaktu — zgłoś przez „Widziałem go”.",
-  "alSinFoto": "Bez zdjęcia",
-  "alTipoPerdida": "Zaginiony",
-  "alTipoEncontrada": "Znaleziony",
-  "btnLaVi": "Widziałem go",
-  "btnReportar": "Zgłoś",
-  "btnEncontrada": "Oznacz jako znalezione",
-  "btnBorrarAlerta": "Usuń zgłoszenie",
-  "btnRenovar": "Odnów 30 dni",
-  "btnComoLlegar": "Trasa",
-  "alConfirmEncontrada": "Na pewno? Zgłoszenie przestanie być widoczne.",
-  "alConfirmBorrar": "Usunąć to zgłoszenie na zawsze?",
-  "avTitulo": "Widziałeś go? Powiedz gdzie",
-  "avNota": "Notatka (opcjonalna)",
-  "avNotaPh": "Np. był przy sklepie, przestraszony",
-  "avEnviar": "Wyślij obserwację",
-  "avGracias": "Dziękujemy! Twoja obserwacja została zapisana.",
-  "avLista": "Obserwacje",
-  "avPuntoAyuda": "Przesuń mapę w dokładne miejsce, gdzie go widziałeś.",
-  "repTitulo": "Zgłoś to ogłoszenie",
-  "repFalso": "Fałszywa treść",
-  "repVenta": "To sprzedaż",
-  "repOfensivo": "Obraźliwa treść",
-  "repOtro": "Inny powód",
-  "repGracias": "Dziękujemy za zgłoszenie.",
-  "repOculta": "To zgłoszenie zostało ukryte po zgłoszeniach społeczności.",
-  "alModoLocal": "Zgłoszenia są zapisywane tylko na tym telefonie do czasu podłączenia bazy danych.",
-  "alErrorCargar": "Nie można wczytać zgłoszeń.",
-  "alDemo": "Zgłoszenie testowe"
+  "sinResultados": "Brak wyników tutaj"
  }
 };
 let idioma='es';
@@ -2039,8 +1329,6 @@ function applyLang(){
   if(document.getElementById('panelCategorias').style.display==='block')renderCategorias();
   if(document.getElementById('panelLista').style.display==='block')renderLista();
   if(document.getElementById('panelVisitas').style.display==='block')renderVisitas();
-  if(document.getElementById('panelPerdidas').style.display==='block')renderPanelPerdidas();
-  if(typeof alertaSel!=='undefined'&&alertaSel)renderAlertaCard(alertaSel);
   mostrarBotonesViaje();
   refrescarTarjeta();
   if(document.getElementById('sug').style.display==='block')renderSug();
@@ -2251,7 +1539,6 @@ function glyph(kind,color){
   if(kind==='granja')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="${color}"><path d="M4 10L12 4l8 6v10H4z"/><path d="M9 20v-6h6v6" fill="none" stroke="#fff" stroke-width="1.8"/><path d="M9 14l6 6M15 14l-6 6" stroke="#fff" stroke-width="1.4"/></svg>`;
   if(kind==='refugio')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="${color}"><path d="M4 11L12 4l8 7v9H4z"/><path d="M12 18.5S8.5 16.2 8.5 13.8a1.9 1.9 0 0 1 3.5-1 1.9 1.9 0 0 1 3.5 1C15.5 16.2 12 18.5 12 18.5z" fill="#fff"/></svg>`;
   if(kind==='adopcion')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="${color}"><path d="M12 20S4 15.5 4 9.8A4.6 4.6 0 0 1 12 6.4a4.6 4.6 0 0 1 8 3.4C20 15.5 12 20 12 20z"/></svg>`;
-  if(kind==='perdida')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.4"><circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L20 20" stroke-linecap="round"/><ellipse cx="10" cy="11" rx="2.2" ry="1.8" fill="${color}" stroke="none"/><circle cx="8" cy="8.4" r=".9" fill="${color}" stroke="none"/><circle cx="12" cy="8.4" r=".9" fill="${color}" stroke="none"/></svg>`;
   if(kind==='facultad')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="${color}"><path d="M12 4L2 9l10 5 10-5z"/><path d="M6 11.5V16c0 1.4 2.7 3 6 3s6-1.6 6-3v-4.5" fill="none" stroke="${color}" stroke-width="1.8"/><path d="M22 9v5" stroke="${color}" stroke-width="1.8"/></svg>`;
   if(kind==='resto')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.1" stroke-linecap="round"><path d="M6 2v6a2 2 0 0 0 4 0V2M8 2v20"/><path d="M17 2c2.2 3 2.2 6.5 0 8.5V22"/></svg>`;
   if(kind==='evento')return `<svg width="16" height="16" viewBox="0 0 24 24" fill="${color}"><rect x="4" y="5.5" width="16" height="15" rx="2"/><path d="M4 10.5h16M8 3v4M16 3v4" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="15.5" r="2.2" fill="#fff"/></svg>`;
@@ -2265,7 +1552,6 @@ const CAT={
   granja:{cls:'brown',g:'granja',col:'#B45309'},
   refugio:{cls:'teal',g:'refugio',col:'#0F766E'},
   adopcion:{cls:'pink',g:'adopcion',col:'#EC4899'},
-  perdida:{cls:'red',g:'perdida',col:'#C0392B'},
   facultad:{cls:'blue',g:'facultad',col:'#1D4ED8'},
   resto:{cls:'orange',g:'resto',col:'#F97316'},
   evento:{cls:'cyan',g:'evento',col:'#0891B2'}
@@ -2399,9 +1685,6 @@ if(navigator.geolocation){
 function horaLocal(){const d=new Date();return d.getHours()+d.getMinutes()/60;}
 function fmtHora(h){if(h==null)return '';const d=new Date();d.setHours(Math.floor(h),Math.round((h-Math.floor(h))*60),0,0);return new Intl.DateTimeFormat(LOCALE(),{hour:'numeric',minute:'2-digit'}).format(d);}
 function seleccionar(b,volar){
-  if(b.cat==='perdida'){seleccionarAlerta(b,volar);return;}
-  document.getElementById('cardPerdida').style.display='none';
-  if(typeof alertaSel!=='undefined'&&alertaSel){alertaSel=null;mostrarPinPunto(false);}
   if(tripActivo)terminarViaje();
   llegadaEn=null;
   seleccionado=b;
@@ -2468,9 +1751,7 @@ function cerrarCapa(){
   if(!capaAbierta)return;
   const tipo=capaAbierta; capaAbierta=null;
   document.getElementById('card').style.display='none';
-  document.getElementById('cardPerdida').style.display='none';
-  ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
-  if(typeof alertaSel!=='undefined'&&alertaSel){alertaSel=null;mostrarPinPunto(false);}
+  ['panelCategorias','panelLista','panelVisitas','panelMascota'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
   if(tipo==='card')deseleccionar();
   else if(seleccionado)document.getElementById('card').style.display='block';
   actualizarBotonAtras();
@@ -2538,12 +1819,11 @@ function aplicarFiltros(){
   const ok=b=>pasaCat(b)&&okTxt(b);
   marcadores.forEach(m=>{m.el.style.display=ok(m.b)?'':'none';});
   marcadoresOSM.forEach(m=>{m.el.style.display=ok(m.b)?'':'none';});
-  marcadoresPerdidas.forEach(m=>{m.el.style.display=ok(m.b)?'':'none';});
   marcadoresUsuario.forEach(m=>{m.el.style.display=(filtroCat==='todos'||filtroCat==='evento')?'':'none';});
 }
 
 /* ---------- Menú unificado de categorías + lista ordenada ---------- */
-const CATS_ORDEN=['todos','h24','vet','tienda','farma','zoo','granja','refugio','adopcion','perdida','facultad','resto','evento'];
+const CATS_ORDEN=['todos','h24','vet','tienda','farma','zoo','granja','refugio','adopcion','facultad','resto','evento'];
 function distanciaA(b){const dx=(b.lng-YOU[0])*M_LNG, dy=(b.lat-YOU[1])*M_LAT; return Math.hypot(dx,dy);}
 function eventosCercanos(){
   const dentro=e=>e.lat!=null&&e.lng!=null&&distanciaA(e)<120000;
@@ -2552,13 +1832,12 @@ function eventosCercanos(){
   return [...propios,...base].sort((a,b)=>distanciaA(a)-distanciaA(b));
 }
 
-function todosLugares(){return NEGOCIOS.concat(marcadoresOSM.map(m=>m.b)).concat(alertas);}
+function todosLugares(){return NEGOCIOS.concat(marcadoresOSM.map(m=>m.b));}
 function lugaresEnVista(){
   const b=window.map.getBounds(); if(!b)return [];
   return todosLugares().filter(x=>x.lng>=b.getWest()&&x.lng<=b.getEast()&&x.lat>=b.getSouth()&&x.lat<=b.getNorth());
 }function conteoCat(c){
   if(c==='evento')return eventosCercanos().length;
-  if(c==='perdida')return alertasEnVista().length;
   const vista=lugaresEnVista();
   if(c==='todos')return vista.length;
   if(c==='h24')return vista.filter(b=>b.h24===true).length;
@@ -2578,7 +1857,6 @@ function elegirCategoria(cat){
   filtroCat=cat; aplicarFiltros();
   document.getElementById('panelCategorias').style.display='none';
   document.getElementById('card').style.display='none';
-  document.getElementById('cardPerdida').style.display='none';
   document.getElementById('panelLista').style.display='block';
   fijarCapa('lista');
   renderLista();
@@ -2622,21 +1900,6 @@ function renderLista(){
     }
     return;
   }
-  if(filtroCat==='perdida'){
-    titulo.textContent=etiquetaCat('perdida');
-    form.style.display='none';
-    const lista=alertasEnVista().slice().sort((a,b)=>distanciaA(a)-distanciaA(b));
-    if(!lista.length){cuerpo.innerHTML='<div class="meta" style="padding:10px 2px">'+t('sinAlertas')+'</div>';return;}
-    cuerpo.innerHTML=lista.map(a=>{
-      const nAv=a.avistamientos||0;
-      return `<div class="listaRow" data-id="${a.id}"><span class="logoBox" style="background:#C0392B;width:48px;height:48px">${glyph('perdida','#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${escHtml(a.nombre?a.nombre+' · '+especieLabel(a.especie):especieLabel(a.especie))}</span><br><span class="meta">${t('alPerdidaHace',{d:haceDiasTxt(a.fechaPerdida)})} · a <b>${fmtDist(distanciaA(a))}</b></span><br><span class="meta">${escHtml(a.zonaTexto||'')}${nAv?' · '+(nAv===1?t('alAvistamientos1'):t('alAvistamientos',{n:nAv})):''}</span></span></div>`;
-    }).join('');
-    cuerpo.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
-      const a=alertas.find(x=>x.id===row.dataset.id);
-      if(a)seleccionarAlerta(a,true);
-    }));
-    return;
-  }
   form.style.display='none';
   titulo.textContent=etiquetaCat(filtroCat);
   let lista;
@@ -2664,7 +1927,6 @@ document.getElementById('bCategorias').addEventListener('click',()=>{
   renderCategorias();
   document.getElementById('panelLista').style.display='none';
   document.getElementById('card').style.display='none';
-  document.getElementById('cardPerdida').style.display='none';
   p.style.display='block';
   fijarCapa('categorias');
 });
@@ -2691,7 +1953,6 @@ const SINONIMOS={
   granja:['granja','finca','farm','ferme','bauernhof','fattoria','boerderij','gospodarstwo'],
   refugio:['refugio','perrera','perdido','shelter','kennel','refuge','chenil','tierheim','rifugio','canile','asiel','schronisko'],
   adopcion:['adopcion','adoptar','adoption','adopter','adopt','adozione','adoptie','adopcja'],
-  perdida:['perdida','perdido','perdidas','perdidos','lost','perdu','verloren','perso','vermist','zagubiony','zagubione','extraviado','extraviada','smarrito','smarrita'],
   facultad:['facultad','universidad','instituto','estudiar','university','school','faculte','universite','fakultat','universitat','facolta','universita','faculteit','uniwersytet','wydzial'],
   resto:['restaurante','comer','bar','cerveceria','cafe','cafeteria','pet-friendly','pet friendly','restaurant','eat','eating','brasserie','ristorante','restauracja','pub'],
   evento:['evento','fiesta','feria','festival','event','fete','veranstaltung','festa','evenement','wydarzenie']
@@ -2979,7 +2240,7 @@ const marcadoresOSM=[];
 let zonaCargando=false, zonaTimer=null;
 const zonasCargadas=[];
 function zonaContenida(b){return zonasCargadas.some(z=>b.getWest()>=z[0]-0.15&&b.getSouth()>=z[1]-0.15&&b.getEast()<=z[2]+0.15&&b.getNorth()<=z[3]+0.15);}
-function mostrarZonaEstado(txt,ms){const p=document.getElementById('zonaEstado');if(!p)return;clearTimeout(p._t);p.textContent=txt;p.style.display=txt?'':'none';if(ms){p._t=setTimeout(()=>{p.style.display='none';},ms);}}
+function mostrarZonaEstado(txt,ms){const p=document.getElementById('zonaEstado');if(!p)return;p.textContent=txt;p.style.display=txt?'':'none';if(ms){clearTimeout(p._t);p._t=setTimeout(()=>{p.style.display='none';},ms);}}
 document.getElementById('zonaEstado').addEventListener('click',()=>{if(zonaError)cargarZona(true);});
 
 const OVERPASS_URLS=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter'];
@@ -3079,7 +2340,7 @@ async function cargarZona(forzar){
   }
   zonaCargando=false;
 }
-window.map.on('moveend',()=>{if(tripActivo)return;clearTimeout(zonaTimer);zonaTimer=setTimeout(()=>cargarZona(false),600);crearPinesEventosUsuario();cargarAlertasZona();});
+window.map.on('moveend',()=>{if(tripActivo)return;clearTimeout(zonaTimer);zonaTimer=setTimeout(()=>cargarZona(false),600);crearPinesEventosUsuario();});
 function mostrarPanel(id){
   const el=document.getElementById(id);
   if(el&&el.style.display==='block'){irAtras();return;}
@@ -3093,7 +2354,7 @@ document.getElementById('bMascota').addEventListener('click',()=>mostrarPanel('p
 cargarMascota();
 crearPinesEventosUsuario();
 crearPinesEventos();
-window.map.on('load',()=>{cargarZona(true);cargarAlertasZona();});
+window.map.on('load',()=>cargarZona(true));
 
 /* ---------- La mascota: parte de TU ubicación y te sigue en el viaje ---------- */
 const dogEl=document.createElement('div');
@@ -3130,652 +2391,6 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-/* ==========================================================================
-   MASCOTAS PERDIDAS — Fase 1 + Fase 2 (v10-perdidas)
-   Alertas comunitarias: publicar, pin rojo en el mapa, "La vi aquí",
-   marcar como encontrada, caducidad 30 días, reportar abuso (oculto a 3).
-   --------------------------------------------------------------------------
-   BACKEND: Firebase plan Spark (gratis) — Firestore + Storage + Auth anónimo.
-   Proyecto NUEVO y SEPARADO de Voxia (voxia-49c2e, NO se toca).
-   --------------------------------------------------------------------------
-   CONFIGURACIÓN PENDIENTE (única acción manual, la hace amo Jeremy Rico
-   guiado paso a paso; NO hay valores inventados aquí):
-   1. Abrir https://console.firebase.google.com y crear el proyecto
-      "mascotas-cerca-de-ti" (plan Spark, sin tarjeta).
-   2. Firestore Database > Crear base de datos (modo PRODUCCIÓN) y
-      pegar el contenido de firestore.rules en la pestaña Reglas.
-   3. Storage > Comenzar y pegar el contenido de storage.rules.
-   4. Authentication > Método de inicio de sesión > activar "Anónimo".
-   5. Configuración del proyecto > Tus apps > Web > copiar firebaseConfig.
-   6. Pegar los 5 valores abajo y poner FIREBASE_CONFIG_PENDIENTE = false.
-   7. Publicar esta copia en GitHub Pages (repo radiolatinapp/mascotas).
-   Mientras tanto la app funciona en MODO LOCAL: las alertas se guardan
-   solo en este teléfono (localStorage) y el panel lo avisa.
-   ========================================================================== */
-const FIREBASE_CONFIG_PENDIENTE = true;
-const FIREBASE_CONFIG = {apiKey:'', authDomain:'', projectId:'', storageBucket:'', appId:''};
-
-/* ---------- Utilidades ---------- */
-function escHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function geohashEncode(lat,lng,prec){
-  const B='0123456789bcdefghjkmnpqrstuvwxyz'; let even=true,bit=0,ch=0,hash='';
-  let latR=[-90,90],lngR=[-180,180];
-  while(hash.length<prec){
-    if(even){const mid=(lngR[0]+lngR[1])/2; if(lng>=mid){ch=(ch<<1)+1;lngR[0]=mid;}else{ch=ch<<1;lngR[1]=mid;}}
-    else{const mid=(latR[0]+latR[1])/2; if(lat>=mid){ch=(ch<<1)+1;latR[0]=mid;}else{ch=ch<<1;latR[1]=mid;}}
-    even=!even; bit++;
-    if(bit===5){hash+=B[ch];bit=0;ch=0;}
-  }
-  return hash;
-}
-function uidAnon(){
-  try{
-    let u=localStorage.getItem('mascotas_anon_uid_v1');
-    if(!u){u='anon-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);localStorage.setItem('mascotas_anon_uid_v1',u);}
-    return u;
-  }catch(e){return 'anon-'+Math.random().toString(36).slice(2,9);}
-}
-function especieLabel(e){return e==='perro'?t('pubPerro'):e==='gato'?t('pubGato'):t('pubOtro');}
-function haceDiasTxt(ts){
-  const d=Math.floor((Date.now()-ts)/864e5);
-  if(d<=0)return t('alHoy');
-  if(d===1)return t('alHace1');
-  return t('alHaceN',{n:d});
-}
-function caducaEnTxt(ts){
-  const d=Math.ceil((ts-Date.now())/864e5);
-  if(d<=1)return t('alCaduca1');
-  return t('alCaduca',{d});
-}
-/* Aviso de privacidad: la descripción o la zona no deben traer una dirección
-   exacta de casa (calle/carrera + número). Solo la zona. */
-function pareceDireccion(txt){
-  const s=String(txt||'');
-  return /\b(calle|carrera|avenida|av\.?|transversal|diagonal|manzana|mz\.?|apartamento|apto\.?|interior|piso|n\.?°?\s*\d)/i.test(s) && /\d/.test(s);
-}
-function bajarFoto(file){
-  return new Promise((res,rej)=>{
-    const img=new Image();
-    img.onload=()=>{
-      const max=800; let w=img.width,h=img.height;
-      if(w>max||h>max){const k=Math.min(max/w,max/h);w=Math.round(w*k);h=Math.round(h*k);}
-      const cv=document.createElement('canvas');cv.width=w;cv.height=h;
-      cv.getContext('2d').drawImage(img,0,0,w,h);
-      cv.toBlob(b=>b?res(b):rej(new Error('blob')),'image/jpeg',0.8);
-    };
-    img.onerror=()=>rej(new Error('img'));
-    img.src=URL.createObjectURL(file);
-  });
-}
-
-/* ---------- Firestore por REST (sin SDK, sin clave de pago) ---------- */
-const FB={enabled:false,uid:null,idToken:null,key:null,base:null,bucket:null,projectId:null};
-function fbConfigEfectiva(){
-  if(typeof window!=='undefined'&&window.__FB_OVERRIDE__)return window.__FB_OVERRIDE__;
-  return FIREBASE_CONFIG;
-}
-async function fbInit(){
-  const cfg=fbConfigEfectiva();
-  if(FIREBASE_CONFIG_PENDIENTE && !window.__FB_OVERRIDE__)return false;
-  if(!cfg.apiKey||!cfg.projectId)return false;
-  try{
-    FB.key=cfg.apiKey; FB.projectId=cfg.projectId;
-    FB.base='https://firestore.googleapis.com/v1/projects/'+cfg.projectId+'/databases/(default)/documents';
-    FB.bucket=cfg.storageBucket;
-    const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key='+cfg.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({returnSecureToken:true})});
-    if(!r.ok)return false;
-    const j=await r.json();
-    FB.idToken=j.idToken; FB.uid=j.localId;
-    try{localStorage.setItem('mascotas_anon_uid_v1',FB.uid);}catch(e){}
-    FB.enabled=true; return true;
-  }catch(e){return false;}
-}
-function fbHeaders(){return {'Content-Type':'application/json','Authorization':'Bearer '+FB.idToken};}
-function fsVal(v){
-  if(v==null)return {nullValue:null};
-  if(typeof v==='number')return Number.isInteger(v)?{integerValue:String(v)}:{doubleValue:v};
-  if(typeof v==='boolean')return {booleanValue:v};
-  if(v instanceof Date)return {timestampValue:v.toISOString()};
-  if(typeof v==='string')return {stringValue:v};
-  if(Array.isArray(v))return {arrayValue:{values:v.map(fsVal)}};
-  if(typeof v==='object'){const fields={};for(const k in v)fields[k]=fsVal(v[k]);return {mapValue:{fields}};}
-  return {stringValue:String(v)};
-}
-function fsFields(obj){const fields={};for(const k in obj)fields[k]=fsVal(obj[k]);return {fields};}
-function fsScalar(v){
-  if(!v)return null;
-  if(v.stringValue!==undefined)return v.stringValue;
-  if(v.integerValue!==undefined)return parseInt(v.integerValue,10);
-  if(v.doubleValue!==undefined)return v.doubleValue;
-  if(v.booleanValue!==undefined)return v.booleanValue;
-  if(v.timestampValue!==undefined)return new Date(v.timestampValue).getTime();
-  if(v.nullValue!==undefined)return null;
-  return null;
-}
-function fsDocToObj(doc){
-  const o={id:doc.name.split('/').pop()};
-  const f=doc.fields||{};
-  for(const k in f){
-    const v=f[k];
-    if(v.mapValue){o[k]={};for(const kk in (v.mapValue.fields||{}))o[k][kk]=fsScalar(v.mapValue.fields[kk]);}
-    else if(v.arrayValue){o[k]=(v.arrayValue.values||[]).map(fsScalar);}
-    else o[k]=fsScalar(v);
-  }
-  return o;
-}
-async function fbSubirFoto(blob,ruta){
-  const url='https://firebasestorage.googleapis.com/v0/b/'+FB.bucket+'/o?uploadType=media&name='+encodeURIComponent(ruta);
-  const r=await fetch(url,{method:'POST',headers:{'Authorization':'Bearer '+FB.idToken,'Content-Type':blob.type||'image/jpeg'},body:blob});
-  if(!r.ok)throw new Error('storage '+r.status);
-  const j=await r.json();
-  return 'https://firebasestorage.googleapis.com/v0/b/'+FB.bucket+'/o/'+encodeURIComponent(ruta)+'?alt=media&token='+(j.downloadTokens||'');
-}
-async function fbIncrementar(id,campo,n){
-  const url='https://firestore.googleapis.com/v1/projects/'+FB.projectId+'/databases/(default)/documents:commit';
-  const body={writes:[{transform:{document:FB.base+'/alertas/'+id,fieldTransforms:[{fieldPath:campo,increment:{integerValue:String(n)}}]}}]};
-  const r=await fetch(url,{method:'POST',headers:fbHeaders(),body:JSON.stringify(body)});
-  if(!r.ok)throw new Error('fb inc '+r.status);
-}
-async function fbActualizar(id,patch){
-  const url=FB.base+'/alertas/'+id+'?updateMask.fieldPaths='+Object.keys(patch).map(encodeURIComponent).join('&updateMask.fieldPaths=');
-  const r=await fetch(url,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields(patch))});
-  if(!r.ok)throw new Error('fb patch '+r.status);
-}
-
-/* ---------- Modelo de alerta (misma forma que un "lugar" para el mapa) ---------- */
-const alertasLS='mascotas_alertas_local_v1';
-const misAlertasLS='mascotas_mis_alertas_v1';
-const DIAS_CADUCIDAD=30;
-function leerAlertasLocal(){try{return JSON.parse(localStorage.getItem(alertasLS))||[];}catch(e){return [];}}
-function guardarAlertasLocal(a){try{localStorage.setItem(alertasLS,JSON.stringify(a));}catch(e){}}
-function leerMisAlertas(){try{return JSON.parse(localStorage.getItem(misAlertasLS))||[];}catch(e){return [];}}
-function guardarMisAlertas(a){try{localStorage.setItem(misAlertasLS,JSON.stringify(a));}catch(e){}}
-function normalizarAlerta(a){
-  const creadoEn=a.creadoEn||Date.now();
-  return {
-    id:a.id, tipo:a.tipo||'perdida', especie:a.especie||'otro',
-    nombre:a.nombre||'', descripcion:a.descripcion||'',
-    fotoUrl:a.fotoUrl||null, fotoRuta:a.fotoRuta||null,
-    lat:+a.lat, lng:+a.lng, zonaTexto:a.zonaTexto||'',
-    geohash:a.geohash||geohashEncode(+a.lat,+a.lng,7),
-    fechaPerdida:a.fechaPerdida||creadoEn, creadoEn:creadoEn,
-    expiraEn:a.expiraEn||(creadoEn+DIAS_CADUCIDAD*864e5),
-    estado:a.estado||'activa', contactoTipo:a.contactoTipo||'ninguno', contactoValor:a.contactoValor||'',
-    creadoPor:a.creadoPor||'', avistamientos:a.avistamientos||0, reportes:a.reportes||0,
-    renovada:!!a.renovada, demo:!!a.demo, idioma:a.idioma||idioma,
-    avistamientosLista:a.avistamientosLista||[], reportesLista:a.reportesLista||[],
-    /* forma de "lugar": reutiliza buscador, filtros, lista y conteos */
-    n:a.nombre||especieLabel(a.especie||'otro'),
-    cat:'perdida', dir:a.zonaTexto||'', tel:null, horas:null, rating:null, nota:a.descripcion||''
-  };
-}
-
-/* ---------- PerdidasDB: misma interfaz en modo local y en Firebase ---------- */
-const PerdidasDB={
-  async listar(bounds){
-    const ahora=Date.now();
-    const ok=a=>a.estado==='activa'&&a.expiraEn>ahora&&a.reportes<3&&a.lng>=bounds.w&&a.lng<=bounds.e&&a.lat>=bounds.s&&a.lat<=bounds.n;
-    if(FB.enabled){
-      const r=await fetch(FB.base+'/alertas?pageSize=50&orderBy=creadoEn%20desc',{headers:fbHeaders()});
-      if(!r.ok)throw new Error('fb list '+r.status);
-      const j=await r.json();
-      return (j.documents||[]).map(fsDocToObj).map(normalizarAlerta).filter(ok);
-    }
-    return leerAlertasLocal().map(normalizarAlerta).filter(ok).sort((x,y)=>y.creadoEn-x.creadoEn).slice(0,50);
-  },
-  async publicar(d){
-    /* d: {tipo,especie,nombre,descripcion,lat,lng,zonaTexto,fechaPerdida,
-           contactoTipo,contactoValor,fotoBlob} */
-    if(FB.enabled){
-      let fotoUrl=null,fotoRuta=null;
-      if(d.fotoBlob){fotoRuta='alertas/'+FB.uid+'/'+Date.now()+'.jpg';fotoUrl=await fbSubirFoto(d.fotoBlob,fotoRuta);}
-      const doc={tipo:d.tipo||'perdida',especie:d.especie,nombre:d.nombre||'',descripcion:d.descripcion,
-        fotoUrl:fotoUrl,fotoRuta:fotoRuta,lat:d.lat,lng:d.lng,zonaTexto:d.zonaTexto||'',
-        geohash:geohashEncode(d.lat,d.lng,7),fechaPerdida:new Date(d.fechaPerdida),
-        creadoEn:new Date(),expiraEn:new Date(Date.now()+DIAS_CADUCIDAD*864e5),
-        estado:'activa',contactoTipo:d.contactoTipo||'ninguno',contactoValor:d.contactoValor||'',
-        creadoPor:FB.uid,avistamientos:0,reportes:0,renovada:false,idioma:idioma};
-      const r=await fetch(FB.base+'/alertas',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
-      if(!r.ok)throw new Error('fb create '+r.status);
-      const j=await r.json();
-      return normalizarAlerta({...doc,id:j.name.split('/').pop(),fechaPerdida:doc.fechaPerdida.getTime(),creadoEn:doc.creadoEn.getTime(),expiraEn:doc.expiraEn.getTime()});
-    }
-    const ahora=Date.now();
-    let fotoUrl=null;
-    if(d.fotoBlob){fotoUrl=await new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.readAsDataURL(d.fotoBlob);});}
-    const a=normalizarAlerta({id:'loc-'+ahora.toString(36)+'-'+Math.random().toString(36).slice(2,7),
-      tipo:d.tipo||'perdida',especie:d.especie,nombre:d.nombre||'',descripcion:d.descripcion,
-      fotoUrl:fotoUrl,fotoRuta:null,lat:d.lat,lng:d.lng,zonaTexto:d.zonaTexto||'',
-      geohash:geohashEncode(d.lat,d.lng,7),fechaPerdida:d.fechaPerdida,creadoEn:ahora,
-      expiraEn:ahora+DIAS_CADUCIDAD*864e5,estado:'activa',contactoTipo:d.contactoTipo||'ninguno',
-      contactoValor:d.contactoValor||'',creadoPor:uidAnon(),avistamientos:0,reportes:0,renovada:false,idioma:idioma});
-    const todas=leerAlertasLocal(); todas.unshift(a); guardarAlertasLocal(todas);
-    return a;
-  },
-  async avistamiento(id,av){
-    /* av: {nota,lat,lng,fotoUrl?} — el punto es donde se vio, no la casa */
-    if(FB.enabled){
-      const doc={creadoPor:FB.uid,creadoEn:new Date(),nota:av.nota||'',lat:av.lat,lng:av.lng,fotoUrl:av.fotoUrl||null,idioma:idioma};
-      const r=await fetch(FB.base+'/alertas/'+id+'/avistamientos',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
-      if(!r.ok)throw new Error('fb av '+r.status);
-      await fbIncrementar(id,'avistamientos',1);
-      return true;
-    }
-    const todas=leerAlertasLocal(); const a=todas.find(x=>x.id===id); if(!a)return false;
-    a.avistamientosLista=a.avistamientosLista||[];
-    a.avistamientosLista.unshift({creadoPor:uidAnon(),creadoEn:Date.now(),nota:av.nota||'',lat:av.lat,lng:av.lng,fotoUrl:av.fotoUrl||null});
-    a.avistamientos=(a.avistamientosLista||[]).length;
-    guardarAlertasLocal(todas); return true;
-  },
-  async listarAvistamientos(id){
-    if(FB.enabled){
-      const r=await fetch(FB.base+'/alertas/'+id+'/avistamientos?pageSize=20&orderBy=creadoEn%20desc',{headers:fbHeaders()});
-      if(!r.ok)return [];
-      const j=await r.json();
-      return (j.documents||[]).map(fsDocToObj);
-    }
-    const a=leerAlertasLocal().find(x=>x.id===id);
-    return a?(a.avistamientosLista||[]):[];
-  },
-  async reportar(id,motivo){
-    /* 1 reporte por usuario; a los 3 la alerta se oculta sola */
-    if(FB.enabled){
-      const docRef=FB.base+'/alertas/'+id+'/reportes/'+FB.uid;
-      const ex=await fetch(docRef,{headers:fbHeaders()});
-      if(ex.ok)return null; /* ya reportó */
-      const r=await fetch(docRef,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields({motivo:motivo,creadoEn:new Date()}))});
-      if(!r.ok)throw new Error('fb rep '+r.status);
-      await fbIncrementar(id,'reportes',1);
-      return 'ok';
-    }
-    const todas=leerAlertasLocal(); const a=todas.find(x=>x.id===id); if(!a)return null;
-    a.reportesLista=a.reportesLista||[];
-    if(a.reportesLista.some(r=>r.uid===uidAnon()))return null;
-    a.reportesLista.push({uid:uidAnon(),motivo:motivo,creadoEn:Date.now()});
-    a.reportes=a.reportesLista.length;
-    guardarAlertasLocal(todas); return 'ok';
-  },
-  async marcarEncontrada(id){
-    if(FB.enabled){await fbActualizar(id,{estado:'encontrada'});return true;}
-    const todas=leerAlertasLocal(); const a=todas.find(x=>x.id===id); if(!a)return false;
-    a.estado='encontrada'; guardarAlertasLocal(todas); return true;
-  },
-  async borrar(id){
-    if(FB.enabled){
-      const r=await fetch(FB.base+'/alertas/'+id,{method:'DELETE',headers:fbHeaders()});
-      if(!r.ok)throw new Error('fb del '+r.status);
-      return true;
-    }
-    guardarAlertasLocal(leerAlertasLocal().filter(x=>x.id!==id)); return true;
-  },
-  async renovar(id){
-    /* solo una vez: +30 días desde hoy */
-    if(FB.enabled){await fbActualizar(id,{expiraEn:new Date(Date.now()+DIAS_CADUCIDAD*864e5),renovada:true});return true;}
-    const todas=leerAlertasLocal(); const a=todas.find(x=>x.id===id); if(!a)return false;
-    if(a.renovada)return false;
-    a.expiraEn=Date.now()+DIAS_CADUCIDAD*864e5; a.renovada=true; guardarAlertasLocal(todas); return true;
-  }
-};
-
-/* ---------- Estado y pines en el mapa ---------- */
-let alertas=[];               /* alertas normalizadas en la vista actual */
-let marcadoresPerdidas=[];    /* {b,el,mk} igual que marcadores/marcadoresOSM */
-let alertaSel=null;
-let alertasCargando=false;
-let fbListo=false;
-
-function alertasEnVista(){
-  const b=window.map.getBounds(); if(!b)return alertas;
-  return alertas.filter(a=>a.lng>=b.getWest()&&a.lng<=b.getEast()&&a.lat>=b.getSouth()&&a.lat<=b.getNorth());
-}
-async function cargarAlertasZona(){
-  if(alertasCargando||!window.map)return;
-  const b=window.map.getBounds(); if(!b)return;
-  alertasCargando=true;
-  try{
-    alertas=await PerdidasDB.listar({w:b.getWest(),s:b.getSouth(),e:b.getEast(),n:b.getNorth()});
-    renderPinesPerdidas();
-    const p=document.getElementById('panelPerdidas');
-    if(p&&p.style.display==='block')renderPanelPerdidas();
-    if(filtroCat==='perdida'&&document.getElementById('panelLista').style.display==='block')renderLista();
-  }catch(e){
-    const p=document.getElementById('panelPerdidas');
-    if(p&&p.style.display==='block')mostrarZonaEstado(t('alErrorCargar'),4000);
-  }
-  alertasCargando=false;
-}
-function renderPinesPerdidas(){
-  marcadoresPerdidas.forEach(m=>{try{m.mk.remove();}catch(e){}});
-  marcadoresPerdidas=[];
-  alertas.forEach(a=>{
-    const el=document.createElement('div');
-    el.className='pin2 red pinPerdida';
-    el.innerHTML=`<span class="in">${glyph('perdida','#C0392B')}</span>`;
-    el.title=a.n;
-    const mk=new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat([a.lng,a.lat]).addTo(window.map);
-    el.addEventListener('click',()=>seleccionarAlerta(a,false));
-    marcadoresPerdidas.push({b:a,el,mk});
-  });
-  aplicarFiltros();
-}
-function quitarPinPerdida(id){
-  const i=marcadoresPerdidas.findIndex(m=>m.b.id===id);
-  if(i>=0){try{marcadoresPerdidas[i].mk.remove();}catch(e){}marcadoresPerdidas.splice(i,1);}
-  alertas=alertas.filter(a=>a.id!==id);
-}
-
-/* ---------- Marcador del punto (centro del mapa) para publicar/avistar ---------- */
-let pinPunto=null, pinPuntoVisible=false;
-function mostrarPinPunto(on){
-  pinPuntoVisible=on;
-  if(on){
-    if(!pinPunto){
-      const el=document.createElement('div');
-      el.innerHTML='<svg width="34" height="34" viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z" fill="#C0392B" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="9" r="3" fill="#fff"/></svg>';
-      pinPunto=new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat(window.map.getCenter()).addTo(window.map);
-    }else{pinPunto.setLngLat(window.map.getCenter());pinPunto.addTo(window.map);}
-  }else if(pinPunto){try{pinPunto.remove();}catch(e){}}
-}
-if(typeof window!=='undefined'&&window.map){
-  window.map.on('move',()=>{if(pinPuntoVisible&&pinPunto)pinPunto.setLngLat(window.map.getCenter());});
-}
-
-/* ---------- Tarjeta de alerta ---------- */
-function esMia(a){return a.creadoPor&&a.creadoPor===uidAnon()||leerMisAlertas().includes(a.id);}
-function seleccionarAlerta(a,volar){
-  if(tripActivo)terminarViaje();
-  llegadaEn=null; seleccionado=null;
-  alertaSel=a;
-  fijarCapa('alerta');
-  document.getElementById('panelLista').style.display='none';
-  document.getElementById('panelCategorias').style.display='none';
-  document.getElementById('panelPerdidas').style.display='none';
-  document.getElementById('panelPerdidaForm').style.display='none';
-  document.getElementById('card').style.display='none';
-  renderAlertaCard(a);
-  document.getElementById('cardPerdida').style.display='block';
-  marcadoresPerdidas.forEach(m=>m.el.classList.toggle('sel',m.b===a));
-  if(volar)window.map.easeTo({center:[a.lng,a.lat],zoom:Math.max(window.map.getZoom(),15)});
-  PerdidasDB.listarAvistamientos(a.id).then(list=>{
-    if(alertaSel&&alertaSel.id===a.id)renderAvistamientos(list);
-  }).catch(()=>{});
-}
-function renderAlertaCard(a){
-  const foto=document.getElementById('apFoto');
-  if(a.fotoUrl){foto.src=a.fotoUrl;foto.style.display='block';document.getElementById('apSinFoto').style.display='none';}
-  else{foto.style.display='none';document.getElementById('apSinFoto').style.display='block';}
-  document.getElementById('apLogo').innerHTML=glyph('perdida','#fff');
-  document.getElementById('apNombre').textContent=(a.nombre?a.nombre+' · ':'')+especieLabel(a.especie);
-  document.getElementById('apHace').textContent=t('alPerdidaHace',{d:haceDiasTxt(a.fechaPerdida)});
-  document.getElementById('apDesc').textContent=a.descripcion;
-  document.getElementById('apZona').textContent=a.zonaTexto?t('alZona',{z:a.zonaTexto}):'';
-  document.getElementById('apDist').textContent='a '+fmtDist(distanciaA(a));
-  document.getElementById('apCaduca').textContent=caducaEnTxt(a.expiraEn);
-  const nAv=a.avistamientos||0;
-  document.getElementById('apAvist').textContent=nAv===1?t('alAvistamientos1'):t('alAvistamientos',{n:nAv});
-  const c=document.getElementById('apContacto');
-  if(a.contactoTipo==='whatsapp'&&a.contactoValor){
-    c.style.display='';c.href='https://wa.me/'+String(a.contactoValor).replace(/[^0-9]/g,'');
-  }else{
-    c.style.display='none';
-  }
-  document.getElementById('apSinContacto').style.display=(a.contactoTipo==='whatsapp'&&a.contactoValor)?'none':'block';
-  document.getElementById('apLlegar').href='https://www.google.com/maps/dir/?api=1&destination='+a.lat+','+a.lng;
-  const dueno=esMia(a);
-  document.getElementById('apDuenio').style.display=dueno?'':'none';
-  document.getElementById('apRenovar').style.display=dueno&&!a.renovada?'':'none';
-  document.getElementById('apAvForm').style.display='none';
-  document.getElementById('apRepForm').style.display='none';
-  document.getElementById('apAvNota').value='';
-  if(a.demo)document.getElementById('apDemo').style.display='';else document.getElementById('apDemo').style.display='none';
-  renderAvistamientos([]);
-}
-function renderAvistamientos(list){
-  const box=document.getElementById('apAvLista');
-  const a=alertaSel; if(!a)return;
-  if(!list.length){
-    box.innerHTML='<div class="meta" style="padding:6px 2px">'+escHtml(t('alSinAvistamientos'))+'</div>';
-    return;
-  }
-  box.innerHTML='<div class="meta" style="font-weight:800;margin:6px 0 2px">'+escHtml(t('avLista'))+'</div>'+list.map(av=>{
-    const cuando=av.creadoEn?haceDiasTxt(av.creadoEn):'';
-    return '<div class="avItem"><span class="avDot"></span><span style="flex:1;min-width:0">'+(av.nota?escHtml(av.nota):escHtml(t('btnLaVi')))+'<br><span class="meta">'+escHtml(cuando)+'</span></span></div>';
-  }).join('');
-}
-
-/* ---------- Panel "Mascotas perdidas" (lista + mis alertas) ---------- */
-function abrirPanelPerdidas(){
-  const p=document.getElementById('panelPerdidas');
-  if(p.style.display==='block'){irAtras();return;}
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidaForm'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
-  document.getElementById('card').style.display='none';
-  document.getElementById('cardPerdida').style.display='none';
-  p.style.display='block';
-  fijarCapa('perdidas');
-  renderPanelPerdidas();
-}
-function renderPanelPerdidas(){
-  const box=document.getElementById('listaPerdidas');
-  const lista=alertasEnVista().slice().sort((a,b)=>distanciaA(a)-distanciaA(b));
-  const nota=document.getElementById('notaModoLocal');
-  nota.style.display=(FIREBASE_CONFIG_PENDIENTE&&!FB.enabled)?'block':'none';
-  if(!lista.length){
-    box.innerHTML='<div class="meta" style="padding:10px 2px">'+escHtml(t('sinAlertas'))+'</div>';
-  }else{
-    box.innerHTML=lista.map(a=>{
-      const nAv=a.avistamientos||0;
-      return '<div class="listaRow" data-id="'+escHtml(a.id)+'"><span class="logoBox" style="background:#C0392B;width:48px;height:48px">'+glyph('perdida','#fff')+'</span><span style="flex:1;min-width:0"><span class="nm">'+escHtml(a.nombre?a.nombre+' · '+especieLabel(a.especie):especieLabel(a.especie))+'</span><br><span class="meta">'+escHtml(t('alPerdidaHace',{d:haceDiasTxt(a.fechaPerdida)}))+' · a <b>'+fmtDist(distanciaA(a))+'</b></span><br><span class="meta">'+escHtml(a.zonaTexto||'')+(nAv?' · '+escHtml(nAv===1?t('alAvistamientos1'):t('alAvistamientos',{n:nAv})):'')+'</span></span></div>';
-    }).join('');
-    box.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
-      const a=alertas.find(x=>x.id===row.dataset.id);
-      if(a)seleccionarAlerta(a,true);
-    }));
-  }
-  const misBox=document.getElementById('listaMisAlertas');
-  const misIds=leerMisAlertas();
-  const mias=leerAlertasLocal().map(normalizarAlerta).filter(a=>misIds.includes(a.id));
-  if(FB.enabled){
-    /* en modo Firebase las mías se filtran de la lista cargada + las locales */
-    mias.push(...alertas.filter(a=>a.creadoPor===FB.uid&&!misIds.includes(a.id)));
-  }
-  if(!mias.length){
-    misBox.innerHTML='<div class="meta" style="padding:6px 2px">'+escHtml(t('misAlertasVacias'))+'</div>';
-  }else{
-    misBox.innerHTML=mias.map(a=>'<div class="listaRow" data-id="'+escHtml(a.id)+'"><span class="logoBox" style="background:#C0392B;width:48px;height:48px">'+glyph('perdida','#fff')+'</span><span style="flex:1;min-width:0"><span class="nm">'+escHtml(a.nombre||especieLabel(a.especie))+'</span><br><span class="meta">'+escHtml(a.estado==='encontrada'?t('alTipoEncontrada'):t('alTipoPerdida'))+' · '+escHtml(caducaEnTxt(a.expiraEn))+'</span></span></div>').join('');
-    misBox.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
-      const a=mias.find(x=>x.id===row.dataset.id);
-      if(a)seleccionarAlerta(a,true);
-    }));
-  }
-}
-
-/* ---------- Formulario: publicar mascota perdida ---------- */
-let especiePub='perro', fotoPubBlob=null, contactoPub='ninguno';
-function abrirFormPerdida(){
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
-  document.getElementById('card').style.display='none';
-  document.getElementById('cardPerdida').style.display='none';
-  const f=document.getElementById('panelPerdidaForm');
-  f.style.display='block';
-  fijarCapa('formPerdida');
-  mostrarPinPunto(true);
-  const hoy=new Date(); const iso=hoy.getFullYear()+'-'+String(hoy.getMonth()+1).padStart(2,'0')+'-'+String(hoy.getDate()).padStart(2,'0');
-  document.getElementById('pubFecha').value=iso;
-  document.getElementById('pubDesc').value='';
-  document.getElementById('pubZona').value='';
-  document.getElementById('pubNombre').value='';
-  document.getElementById('pubNumero').value='';
-  document.getElementById('pubFotoPrev').style.display='none';
-  document.getElementById('pubFotoInput').value='';
-  fotoPubBlob=null;
-}
-function cerrarFormPerdida(){mostrarPinPunto(false);irAtras();}
-async function publicarPerdida(){
-  const desc=document.getElementById('pubDesc').value.trim();
-  if(!desc){mostrarZonaEstado(t('pubFaltaDesc'),4000);document.getElementById('pubDesc').focus();return;}
-  const zona=document.getElementById('pubZona').value.trim();
-  if(pareceDireccion(desc)||pareceDireccion(zona)){
-    if(!confirm(t('pubConfirmDireccion')))return;
-  }
-  let contactoValor='';
-  if(contactoPub==='whatsapp'){
-    contactoValor=document.getElementById('pubNumero').value.trim();
-    if(!contactoValor){document.getElementById('pubNumero').style.borderColor='#C0392B';document.getElementById('pubNumero').focus();return;}
-  }
-  const btn=document.getElementById('bPublicarPerdida');
-  btn.disabled=true;
-  try{
-    const c=window.map.getCenter();
-    const fechaVal=document.getElementById('pubFecha').value;
-    const fechaPerdida=fechaVal?new Date(fechaVal+'T12:00:00').getTime():Date.now();
-    const a=await PerdidasDB.publicar({
-      tipo:'perdida', especie:especiePub,
-      nombre:document.getElementById('pubNombre').value.trim(),
-      descripcion:desc, lat:c.lat, lng:c.lng, zonaTexto:zona,
-      fechaPerdida:fechaPerdida,
-      contactoTipo:contactoPub, contactoValor:contactoValor,
-      fotoBlob:fotoPubBlob
-    });
-    const mis=leerMisAlertas(); if(!mis.includes(a.id)){mis.push(a.id);guardarMisAlertas(mis);}
-    mostrarPinPunto(false);
-    document.getElementById('panelPerdidaForm').style.display='none';
-    mostrarZonaEstado(t('pubPublicada'),5000);
-    await cargarAlertasZona();
-    const creada=alertas.find(x=>x.id===a.id)||a;
-    seleccionarAlerta(creada,false);
-  }catch(e){
-    mostrarZonaEstado(t('pubError'),5000);
-  }
-  btn.disabled=false;
-}
-
-/* ---------- "La vi aquí" (avistamiento) ---------- */
-async function enviarAvistamiento(){
-  const a=alertaSel; if(!a)return;
-  const btn=document.getElementById('apEnviarAv');
-  btn.disabled=true;
-  try{
-    const c=window.map.getCenter();
-    await PerdidasDB.avistamiento(a.id,{nota:document.getElementById('apAvNota').value.trim(),lat:c.lat,lng:c.lng});
-    document.getElementById('apAvForm').style.display='none';
-    mostrarPinPunto(false);
-    mostrarZonaEstado(t('avGracias'),4000);
-    a.avistamientos=(a.avistamientos||0)+1;
-    const nAv=a.avistamientos;
-    document.getElementById('apAvist').textContent=nAv===1?t('alAvistamientos1'):t('alAvistamientos',{n:nAv});
-    const list=await PerdidasDB.listarAvistamientos(a.id);
-    if(alertaSel&&alertaSel.id===a.id)renderAvistamientos(list);
-    await cargarAlertasZona();
-  }catch(e){mostrarZonaEstado(t('pubError'),4000);}
-  btn.disabled=false;
-}
-
-/* ---------- Reportar abuso / acciones del dueño ---------- */
-async function reportarAlerta(motivo){
-  const a=alertaSel; if(!a)return;
-  try{
-    await PerdidasDB.reportar(a.id,motivo);
-    document.getElementById('apRepForm').style.display='none';
-    mostrarZonaEstado(t('repGracias'),4000);
-    await cargarAlertasZona();
-    if(!alertas.some(x=>x.id===a.id)){
-      /* oculta por 3 reportes: ya no está en la lista */
-      irAtras();
-      mostrarZonaEstado(t('repOculta'),5000);
-    }
-  }catch(e){mostrarZonaEstado(t('pubError'),4000);}
-}
-async function accionDueno(accion){
-  const a=alertaSel; if(!a)return;
-  if(accion==='encontrada'){
-    if(!confirm(t('alConfirmEncontrada')))return;
-    await PerdidasDB.marcarEncontrada(a.id);
-    quitarPinPerdida(a.id);
-    irAtras();
-    mostrarZonaEstado(t('alTipoEncontrada'),4000);
-  }else if(accion==='borrar'){
-    if(!confirm(t('alConfirmBorrar')))return;
-    await PerdidasDB.borrar(a.id);
-    const mis=leerMisAlertas().filter(x=>x!==a.id); guardarMisAlertas(mis);
-    quitarPinPerdida(a.id);
-    irAtras();
-  }else if(accion==='renovar'){
-    if(a.renovada){mostrarZonaEstado(t('alYaRenovada'),4000);return;}
-    const dias=Math.max(0,Math.ceil((a.expiraEn-Date.now())/864e5));
-    if(!confirm(t('alRenovarAviso',{d:dias})))return;
-    const ok=await PerdidasDB.renovar(a.id);
-    if(ok){a.renovada=true;a.expiraEn=Date.now()+DIAS_CADUCIDAD*864e5;document.getElementById('apCaduca').textContent=caducaEnTxt(a.expiraEn);document.getElementById('apRenovar').style.display='none';mostrarZonaEstado(t('alRenovada'),4000);}
-    else mostrarZonaEstado(t('alYaRenovada'),4000);
-  }
-}
-
-/* ---------- Cableado de botones ---------- */
-document.getElementById('bPerdidas').addEventListener('click',abrirPanelPerdidas);
-document.getElementById('bPubPerdida').addEventListener('click',abrirFormPerdida);
-document.getElementById('bCerrarPerdidas').addEventListener('click',()=>irAtras());
-document.getElementById('bCerrarFormPerdida').addEventListener('click',cerrarFormPerdida);
-document.getElementById('bPublicarPerdida').addEventListener('click',publicarPerdida);
-document.getElementById('pubFotoBtn').addEventListener('click',()=>document.getElementById('pubFotoInput').click());
-document.getElementById('pubFotoInput').addEventListener('change',async e=>{
-  const f=e.target.files&&e.target.files[0]; if(!f)return;
-  try{
-    fotoPubBlob=await bajarFoto(f);
-    const prev=document.getElementById('pubFotoPrev');
-    prev.src=URL.createObjectURL(fotoPubBlob); prev.style.display='block';
-  }catch(err){fotoPubBlob=null;}
-});
-document.querySelectorAll('.especieBtn').forEach(b=>b.addEventListener('click',()=>{
-  especiePub=b.dataset.especie;
-  document.querySelectorAll('.especieBtn').forEach(x=>x.classList.toggle('on',x===b));
-}));
-document.querySelectorAll('input[name="pubContacto"]').forEach(r=>r.addEventListener('change',()=>{
-  contactoPub=r.value;
-  document.getElementById('pubNumeroWrap').style.display=contactoPub==='whatsapp'?'':'none';
-  document.getElementById('pubNumero').style.borderColor='';
-}));
-document.getElementById('apLaVi').addEventListener('click',()=>{
-  const f=document.getElementById('apAvForm');
-  const abrir=f.style.display!=='block';
-  f.style.display=abrir?'block':'none';
-  document.getElementById('apRepForm').style.display='none';
-  mostrarPinPunto(abrir);
-});
-document.getElementById('apEnviarAv').addEventListener('click',enviarAvistamiento);
-document.getElementById('apCancelarAv').addEventListener('click',()=>{document.getElementById('apAvForm').style.display='none';mostrarPinPunto(false);});
-document.getElementById('apReportar').addEventListener('click',()=>{
-  const f=document.getElementById('apRepForm');
-  const abrir=f.style.display!=='block';
-  f.style.display=abrir?'block':'none';
-  document.getElementById('apAvForm').style.display='none';
-  if(!abrir)mostrarPinPunto(false);
-});
-document.querySelectorAll('.repBtn').forEach(b=>b.addEventListener('click',()=>reportarAlerta(b.dataset.motivo)));
-document.getElementById('apEncontrada').addEventListener('click',()=>accionDueno('encontrada'));
-document.getElementById('apBorrar').addEventListener('click',()=>accionDueno('borrar'));
-document.getElementById('apRenovar').addEventListener('click',()=>accionDueno('renovar'));
-document.getElementById('apCompartir').addEventListener('click',()=>{
-  const a=alertaSel; if(!a)return;
-  const url=location.origin+location.pathname+'?alerta='+encodeURIComponent(a.id);
-  const texto=(a.nombre?a.nombre+' · ':'')+especieLabel(a.especie)+' — '+a.descripcion;
-  if(navigator.share){navigator.share({title:t('panelPerdidas'),text:texto,url:url}).catch(()=>{});}
-  else if(navigator.clipboard){navigator.clipboard.writeText(texto+' '+url).catch(()=>{});}
-});
-
-/* ---------- Arranque: Firebase en segundo plano + primera carga de alertas ---------- */
-fbInit().then(ok=>{fbListo=ok;if(ok)cargarAlertasZona();});
-if(window.map.loaded())cargarAlertasZona();
-else window.map.on('load',()=>cargarAlertasZona());
-/* Enlace profundo ?alerta=<id> (compartir): abre la alerta cuando cargue */
-(function(){
-  let id=null; try{id=new URLSearchParams(location.search).get('alerta');}catch(e){}
-  if(!id)return;
-  const iv=setInterval(()=>{
-    const a=alertas.find(x=>x.id===id);
-    if(a){clearInterval(iv);seleccionarAlerta(a,true);}
-  },800);
-  setTimeout(()=>clearInterval(iv),15000);
-})();
-
 detectarIdioma();
 document.getElementById('selIdioma').addEventListener('change',e=>setLang(e.target.value));
 applyLang();
