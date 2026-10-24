@@ -77,7 +77,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 <button id="btnBrujula" class="brujula" title="Norte"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:410px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:464px">−</button>
-<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM</div>
+<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v4</div>
 <div class="card" id="card">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div style="display:flex;gap:11px;align-items:center">
@@ -219,7 +219,7 @@ window.map.on('style.load',asegurarRuta);
 window.map.on('styledata',asegurarRuta);
 function pintarDatosRuta(){try{const s=window.map.getSource('carretera'); if(s) s.setData(datosRuta()); else asegurarRuta();}catch(e){}}
 let rutaToken=0, rutaEsReal=false, rutaDistancia=null;
-let perfil='driving', pasos=[], pasosAlong=[], rutaDuracion=0, ultimoSnap=null, contadorDesvio=0, trackPts=[];
+let perfil='driving', pasos=[], pasosAlong=[], rutaDuracion=0, ultimoSnap=null, contadorDesvio=0, trackPts=[], estadoRuta='calculando';
 function actualizarTrack(){try{const s=window.map.getSource('recorrido'); if(s) s.setData({type:'Feature',geometry:{type:'LineString',coordinates:trackPts}});}catch(e){}}
 function pedirRuta(b,intento,miToken){
   const prof2={driving:'car',walking:'foot',cycling:'bike'}[perfil]||'car';
@@ -232,7 +232,7 @@ function pedirRuta(b,intento,miToken){
     if(miToken!==rutaToken||!j.routes||!j.routes[0]||seleccionado!==b)throw new Error('vieja');
     const coords=j.routes[0].geometry.coordinates;
     if(!coords||coords.length<2)throw new Error('sin ruta');
-    RUTA=coords; rutaEsReal=true; rutaDistancia=j.routes[0].distance;
+    RUTA=coords; rutaEsReal=true; estadoRuta='real'; rutaDistancia=j.routes[0].distance;
     pasos=(j.routes[0].legs[0]&&j.routes[0].legs[0].steps)||[];
     rutaDuracion=j.routes[0].duration||0;
     construirRuta();
@@ -240,12 +240,17 @@ function pedirRuta(b,intento,miToken){
     pintarDatosRuta();
     aplicarEstiloCarretera();
     document.getElementById('cAviso').textContent='';
+    mostrarBotonesViaje();
     if(tripActivo){actualizarRestante(); actualizarBanner();}
     else actualizarDistancia();
   }).catch(()=>{
     if(miToken!==rutaToken||seleccionado!==b)return;
     if(intento<3){setTimeout(()=>pedirRuta(b,intento+1,miToken),intento===0?1500:3000);}
-    else{document.getElementById('cAviso').textContent='Ruta aproximada: no se pudo conectar con el servidor de rutas. Se reintentará al recalcular.';}
+    else{
+      estadoRuta='fallida';
+      document.getElementById('cAviso').textContent='Sin ruta por carretera desde tu ubicación. La línea punteada es solo una referencia.';
+      mostrarBotonesViaje();
+    }
   });
 }
 function recalcularRuta(){
@@ -254,7 +259,9 @@ function recalcularRuta(){
   RUTA=rutaSuave(YOU,[seleccionado.lng,seleccionado.lat]);
   construirRuta(); pintarDatosRuta();
   aplicarEstiloCarretera();
-  rutaEsReal=false; rutaDistancia=null; pasos=[];
+  rutaEsReal=false; rutaDistancia=null; pasos=[]; pasosAlong=[]; estadoRuta='calculando';
+  document.getElementById('bannerTurno').style.display='none';
+  mostrarBotonesViaje();
   const token=++rutaToken;
   pedirRuta(seleccionado,0,token);
 }
@@ -348,8 +355,17 @@ let seleccionado=null, tripActivo=false, llegadaEn=null;
 let follow=true, followPausado=false, camBearing=0;
 let lastRouteFrom=[...YOU], lastRouteAt=0, gpsListo=false, ultimoFix=null;
 function mostrarBotonesViaje(){
-  document.getElementById('filaIniciar').style.display=tripActivo?'none':'';
-  document.getElementById('filaTerminar').style.display=tripActivo?'':'none';
+  const ini=document.getElementById('bIniciar');
+  if(tripActivo){
+    document.getElementById('filaIniciar').style.display='none';
+    document.getElementById('filaTerminar').style.display='';
+  }else{
+    document.getElementById('filaIniciar').style.display='';
+    document.getElementById('filaTerminar').style.display='none';
+    if(estadoRuta==='real'){ini.disabled=false; ini.textContent='Iniciar viaje'; ini.style.opacity='';}
+    else if(estadoRuta==='calculando'){ini.disabled=true; ini.textContent='Calculando ruta…'; ini.style.opacity='0.6';}
+    else{ini.disabled=true; ini.textContent='Sin ruta por carretera'; ini.style.opacity='0.6';}
+  }
 }
 function actualizarRestante(){
   if(!tripActivo||!seleccionado)return;
@@ -438,7 +454,9 @@ function seleccionar(b,volar){
   document.getElementById('cDir').textContent=b.dir+(b.nota?(' · '+b.nota):'');
   document.getElementById('bLlamar').href='tel:'+b.tel;
   document.getElementById('bWa').href='https://wa.me/'+b.tel.replace('+','');
-  rutaEsReal=false; rutaDistancia=null;
+  rutaEsReal=false; rutaDistancia=null; estadoRuta='calculando';
+  pasos=[]; pasosAlong=[];
+  document.getElementById('bannerTurno').style.display='none';
   document.getElementById('cAviso').textContent='Calculando ruta por las calles…';
   lastRouteFrom=[...YOU]; lastRouteAt=Date.now();
   RUTA=rutaSuave(YOU,[b.lng,b.lat]);
@@ -446,6 +464,7 @@ function seleccionar(b,volar){
   pintarDatosRuta();
   aplicarEstiloCarretera();
   actualizarDistancia();
+  mostrarBotonesViaje();
   const token=++rutaToken;
   pedirRuta(b,0,token);
   if(volar) window.map.easeTo({center:[b.lng,b.lat],zoom:Math.max(window.map.getZoom(),15)});
