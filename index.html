@@ -27,12 +27,12 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 .chip{border:0;background:rgba(255,255,255,.97);border-radius:18px;padding:7px 13px;font-size:13px;font-weight:700;color:#333;box-shadow:0 2px 5px rgba(0,0,0,.25);display:flex;align-items:center;gap:5px;cursor:pointer}
 .chip.on{background:#0E7C66;color:#fff}
 .dot{width:9px;height:9px;border-radius:50%}
-.views{position:absolute;top:236px;right:12px;z-index:6;display:flex;border-radius:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.35)}
+.views{position:absolute;top:308px;right:12px;z-index:6;display:flex;border-radius:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.35)}
 .views button{border:0;padding:8px 10px;font-size:13px;font-weight:800;background:#fff;color:#444;cursor:pointer}
 .views button.on{background:#14342B;color:#fff}
-.gpsbtn{position:absolute;top:286px;right:12px;z-index:6;border:0;border-radius:20px;padding:9px 15px;font-size:13px;font-weight:800;background:#fff;color:#444;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer}
+.gpsbtn{position:absolute;top:358px;right:12px;z-index:6;border:0;border-radius:20px;padding:9px 15px;font-size:13px;font-weight:800;background:#fff;color:#444;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer}
 .gpsbtn.on{background:#0E7C66;color:#fff}
-.brujula{position:absolute;top:390px;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.brujula{position:absolute;top:462px;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .zoomBtn{position:absolute;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;font-size:24px;font-weight:800;color:#333}
 .logoBox{width:54px;height:54px;border-radius:15px;flex:none;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .logoBox svg{width:30px;height:30px}
@@ -45,6 +45,23 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 .pin2.red{background:radial-gradient(circle at 32% 28%, #FF8A75, #E5322D 68%)}
 .pin2.yellow{background:radial-gradient(circle at 32% 28%, #FFE066, #F5A800 68%)}
 .pin2.sel{outline:4px solid #14342B;outline-offset:1px}
+.pin2.purple{background:radial-gradient(circle at 32% 28%, #B794F6, #7C3AED 68%)}
+.pin2.brown{background:radial-gradient(circle at 32% 28%, #D9A05B, #B45309 68%)}
+.pin2.teal{background:radial-gradient(circle at 32% 28%, #5EEAD4, #0F766E 68%)}
+.pin2.pink{background:radial-gradient(circle at 32% 28%, #F9A8D4, #EC4899 68%)}
+.pin2.blue{background:radial-gradient(circle at 32% 28%, #93C5FD, #1D4ED8 68%)}
+.pin2.orange{background:radial-gradient(circle at 32% 28%, #FDBA74, #F97316 68%)}
+.pin2.cyan{background:radial-gradient(circle at 32% 28%, #67E8F9, #0891B2 68%)}
+.panel{position:absolute;left:10px;right:10px;bottom:10px;z-index:7;background:#fff;border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.35);padding:14px 15px;max-height:70vh;overflow-y:auto}
+.panel h3{margin:0;font-size:17px;color:#14342B}
+.panelRow{display:flex;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid #eee;cursor:pointer}
+.panelRow:last-child{border-bottom:0}
+.starBtn{border:0;background:#fff;font-size:24px;color:#ccc;cursor:pointer;padding:2px 3px;line-height:1}
+.starBtn.on{color:#F5A623}
+.swatch{width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.35);cursor:pointer;flex:none}
+.swatch.on{outline:3px solid #14342B;outline-offset:1px}
+.inputTxt{width:100%;border:2px solid #ddd;border-radius:12px;padding:10px 12px;font-size:15px;box-sizing:border-box}
+#card.viaje .ocultarViaje{display:none!important}
 .you{width:22px;height:22px;border-radius:50%;background:#2E7CF6;border:4px solid #fff;box-shadow:0 0 0 9px rgba(46,124,246,.28),0 2px 8px rgba(0,0,0,.4)}
 .card{position:absolute;left:10px;right:10px;bottom:10px;z-index:6;background:#fff;border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.35);padding:13px 15px;max-height:62vh;overflow-y:auto}
 .card h3{margin:0;font-size:18.5px;color:#14342B}
@@ -61,56 +78,102 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 <div id="map"></div>
 <div class="topbar">
   <div class="brand"><img src="icono-512.png" alt="Mascotas">Mascotas cerca de ti</div>
-  <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="buscador" type="text" placeholder="Buscar veterinarias, tiendas, farmacias…"></div>
+  <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="buscador" type="text" placeholder="Buscar veterinarias, tiendas, zoológicos, restaurantes…"></div>
   <div id="sug" class="sug"></div>
   <div class="chips" id="chips">
-    <button class="chip on" data-cat="todos">Todos</button>
-    <button class="chip" data-cat="vet"><span class="dot" style="background:#22A355"></span>Veterinarias</button>
-    <button class="chip" data-cat="tienda"><span class="dot" style="background:#F5A800"></span>Tiendas</button>
-    <button class="chip" data-cat="farma"><span class="dot" style="background:#E5322D"></span>Farmacias</button>
+    <button class="chip catChip on" data-cat="todos">Todos</button>
+    <button class="chip catChip" data-cat="vet"><span class="dot" style="background:#22A355"></span>Veterinarias</button>
+    <button class="chip catChip" data-cat="tienda"><span class="dot" style="background:#F5A800"></span>Tiendas</button>
+    <button class="chip catChip" data-cat="farma"><span class="dot" style="background:#E5322D"></span>Farmacias</button>
+  </div>
+  <div class="chips" id="chips2" style="margin-top:6px;flex-wrap:nowrap;overflow-x:auto">
+    <button class="chip catChip" data-cat="zoo"><span class="dot" style="background:#7C3AED"></span>Zoológicos</button>
+    <button class="chip catChip" data-cat="granja"><span class="dot" style="background:#B45309"></span>Granjas</button>
+    <button class="chip catChip" data-cat="refugio"><span class="dot" style="background:#0F766E"></span>Refugios</button>
+    <button class="chip catChip" data-cat="adopcion"><span class="dot" style="background:#EC4899"></span>Adopciones</button>
+    <button class="chip catChip" data-cat="facultad"><span class="dot" style="background:#1D4ED8"></span>Facultades</button>
+    <button class="chip catChip" data-cat="resto"><span class="dot" style="background:#F97316"></span>Restaurantes</button>
+    <button class="chip catChip" data-cat="evento"><span class="dot" style="background:#0891B2"></span>Eventos</button>
   </div>
   <div class="chips" id="ciudades" style="margin-top:6px">
     <button class="chip ciudadBtn on" data-ciudad="ibague">Ibagué</button>
     <button class="chip ciudadBtn" data-ciudad="charlotte">Charlotte</button>
+  </div>
+  <div class="chips" id="acciones" style="margin-top:6px">
+    <button class="chip" id="bEventos">Eventos</button>
+    <button class="chip" id="bVisitas">Mis visitas</button>
+    <button class="chip" id="bMascota">Mi mascota</button>
+    <button class="chip" id="bEEUU">Lugares en EE. UU.</button>
   </div>
 </div>
 <div class="views">
   <button id="vIlus" class="on">Ilustrado</button><button id="vSat">Satélite</button><button id="v3d">Mapa 3D</button><button id="vActual">Actual</button>
 </div>
 <button id="btnGps" class="gpsbtn on">Modo GPS</button>
-<button id="btnYo" class="gpsbtn" style="top:336px">Mi ubicación</button>
+<button id="btnYo" class="gpsbtn" style="top:408px">Mi ubicación</button>
 <button id="btnBrujula" class="brujula" title="Norte"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
-<button id="btnZoomMas" class="zoomBtn" style="top:450px">+</button>
-<button id="btnZoomMenos" class="zoomBtn" style="top:504px">−</button>
-<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v4</div>
+<button id="btnZoomMas" class="zoomBtn" style="top:522px">+</button>
+<button id="btnZoomMenos" class="zoomBtn" style="top:576px">−</button>
+<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v5</div>
 <div class="card" id="card">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
-  <div style="display:flex;gap:11px;align-items:center">
+  <div class="ocultarViaje" style="display:flex;gap:11px;align-items:center">
     <div id="cLogo" class="logoBox"></div>
     <div style="flex:1;min-width:0">
       <h3 id="cNombre">Cargando…</h3>
       <div><span class="stars" id="cEstrellas"></span> <span class="meta" id="cEstado"></span></div>
     </div>
   </div>
-  <div class="meta" id="cDir"></div>
-  <div class="meta" id="cDist"></div>
-  <div class="meta" id="cAviso" style="color:#B97E00;font-weight:700"></div>
-  <div class="btns" id="filaPerfil" style="gap:6px">
+  <div class="meta ocultarViaje" id="cDir"></div>
+  <div class="meta ocultarViaje" id="cDist"></div>
+  <div class="meta ocultarViaje" id="cAviso" style="color:#B97E00;font-weight:700"></div>
+  <div class="meta ocultarViaje" id="visitasInfo" style="margin-top:4px"></div>
+  <div class="btns ocultarViaje" id="filaVisitas" style="gap:4px;align-items:center">
+    <span style="font-size:13px;color:#555;font-weight:700;flex:none">Tu visita:</span>
+    <button class="starBtn" data-v="1">★</button><button class="starBtn" data-v="2">★</button><button class="starBtn" data-v="3">★</button><button class="starBtn" data-v="4">★</button><button class="starBtn" data-v="5">★</button>
+    <span style="font-size:12px;color:#888">Toca una estrella para registrar tu visita</span>
+  </div>
+  <div class="btns ocultarViaje" id="filaPerfil" style="gap:6px">
     <button class="perfilBtn on" data-perfil="driving">En carro</button>
     <button class="perfilBtn" data-perfil="walking">A pie</button>
     <button class="perfilBtn" data-perfil="cycling">En bici</button>
   </div>
-  <div class="btns">
+  <div class="btns ocultarViaje" id="filaContacto">
     <a class="btn call" id="bLlamar" href="#">Llamar</a>
     <a class="btn wa" id="bWa" href="#" target="_blank" rel="noopener">WhatsApp</a>
     <button class="btn go" id="bIr">Cómo llegar</button>
   </div>
   <div class="btns" id="filaIniciar"><button class="btn iniciar" id="bIniciar">Iniciar viaje</button></div>
   <div class="btns" id="filaTerminar" style="display:none"><button class="btn terminar" id="bTerminar">Terminar viaje</button></div>
-  <div class="btns">
+  <div class="btns ocultarViaje">
     <button class="btn shareBtn" id="bCompartir">Compartir</button>
     <button class="btn shareBtn" id="bRutaCompleta">Ver ruta completa</button>
   </div>
+</div>
+<div class="panel" id="panelEventos" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3>Eventos de animales cerca de ti</h3><button class="chip" onclick="document.getElementById('panelEventos').style.display='none'">Cerrar</button></div>
+  <div id="listaEventos"></div>
+  <div style="margin-top:12px;border-top:2px solid #eee;padding-top:10px">
+    <div style="font-weight:800;font-size:14px;margin-bottom:6px">Publica tu evento</div>
+    <input class="inputTxt" id="evNombre" placeholder="Nombre del evento">
+    <div style="display:flex;gap:8px;margin-top:8px"><input class="inputTxt" id="evFecha" placeholder="Fecha (ej. 15 nov)"><input class="inputTxt" id="evHora" placeholder="Hora (ej. 10 a. m.)"></div>
+    <input class="inputTxt" id="evLugar" placeholder="Lugar (ej. parque, dirección)" style="margin-top:8px">
+    <button class="btn iniciar" id="bPublicarEvento" style="margin-top:10px;width:100%">Publicar evento</button>
+    <div class="meta" style="margin-top:6px">Si estás en el lugar, el evento queda marcado en el mapa con tu ubicación actual.</div>
+  </div>
+</div>
+<div class="panel" id="panelVisitas" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3>Mis visitas</h3><button class="chip" onclick="document.getElementById('panelVisitas').style.display='none'">Cerrar</button></div>
+  <div id="listaVisitas"></div>
+</div>
+<div class="panel" id="panelMascota" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3>Mi mascota</h3><button class="chip" onclick="document.getElementById('panelMascota').style.display='none'">Cerrar</button></div>
+  <label style="font-size:13px;font-weight:700;color:#555">Nombre de tu mascota</label>
+  <input class="inputTxt" id="petNombre" placeholder="Ej. Max, Luna…" style="margin-top:6px">
+  <div style="font-size:13px;font-weight:700;color:#555;margin:12px 0 6px">Color de tu mascota</div>
+  <div style="display:flex;gap:10px" id="petColores"></div>
+  <button class="btn iniciar" id="bGuardarMascota" style="margin-top:14px;width:100%">Guardar</button>
+  <div class="meta" style="margin-top:6px">El nombre aparece en el banner del viaje y el color tiñe a tu mascota en el mapa.</div>
 </div>
 <script>
 const BASE='https://tiles.basemaps.cartocdn.com/v/20261001-03';
@@ -298,7 +361,7 @@ function actualizarBanner(){
   const calleActual=(pasos[idxCalle]&&pasos[idxCalle].name)||'esta vía';
   const rest=Math.max(0,total-ultimoSnap.along);
   const eta=rutaDuracion&&rutaDistancia?Math.max(1,Math.round((rest/rutaDistancia)*(rutaDuracion/60))):null;
-  ban.innerHTML=`<div style="display:flex;gap:10px;align-items:center">${flechaSVG(st)}<div><div style="font-size:16px;font-weight:800">En ${fmtDist(dist)} · ${textoManeuver(st)}</div><div style="font-size:12.5px;opacity:.85">Vas por ${calleActual}${eta?` · Llegas en ~${eta} min`:''}</div></div></div>`;
+  ban.innerHTML=`<div style="display:flex;gap:10px;align-items:center">${flechaSVG(st)}<div>${petNombre?`<div style="font-size:12.5px;opacity:.85">¡Vamos, ${petNombre}!</div>`:''}<div style="font-size:16px;font-weight:800">En ${fmtDist(dist)} · ${textoManeuver(st)}</div><div style="font-size:12.5px;opacity:.85">Vas por ${calleActual}${eta?` · Llegas en ~${eta} min`:''}</div></div></div>`;
   ban.style.display='block';
 }
 function actualizarDistancia(){
@@ -335,12 +398,26 @@ function puntoMasCercano(pos){
 function glyph(kind,color){
   if(kind==='paw')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="${color}"><ellipse cx="12" cy="15.5" rx="4.2" ry="3.4"/><circle cx="4.6" cy="10.5" r="1.9"/><circle cx="8.2" cy="6.8" r="2"/><circle cx="12.6" cy="5.9" r="2"/><circle cx="16.9" cy="7.6" r="1.9"/><circle cx="19.6" cy="11.4" r="1.7"/></svg>`;
   if(kind==='cross')return `<svg width="16" height="16" viewBox="0 0 24 24" fill="${color}"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg>`;
+  if(kind==='zoo')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.1"><circle cx="7.5" cy="13" r="4"/><circle cx="16.5" cy="13" r="4"/><path d="M11.5 12V9h1v3M7.5 9V6M16.5 9V6"/></svg>`;
+  if(kind==='granja')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="${color}"><path d="M4 10L12 4l8 6v10H4z"/><path d="M9 20v-6h6v6" fill="none" stroke="#fff" stroke-width="1.8"/><path d="M9 14l6 6M15 14l-6 6" stroke="#fff" stroke-width="1.4"/></svg>`;
+  if(kind==='refugio')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="${color}"><path d="M4 11L12 4l8 7v9H4z"/><path d="M12 18.5S8.5 16.2 8.5 13.8a1.9 1.9 0 0 1 3.5-1 1.9 1.9 0 0 1 3.5 1C15.5 16.2 12 18.5 12 18.5z" fill="#fff"/></svg>`;
+  if(kind==='adopcion')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="${color}"><path d="M12 20S4 15.5 4 9.8A4.6 4.6 0 0 1 12 6.4a4.6 4.6 0 0 1 8 3.4C20 15.5 12 20 12 20z"/></svg>`;
+  if(kind==='facultad')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="${color}"><path d="M12 4L2 9l10 5 10-5z"/><path d="M6 11.5V16c0 1.4 2.7 3 6 3s6-1.6 6-3v-4.5" fill="none" stroke="${color}" stroke-width="1.8"/><path d="M22 9v5" stroke="${color}" stroke-width="1.8"/></svg>`;
+  if(kind==='resto')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.1" stroke-linecap="round"><path d="M6 2v6a2 2 0 0 0 4 0V2M8 2v20"/><path d="M17 2c2.2 3 2.2 6.5 0 8.5V22"/></svg>`;
+  if(kind==='evento')return `<svg width="16" height="16" viewBox="0 0 24 24" fill="${color}"><rect x="4" y="5.5" width="16" height="15" rx="2"/><path d="M4 10.5h16M8 3v4M16 3v4" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="15.5" r="2.2" fill="#fff"/></svg>`;
   return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.4"><path d="M5 8h14l-1.2 12.2a1.8 1.8 0 0 1-1.8 1.8H8a1.8 1.8 0 0 1-1.8-1.8L5 8z"/><path d="M8.5 10V6.5a3.5 3.5 0 0 1 7 0V10"/></svg>`;
 }
 const CAT={
   vet:{cls:'green',g:'paw',col:'#22A355',nombre:'Veterinaria'},
   tienda:{cls:'yellow',g:'bag',col:'#B97E00',nombre:'Tienda de mascotas'},
-  farma:{cls:'red',g:'cross',col:'#E5322D',nombre:'Farmacia agropecuaria'}
+  farma:{cls:'red',g:'cross',col:'#E5322D',nombre:'Farmacia agropecuaria'},
+  zoo:{cls:'purple',g:'zoo',col:'#7C3AED',nombre:'Zoológico o acuario'},
+  granja:{cls:'brown',g:'granja',col:'#B45309',nombre:'Granja para visitar'},
+  refugio:{cls:'teal',g:'refugio',col:'#0F766E',nombre:'Refugio / perrera'},
+  adopcion:{cls:'pink',g:'adopcion',col:'#EC4899',nombre:'Adopción de animales'},
+  facultad:{cls:'blue',g:'facultad',col:'#1D4ED8',nombre:'Facultad / instituto de veterinaria'},
+  resto:{cls:'orange',g:'resto',col:'#F97316',nombre:'Restaurante pet-friendly'},
+  evento:{cls:'cyan',g:'evento',col:'#0891B2',nombre:'Evento de animales'}
 };
 const CIUDADES={
   ibague:{nombre:'Ibagué', centro:[-75.2362,4.4425], zoom:14.7, tz:'America/Bogota', mlng:111000, datos:NEGOCIOS_IBAGUE},
@@ -366,6 +443,7 @@ function cargarCiudad(id,volar){
   marcadores.forEach(m=>m.mk.remove());
   marcadores.length=0;
   crearPines();
+  if(id==='charlotte')crearPinesEventos();
   document.querySelectorAll('.ciudadBtn').forEach(x=>x.classList.toggle('on',x.dataset.ciudad===id));
   aplicarFiltros();
   if(volar) window.map.easeTo({center:c.centro,zoom:c.zoom});
@@ -388,6 +466,7 @@ let seleccionado=null, tripActivo=false, llegadaEn=null;
 let follow=true, followPausado=false, camBearing=0;
 let lastRouteFrom=[...YOU], lastRouteAt=0, gpsListo=false, ultimoFix=null;
 function mostrarBotonesViaje(){
+  document.getElementById('card').classList.toggle('viaje',tripActivo);
   const ini=document.getElementById('bIniciar');
   if(tripActivo){
     document.getElementById('filaIniciar').style.display='none';
@@ -416,11 +495,13 @@ function llegar(){
   llegadaEn=[seleccionado.lng,seleccionado.lat];
   document.getElementById('bannerTurno').style.display='none';
   document.getElementById('cDist').innerHTML=`¡Llegaste a <b>${seleccionado.n}</b>!`;
+  window.map.easeTo({pitch:0,bearing:0,offset:[0,0],duration:700});
   mostrarBotonesViaje();
 }
 function terminarViaje(){
   tripActivo=false; llegadaEn=null;
   document.getElementById('bannerTurno').style.display='none';
+  window.map.easeTo({pitch:0,bearing:0,offset:[0,0],duration:700});
   mostrarBotonesViaje();
   actualizarDistancia();
 }
@@ -432,6 +513,7 @@ function iniciarViaje(){
   trackPts=[[...YOU]]; actualizarTrack();
   mostrarBotonesViaje();
   actualizarRestante();
+  window.map.easeTo({pitch:65,zoom:17.5,offset:[0,140],duration:900});
 }
 
 /* ---------- GPS real del teléfono (con filtro de ruido) ---------- */
@@ -480,6 +562,7 @@ function seleccionar(b,volar){
   llegadaEn=null;
   seleccionado=b;
   marcadores.forEach(m=>m.el.classList.toggle('sel',m.b===b));
+  if(typeof marcadoresOSM!=='undefined')marcadoresOSM.forEach(m=>m.el.classList.toggle('sel',m.b===b));
   document.getElementById('cNombre').textContent=b.n;
   document.getElementById('cLogo').style.background=CAT[b.cat].col;
   document.getElementById('cLogo').innerHTML=glyph(CAT[b.cat].g,'#fff');
@@ -490,9 +573,13 @@ function seleccionar(b,volar){
     estado=abierto?`<b>Abierto ahora</b> · cierra ${fmtHora(b.horas[1])}`:`<span class="cerrado">Cerrado ahora</span> · abre ${fmtHora(b.horas[0])}`;
   }
   document.getElementById('cEstado').innerHTML=estado;
-  document.getElementById('cDir').textContent=b.dir+(b.nota?(' · '+b.nota):'');
-  document.getElementById('bLlamar').href='tel:'+b.tel;
-  document.getElementById('bWa').href='https://wa.me/'+b.tel.replace('+','');
+  document.getElementById('cDir').textContent=(b.dir||'')+(b.fecha?(' · '+b.fecha):'')+(b.nota?(' · '+b.nota):'');
+  document.getElementById('filaContacto').style.display=b.tel?'':'none';
+  if(b.tel){
+    document.getElementById('bLlamar').href='tel:'+b.tel;
+    document.getElementById('bWa').href='https://wa.me/'+b.tel.replace('+','');
+  }
+  actualizarVisitasInfo();
   rutaEsReal=false; rutaDistancia=null; estadoRuta='calculando';
   pasos=[]; pasosAlong=[];
   document.getElementById('bannerTurno').style.display='none';
@@ -521,11 +608,13 @@ function aplicarFiltros(){
     m.el.style.display=(okCat&&okTxt)?'':'none';
   });
 }
-document.getElementById('chips').addEventListener('click',e=>{
-  const btn=e.target.closest('.chip');if(!btn)return;
-  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===btn));
+function onChipCategoria(e){
+  const btn=e.target.closest('.catChip');if(!btn)return;
+  document.querySelectorAll('.catChip').forEach(c=>c.classList.toggle('on',c===btn));
   filtroCat=btn.dataset.cat;aplicarFiltros();
-});
+}
+document.getElementById('chips').addEventListener('click',onChipCategoria);
+document.getElementById('chips2').addEventListener('click',onChipCategoria);
 document.getElementById('buscador').addEventListener('input',e=>{filtroTxt=e.target.value.trim().toLowerCase();aplicarFiltros();renderSug();});
 function renderSug(){
   const box=document.getElementById('sug');
@@ -602,10 +691,161 @@ document.getElementById('bRutaCompleta').addEventListener('click',()=>{
   if(tripActivo)followPausado=true;
 });
 
+/* ---------- Eventos, visitas, mascota y capa EE. UU. ---------- */
+function crearPinesEventos(){
+  (typeof EVENTOS_CHARLOTTE!=='undefined'?EVENTOS_CHARLOTTE:[]).forEach(b=>{
+    const c=CAT[b.cat];
+    const el=document.createElement('div');el.className='pin2 '+c.cls;
+    el.innerHTML=`<span class="in">${glyph(c.g,c.col)}</span>`;
+    el.title=b.n;
+    const mk=new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat([b.lng,b.lat]).addTo(window.map);
+    el.addEventListener('click',()=>seleccionar(b,false));
+    marcadores.push({b,el,mk});
+  });
+}
+const visitasLS='mascotas_visitas_v1';
+function leerVisitas(){try{return JSON.parse(localStorage.getItem(visitasLS))||{}}catch(e){return {}}}
+function guardarVisitas(v){localStorage.setItem(visitasLS,JSON.stringify(v))}
+function claveVisita(b){return ciudadActual+'|'+b.n}
+function actualizarVisitasInfo(){
+  const info=document.getElementById('visitasInfo'); if(!info)return;
+  if(!seleccionado){info.textContent='';return;}
+  const v=leerVisitas()[claveVisita(seleccionado)];
+  info.innerHTML=v?`Has venido <b>${v.veces} ${v.veces===1?'vez':'veces'}</b> aquí · tu calificación: <span class="stars">${'★'.repeat(v.estrellas)}${'☆'.repeat(5-v.estrellas)}</span>`:'Aún no registras visitas aquí. Toca una estrella cuando vengas.';
+  document.querySelectorAll('#filaVisitas .starBtn').forEach(s=>s.classList.toggle('on',!!v&&+s.dataset.v<=v.estrellas));
+}
+function registrarVisita(estrellas){
+  if(!seleccionado)return;
+  const v=leerVisitas(), k=claveVisita(seleccionado);
+  const ant=v[k]||{n:seleccionado.n,cat:seleccionado.cat,dir:seleccionado.dir,veces:0,estrellas:0,ultima:''};
+  ant.veces++; ant.estrellas=estrellas; ant.ultima=new Date().toLocaleDateString('es-CO');
+  v[k]=ant; guardarVisitas(v);
+  actualizarVisitasInfo(); renderVisitas();
+}
+function renderVisitas(){
+  const box=document.getElementById('listaVisitas'); if(!box)return;
+  const lista=Object.values(leerVisitas()).sort((a,b)=>b.veces-a.veces);
+  if(!lista.length){box.innerHTML='<div class="meta">Todavía no registras visitas. Abre un lugar y toca una estrella cuando lo visites.</div>';return;}
+  box.innerHTML=lista.map(x=>`<div class="panelRow"><span style="width:12px;height:12px;border-radius:50%;background:${(CAT[x.cat]||CAT.vet).col};flex:none"></span><span><b>${x.n}</b><br><span class="meta">${x.veces} ${x.veces===1?'visita':'visitas'} · <span class="stars">${'★'.repeat(x.estrellas)}${'☆'.repeat(5-x.estrellas)}</span> · última: ${x.ultima}</span></span></div>`).join('');
+}
+document.querySelectorAll('#filaVisitas .starBtn').forEach(s=>s.addEventListener('click',()=>registrarVisita(+s.dataset.v)));
+const mascotaLS='mascotas_mascota_v1';
+let petNombre='', petColor='original';
+const COLORES_MASCOTA={
+  original:{css:'',muestra:'#B07A45'},
+  negro:{css:'brightness(.35) saturate(.3)',muestra:'#222'},
+  blanco:{css:'brightness(1.9) saturate(.15)',muestra:'#eee'},
+  dorado:{css:'sepia(.6) hue-rotate(8deg) saturate(2) brightness(1.1)',muestra:'#D9A441'},
+  gris:{css:'saturate(0)',muestra:'#888'},
+  chocolate:{css:'hue-rotate(-18deg) brightness(.8) saturate(1.3)',muestra:'#6B3F1D'}
+};
+function cargarMascota(){try{const m=JSON.parse(localStorage.getItem(mascotaLS))||{};petNombre=m.nombre||'';petColor=m.color||'original';}catch(e){}}
+function aplicarColorMascota(){
+  const img=document.getElementById('dogImg'); if(!img)return;
+  const f=COLORES_MASCOTA[petColor]?COLORES_MASCOTA[petColor].css:'';
+  img.style.filter='drop-shadow(0 6px 7px rgba(0,0,0,.45))'+(f?' '+f:'');
+}
+function renderColoresMascota(){
+  const box=document.getElementById('petColores'); if(!box)return;
+  box.innerHTML=Object.keys(COLORES_MASCOTA).map(k=>`<button class="swatch ${k===petColor?'on':''}" data-c="${k}" title="${k}" style="background:${COLORES_MASCOTA[k].muestra}"></button>`).join('');
+  box.querySelectorAll('.swatch').forEach(s=>s.addEventListener('click',()=>{
+    petColor=s.dataset.c;
+    box.querySelectorAll('.swatch').forEach(x=>x.classList.toggle('on',x===s));
+    aplicarColorMascota();
+  }));
+}
+document.getElementById('bGuardarMascota').addEventListener('click',()=>{
+  petNombre=document.getElementById('petNombre').value.trim();
+  localStorage.setItem(mascotaLS,JSON.stringify({nombre:petNombre,color:petColor}));
+  aplicarColorMascota();
+  document.getElementById('panelMascota').style.display='none';
+});
+function leerEventosUsuario(){try{return JSON.parse(localStorage.getItem('mascotas_eventos_v1'))||[]}catch(e){return []}}
+function renderEventos(){
+  const box=document.getElementById('listaEventos'); if(!box)return;
+  const base=(typeof EVENTOS_CHARLOTTE!=='undefined'?EVENTOS_CHARLOTTE:[]);
+  const todos=[...leerEventosUsuario().map(e=>({...e,propio:true})),...base.map(e=>({...e,propio:false}))];
+  if(!todos.length){box.innerHTML='<div class="meta">Aún no hay eventos. Publica el primero abajo.</div>';return;}
+  box.innerHTML=todos.map((e,i)=>`<div class="panelRow" data-ev="${i}"><span style="width:12px;height:12px;border-radius:50%;background:#0891B2;flex:none"></span><span><b>${e.n}</b>${e.propio?' <span class="meta">(tu evento)</span>':''}<br><span class="meta">${e.fecha||''}${e.hora?' · '+e.hora:''} · ${e.dir||e.lugar||''}${e.nota?' · '+e.nota:''}</span></span></div>`).join('');
+  box.querySelectorAll('.panelRow').forEach(row=>row.addEventListener('click',()=>{
+    const e=todos[+row.dataset.ev];
+    if(e.lat!=null&&e.lng!=null){document.getElementById('panelEventos').style.display='none';seleccionar(e,true);}
+  }));
+}
+const marcadoresUsuario=[];
+document.getElementById('bPublicarEvento').addEventListener('click',()=>{
+  const n=document.getElementById('evNombre').value.trim();
+  const f=document.getElementById('evFecha').value.trim();
+  const h=document.getElementById('evHora').value.trim();
+  const l=document.getElementById('evLugar').value.trim();
+  if(!n){alert('Escribe el nombre del evento');return;}
+  const ev={n,cat:'evento',fecha:f,hora:h,dir:l,lat:YOU[1],lng:YOU[0],tel:null,horas:null,nota:'Publicado por la comunidad'};
+  const arr=leerEventosUsuario(); arr.push(ev); localStorage.setItem('mascotas_eventos_v1',JSON.stringify(arr));
+  const c=CAT.evento;
+  const el=document.createElement('div');el.className='pin2 '+c.cls;
+  el.innerHTML=`<span class="in">${glyph(c.g,c.col)}</span>`; el.title=ev.n;
+  const mk=new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat([ev.lng,ev.lat]).addTo(window.map);
+  el.addEventListener('click',()=>seleccionar(ev,false));
+  marcadoresUsuario.push({b:ev,el,mk});
+  ['evNombre','evFecha','evHora','evLugar'].forEach(id=>document.getElementById(id).value='');
+  renderEventos();
+});
+const marcadoresOSM=[];
+let osmCargando=false;
+async function cargarOSM(){
+  const btn=document.getElementById('bEEUU');
+  if(marcadoresOSM.length){marcadoresOSM.forEach(m=>m.mk.remove());marcadoresOSM.length=0;btn.textContent='Lugares en EE. UU.';return;}
+  if(osmCargando)return;
+  const lat=YOU[1], lng=YOU[0];
+  if(lat<24||lat>50||lng<-125||lng>-66){document.getElementById('cAviso').textContent='La capa en vivo cubre Estados Unidos. Activa tu GPS en EE. UU. para usarla.';return;}
+  osmCargando=true; btn.textContent='Buscando…';
+  try{
+    const q=`[out:json][timeout:25];(node["amenity"~"veterinary|animal_shelter|zoo|animal_boarding"](around:30000,${lat},${lng});way["amenity"~"veterinary|animal_shelter|zoo|animal_boarding"](around:30000,${lat},${lng});node["shop"="pet"](around:30000,${lat},${lng});way["shop"="pet"](around:30000,${lat},${lng}););out center 100;`;
+    const r=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(q)});
+    const j=await r.json();
+    let n=0;
+    (j.elements||[]).forEach(el=>{
+      const t=el.tags||{}; if(!t.name)return;
+      const la=el.lat||(el.center&&el.center.lat), lo=el.lon||(el.center&&el.center.lon);
+      if(la==null||lo==null)return;
+      let cat='tienda', extra='';
+      if(t.amenity==='veterinary')cat='vet';
+      else if(t.amenity==='animal_shelter')cat='refugio';
+      else if(t.amenity==='zoo')cat='zoo';
+      else if(t.amenity==='animal_boarding'){cat='tienda';extra='Guardería · ';}
+      const b={n:t.name,cat,lat:la,lng:lo,dir:(t['addr:street']?t['addr:street']+(t['addr:housenumber']?' '+t['addr:housenumber']:'')+', ':'')+'Dato de OpenStreetMap',tel:t.phone||null,horas:null,nota:extra+'Verifica antes de ir'};
+      const c=CAT[cat];
+      const mkEl=document.createElement('div');mkEl.className='pin2 '+c.cls;
+      mkEl.innerHTML=`<span class="in">${glyph(c.g,c.col)}</span>`; mkEl.title=b.n;
+      const mk=new maplibregl.Marker({element:mkEl,anchor:'bottom'}).setLngLat([lo,la]).addTo(window.map);
+      mkEl.addEventListener('click',()=>seleccionar(b,false));
+      marcadoresOSM.push({b,el:mkEl,mk}); n++;
+    });
+    document.getElementById('cAviso').textContent=n?`Capa EE. UU.: ${n} lugares de OpenStreetMap cerca de ti. Toca “Lugares en EE. UU.” para limpiarlos.`:'Sin lugares de animales en OpenStreetMap cerca de ti (30 km).';
+    btn.textContent=n?'Limpiar capa EE. UU.':'Lugares en EE. UU.';
+  }catch(e){
+    document.getElementById('cAviso').textContent='No se pudo consultar OpenStreetMap. Revisa tu conexión e intenta de nuevo.';
+    btn.textContent='Lugares en EE. UU.';
+  }
+  osmCargando=false;
+}
+document.getElementById('bEEUU').addEventListener('click',cargarOSM);
+function mostrarPanel(id){
+  ['panelEventos','panelVisitas','panelMascota'].forEach(p=>{const el=document.getElementById(p); if(el)el.style.display=(p===id&&el.style.display!=='block')?'block':'none';});
+  if(id==='panelVisitas')renderVisitas();
+  if(id==='panelEventos')renderEventos();
+  if(id==='panelMascota'){document.getElementById('petNombre').value=petNombre;renderColoresMascota();}
+}
+document.getElementById('bEventos').addEventListener('click',()=>mostrarPanel('panelEventos'));
+document.getElementById('bVisitas').addEventListener('click',()=>mostrarPanel('panelVisitas'));
+document.getElementById('bMascota').addEventListener('click',()=>mostrarPanel('panelMascota'));
+cargarMascota();
+
 /* ---------- La mascota: parte de TU ubicación y te sigue en el viaje ---------- */
 const dogEl=document.createElement('div');
 dogEl.innerHTML='<img id="dogImg" src="mascota/gstop.png" style="width:186px;height:auto;display:block;filter:drop-shadow(0 6px 7px rgba(0,0,0,.45))">';
 const dog=new maplibregl.Marker({element:dogEl,anchor:'center'}).setLngLat(YOU).addTo(window.map);
+aplicarColorMascota();
 const RUNF=['mascota/g1.png','mascota/g2.png','mascota/g3.png','mascota/g4.png'];
 let lastSrc='';
 function loop(now){
@@ -619,7 +859,7 @@ function loop(now){
     if(follow&&!followPausado){
       const diff=normAng(snap.brg-camBearing);
       camBearing+=diff*0.07;
-      window.map.jumpTo({center:snap.c,bearing:camBearing,zoom:16.8,pitch:55});
+      window.map.jumpTo({center:snap.c,bearing:camBearing,zoom:17.5,pitch:65,offset:[0,140]});
       bEf=camBearing;
     }
     rot=`rotate(${-90+normAng(snap.brg-bEf)}deg)`;
