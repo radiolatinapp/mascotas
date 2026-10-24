@@ -43,11 +43,17 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 .attr{position:absolute;right:10px;bottom:196px;z-index:5;font-size:10px;color:rgba(255,255,255,.95);text-shadow:0 1px 2px rgba(0,0,0,.6)}
 .gpsbtn{position:absolute;top:246px;right:12px;z-index:6;border:0;border-radius:20px;padding:9px 15px;font-size:13px;font-weight:800;background:#fff;color:#444;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer}
 .gpsbtn.on{background:#0E7C66;color:#fff}
+.sug{position:absolute;top:104px;left:12px;right:12px;z-index:8;background:#fff;border-radius:16px;box-shadow:0 8px 22px rgba(0,0,0,.32);max-height:46vh;overflow:auto;display:none}
+.sugItem{display:flex;gap:10px;align-items:center;padding:11px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer}
+.sugItem:last-child{border-bottom:0}
+.sugItem .nm{font-size:14.5px;font-weight:700;color:#14342B;line-height:1.2}
+.sugItem .cat{font-size:12px;color:#777}
 </style></head><body>
 <div id="map"></div>
 <div class="topbar">
   <div class="brand"><img src="icono-512.png" alt="Mascotas">Mascotas cerca de ti</div>
   <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="buscador" type="text" placeholder="Buscar veterinarias, tiendas, farmacias…"></div>
+  <div id="sug" class="sug"></div>
   <div class="chips" id="chips">
     <button class="chip on" data-cat="todos">Todos</button>
     <button class="chip" data-cat="vet"><span class="dot" style="background:#22A355"></span>Veterinarias</button>
@@ -59,6 +65,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
   <button id="vIlus" class="on">Ilustrado</button><button id="vSat">Satélite</button><button id="v3d">Mapa 3D</button>
 </div>
 <button id="btnGps" class="gpsbtn on">Modo GPS</button>
+<button id="btnYo" class="gpsbtn" style="top:296px">Mi ubicación</button>
 <div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM</div>
 <div class="card" id="card">
   <h3 id="cNombre">Cargando…</h3>
@@ -150,9 +157,11 @@ window.map.on('styledata',asegurarRuta);
 function pintarDatosRuta(){try{const s=window.map.getSource('carretera'); if(s) s.setData(datosRuta()); else asegurarRuta();}catch(e){}}
 let rutaToken=0, rutaEsReal=false;
 function urlRutaOSRM(a,b){return `https://router.project-osrm.org/route/v1/driving/${a[0]},${a[1]};${b[0]},${b[1]}?overview=full&geometries=geojson`;}
+let rutaDistancia=null;
 function actualizarDistancia(){
   const el=document.getElementById('cDist'); if(!el)return;
-  const d=total>=1000? (total/1000).toFixed(1).replace('.',',')+' km' : Math.round(total)+' m';
+  const dist=(rutaEsReal&&rutaDistancia)?rutaDistancia:total;
+  const d=dist>=1000? (dist/1000).toFixed(1).replace('.',',')+' km' : Math.round(dist)+' m';
   el.innerHTML= rutaEsReal? `Ruta por las calles · a <b>${d}</b> de aquí` : `A <b>${d}</b> de aquí`;
 }
 
@@ -178,9 +187,20 @@ NEGOCIOS_IBAGUE.forEach(b=>{
   marcadores.push({b,el,mk});
 });
 const youEl=document.createElement('div');youEl.className='you';
-new maplibregl.Marker({element:youEl}).setLngLat(YOU).addTo(window.map);
+const youMarker=new maplibregl.Marker({element:youEl}).setLngLat(YOU).addTo(window.map);
+let lastRouteFrom=[...YOU], lastRouteAt=0;
+function moverYo(){
+  youMarker.setLngLat(YOU);
+  if(seleccionado)seleccionar(seleccionado,false);
+}
 if(navigator.geolocation){
-  navigator.geolocation.getCurrentPosition(p=>{YOU[0]=p.coords.longitude;YOU[1]=p.coords.latitude;if(seleccionado)seleccionar(seleccionado,false);},()=>{},{timeout:4000});
+  navigator.geolocation.getCurrentPosition(p=>{YOU[0]=p.coords.longitude;YOU[1]=p.coords.latitude;moverYo();},()=>{},{enableHighAccuracy:true,timeout:8000});
+  navigator.geolocation.watchPosition(p=>{
+    YOU[0]=p.coords.longitude; YOU[1]=p.coords.latitude;
+    youMarker.setLngLat(YOU);
+    const dx=(YOU[0]-lastRouteFrom[0])*111000, dy=(YOU[1]-lastRouteFrom[1])*110600;
+    if(seleccionado && Math.hypot(dx,dy)>120 && Date.now()-lastRouteAt>20000){moverYo();}
+  },()=>{},{enableHighAccuracy:true,maximumAge:8000});
 }
 
 /* ---------- Tarjeta del negocio ---------- */
@@ -201,7 +221,8 @@ function seleccionar(b,volar){
   document.getElementById('cDir').textContent=b.dir+(b.nota?(' · '+b.nota):'');
   document.getElementById('bLlamar').href='tel:'+b.tel;
   document.getElementById('bWa').href='https://wa.me/'+b.tel.replace('+','');
-  rutaEsReal=false;
+  rutaEsReal=false; rutaDistancia=null;
+  lastRouteFrom=[...YOU]; lastRouteAt=Date.now();
   RUTA=rutaSuave(YOU,[b.lng,b.lat]);
   prepararAnimacion();
   pintarDatosRuta();
@@ -210,11 +231,12 @@ function seleccionar(b,volar){
   fetch(urlRutaOSRM(YOU,[b.lng,b.lat])).then(r=>r.json()).then(j=>{
     if(token!==rutaToken||!j.routes||!j.routes[0])return;
     const coords=j.routes[0].geometry.coordinates;
-    if(coords&&coords.length>1){RUTA=coords;rutaEsReal=true;prepararAnimacion();pintarDatosRuta();actualizarDistancia();}
+    if(coords&&coords.length>1){RUTA=coords;rutaEsReal=true;rutaDistancia=j.routes[0].distance;prepararAnimacion();pintarDatosRuta();actualizarDistancia();}
   }).catch(()=>{});
   if(volar&&!gpsOn) window.map.easeTo({center:[b.lng,b.lat],zoom:Math.max(window.map.getZoom(),15)});
 }
 document.getElementById('bIr').addEventListener('click',()=>{if(seleccionado){activarGps();seleccionar(seleccionado,true);}});
+document.getElementById('btnYo').addEventListener('click',()=>{window.map.easeTo({center:YOU,zoom:16.6});});
 document.getElementById('btnGps').addEventListener('click',()=>{
   gpsOn=!gpsOn;
   document.getElementById('btnGps').classList.toggle('on',gpsOn);
@@ -236,7 +258,26 @@ document.getElementById('chips').addEventListener('click',e=>{
   document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===btn));
   filtroCat=btn.dataset.cat;aplicarFiltros();
 });
-document.getElementById('buscador').addEventListener('input',e=>{filtroTxt=e.target.value.trim().toLowerCase();aplicarFiltros();});
+document.getElementById('buscador').addEventListener('input',e=>{filtroTxt=e.target.value.trim().toLowerCase();aplicarFiltros();renderSug();});
+function renderSug(){
+  const box=document.getElementById('sug');
+  const lista=NEGOCIOS_IBAGUE.filter(b=>!filtroTxt||b.n.toLowerCase().includes(filtroTxt));
+  if(!lista.length||document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
+  box.innerHTML=lista.map((b,i)=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS_IBAGUE.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span><br><span class="cat">${c.nombre} · ${b.dir}</span></span></div>`;}).join('');
+  box.style.display='block';
+}
+document.getElementById('buscador').addEventListener('focus',()=>renderSug());
+document.getElementById('sug').addEventListener('click',e=>{
+  const item=e.target.closest('.sugItem'); if(!item)return;
+  const b=NEGOCIOS_IBAGUE[+item.dataset.i];
+  document.getElementById('sug').style.display='none';
+  document.getElementById('buscador').blur();
+  seleccionar(b,true);
+});
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.search')&&!e.target.closest('#sug'))document.getElementById('sug').style.display='none';
+});
+document.getElementById('buscador').addEventListener('keydown',e=>{if(e.key==='Escape'){document.getElementById('sug').style.display='none';e.target.blur();}});
 
 /* ---------- Vistas ---------- */
 function vista(btn,style,opts){
