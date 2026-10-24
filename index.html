@@ -91,37 +91,37 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 </style></head><body>
 <div id="map"></div>
 <div class="topbar">
-  <div class="brand"><img src="icono-512.png" alt="Mascotas">Mascotas cerca de ti</div>
-  <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="buscador" type="text" placeholder="Buscar veterinarias, tiendas, zoológicos, restaurantes…"></div>
+  <div class="brand"><img src="icono-512.png" alt="Mascotas"><span data-i18n="appTitle">Mascotas cerca de ti</span></div>
+  <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="buscador" type="text" data-i18n-ph="searchPh" placeholder="Buscar veterinarias, tiendas, zoológicos, restaurantes…"></div>
   <div id="sug" class="sug"></div>
   <div style="display:flex;gap:8px;margin-top:10px">
-    <button class="catBtn" id="bCategorias"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>Categorías</button>
+    <button class="catBtn" id="bCategorias"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg><span data-i18n="btnCategorias">Categorías</span></button>
     <div class="ciudadSeg" id="ciudades">
       <button class="ciudadBtn on" data-ciudad="ibague">Ibagué</button>
       <button class="ciudadBtn" data-ciudad="charlotte">Charlotte</button>
     </div>
   </div>
   <div class="chips" id="acciones" style="margin-top:6px">
-    <button class="chip" id="bVisitas">Mis visitas</button>
-    <button class="chip" id="bMascota">Mi mascota</button>
-    <button class="chip" id="bEEUU">Lugares en EE. UU.</button>
+    <button class="chip" id="bVisitas" data-i18n="btnVisitas">Mis visitas</button>
+    <button class="chip" id="bMascota" data-i18n="btnMascota">Mi mascota</button>
+    <button class="chip" id="bMundo" data-i18n="osmBtn">Lugares en el mundo</button><select id="selIdioma" class="chip" style="appearance:none;-webkit-appearance:none" aria-label="Idioma"><option value="es">Español</option><option value="en">English</option><option value="pt">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="nl">Nederlands</option><option value="pl">Polski</option></select>
   </div>
 </div>
 <div class="views">
-  <button id="vIlus" class="on">Ilustrado</button><button id="vSat">Satélite</button><button id="v3d">Mapa 3D</button><button id="vActual">Actual</button>
+  <button id="vIlus" class="on" data-i18n="viewIlus">Ilustrado</button><button id="vSat" data-i18n="viewSat">Satélite</button><button id="v3d" data-i18n="view3d">Mapa 3D</button><button id="vActual" data-i18n="viewActual">Actual</button>
 </div>
-<button id="btnGps" class="gpsbtn on">Modo GPS</button>
-<button id="btnYo" class="gpsbtn" style="top:272px">Mi ubicación</button>
-<button id="btnBrujula" class="brujula" title="Norte"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
+<button id="btnGps" class="gpsbtn on" data-i18n="btnGps">Modo GPS</button>
+<button id="btnYo" class="gpsbtn" style="top:272px" data-i18n="btnYo">Mi ubicación</button>
+<button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v6</div>
+<div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v7</div>
 <div class="card" id="card">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div class="ocultarViaje" style="display:flex;gap:11px;align-items:center">
     <div id="cLogo" class="logoBox"></div>
     <div style="flex:1;min-width:0">
-      <h3 id="cNombre">Cargando…</h3>
+      <h3 id="cNombre" data-i18n="cardCargando">Cargando…</h3>
       <div><span class="stars" id="cEstrellas"></span> <span class="meta" id="cEstado"></span></div>
     </div>
   </div>
@@ -130,62 +130,1152 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
   <div class="meta ocultarViaje" id="cAviso" style="color:#B97E00;font-weight:700"></div>
   <div class="meta ocultarViaje" id="visitasInfo" style="margin-top:4px"></div>
   <div class="btns ocultarViaje" id="filaVisitas" style="gap:4px;align-items:center">
-    <span style="font-size:13px;color:#555;font-weight:700;flex:none">Tu visita:</span>
+    <span style="font-size:13px;color:#555;font-weight:700;flex:none" data-i18n="tuVisita">Tu visita:</span>
     <button class="starBtn" data-v="1">★</button><button class="starBtn" data-v="2">★</button><button class="starBtn" data-v="3">★</button><button class="starBtn" data-v="4">★</button><button class="starBtn" data-v="5">★</button>
-    <span style="font-size:12px;color:#888">Toca una estrella para registrar tu visita</span>
+    <span style="font-size:12px;color:#888" data-i18n="tocaEstrella">Toca una estrella para registrar tu visita</span>
   </div>
   <div class="btns ocultarViaje" id="filaPerfil" style="gap:6px">
-    <button class="perfilBtn on" data-perfil="driving">En carro</button>
-    <button class="perfilBtn" data-perfil="walking">A pie</button>
-    <button class="perfilBtn" data-perfil="cycling">En bici</button>
+    <button class="perfilBtn on" data-perfil="driving" data-i18n="perfilCarro">En carro</button>
+    <button class="perfilBtn" data-perfil="walking" data-i18n="perfilPie">A pie</button>
+    <button class="perfilBtn" data-perfil="cycling" data-i18n="perfilBici">En bici</button>
   </div>
   <div class="btns ocultarViaje" id="filaContacto">
-    <a class="btn call" id="bLlamar" href="#">Llamar</a>
+    <a class="btn call" id="bLlamar" href="#" data-i18n="btnLlamar">Llamar</a>
     <a class="btn wa" id="bWa" href="#" target="_blank" rel="noopener">WhatsApp</a>
-    <button class="btn go" id="bIr">Cómo llegar</button>
+    <button class="btn go" id="bIr" data-i18n="btnIr">Cómo llegar</button>
   </div>
-  <div class="btns" id="filaIniciar"><button class="btn iniciar" id="bIniciar">Iniciar viaje</button></div>
-  <div class="btns" id="filaTerminar" style="display:none"><button class="btn terminar" id="bTerminar">Terminar viaje</button></div>
+  <div class="btns" id="filaIniciar"><button class="btn iniciar" id="bIniciar" data-i18n="iniciarViaje">Iniciar viaje</button></div>
+  <div class="btns" id="filaTerminar" style="display:none"><button class="btn terminar" id="bTerminar" data-i18n="btnTerminar">Terminar viaje</button></div>
   <div class="btns ocultarViaje">
-    <button class="btn shareBtn" id="bCompartir">Compartir</button>
-    <button class="btn shareBtn" id="bRutaCompleta">Ver ruta completa</button>
+    <button class="btn shareBtn" id="bCompartir" data-i18n="btnCompartir">Compartir</button>
+    <button class="btn shareBtn" id="bRutaCompleta" data-i18n="btnRuta">Ver ruta completa</button>
   </div>
 </div>
 <div class="panel" id="panelCategorias" style="display:none">
-  <div style="display:flex;justify-content:space-between;align-items:center"><h3>¿Qué buscas?</h3><button class="chip" id="bCerrarCategorias">Cerrar</button></div>
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelQueBuscas">¿Qué buscas?</h3><button class="chip" id="bCerrarCategorias" data-i18n="btnCerrar">Cerrar</button></div>
   <div id="listaCategorias"></div>
 </div>
 <div class="panel" id="panelLista" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
     <h3 id="listaTitulo" style="flex:1;min-width:0">Lugares</h3>
-    <button class="sortBtn on" id="sortMejor">Mejor valorados</button>
-    <button class="sortBtn" id="sortCerca">Cerca de mí</button>
-    <button class="chip" id="bCerrarLista">Cerrar</button>
+    <button class="sortBtn on" id="sortMejor" data-i18n="sortMejor">Mejor valorados</button>
+    <button class="sortBtn" id="sortCerca" data-i18n="sortCerca">Cerca de mí</button>
+    <button class="chip" id="bCerrarLista" data-i18n="btnCerrar">Cerrar</button>
   </div>
   <div id="listaCuerpo"></div>
   <div id="listaEventosForm" style="display:none;margin-top:12px;border-top:2px solid #eee;padding-top:10px">
-    <div style="font-weight:800;font-size:14px;margin-bottom:6px">Publica tu evento</div>
-    <input class="inputTxt" id="evNombre" placeholder="Nombre del evento">
-    <div style="display:flex;gap:8px;margin-top:8px"><input class="inputTxt" id="evFecha" placeholder="Fecha (ej. 15 nov)"><input class="inputTxt" id="evHora" placeholder="Hora (ej. 10 a. m.)"></div>
-    <input class="inputTxt" id="evLugar" placeholder="Lugar (ej. parque, dirección)" style="margin-top:8px">
-    <button class="btn iniciar" id="bPublicarEvento" style="margin-top:10px;width:100%">Publicar evento</button>
-    <div class="meta" style="margin-top:6px">Si estás en el lugar, el evento queda marcado en el mapa con tu ubicación actual.</div>
+    <div style="font-weight:800;font-size:14px;margin-bottom:6px" data-i18n="publicaEvento">Publica tu evento</div>
+    <input class="inputTxt" id="evNombre" data-i18n-ph="evNombre" placeholder="Nombre del evento">
+    <div style="display:flex;gap:8px;margin-top:8px"><input class="inputTxt" id="evFecha" data-i18n-ph="evFecha" placeholder="Fecha (ej. 15 nov)"><input class="inputTxt" id="evHora" data-i18n-ph="evHora" placeholder="Hora (ej. 10 a. m.)"></div>
+    <input class="inputTxt" id="evLugar" data-i18n-ph="evLugar" placeholder="Lugar (ej. parque, dirección)" style="margin-top:8px">
+    <button class="btn iniciar" id="bPublicarEvento" style="margin-top:10px;width:100%" data-i18n="btnPublicarEvento">Publicar evento</button>
+    <div class="meta" style="margin-top:6px" data-i18n="evNota">Si estás en el lugar, el evento queda marcado en el mapa con tu ubicación actual.</div>
   </div>
 </div>
 <div class="panel" id="panelVisitas" style="display:none">
-  <div style="display:flex;justify-content:space-between;align-items:center"><h3>Mis visitas</h3><button class="chip" onclick="document.getElementById('panelVisitas').style.display='none'">Cerrar</button></div>
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelVisitas">Mis visitas</h3><button class="chip" data-i18n="btnCerrar" onclick="document.getElementById('panelVisitas').style.display='none'">Cerrar</button></div>
   <div id="listaVisitas"></div>
 </div>
 <div class="panel" id="panelMascota" style="display:none">
-  <div style="display:flex;justify-content:space-between;align-items:center"><h3>Mi mascota</h3><button class="chip" onclick="document.getElementById('panelMascota').style.display='none'">Cerrar</button></div>
-  <label style="font-size:13px;font-weight:700;color:#555">Nombre de tu mascota</label>
-  <input class="inputTxt" id="petNombre" placeholder="Ej. Max, Luna…" style="margin-top:6px">
-  <div style="font-size:13px;font-weight:700;color:#555;margin:12px 0 6px">Color de tu mascota</div>
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelMascota">Mi mascota</h3><button class="chip" data-i18n="btnCerrar" onclick="document.getElementById('panelMascota').style.display='none'">Cerrar</button></div>
+  <label style="font-size:13px;font-weight:700;color:#555" data-i18n="petNombreLabel">Nombre de tu mascota</label>
+  <input class="inputTxt" id="petNombre" data-i18n-ph="petNombrePh" placeholder="Ej. Max, Luna…" style="margin-top:6px">
+  <div style="font-size:13px;font-weight:700;color:#555;margin:12px 0 6px" data-i18n="petColorLabel">Color de tu mascota</div>
   <div style="display:flex;gap:10px" id="petColores"></div>
-  <button class="btn iniciar" id="bGuardarMascota" style="margin-top:14px;width:100%">Guardar</button>
-  <div class="meta" style="margin-top:6px">El nombre aparece en el banner del viaje y el color tiñe a tu mascota en el mapa.</div>
+  <button class="btn iniciar" id="bGuardarMascota" style="margin-top:14px;width:100%" data-i18n="btnGuardar">Guardar</button>
+  <div class="meta" style="margin-top:6px" data-i18n="petNota">El nombre aparece en el banner del viaje y el color tiñe a tu mascota en el mapa.</div>
 </div>
 <script>
+/* ---------- v7: idiomas empaquetados + capa mundial ---------- */
+const IDIOMAS={es:'es-ES',en:'en-US',pt:'pt-BR',fr:'fr-FR',de:'de-DE',it:'it-IT',nl:'nl-NL',pl:'pl-PL'};
+const I18N={
+ "es": {
+  "appTitle": "Mascotas cerca de ti",
+  "searchPh": "Buscar veterinarias, tiendas, zoológicos, restaurantes…",
+  "btnCategorias": "Categorías",
+  "btnVisitas": "Mis visitas",
+  "btnMascota": "Mi mascota",
+  "osmBtn": "Lugares en el mundo",
+  "viewIlus": "Ilustrado",
+  "viewSat": "Satélite",
+  "view3d": "Mapa 3D",
+  "viewActual": "Actual",
+  "btnGps": "Modo GPS",
+  "btnYo": "Mi ubicación",
+  "compassTitle": "Norte",
+  "cardCargando": "Cargando…",
+  "tuVisita": "Tu visita:",
+  "tocaEstrella": "Toca una estrella para registrar tu visita",
+  "perfilCarro": "En carro",
+  "perfilPie": "A pie",
+  "perfilBici": "En bici",
+  "btnLlamar": "Llamar",
+  "btnIr": "Cómo llegar",
+  "btnTerminar": "Terminar viaje",
+  "btnCompartir": "Compartir",
+  "btnRuta": "Ver ruta completa",
+  "panelQueBuscas": "¿Qué buscas?",
+  "btnCerrar": "Cerrar",
+  "sortMejor": "Mejor valorados",
+  "sortCerca": "Cerca de mí",
+  "publicaEvento": "Publica tu evento",
+  "evNombre": "Nombre del evento",
+  "evFecha": "Fecha (ej. 15 nov)",
+  "evHora": "Hora (ej. 10 a. m.)",
+  "evLugar": "Lugar (ej. parque, dirección)",
+  "btnPublicarEvento": "Publicar evento",
+  "evNota": "Si estás en el lugar, el evento queda marcado en el mapa con tu ubicación actual.",
+  "panelVisitas": "Mis visitas",
+  "panelMascota": "Mi mascota",
+  "petNombreLabel": "Nombre de tu mascota",
+  "petNombrePh": "Ej. Max, Luna…",
+  "petColorLabel": "Color de tu mascota",
+  "btnGuardar": "Guardar",
+  "petNota": "El nombre aparece en el banner del viaje y el color tiñe a tu mascota en el mapa.",
+  "menu.todos": "Todos los lugares",
+  "menu.h24": "Abierto 24/7",
+  "cat.vet": "Veterinaria",
+  "cat.tienda": "Tienda de mascotas",
+  "cat.farma": "Farmacia agropecuaria",
+  "cat.zoo": "Zoológico o acuario",
+  "cat.granja": "Granja para visitar",
+  "cat.refugio": "Refugio / perrera",
+  "cat.adopcion": "Adopción de animales",
+  "cat.facultad": "Facultad / instituto de veterinaria",
+  "cat.resto": "Restaurante pet-friendly",
+  "cat.evento": "Evento de animales",
+  "color.original": "Original",
+  "color.negro": "Negro",
+  "color.blanco": "Blanco",
+  "color.dorado": "Dorado",
+  "color.gris": "Gris",
+  "color.chocolate": "Chocolate",
+  "abierto": "Abierto ahora",
+  "cierra": "cierra {h}",
+  "cerrado": "Cerrado ahora",
+  "abre": "abre {h}",
+  "calculandoRuta": "Calculando ruta por las calles…",
+  "sinRuta": "Sin ruta por carretera desde tu ubicación. La línea punteada es solo una referencia.",
+  "iniciarViaje": "Iniciar viaje",
+  "calculando": "Calculando ruta…",
+  "sinRutaBtn": "Sin ruta por carretera",
+  "rutaCalles": "Ruta por las calles · a {d} de aquí",
+  "aDist": "A {d} de aquí",
+  "faltan": "Faltan {d} para llegar",
+  "vamos": "¡Vamos, {nombre}!",
+  "bannerEn": "En {d} · {m}",
+  "llegasEn": "Llegas en ~{m} min",
+  "vasPor": "Vas por {calle}",
+  "man.arrive": "Llegaste a tu destino",
+  "man.depart": "Inicia el viaje",
+  "man.roundabout": "En la glorieta, sigue",
+  "man.left": "Gira a la izquierda",
+  "man.right": "Gira a la derecha",
+  "man.slightLeft": "Gira levemente a la izquierda",
+  "man.slightRight": "Gira levemente a la derecha",
+  "man.sharpLeft": "Gira cerrada a la izquierda",
+  "man.sharpRight": "Gira cerrada a la derecha",
+  "man.uturn": "Da la vuelta",
+  "man.straight": "Sigue recto",
+  "man.en": " en {calle}",
+  "llegaste": "¡Llegaste a {n}!",
+  "llegasteEstrella": "¡Llegaste a {n}! +1 estrella por llegar · Has venido {v} {vez}",
+  "vez": "vez",
+  "veces": "veces",
+  "visitaSing": "visita",
+  "visitaPlur": "visitas",
+  "estrella1": "estrella",
+  "estrellaN": "estrellas",
+  "catCount1": "1 lugar en {ciudad}",
+  "catCountN": "{n} lugares en {ciudad}",
+  "eventosTitulo": "Eventos de animales",
+  "eventosVacios": "Aún no hay eventos publicados en {ciudad}. Publica el primero con el formulario de abajo.",
+  "tuEvento": "(tu evento)",
+  "fechaConfirmar": "Fecha por confirmar",
+  "sinGoogle": "Sin calificación en Google",
+  "googleParen": "(Google)",
+  "sin24": "No hay lugares 24/7 verificados en esta ciudad todavía.",
+  "sinCat": "No hay lugares de esta categoría en esta ciudad todavía.",
+  "verEventos": "Ver eventos de animales",
+  "eventosEn": "Eventos en {ciudad}",
+  "aunNoVisitas": "Aún no registras visitas aquí",
+  "aunNoVisitasCard": "Aún no registras visitas aquí. Toca una estrella cuando vengas.",
+  "hasVenido": "Has venido <b>{v} {vez}</b> aquí · tu calificación: ",
+  "tusVisitas": "Tus visitas: <b>{v} {vez}</b> · tu calificación: ",
+  "llegadasLine": " · llegadas con GPS: <b>{n}</b> (+{n} {palabra} por llegar)",
+  "llegadasCorto": "llegadas con GPS: ",
+  "visitasVacias": "Todavía no registras visitas. Abre un lugar y toca una estrella cuando lo visites.",
+  "ultima": "última: {fecha}",
+  "osmBuscando": "Buscando…",
+  "osmEncontrados": "Capa mundial: {n} lugares de OpenStreetMap cerca de ti. Toca “Lugares en el mundo” para limpiarlos.",
+  "osmVacios": "Sin lugares de animales en OpenStreetMap cerca de ti (30 km).",
+  "osmError": "No se pudo consultar OpenStreetMap. Revisa tu conexión e intenta de nuevo.",
+  "osmLimpiar": "Limpiar capa mundial",
+  "osmData": "Dato de OpenStreetMap",
+  "osmVerifica": "Verifica antes de ir",
+  "osmGuarderia": "Guardería",
+  "evAlerta": "Escribe el nombre del evento",
+  "copiado": "¡Copiado!",
+  "comunidad": "Publicado por la comunidad"
+ },
+ "en": {
+  "appTitle": "Pets Near You",
+  "searchPh": "Search vets, pet stores, zoos, restaurants…",
+  "btnCategorias": "Categories",
+  "btnVisitas": "My visits",
+  "btnMascota": "My pet",
+  "osmBtn": "Places worldwide",
+  "viewIlus": "Illustrated",
+  "viewSat": "Satellite",
+  "view3d": "3D map",
+  "viewActual": "Live",
+  "btnGps": "GPS mode",
+  "btnYo": "My location",
+  "compassTitle": "North",
+  "cardCargando": "Loading…",
+  "tuVisita": "Your visit:",
+  "tocaEstrella": "Tap a star to log your visit",
+  "perfilCarro": "By car",
+  "perfilPie": "On foot",
+  "perfilBici": "By bike",
+  "btnLlamar": "Call",
+  "btnIr": "Directions",
+  "btnTerminar": "End trip",
+  "btnCompartir": "Share",
+  "btnRuta": "View full route",
+  "panelQueBuscas": "What are you looking for?",
+  "btnCerrar": "Close",
+  "sortMejor": "Top rated",
+  "sortCerca": "Near me",
+  "publicaEvento": "Post your event",
+  "evNombre": "Event name",
+  "evFecha": "Date (e.g. Nov 15)",
+  "evHora": "Time (e.g. 10 a.m.)",
+  "evLugar": "Place (e.g. park, address)",
+  "btnPublicarEvento": "Post event",
+  "evNota": "If you are at the place, the event will be pinned on the map at your current location.",
+  "panelVisitas": "My visits",
+  "panelMascota": "My pet",
+  "petNombreLabel": "Your pet's name",
+  "petNombrePh": "E.g. Max, Luna…",
+  "petColorLabel": "Your pet's color",
+  "btnGuardar": "Save",
+  "petNota": "The name appears on the trip banner and the color tints your pet on the map.",
+  "menu.todos": "All places",
+  "menu.h24": "Open 24/7",
+  "cat.vet": "Veterinary",
+  "cat.tienda": "Pet store",
+  "cat.farma": "Veterinary pharmacy",
+  "cat.zoo": "Zoo or aquarium",
+  "cat.granja": "Farm to visit",
+  "cat.refugio": "Shelter / kennel",
+  "cat.adopcion": "Animal adoption",
+  "cat.facultad": "Veterinary school / institute",
+  "cat.resto": "Pet-friendly restaurant",
+  "cat.evento": "Animal event",
+  "color.original": "Original",
+  "color.negro": "Black",
+  "color.blanco": "White",
+  "color.dorado": "Golden",
+  "color.gris": "Gray",
+  "color.chocolate": "Chocolate",
+  "abierto": "Open now",
+  "cierra": "closes {h}",
+  "cerrado": "Closed now",
+  "abre": "opens {h}",
+  "calculandoRuta": "Calculating street route…",
+  "sinRuta": "No road route from your location. The dotted line is only a reference.",
+  "iniciarViaje": "Start trip",
+  "calculando": "Calculating route…",
+  "sinRutaBtn": "No road route",
+  "rutaCalles": "Street route · {d} away",
+  "aDist": "{d} away",
+  "faltan": "{d} to go",
+  "vamos": "Let's go, {nombre}!",
+  "bannerEn": "In {d} · {m}",
+  "llegasEn": "Arriving in ~{m} min",
+  "vasPor": "On {calle}",
+  "man.arrive": "You have arrived",
+  "man.depart": "Start the trip",
+  "man.roundabout": "At the roundabout, continue",
+  "man.left": "Turn left",
+  "man.right": "Turn right",
+  "man.slightLeft": "Turn slightly left",
+  "man.slightRight": "Turn slightly right",
+  "man.sharpLeft": "Turn sharply left",
+  "man.sharpRight": "Turn sharply right",
+  "man.uturn": "Make a U-turn",
+  "man.straight": "Go straight",
+  "man.en": " on {calle}",
+  "llegaste": "You arrived at {n}!",
+  "llegasteEstrella": "You arrived at {n}! +1 star for arriving · You have been here {v} {vez}",
+  "vez": "time",
+  "veces": "times",
+  "visitaSing": "visit",
+  "visitaPlur": "visits",
+  "estrella1": "star",
+  "estrellaN": "stars",
+  "catCount1": "1 place in {ciudad}",
+  "catCountN": "{n} places in {ciudad}",
+  "eventosTitulo": "Animal events",
+  "eventosVacios": "No events posted in {ciudad} yet. Post the first one with the form below.",
+  "tuEvento": "(your event)",
+  "fechaConfirmar": "Date to be confirmed",
+  "sinGoogle": "No Google rating",
+  "googleParen": "(Google)",
+  "sin24": "No verified 24/7 places in this city yet.",
+  "sinCat": "No places in this category in this city yet.",
+  "verEventos": "See animal events",
+  "eventosEn": "Events in {ciudad}",
+  "aunNoVisitas": "You haven't logged visits here yet",
+  "aunNoVisitasCard": "You haven't logged visits here yet. Tap a star when you come.",
+  "hasVenido": "You have been here <b>{v} {vez}</b> · your rating: ",
+  "tusVisitas": "Your visits: <b>{v} {vez}</b> · your rating: ",
+  "llegadasLine": " · GPS arrivals: <b>{n}</b> (+{n} {palabra} for arriving)",
+  "llegadasCorto": "GPS arrivals: ",
+  "visitasVacias": "No visits logged yet. Open a place and tap a star when you visit.",
+  "ultima": "last: {fecha}",
+  "osmBuscando": "Searching…",
+  "osmEncontrados": "Worldwide layer: {n} OpenStreetMap places near you. Tap “Places worldwide” to clear them.",
+  "osmVacios": "No animal places on OpenStreetMap near you (30 km).",
+  "osmError": "Could not reach OpenStreetMap. Check your connection and try again.",
+  "osmLimpiar": "Clear worldwide layer",
+  "osmData": "OpenStreetMap data",
+  "osmVerifica": "Verify before going",
+  "osmGuarderia": "Boarding",
+  "evAlerta": "Write the event name",
+  "copiado": "Copied!",
+  "comunidad": "Posted by the community"
+ },
+ "pt": {
+  "appTitle": "Animais perto de você",
+  "searchPh": "Buscar veterinários, pet shops, zoológicos, restaurantes…",
+  "btnCategorias": "Categorias",
+  "btnVisitas": "Minhas visitas",
+  "btnMascota": "Meu pet",
+  "osmBtn": "Lugares no mundo",
+  "viewIlus": "Ilustrada",
+  "viewSat": "Satélite",
+  "view3d": "Mapa 3D",
+  "viewActual": "Atual",
+  "btnGps": "Modo GPS",
+  "btnYo": "Minha localização",
+  "compassTitle": "Norte",
+  "cardCargando": "Carregando…",
+  "tuVisita": "Sua visita:",
+  "tocaEstrella": "Toque em uma estrela para registrar sua visita",
+  "perfilCarro": "De carro",
+  "perfilPie": "A pé",
+  "perfilBici": "De bicicleta",
+  "btnLlamar": "Ligar",
+  "btnIr": "Como chegar",
+  "btnTerminar": "Encerrar viagem",
+  "btnCompartir": "Compartilhar",
+  "btnRuta": "Ver rota completa",
+  "panelQueBuscas": "O que você procura?",
+  "btnCerrar": "Fechar",
+  "sortMejor": "Melhor avaliados",
+  "sortCerca": "Perto de mim",
+  "publicaEvento": "Publique seu evento",
+  "evNombre": "Nome do evento",
+  "evFecha": "Data (ex. 15 nov)",
+  "evHora": "Hora (ex. 10h)",
+  "evLugar": "Local (ex. parque, endereço)",
+  "btnPublicarEvento": "Publicar evento",
+  "evNota": "Se você estiver no local, o evento será marcado no mapa com sua localização atual.",
+  "panelVisitas": "Minhas visitas",
+  "panelMascota": "Meu pet",
+  "petNombreLabel": "Nome do seu pet",
+  "petNombrePh": "Ex. Max, Luna…",
+  "petColorLabel": "Cor do seu pet",
+  "btnGuardar": "Salvar",
+  "petNota": "O nome aparece no banner da viagem e a cor tinge seu pet no mapa.",
+  "menu.todos": "Todos os lugares",
+  "menu.h24": "Aberto 24/7",
+  "cat.vet": "Veterinária",
+  "cat.tienda": "Pet shop",
+  "cat.farma": "Farmácia veterinária",
+  "cat.zoo": "Zoológico ou aquário",
+  "cat.granja": "Fazenda para visitar",
+  "cat.refugio": "Abrigo / canil",
+  "cat.adopcion": "Adoção de animais",
+  "cat.facultad": "Faculdade / instituto de veterinária",
+  "cat.resto": "Restaurante pet-friendly",
+  "cat.evento": "Evento de animais",
+  "color.original": "Original",
+  "color.negro": "Preto",
+  "color.blanco": "Branco",
+  "color.dorado": "Dourado",
+  "color.gris": "Cinza",
+  "color.chocolate": "Chocolate",
+  "abierto": "Aberto agora",
+  "cierra": "fecha {h}",
+  "cerrado": "Fechado agora",
+  "abre": "abre {h}",
+  "calculandoRuta": "Calculando rota pelas ruas…",
+  "sinRuta": "Sem rota por estrada a partir da sua localização. A linha pontilhada é apenas uma referência.",
+  "iniciarViaje": "Iniciar viagem",
+  "calculando": "Calculando rota…",
+  "sinRutaBtn": "Sem rota por estrada",
+  "rutaCalles": "Rota pelas ruas · a {d} daqui",
+  "aDist": "A {d} daqui",
+  "faltan": "Faltam {d} para chegar",
+  "vamos": "Vamos, {nombre}!",
+  "bannerEn": "Em {d} · {m}",
+  "llegasEn": "Chegada em ~{m} min",
+  "vasPor": "Você está na {calle}",
+  "man.arrive": "Você chegou ao destino",
+  "man.depart": "Inicie a viagem",
+  "man.roundabout": "Na rotatória, continue",
+  "man.left": "Vire à esquerda",
+  "man.right": "Vire à direita",
+  "man.slightLeft": "Vire levemente à esquerda",
+  "man.slightRight": "Vire levemente à direita",
+  "man.sharpLeft": "Vire fechado à esquerda",
+  "man.sharpRight": "Vire fechado à direita",
+  "man.uturn": "Faça retorno",
+  "man.straight": "Siga em frente",
+  "man.en": " na {calle}",
+  "llegaste": "Você chegou a {n}!",
+  "llegasteEstrella": "Você chegou a {n}! +1 estrela por chegar · Você veio aqui {v} {vez}",
+  "vez": "vez",
+  "veces": "vezes",
+  "visitaSing": "visita",
+  "visitaPlur": "visitas",
+  "estrella1": "estrela",
+  "estrellaN": "estrelas",
+  "catCount1": "1 lugar em {ciudad}",
+  "catCountN": "{n} lugares em {ciudad}",
+  "eventosTitulo": "Eventos de animais",
+  "eventosVacios": "Ainda não há eventos publicados em {ciudad}. Publique o primeiro com o formulário abaixo.",
+  "tuEvento": "(seu evento)",
+  "fechaConfirmar": "Data a confirmar",
+  "sinGoogle": "Sem avaliação no Google",
+  "googleParen": "(Google)",
+  "sin24": "Ainda não há lugares 24/7 verificados nesta cidade.",
+  "sinCat": "Ainda não há lugares desta categoria nesta cidade.",
+  "verEventos": "Ver eventos de animais",
+  "eventosEn": "Eventos em {ciudad}",
+  "aunNoVisitas": "Você ainda não registrou visitas aqui",
+  "aunNoVisitasCard": "Você ainda não registrou visitas aqui. Toque em uma estrela quando vier.",
+  "hasVenido": "Você veio aqui <b>{v} {vez}</b> · sua avaliação: ",
+  "tusVisitas": "Suas visitas: <b>{v} {vez}</b> · sua avaliação: ",
+  "llegadasLine": " · chegadas com GPS: <b>{n}</b> (+{n} {palabra} por chegar)",
+  "llegadasCorto": "chegadas com GPS: ",
+  "visitasVacias": "Ainda não há visitas registradas. Abra um lugar e toque em uma estrela quando visitar.",
+  "ultima": "última: {fecha}",
+  "osmBuscando": "Buscando…",
+  "osmEncontrados": "Camada mundial: {n} lugares do OpenStreetMap perto de você. Toque em “Lugares no mundo” para limpá-los.",
+  "osmVacios": "Sem lugares de animais no OpenStreetMap perto de você (30 km).",
+  "osmError": "Não foi possível consultar o OpenStreetMap. Verifique sua conexão e tente novamente.",
+  "osmLimpiar": "Limpar camada mundial",
+  "osmData": "Dados do OpenStreetMap",
+  "osmVerifica": "Verifique antes de ir",
+  "osmGuarderia": "Hospedagem",
+  "evAlerta": "Escreva o nome do evento",
+  "copiado": "Copiado!",
+  "comunidad": "Publicado pela comunidade"
+ },
+ "fr": {
+  "appTitle": "Animaux près de chez vous",
+  "searchPh": "Rechercher vétérinaires, animaleries, zoos, restaurants…",
+  "btnCategorias": "Catégories",
+  "btnVisitas": "Mes visites",
+  "btnMascota": "Mon animal",
+  "osmBtn": "Lieux dans le monde",
+  "viewIlus": "Illustré",
+  "viewSat": "Satellite",
+  "view3d": "Carte 3D",
+  "viewActual": "Actuel",
+  "btnGps": "Mode GPS",
+  "btnYo": "Ma position",
+  "compassTitle": "Nord",
+  "cardCargando": "Chargement…",
+  "tuVisita": "Votre visite :",
+  "tocaEstrella": "Touchez une étoile pour enregistrer votre visite",
+  "perfilCarro": "En voiture",
+  "perfilPie": "À pied",
+  "perfilBici": "À vélo",
+  "btnLlamar": "Appeler",
+  "btnIr": "Itinéraire",
+  "btnTerminar": "Terminer le trajet",
+  "btnCompartir": "Partager",
+  "btnRuta": "Voir l'itinéraire complet",
+  "panelQueBuscas": "Que cherchez-vous ?",
+  "btnCerrar": "Fermer",
+  "sortMejor": "Mieux notés",
+  "sortCerca": "Près de moi",
+  "publicaEvento": "Publiez votre événement",
+  "evNombre": "Nom de l'événement",
+  "evFecha": "Date (ex. 15 nov.)",
+  "evHora": "Heure (ex. 10 h)",
+  "evLugar": "Lieu (ex. parc, adresse)",
+  "btnPublicarEvento": "Publier l'événement",
+  "evNota": "Si vous êtes sur place, l'événement sera épinglé sur la carte à votre position actuelle.",
+  "panelVisitas": "Mes visites",
+  "panelMascota": "Mon animal",
+  "petNombreLabel": "Nom de votre animal",
+  "petNombrePh": "Ex. Max, Luna…",
+  "petColorLabel": "Couleur de votre animal",
+  "btnGuardar": "Enregistrer",
+  "petNota": "Le nom apparaît sur la bannière du trajet et la couleur teinte votre animal sur la carte.",
+  "menu.todos": "Tous les lieux",
+  "menu.h24": "Ouvert 24/7",
+  "cat.vet": "Vétérinaire",
+  "cat.tienda": "Animalerie",
+  "cat.farma": "Pharmacie vétérinaire",
+  "cat.zoo": "Zoo ou aquarium",
+  "cat.granja": "Ferme à visiter",
+  "cat.refugio": "Refuge / chenil",
+  "cat.adopcion": "Adoption d'animaux",
+  "cat.facultad": "Faculté / institut vétérinaire",
+  "cat.resto": "Restaurant pet-friendly",
+  "cat.evento": "Événement animalier",
+  "color.original": "Original",
+  "color.negro": "Noir",
+  "color.blanco": "Blanc",
+  "color.dorado": "Doré",
+  "color.gris": "Gris",
+  "color.chocolate": "Chocolat",
+  "abierto": "Ouvert",
+  "cierra": "ferme à {h}",
+  "cerrado": "Fermé",
+  "abre": "ouvre à {h}",
+  "calculandoRuta": "Calcul de l'itinéraire par les rues…",
+  "sinRuta": "Aucun itinéraire routier depuis votre position. La ligne pointillée est seulement une référence.",
+  "iniciarViaje": "Démarrer le trajet",
+  "calculando": "Calcul de l'itinéraire…",
+  "sinRutaBtn": "Aucun itinéraire routier",
+  "rutaCalles": "Itinéraire par les rues · à {d} d'ici",
+  "aDist": "À {d} d'ici",
+  "faltan": "Plus que {d}",
+  "vamos": "Allez, {nombre} !",
+  "bannerEn": "Dans {d} · {m}",
+  "llegasEn": "Arrivée dans ~{m} min",
+  "vasPor": "Vous êtes sur {calle}",
+  "man.arrive": "Vous êtes arrivé à destination",
+  "man.depart": "Commencez le trajet",
+  "man.roundabout": "Au rond-point, continuez",
+  "man.left": "Tournez à gauche",
+  "man.right": "Tournez à droite",
+  "man.slightLeft": "Tournez légèrement à gauche",
+  "man.slightRight": "Tournez légèrement à droite",
+  "man.sharpLeft": "Tournez franchement à gauche",
+  "man.sharpRight": "Tournez franchement à droite",
+  "man.uturn": "Faites demi-tour",
+  "man.straight": "Continuez tout droit",
+  "man.en": " sur {calle}",
+  "llegaste": "Vous êtes arrivé à {n} !",
+  "llegasteEstrella": "Vous êtes arrivé à {n} ! +1 étoile pour être arrivé · Vous êtes venu ici {v} {vez}",
+  "vez": "fois",
+  "veces": "fois",
+  "visitaSing": "visite",
+  "visitaPlur": "visites",
+  "estrella1": "étoile",
+  "estrellaN": "étoiles",
+  "catCount1": "1 lieu à {ciudad}",
+  "catCountN": "{n} lieux à {ciudad}",
+  "eventosTitulo": "Événements animaliers",
+  "eventosVacios": "Aucun événement publié à {ciudad} pour le moment. Publiez le premier avec le formulaire ci-dessous.",
+  "tuEvento": "(votre événement)",
+  "fechaConfirmar": "Date à confirmer",
+  "sinGoogle": "Pas de note Google",
+  "googleParen": "(Google)",
+  "sin24": "Pas encore de lieu 24/7 vérifié dans cette ville.",
+  "sinCat": "Pas encore de lieu de cette catégorie dans cette ville.",
+  "verEventos": "Voir les événements animaliers",
+  "eventosEn": "Événements à {ciudad}",
+  "aunNoVisitas": "Vous n'avez pas encore enregistré de visite ici",
+  "aunNoVisitasCard": "Vous n'avez pas encore enregistré de visite ici. Touchez une étoile quand vous venez.",
+  "hasVenido": "Vous êtes venu ici <b>{v} {vez}</b> · votre note : ",
+  "tusVisitas": "Vos visites : <b>{v} {vez}</b> · votre note : ",
+  "llegadasLine": " · arrivées GPS : <b>{n}</b> (+{n} {palabra} pour être arrivé)",
+  "llegadasCorto": "arrivées GPS : ",
+  "visitasVacias": "Aucune visite enregistrée. Ouvrez un lieu et touchez une étoile quand vous le visitez.",
+  "ultima": "dernière : {fecha}",
+  "osmBuscando": "Recherche…",
+  "osmEncontrados": "Couche mondiale : {n} lieux OpenStreetMap près de vous. Touchez « Lieux dans le monde » pour les effacer.",
+  "osmVacios": "Aucun lieu animalier sur OpenStreetMap près de vous (30 km).",
+  "osmError": "Impossible de consulter OpenStreetMap. Vérifiez votre connexion et réessayez.",
+  "osmLimpiar": "Effacer la couche mondiale",
+  "osmData": "Données OpenStreetMap",
+  "osmVerifica": "Vérifiez avant d'y aller",
+  "osmGuarderia": "Garderie",
+  "evAlerta": "Écrivez le nom de l'événement",
+  "copiado": "Copié !",
+  "comunidad": "Publié par la communauté"
+ },
+ "de": {
+  "appTitle": "Haustiere in deiner Nähe",
+  "searchPh": "Tierärzte, Tierhandlungen, Zoos, Restaurants suchen…",
+  "btnCategorias": "Kategorien",
+  "btnVisitas": "Meine Besuche",
+  "btnMascota": "Mein Haustier",
+  "osmBtn": "Orte weltweit",
+  "viewIlus": "Illustriert",
+  "viewSat": "Satellit",
+  "view3d": "3D-Karte",
+  "viewActual": "Aktuell",
+  "btnGps": "GPS-Modus",
+  "btnYo": "Mein Standort",
+  "compassTitle": "Norden",
+  "cardCargando": "Laden…",
+  "tuVisita": "Dein Besuch:",
+  "tocaEstrella": "Tippe auf einen Stern, um deinen Besuch zu speichern",
+  "perfilCarro": "Mit dem Auto",
+  "perfilPie": "Zu Fuß",
+  "perfilBici": "Mit dem Fahrrad",
+  "btnLlamar": "Anrufen",
+  "btnIr": "Route",
+  "btnTerminar": "Fahrt beenden",
+  "btnCompartir": "Teilen",
+  "btnRuta": "Gesamte Route ansehen",
+  "panelQueBuscas": "Was suchst du?",
+  "btnCerrar": "Schließen",
+  "sortMejor": "Beste Bewertung",
+  "sortCerca": "In meiner Nähe",
+  "publicaEvento": "Veranstaltung veröffentlichen",
+  "evNombre": "Name der Veranstaltung",
+  "evFecha": "Datum (z. B. 15. Nov.)",
+  "evHora": "Uhrzeit (z. B. 10 Uhr)",
+  "evLugar": "Ort (z. B. Park, Adresse)",
+  "btnPublicarEvento": "Veranstaltung veröffentlichen",
+  "evNota": "Wenn du vor Ort bist, wird die Veranstaltung mit deinem aktuellen Standort auf der Karte markiert.",
+  "panelVisitas": "Meine Besuche",
+  "panelMascota": "Mein Haustier",
+  "petNombreLabel": "Name deines Haustiers",
+  "petNombrePh": "Z. B. Max, Luna…",
+  "petColorLabel": "Farbe deines Haustiers",
+  "btnGuardar": "Speichern",
+  "petNota": "Der Name erscheint im Banner der Fahrt und die Farbe färbt dein Haustier auf der Karte.",
+  "menu.todos": "Alle Orte",
+  "menu.h24": "Rund um die Uhr geöffnet",
+  "cat.vet": "Tierarzt",
+  "cat.tienda": "Tierhandlung",
+  "cat.farma": "Tierapotheke",
+  "cat.zoo": "Zoo oder Aquarium",
+  "cat.granja": "Bauernhof zum Besuchen",
+  "cat.refugio": "Tierheim / Tierpension",
+  "cat.adopcion": "Tieradoption",
+  "cat.facultad": "Veterinärfakultät / -institut",
+  "cat.resto": "Tierfreundliches Restaurant",
+  "cat.evento": "Tierveranstaltung",
+  "color.original": "Original",
+  "color.negro": "Schwarz",
+  "color.blanco": "Weiß",
+  "color.dorado": "Gold",
+  "color.gris": "Grau",
+  "color.chocolate": "Schokolade",
+  "abierto": "Jetzt geöffnet",
+  "cierra": "schließt um {h}",
+  "cerrado": "Jetzt geschlossen",
+  "abre": "öffnet um {h}",
+  "calculandoRuta": "Straßenroute wird berechnet…",
+  "sinRuta": "Keine Straßenroute ab deinem Standort. Die gepunktete Linie ist nur eine Referenz.",
+  "iniciarViaje": "Fahrt starten",
+  "calculando": "Route wird berechnet…",
+  "sinRutaBtn": "Keine Straßenroute",
+  "rutaCalles": "Straßenroute · {d} von hier",
+  "aDist": "{d} von hier",
+  "faltan": "Noch {d}",
+  "vamos": "Los geht's, {nombre}!",
+  "bannerEn": "In {d} · {m}",
+  "llegasEn": "Ankunft in ca. {m} Min.",
+  "vasPor": "Du bist auf {calle}",
+  "man.arrive": "Du bist am Ziel angekommen",
+  "man.depart": "Fahrt beginnen",
+  "man.roundabout": "Im Kreisverkehr weiterfahren",
+  "man.left": "Links abbiegen",
+  "man.right": "Rechts abbiegen",
+  "man.slightLeft": "Leicht links abbiegen",
+  "man.slightRight": "Leicht rechts abbiegen",
+  "man.sharpLeft": "Scharf links abbiegen",
+  "man.sharpRight": "Scharf rechts abbiegen",
+  "man.uturn": "Wenden",
+  "man.straight": "Geradeaus fahren",
+  "man.en": " auf {calle}",
+  "llegaste": "Du bist bei {n} angekommen!",
+  "llegasteEstrella": "Du bist bei {n} angekommen! +1 Stern fürs Ankommen · Du warst {v} {vez} hier",
+  "vez": "Mal",
+  "veces": "Mal",
+  "visitaSing": "Besuch",
+  "visitaPlur": "Besuche",
+  "estrella1": "Stern",
+  "estrellaN": "Sterne",
+  "catCount1": "1 Ort in {ciudad}",
+  "catCountN": "{n} Orte in {ciudad}",
+  "eventosTitulo": "Tierveranstaltungen",
+  "eventosVacios": "Noch keine Veranstaltungen in {ciudad} veröffentlicht. Veröffentliche die erste mit dem Formular unten.",
+  "tuEvento": "(deine Veranstaltung)",
+  "fechaConfirmar": "Datum folgt",
+  "sinGoogle": "Keine Google-Bewertung",
+  "googleParen": "(Google)",
+  "sin24": "Noch keine geprüften 24/7-Orte in dieser Stadt.",
+  "sinCat": "Noch keine Orte dieser Kategorie in dieser Stadt.",
+  "verEventos": "Tierveranstaltungen ansehen",
+  "eventosEn": "Veranstaltungen in {ciudad}",
+  "aunNoVisitas": "Du hast hier noch keine Besuche gespeichert",
+  "aunNoVisitasCard": "Du hast hier noch keine Besuche gespeichert. Tippe auf einen Stern, wenn du hier bist.",
+  "hasVenido": "Du warst <b>{v} {vez}</b> hier · deine Bewertung: ",
+  "tusVisitas": "Deine Besuche: <b>{v} {vez}</b> · deine Bewertung: ",
+  "llegadasLine": " · GPS-Ankünfte: <b>{n}</b> (+{n} {palabra} fürs Ankommen)",
+  "llegadasCorto": "GPS-Ankünfte: ",
+  "visitasVacias": "Noch keine Besuche gespeichert. Öffne einen Ort und tippe auf einen Stern, wenn du ihn besuchst.",
+  "ultima": "zuletzt: {fecha}",
+  "osmBuscando": "Suchen…",
+  "osmEncontrados": "Weltweite Ebene: {n} OpenStreetMap-Orte in deiner Nähe. Tippe auf „Orte weltweit“, um sie zu löschen.",
+  "osmVacios": "Keine Tierorte auf OpenStreetMap in deiner Nähe (30 km).",
+  "osmError": "OpenStreetMap konnte nicht erreicht werden. Prüfe deine Verbindung und versuche es erneut.",
+  "osmLimpiar": "Weltweite Ebene löschen",
+  "osmData": "OpenStreetMap-Daten",
+  "osmVerifica": "Vorher prüfen",
+  "osmGuarderia": "Tierpension",
+  "evAlerta": "Schreibe den Namen der Veranstaltung",
+  "copiado": "Kopiert!",
+  "comunidad": "Von der Community veröffentlicht"
+ },
+ "it": {
+  "appTitle": "Animali vicino a te",
+  "searchPh": "Cerca veterinari, negozi di animali, zoo, ristoranti…",
+  "btnCategorias": "Categorie",
+  "btnVisitas": "Le mie visite",
+  "btnMascota": "Il mio animale",
+  "osmBtn": "Luoghi nel mondo",
+  "viewIlus": "Illustrata",
+  "viewSat": "Satellite",
+  "view3d": "Mappa 3D",
+  "viewActual": "Attuale",
+  "btnGps": "Modalità GPS",
+  "btnYo": "La mia posizione",
+  "compassTitle": "Nord",
+  "cardCargando": "Caricamento…",
+  "tuVisita": "La tua visita:",
+  "tocaEstrella": "Tocca una stella per registrare la visita",
+  "perfilCarro": "In auto",
+  "perfilPie": "A piedi",
+  "perfilBici": "In bici",
+  "btnLlamar": "Chiama",
+  "btnIr": "Come arrivare",
+  "btnTerminar": "Termina il viaggio",
+  "btnCompartir": "Condividi",
+  "btnRuta": "Vedi il percorso completo",
+  "panelQueBuscas": "Cosa cerchi?",
+  "btnCerrar": "Chiudi",
+  "sortMejor": "Più votati",
+  "sortCerca": "Vicino a me",
+  "publicaEvento": "Pubblica il tuo evento",
+  "evNombre": "Nome dell'evento",
+  "evFecha": "Data (es. 15 nov)",
+  "evHora": "Ora (es. 10:00)",
+  "evLugar": "Luogo (es. parco, indirizzo)",
+  "btnPublicarEvento": "Pubblica l'evento",
+  "evNota": "Se sei sul posto, l'evento verrà segnato sulla mappa con la tua posizione attuale.",
+  "panelVisitas": "Le mie visite",
+  "panelMascota": "Il mio animale",
+  "petNombreLabel": "Nome del tuo animale",
+  "petNombrePh": "Es. Max, Luna…",
+  "petColorLabel": "Colore del tuo animale",
+  "btnGuardar": "Salva",
+  "petNota": "Il nome appare nel banner del viaggio e il colore tinge il tuo animale sulla mappa.",
+  "menu.todos": "Tutti i luoghi",
+  "menu.h24": "Aperto 24/7",
+  "cat.vet": "Veterinario",
+  "cat.tienda": "Negozio di animali",
+  "cat.farma": "Farmacia veterinaria",
+  "cat.zoo": "Zoo o acquario",
+  "cat.granja": "Fattoria da visitare",
+  "cat.refugio": "Rifugio / canile",
+  "cat.adopcion": "Adozione di animali",
+  "cat.facultad": "Facoltà / istituto di veterinaria",
+  "cat.resto": "Ristorante pet-friendly",
+  "cat.evento": "Evento per animali",
+  "color.original": "Originale",
+  "color.negro": "Nero",
+  "color.blanco": "Bianco",
+  "color.dorado": "Dorato",
+  "color.gris": "Grigio",
+  "color.chocolate": "Cioccolato",
+  "abierto": "Aperto ora",
+  "cierra": "chiude alle {h}",
+  "cerrado": "Chiuso ora",
+  "abre": "apre alle {h}",
+  "calculandoRuta": "Calcolo del percorso stradale…",
+  "sinRuta": "Nessun percorso stradale dalla tua posizione. La linea tratteggiata è solo un riferimento.",
+  "iniciarViaje": "Inizia il viaggio",
+  "calculando": "Calcolo del percorso…",
+  "sinRutaBtn": "Nessun percorso stradale",
+  "rutaCalles": "Percorso stradale · a {d} da qui",
+  "aDist": "A {d} da qui",
+  "faltan": "Mancano {d}",
+  "vamos": "Andiamo, {nombre}!",
+  "bannerEn": "Tra {d} · {m}",
+  "llegasEn": "Arrivo tra ~{m} min",
+  "vasPor": "Sei in {calle}",
+  "man.arrive": "Sei arrivato a destinazione",
+  "man.depart": "Inizia il viaggio",
+  "man.roundabout": "Alla rotatoria, continua",
+  "man.left": "Gira a sinistra",
+  "man.right": "Gira a destra",
+  "man.slightLeft": "Gira leggermente a sinistra",
+  "man.slightRight": "Gira leggermente a destra",
+  "man.sharpLeft": "Gira bruscamente a sinistra",
+  "man.sharpRight": "Gira bruscamente a destra",
+  "man.uturn": "Fai inversione",
+  "man.straight": "Vai dritto",
+  "man.en": " in {calle}",
+  "llegaste": "Sei arrivato a {n}!",
+  "llegasteEstrella": "Sei arrivato a {n}! +1 stella per l'arrivo · Sei stato qui {v} {vez}",
+  "vez": "volta",
+  "veces": "volte",
+  "visitaSing": "visita",
+  "visitaPlur": "visite",
+  "estrella1": "stella",
+  "estrellaN": "stelle",
+  "catCount1": "1 luogo a {ciudad}",
+  "catCountN": "{n} luoghi a {ciudad}",
+  "eventosTitulo": "Eventi per animali",
+  "eventosVacios": "Ancora nessun evento pubblicato a {ciudad}. Pubblica il primo con il modulo qui sotto.",
+  "tuEvento": "(il tuo evento)",
+  "fechaConfirmar": "Data da confermare",
+  "sinGoogle": "Nessuna valutazione Google",
+  "googleParen": "(Google)",
+  "sin24": "Ancora nessun luogo 24/7 verificato in questa città.",
+  "sinCat": "Ancora nessun luogo di questa categoria in questa città.",
+  "verEventos": "Vedi gli eventi per animali",
+  "eventosEn": "Eventi a {ciudad}",
+  "aunNoVisitas": "Non hai ancora registrato visite qui",
+  "aunNoVisitasCard": "Non hai ancora registrato visite qui. Tocca una stella quando vieni.",
+  "hasVenido": "Sei stato qui <b>{v} {vez}</b> · la tua valutazione: ",
+  "tusVisitas": "Le tue visite: <b>{v} {vez}</b> · la tua valutazione: ",
+  "llegadasLine": " · arrivi con GPS: <b>{n}</b> (+{n} {palabra} per l'arrivo)",
+  "llegadasCorto": "arrivi con GPS: ",
+  "visitasVacias": "Ancora nessuna visita registrata. Apri un luogo e tocca una stella quando lo visiti.",
+  "ultima": "ultima: {fecha}",
+  "osmBuscando": "Ricerca…",
+  "osmEncontrados": "Livello mondiale: {n} luoghi OpenStreetMap vicino a te. Tocca “Luoghi nel mondo” per cancellarli.",
+  "osmVacios": "Nessun luogo per animali su OpenStreetMap vicino a te (30 km).",
+  "osmError": "Impossibile consultare OpenStreetMap. Controlla la connessione e riprova.",
+  "osmLimpiar": "Cancella il livello mondiale",
+  "osmData": "Dati OpenStreetMap",
+  "osmVerifica": "Verifica prima di andare",
+  "osmGuarderia": "Pensione",
+  "evAlerta": "Scrivi il nome dell'evento",
+  "copiado": "Copiato!",
+  "comunidad": "Pubblicato dalla comunità"
+ },
+ "nl": {
+  "appTitle": "Huisdieren bij jou in de buurt",
+  "searchPh": "Zoek dierenartsen, dierenwinkels, dierentuinen, restaurants…",
+  "btnCategorias": "Categorieën",
+  "btnVisitas": "Mijn bezoeken",
+  "btnMascota": "Mijn huisdier",
+  "osmBtn": "Plekken wereldwijd",
+  "viewIlus": "Illustratie",
+  "viewSat": "Satelliet",
+  "view3d": "3D-kaart",
+  "viewActual": "Actueel",
+  "btnGps": "GPS-modus",
+  "btnYo": "Mijn locatie",
+  "compassTitle": "Noord",
+  "cardCargando": "Laden…",
+  "tuVisita": "Jouw bezoek:",
+  "tocaEstrella": "Tik op een ster om je bezoek vast te leggen",
+  "perfilCarro": "Met de auto",
+  "perfilPie": "Te voet",
+  "perfilBici": "Op de fiets",
+  "btnLlamar": "Bellen",
+  "btnIr": "Route",
+  "btnTerminar": "Beëindig de rit",
+  "btnCompartir": "Delen",
+  "btnRuta": "Bekijk de volledige route",
+  "panelQueBuscas": "Waar zoek je naar?",
+  "btnCerrar": "Sluiten",
+  "sortMejor": "Best beoordeeld",
+  "sortCerca": "Dichtbij mij",
+  "publicaEvento": "Plaats je evenement",
+  "evNombre": "Naam van het evenement",
+  "evFecha": "Datum (bijv. 15 nov.)",
+  "evHora": "Tijd (bijv. 10.00 uur)",
+  "evLugar": "Plaats (bijv. park, adres)",
+  "btnPublicarEvento": "Evenement plaatsen",
+  "evNota": "Als je ter plaatse bent, wordt het evenement met je huidige locatie op de kaart gemarkeerd.",
+  "panelVisitas": "Mijn bezoeken",
+  "panelMascota": "Mijn huisdier",
+  "petNombreLabel": "Naam van je huisdier",
+  "petNombrePh": "Bijv. Max, Luna…",
+  "petColorLabel": "Kleur van je huisdier",
+  "btnGuardar": "Opslaan",
+  "petNota": "De naam verschijnt in de banner van de rit en de kleur kleurt je huisdier op de kaart.",
+  "menu.todos": "Alle plekken",
+  "menu.h24": "24/7 geopend",
+  "cat.vet": "Dierenarts",
+  "cat.tienda": "Dierenwinkel",
+  "cat.farma": "Dierenapotheek",
+  "cat.zoo": "Dierentuin of aquarium",
+  "cat.granja": "Boerderij om te bezoeken",
+  "cat.refugio": "Asiel / kennel",
+  "cat.adopcion": "Dierenadoptie",
+  "cat.facultad": "Faculteit / instituut diergeneeskunde",
+  "cat.resto": "Huisdiervriendelijk restaurant",
+  "cat.evento": "Dierenevenement",
+  "color.original": "Origineel",
+  "color.negro": "Zwart",
+  "color.blanco": "Wit",
+  "color.dorado": "Goud",
+  "color.gris": "Grijs",
+  "color.chocolate": "Chocolade",
+  "abierto": "Nu open",
+  "cierra": "sluit om {h}",
+  "cerrado": "Nu gesloten",
+  "abre": "opent om {h}",
+  "calculandoRuta": "Straatroute berekenen…",
+  "sinRuta": "Geen wegroute vanaf je locatie. De stippellijn is slechts een verwijzing.",
+  "iniciarViaje": "Start de rit",
+  "calculando": "Route berekenen…",
+  "sinRutaBtn": "Geen wegroute",
+  "rutaCalles": "Straatroute · {d} hiervandaan",
+  "aDist": "{d} hiervandaan",
+  "faltan": "Nog {d}",
+  "vamos": "Kom op, {nombre}!",
+  "bannerEn": "Over {d} · {m}",
+  "llegasEn": "Aankomst over ~{m} min",
+  "vasPor": "Je bent op {calle}",
+  "man.arrive": "Je bent op je bestemming aangekomen",
+  "man.depart": "Begin de rit",
+  "man.roundabout": "Ga op de rotonde rechtdoor",
+  "man.left": "Sla linksaf",
+  "man.right": "Sla rechtsaf",
+  "man.slightLeft": "Sla licht linksaf",
+  "man.slightRight": "Sla licht rechtsaf",
+  "man.sharpLeft": "Sla scherp linksaf",
+  "man.sharpRight": "Sla scherp rechtsaf",
+  "man.uturn": "Keer om",
+  "man.straight": "Ga rechtdoor",
+  "man.en": " op {calle}",
+  "llegaste": "Je bent aangekomen bij {n}!",
+  "llegasteEstrella": "Je bent aangekomen bij {n}! +1 ster voor aankomst · Je bent hier {v} {vez} geweest",
+  "vez": "keer",
+  "veces": "keer",
+  "visitaSing": "bezoek",
+  "visitaPlur": "bezoeken",
+  "estrella1": "ster",
+  "estrellaN": "sterren",
+  "catCount1": "1 plek in {ciudad}",
+  "catCountN": "{n} plekken in {ciudad}",
+  "eventosTitulo": "Dierenevenementen",
+  "eventosVacios": "Nog geen evenementen geplaatst in {ciudad}. Plaats de eerste met het formulier hieronder.",
+  "tuEvento": "(jouw evenement)",
+  "fechaConfirmar": "Datum volgt",
+  "sinGoogle": "Geen Google-beoordeling",
+  "googleParen": "(Google)",
+  "sin24": "Nog geen geverifieerde 24/7-plekken in deze stad.",
+  "sinCat": "Nog geen plekken in deze categorie in deze stad.",
+  "verEventos": "Bekijk dierenevenementen",
+  "eventosEn": "Evenementen in {ciudad}",
+  "aunNoVisitas": "Je hebt hier nog geen bezoeken vastgelegd",
+  "aunNoVisitasCard": "Je hebt hier nog geen bezoeken vastgelegd. Tik op een ster als je hier bent.",
+  "hasVenido": "Je bent hier <b>{v} {vez}</b> geweest · jouw beoordeling: ",
+  "tusVisitas": "Jouw bezoeken: <b>{v} {vez}</b> · jouw beoordeling: ",
+  "llegadasLine": " · GPS-aankomsten: <b>{n}</b> (+{n} {palabra} voor aankomst)",
+  "llegadasCorto": "GPS-aankomsten: ",
+  "visitasVacias": "Nog geen bezoeken vastgelegd. Open een plek en tik op een ster als je er bent.",
+  "ultima": "laatste: {fecha}",
+  "osmBuscando": "Zoeken…",
+  "osmEncontrados": "Wereldlaag: {n} OpenStreetMap-plekken bij jou in de buurt. Tik op “Plekken wereldwijd” om ze te wissen.",
+  "osmVacios": "Geen dierenplekken op OpenStreetMap bij jou in de buurt (30 km).",
+  "osmError": "OpenStreetMap kon niet worden bereikt. Controleer je verbinding en probeer het opnieuw.",
+  "osmLimpiar": "Wereldlaag wissen",
+  "osmData": "OpenStreetMap-gegevens",
+  "osmVerifica": "Controleer voor je gaat",
+  "osmGuarderia": "Dierenpension",
+  "evAlerta": "Schrijf de naam van het evenement",
+  "copiado": "Gekopieerd!",
+  "comunidad": "Geplaatst door de community"
+ },
+ "pl": {
+  "appTitle": "Zwierzaki blisko Ciebie",
+  "searchPh": "Szukaj weterynarzy, sklepów zoologicznych, zoo, restauracji…",
+  "btnCategorias": "Kategorie",
+  "btnVisitas": "Moje wizyty",
+  "btnMascota": "Mój zwierzak",
+  "osmBtn": "Miejsca na świecie",
+  "viewIlus": "Ilustrowana",
+  "viewSat": "Satelita",
+  "view3d": "Mapa 3D",
+  "viewActual": "Aktualna",
+  "btnGps": "Tryb GPS",
+  "btnYo": "Moja lokalizacja",
+  "compassTitle": "Północ",
+  "cardCargando": "Ładowanie…",
+  "tuVisita": "Twoja wizyta:",
+  "tocaEstrella": "Dotknij gwiazdkę, aby zapisać wizytę",
+  "perfilCarro": "Samochodem",
+  "perfilPie": "Pieszo",
+  "perfilBici": "Rowerem",
+  "btnLlamar": "Zadzwoń",
+  "btnIr": "Jak dojechać",
+  "btnTerminar": "Zakończ podróż",
+  "btnCompartir": "Udostępnij",
+  "btnRuta": "Zobacz pełną trasę",
+  "panelQueBuscas": "Czego szukasz?",
+  "btnCerrar": "Zamknij",
+  "sortMejor": "Najlepiej oceniane",
+  "sortCerca": "Blisko mnie",
+  "publicaEvento": "Opublikuj swoje wydarzenie",
+  "evNombre": "Nazwa wydarzenia",
+  "evFecha": "Data (np. 15 lis)",
+  "evHora": "Godzina (np. 10:00)",
+  "evLugar": "Miejsce (np. park, adres)",
+  "btnPublicarEvento": "Opublikuj wydarzenie",
+  "evNota": "Jeśli jesteś na miejscu, wydarzenie zostanie oznaczone na mapie Twoją aktualną lokalizacją.",
+  "panelVisitas": "Moje wizyty",
+  "panelMascota": "Mój zwierzak",
+  "petNombreLabel": "Imię Twojego zwierzaka",
+  "petNombrePh": "Np. Max, Luna…",
+  "petColorLabel": "Kolor Twojego zwierzaka",
+  "btnGuardar": "Zapisz",
+  "petNota": "Imię pojawia się na banerze podróży, a kolor zabarwia Twojego zwierzaka na mapie.",
+  "menu.todos": "Wszystkie miejsca",
+  "menu.h24": "Otwarte 24/7",
+  "cat.vet": "Weterynarz",
+  "cat.tienda": "Sklep zoologiczny",
+  "cat.farma": "Apteka weterynaryjna",
+  "cat.zoo": "Zoo lub oceanarium",
+  "cat.granja": "Farma do odwiedzenia",
+  "cat.refugio": "Schronisko / hotel dla zwierząt",
+  "cat.adopcion": "Adopcja zwierząt",
+  "cat.facultad": "Wydział / instytut weterynarii",
+  "cat.resto": "Restauracja przyjazna zwierzętom",
+  "cat.evento": "Wydarzenie dla zwierząt",
+  "color.original": "Oryginalny",
+  "color.negro": "Czarny",
+  "color.blanco": "Biały",
+  "color.dorado": "Złoty",
+  "color.gris": "Szary",
+  "color.chocolate": "Czekoladowy",
+  "abierto": "Otwarte teraz",
+  "cierra": "zamykane o {h}",
+  "cerrado": "Zamknięte teraz",
+  "abre": "otwierane o {h}",
+  "calculandoRuta": "Obliczanie trasy ulicami…",
+  "sinRuta": "Brak trasy drogowej z Twojej lokalizacji. Linia przerywana to tylko wskazówka.",
+  "iniciarViaje": "Rozpocznij podróż",
+  "calculando": "Obliczanie trasy…",
+  "sinRutaBtn": "Brak trasy drogowej",
+  "rutaCalles": "Trasa ulicami · {d} stąd",
+  "aDist": "{d} stąd",
+  "faltan": "Pozostało {d}",
+  "vamos": "Dalej, {nombre}!",
+  "bannerEn": "Za {d} · {m}",
+  "llegasEn": "Przyjazd za ~{m} min",
+  "vasPor": "Jesteś na {calle}",
+  "man.arrive": "Dotarłeś do celu",
+  "man.depart": "Rozpocznij podróż",
+  "man.roundabout": "Na rondzie jedź prosto",
+  "man.left": "Skręć w lewo",
+  "man.right": "Skręć w prawo",
+  "man.slightLeft": "Skręć lekko w lewo",
+  "man.slightRight": "Skręć lekko w prawo",
+  "man.sharpLeft": "Skręć ostro w lewo",
+  "man.sharpRight": "Skręć ostro w prawo",
+  "man.uturn": "Zawróć",
+  "man.straight": "Jedź prosto",
+  "man.en": " na {calle}",
+  "llegaste": "Dotarłeś do {n}!",
+  "llegasteEstrella": "Dotarłeś do {n}! +1 gwiazdka za przybycie · Byłeś tu {v} {vez}",
+  "vez": "raz",
+  "veces": "razy",
+  "visitaSing": "wizyta",
+  "visitaPlur": "wizyty",
+  "estrella1": "gwiazdka",
+  "estrellaN": "gwiazdki",
+  "catCount1": "1 miejsce w {ciudad}",
+  "catCountN": "{n} miejsc w {ciudad}",
+  "eventosTitulo": "Wydarzenia dla zwierząt",
+  "eventosVacios": "W {ciudad} nie opublikowano jeszcze wydarzeń. Opublikuj pierwsze za pomocą formularza poniżej.",
+  "tuEvento": "(Twoje wydarzenie)",
+  "fechaConfirmar": "Data do potwierdzenia",
+  "sinGoogle": "Brak oceny Google",
+  "googleParen": "(Google)",
+  "sin24": "W tym mieście nie ma jeszcze zweryfikowanych miejsc 24/7.",
+  "sinCat": "W tym mieście nie ma jeszcze miejsc z tej kategorii.",
+  "verEventos": "Zobacz wydarzenia dla zwierząt",
+  "eventosEn": "Wydarzenia w {ciudad}",
+  "aunNoVisitas": "Nie zapisałeś jeszcze wizyt tutaj",
+  "aunNoVisitasCard": "Nie zapisałeś jeszcze wizyt tutaj. Dotknij gwiazdkę, gdy tu będziesz.",
+  "hasVenido": "Byłeś tu <b>{v} {vez}</b> · Twoja ocena: ",
+  "tusVisitas": "Twoje wizyty: <b>{v} {vez}</b> · Twoja ocena: ",
+  "llegadasLine": " · przybycia z GPS: <b>{n}</b> (+{n} {palabra} za przybycie)",
+  "llegadasCorto": "przybycia z GPS: ",
+  "visitasVacias": "Nie zapisano jeszcze wizyt. Otwórz miejsce i dotknij gwiazdkę, gdy je odwiedzisz.",
+  "ultima": "ostatnia: {fecha}",
+  "osmBuscando": "Szukanie…",
+  "osmEncontrados": "Warstwa światowa: {n} miejsc OpenStreetMap w pobliżu. Dotknij „Miejsca na świecie”, aby je wyczyścić.",
+  "osmVacios": "Brak miejsc dla zwierząt na OpenStreetMap w pobliżu (30 km).",
+  "osmError": "Nie można skontaktować się z OpenStreetMap. Sprawdź połączenie i spróbuj ponownie.",
+  "osmLimpiar": "Wyczyść warstwę światową",
+  "osmData": "Dane OpenStreetMap",
+  "osmVerifica": "Sprawdź przed wyjściem",
+  "osmGuarderia": "Hotel dla zwierząt",
+  "evAlerta": "Wpisz nazwę wydarzenia",
+  "copiado": "Skopiowano!",
+  "comunidad": "Opublikowane przez społeczność"
+ }
+};
+let idioma='es';
+function t(k,vars){let s=(I18N[idioma]&&I18N[idioma][k])||I18N.es[k]||k;if(vars)for(const v in vars)s=s.split('{'+v+'}').join(String(vars[v]));return s;}
+function LOCALE(){return IDIOMAS[idioma]||'es-ES';}
+function catName(c){return t('cat.'+c);}
+function etiquetaCat(c){return c==='todos'?t('menu.todos'):c==='h24'?t('menu.h24'):catName(c);}
+function vezPalabra(n){return t(n===1?'vez':'veces');}
+function visitaPalabra(n){return t(n===1?'visitaSing':'visitaPlur');}
+function estrellaPalabra(n){return t(n===1?'estrella1':'estrellaN');}
+function nombreCatEnAlgunIdioma(cat,nq){for(const l in I18N){const nm=I18N[l]['cat.'+cat];if(nm&&normalizar(nm).includes(nq))return true;}return false;}
+function textoEstado(b){
+  if(b.h24)return '<b>'+t('abierto')+'</b> · <span class="badge24">24/7</span>';
+  if(b.horas){const h=horaCiudad(),ab=h>=b.horas[0]&&h<b.horas[1];return ab?'<b>'+t('abierto')+'</b> · '+t('cierra',{h:fmtHora(b.horas[1])}):'<span class="cerrado">'+t('cerrado')+'</span> · '+t('abre',{h:fmtHora(b.horas[0])});}
+  return '';
+}
+function textoNotaOSM(b){return (b.guarderia?t('osmGuarderia')+' · ':'')+t('osmVerifica');}
+function textoDir(b){
+  let s=b.dir||'';
+  if(b.osm)s+=(s?' · ':'')+t('osmData');
+  if(b.fecha)s+=' · '+b.fecha;
+  const nt=b.osm?textoNotaOSM(b):(b.comunidad?t('comunidad'):(b.nota||''));
+  if(nt)s+=' · '+nt;
+  return s;
+}
+function detectarIdioma(){
+  let l='es';
+  try{const g=localStorage.getItem('mascotas_idioma_v1');if(g&&IDIOMAS[g])l=g;
+  else{const nav=(navigator.language||'es').slice(0,2).toLowerCase();if(IDIOMAS[nav])l=nav;}}catch(e){}
+  idioma=l;
+}
+function setLang(l){if(!IDIOMAS[l])l='es';idioma=l;try{localStorage.setItem('mascotas_idioma_v1',l);}catch(e){}applyLang();}
+function refrescarTarjeta(){
+  if(!seleccionado)return;
+  document.getElementById('cNombre').textContent=seleccionado.n;
+  document.getElementById('cEstado').innerHTML=textoEstado(seleccionado);
+  document.getElementById('cDir').textContent=textoDir(seleccionado);
+  actualizarVisitasInfo();
+  if(tripActivo)actualizarRestante();else actualizarDistancia();
+}
+function applyLang(){
+  document.documentElement.lang=idioma;
+  document.title=t('appTitle');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n);});
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{el.placeholder=t(el.dataset.i18nPh);});
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{el.title=t(el.dataset.i18nTitle);});
+  const sel=document.getElementById('selIdioma');if(sel)sel.value=idioma;
+  renderColoresMascota();
+  if(document.getElementById('panelCategorias').style.display==='block')renderCategorias();
+  if(document.getElementById('panelLista').style.display==='block')renderLista();
+  if(document.getElementById('panelVisitas').style.display==='block')renderVisitas();
+  const bO=document.getElementById('bMundo');if(bO)bO.textContent=marcadoresOSM.length?t('osmLimpiar'):t('osmBtn');
+  mostrarBotonesViaje();
+  refrescarTarjeta();
+  if(document.getElementById('sug').style.display==='block')renderSug();
+}
 const BASE='https://tiles.basemaps.cartocdn.com/v/20261001-03';
 const CARTO_TILES=BASE+'/vectortiles/carto.streets/v2/{z}/{x}/{y}.mvt';
 const SAT_TILES='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
@@ -194,7 +1284,7 @@ const YOU=[-75.2330,4.4388];
 const heightExpr=['coalesce',['get','height'],9];
 let M_LNG=111000; const M_LAT=110600;
 const normAng=a=>((a+540)%360)-180;
-const fmtDist=d=>d>=1000? (d/1000).toFixed(1).replace('.',',')+' km' : Math.round(d)+' m';
+const fmtDist=d=>d>=1000? new Intl.NumberFormat(LOCALE(),{maximumFractionDigits:1}).format(d/1000)+' km' : Math.round(d)+' m';
 
 function ilustradoStyle(){return {version:8,
  glyphs:BASE+'/fonts/{fontstack}/{range}.pbf',
@@ -326,7 +1416,7 @@ function pedirRuta(b,intento,miToken){
     if(intento<3){setTimeout(()=>pedirRuta(b,intento+1,miToken),intento===0?1500:3000);}
     else{
       estadoRuta='fallida';
-      document.getElementById('cAviso').textContent='Sin ruta por carretera desde tu ubicación. La línea punteada es solo una referencia.';
+      document.getElementById('cAviso').textContent=t('sinRuta');
       mostrarBotonesViaje();
     }
   });
@@ -345,13 +1435,13 @@ function recalcularRuta(){
 }
 function textoManeuver(st){
   const m=st.maneuver||{}, mod=m.modifier||'';
-  const calle=st.name?(' en '+st.name):'';
-  if(m.type==='arrive')return 'Llegaste a tu destino';
-  if(m.type==='depart')return 'Inicia el viaje'+calle;
-  if(m.type==='roundabout')return 'En la glorieta, sigue'+calle;
-  const giro={left:'Gira a la izquierda',right:'Gira a la derecha','slight left':'Gira levemente a la izquierda','slight right':'Gira levemente a la derecha','sharp left':'Gira cerrada a la izquierda','sharp right':'Gira cerrada a la derecha',uturn:'Da la vuelta'}[mod];
+  const calle=st.name?t('man.en',{calle:st.name}):'';
+  if(m.type==='arrive')return t('man.arrive');
+  if(m.type==='depart')return t('man.depart')+calle;
+  if(m.type==='roundabout')return t('man.roundabout')+calle;
+  const giro={left:t('man.left'),right:t('man.right'),'slight left':t('man.slightLeft'),'slight right':t('man.slightRight'),'sharp left':t('man.sharpLeft'),'sharp right':t('man.sharpRight'),uturn:t('man.uturn')}[mod];
   if(giro)return giro+calle;
-  return 'Sigue recto'+calle;
+  return t('man.straight')+calle;
 }
 function flechaSVG(st){
   const m=st.maneuver||{};
@@ -371,13 +1461,13 @@ function actualizarBanner(){
   const calleActual=(pasos[idxCalle]&&pasos[idxCalle].name)||'esta vía';
   const rest=Math.max(0,total-ultimoSnap.along);
   const eta=rutaDuracion&&rutaDistancia?Math.max(1,Math.round((rest/rutaDistancia)*(rutaDuracion/60))):null;
-  ban.innerHTML=`<div style="display:flex;gap:10px;align-items:center">${flechaSVG(st)}<div>${petNombre?`<div style="font-size:12.5px;opacity:.85">¡Vamos, ${petNombre}!</div>`:''}<div style="font-size:16px;font-weight:800">En ${fmtDist(dist)} · ${textoManeuver(st)}</div><div style="font-size:12.5px;opacity:.85">Vas por ${calleActual}${eta?` · Llegas en ~${eta} min`:''}</div></div></div>`;
+  ban.innerHTML=`<div style="display:flex;gap:10px;align-items:center">${flechaSVG(st)}<div>${petNombre?`<div style="font-size:12.5px;opacity:.85">${t('vamos',{nombre:petNombre})}</div>`:''}<div style="font-size:16px;font-weight:800">${t('bannerEn',{d:fmtDist(dist),m:textoManeuver(st)})}</div><div style="font-size:12.5px;opacity:.85">${t('vasPor',{calle:calleActual})}${eta?` · ${t('llegasEn',{m:eta})}`:''}</div></div></div>`;
   ban.style.display='block';
 }
 function actualizarDistancia(){
   const el=document.getElementById('cDist'); if(!el)return;
   const dist=(rutaEsReal&&rutaDistancia)?rutaDistancia:total;
-  el.innerHTML= rutaEsReal? `Ruta por las calles · a <b>${fmtDist(dist)}</b> de aquí` : `A <b>${fmtDist(dist)}</b> de aquí`;
+  el.innerHTML= rutaEsReal? t('rutaCalles',{d:'<b>'+fmtDist(dist)+'</b>'}) : t('aDist',{d:'<b>'+fmtDist(dist)+'</b>'});
 }
 
 /* ---------- Segmentos y punto más cercano (la mascota sigue SU posición real) ---------- */
@@ -418,16 +1508,16 @@ function glyph(kind,color){
   return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.4"><path d="M5 8h14l-1.2 12.2a1.8 1.8 0 0 1-1.8 1.8H8a1.8 1.8 0 0 1-1.8-1.8L5 8z"/><path d="M8.5 10V6.5a3.5 3.5 0 0 1 7 0V10"/></svg>`;
 }
 const CAT={
-  vet:{cls:'green',g:'paw',col:'#22A355',nombre:'Veterinaria'},
-  tienda:{cls:'yellow',g:'bag',col:'#B97E00',nombre:'Tienda de mascotas'},
-  farma:{cls:'red',g:'cross',col:'#E5322D',nombre:'Farmacia agropecuaria'},
-  zoo:{cls:'purple',g:'zoo',col:'#7C3AED',nombre:'Zoológico o acuario'},
-  granja:{cls:'brown',g:'granja',col:'#B45309',nombre:'Granja para visitar'},
-  refugio:{cls:'teal',g:'refugio',col:'#0F766E',nombre:'Refugio / perrera'},
-  adopcion:{cls:'pink',g:'adopcion',col:'#EC4899',nombre:'Adopción de animales'},
-  facultad:{cls:'blue',g:'facultad',col:'#1D4ED8',nombre:'Facultad / instituto de veterinaria'},
-  resto:{cls:'orange',g:'resto',col:'#F97316',nombre:'Restaurante pet-friendly'},
-  evento:{cls:'cyan',g:'evento',col:'#0891B2',nombre:'Evento de animales'}
+  vet:{cls:'green',g:'paw',col:'#22A355'},
+  tienda:{cls:'yellow',g:'bag',col:'#B97E00'},
+  farma:{cls:'red',g:'cross',col:'#E5322D'},
+  zoo:{cls:'purple',g:'zoo',col:'#7C3AED'},
+  granja:{cls:'brown',g:'granja',col:'#B45309'},
+  refugio:{cls:'teal',g:'refugio',col:'#0F766E'},
+  adopcion:{cls:'pink',g:'adopcion',col:'#EC4899'},
+  facultad:{cls:'blue',g:'facultad',col:'#1D4ED8'},
+  resto:{cls:'orange',g:'resto',col:'#F97316'},
+  evento:{cls:'cyan',g:'evento',col:'#0891B2'}
 };
 const CIUDADES={
   ibague:{nombre:'Ibagué', centro:[-75.2362,4.4425], zoom:14.7, tz:'America/Bogota', mlng:111000, datos:NEGOCIOS_IBAGUE},
@@ -487,16 +1577,16 @@ function mostrarBotonesViaje(){
   }else{
     document.getElementById('filaIniciar').style.display='';
     document.getElementById('filaTerminar').style.display='none';
-    if(estadoRuta==='real'){ini.disabled=false; ini.textContent='Iniciar viaje'; ini.style.opacity='';}
-    else if(estadoRuta==='calculando'){ini.disabled=true; ini.textContent='Calculando ruta…'; ini.style.opacity='0.6';}
-    else{ini.disabled=true; ini.textContent='Sin ruta por carretera'; ini.style.opacity='0.6';}
+    if(estadoRuta==='real'){ini.disabled=false; ini.textContent=t('iniciarViaje'); ini.style.opacity='';}
+    else if(estadoRuta==='calculando'){ini.disabled=true; ini.textContent=t('calculando'); ini.style.opacity='0.6';}
+    else{ini.disabled=true; ini.textContent=t('sinRutaBtn'); ini.style.opacity='0.6';}
   }
 }
 function actualizarRestante(){
   if(!tripActivo||!seleccionado)return;
   const snap=puntoMasCercano(YOU); ultimoSnap=snap;
   const rest=Math.max(0,total-snap.along);
-  document.getElementById('cDist').innerHTML=`Faltan <b>${fmtDist(rest)}</b> para llegar`;
+  document.getElementById('cDist').innerHTML=t('faltan',{d:fmtDist(rest)});
   actualizarBanner();
   if(rest<50){llegar();return;}
   if(snap.dist>60){contadorDesvio++;} else {contadorDesvio=0;}
@@ -506,7 +1596,7 @@ let llegadaRegistrada=false;
 function registrarLlegada(b){
   const v=leerVisitas(), k=claveVisita(b);
   const ant=v[k]||{n:b.n,cat:b.cat,dir:b.dir,veces:0,estrellas:0,llegadas:0,ultima:''};
-  ant.veces++; ant.llegadas=(ant.llegadas||0)+1; ant.ultima=new Date().toLocaleDateString('es-CO');
+  ant.veces++; ant.llegadas=(ant.llegadas||0)+1; ant.ultima=new Date().toLocaleDateString(LOCALE());
   v[k]=ant; guardarVisitas(v);
   actualizarVisitasInfo(); renderVisitas();
   return ant;
@@ -519,9 +1609,9 @@ function llegar(){
   if(!llegadaRegistrada){
     llegadaRegistrada=true;
     const ant=registrarLlegada(seleccionado);
-    confirm=`¡Llegaste a ${seleccionado.n}! +1 estrella por llegar · Has venido ${ant.veces} ${ant.veces===1?'vez':'veces'}`;
+    confirm=t('llegasteEstrella',{n:seleccionado.n,v:ant.veces,vez:vezPalabra(ant.veces)});
   }else{
-    confirm=`¡Llegaste a ${seleccionado.n}!`;
+    confirm=t('llegaste',{n:seleccionado.n});
   }
   document.getElementById('bannerTurno').style.display='none';
   document.getElementById('cDist').innerHTML=`<b>${confirm}</b>`;
@@ -586,7 +1676,7 @@ if(navigator.geolocation){
 
 /* ---------- Tarjeta del negocio ---------- */
 function horaCiudad(){const tz=(CIUDADES[ciudadActual]&&CIUDADES[ciudadActual].tz)||'America/Bogota';const d=new Date(new Date().toLocaleString('en-US',{timeZone:tz}));return d.getHours()+d.getMinutes()/60;}
-function fmtHora(h){if(h==null)return '';const hh=Math.floor(h),mm=Math.round((h-hh)*60);const ap=hh<12?'a. m.':'p. m.';const h12=hh%12===0?12:hh%12;return h12+':'+String(mm).padStart(2,'0')+' '+ap;}
+function fmtHora(h){if(h==null)return '';const d=new Date();d.setHours(Math.floor(h),Math.round((h-Math.floor(h))*60),0,0);return new Intl.DateTimeFormat(LOCALE(),{hour:'numeric',minute:'2-digit'}).format(d);}
 function seleccionar(b,volar){
   if(tripActivo)terminarViaje();
   llegadaEn=null;
@@ -600,15 +1690,8 @@ function seleccionar(b,volar){
   document.getElementById('cLogo').style.background=CAT[b.cat].col;
   document.getElementById('cLogo').innerHTML=glyph(CAT[b.cat].g,'#fff');
   document.getElementById('cEstrellas').textContent=b.rating?('★'.repeat(Math.round(b.rating))+' '+b.rating.toFixed(1)):'';
-  let estado='';
-  if(b.h24){
-    estado=`<b>Abierto ahora</b> · <span class="badge24">24/7</span>`;
-  }else if(b.horas){
-    const h=horaCiudad(),abierto=h>=b.horas[0]&&h<b.horas[1];
-    estado=abierto?`<b>Abierto ahora</b> · cierra ${fmtHora(b.horas[1])}`:`<span class="cerrado">Cerrado ahora</span> · abre ${fmtHora(b.horas[0])}`;
-  }
-  document.getElementById('cEstado').innerHTML=estado;
-  document.getElementById('cDir').textContent=(b.dir||'')+(b.fecha?(' · '+b.fecha):'')+(b.nota?(' · '+b.nota):'');
+  document.getElementById('cEstado').innerHTML=textoEstado(b);
+  document.getElementById('cDir').textContent=textoDir(b);
   document.getElementById('filaContacto').style.display=b.tel?'':'none';
   if(b.tel){
     document.getElementById('bLlamar').href='tel:'+b.tel;
@@ -618,7 +1701,7 @@ function seleccionar(b,volar){
   rutaEsReal=false; rutaDistancia=null; estadoRuta='calculando';
   pasos=[]; pasosAlong=[];
   document.getElementById('bannerTurno').style.display='none';
-  document.getElementById('cAviso').textContent='Calculando ruta por las calles…';
+  document.getElementById('cAviso').textContent=t('calculandoRuta');
   lastRouteFrom=[...YOU]; lastRouteAt=Date.now();
   RUTA=rutaSuave(YOU,[b.lng,b.lat]);
   construirRuta();
@@ -647,7 +1730,6 @@ function aplicarFiltros(){
 }
 
 /* ---------- Menú unificado de categorías + lista ordenada ---------- */
-const CAT_LABEL={todos:'Todos los lugares',h24:'Abierto 24/7',vet:'Veterinarias',tienda:'Tiendas de mascotas',farma:'Farmacias',zoo:'Zoológicos y acuarios',granja:'Granjas para visitar',refugio:'Refugios y perreras',adopcion:'Adopciones',facultad:'Facultades de veterinaria',resto:'Restaurantes pet-friendly',evento:'Eventos de animales'};
 const CATS_ORDEN=['todos','h24','vet','tienda','farma','zoo','granja','refugio','adopcion','facultad','resto','evento'];
 function distanciaA(b){const dx=(b.lng-YOU[0])*M_LNG, dy=(b.lat-YOU[1])*M_LAT; return Math.hypot(dx,dy);}
 function eventosDeCiudad(){
@@ -667,7 +1749,7 @@ function renderCategorias(){
     const col=c==='todos'?'#0E7C66':(c==='h24'?'#0E7C66':CAT[c].col);
     const ico=c==='todos'?`<svg width="30" height="30" viewBox="0 0 24 24" fill="${col}"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="3" fill="#fff"/></svg>`:c==='h24'?`<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="${col}" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round"/></svg>`:glyph(CAT[c].g,col);
     const n=conteoCat(c);
-    return `<div class="catRow" data-cat="${c}"><span class="logoBox" style="background:${col}1f;width:48px;height:48px">${ico}</span><span style="flex:1"><span class="nm">${CAT_LABEL[c]}</span><br><span class="ct">${n} ${n===1?'lugar':'lugares'} en ${CIUDADES[ciudadActual].nombre}</span></span><span style="font-size:22px;color:#999">›</span></div>`;
+    return `<div class="catRow" data-cat="${c}"><span class="logoBox" style="background:${col}1f;width:48px;height:48px">${ico}</span><span style="flex:1"><span class="nm">${etiquetaCat(c)}</span><br><span class="ct">${t(n===1?'catCount1':'catCountN',{n,ciudad:CIUDADES[ciudadActual].nombre})}</span></span><span style="font-size:22px;color:#999">›</span></div>`;
   }).join('');
   box.querySelectorAll('.catRow').forEach(row=>row.addEventListener('click',()=>elegirCategoria(row.dataset.cat)));
 }
@@ -688,10 +1770,10 @@ function ordenarLista(lista){
 }
 function estrellasTxt(n){const k=Math.max(0,Math.min(5,Math.round(n||0)));return '★'.repeat(k)+'☆'.repeat(5-k);}
 function lineaVisitas(b){
-  const v=visitasDe(b); if(!v)return 'Aún no registras visitas aquí';
-  let t=`Tus visitas: <b>${v.veces} ${v.veces===1?'vez':'veces'}</b> · tu calificación: <span class="stars">${estrellasTxt(v.estrellas)}</span>`;
-  if(v.llegadas)t+=` · llegadas con GPS: <b>${v.llegadas}</b> (+${v.llegadas} estrella${v.llegadas===1?'':'s'})`;
-  return t;
+  const v=visitasDe(b); if(!v)return t('aunNoVisitas');
+  let s=t('tusVisitas',{v:v.veces,vez:vezPalabra(v.veces)})+`<span class="stars">${estrellasTxt(v.estrellas)}</span>`;
+  if(v.llegadas)s+=t('llegadasLine',{n:v.llegadas,palabra:estrellaPalabra(v.llegadas)});
+  return s;
 }
 function renderLista(){
   const titulo=document.getElementById('listaTitulo');
@@ -703,13 +1785,13 @@ function renderLista(){
   sM.style.display=filtroCat==='evento'?'none':'';
   sC.style.display=filtroCat==='evento'?'none':'';
   if(filtroCat==='evento'){
-    titulo.textContent='Eventos de animales';
+    titulo.textContent=t('eventosTitulo');
     form.style.display='block';
     const evs=eventosDeCiudad();
     if(!evs.length){
-      cuerpo.innerHTML=`<div class="meta" style="padding:10px 2px">Aún no hay eventos publicados en ${CIUDADES[ciudadActual].nombre}. Publica el primero con el formulario de abajo.</div>`;
+      cuerpo.innerHTML=`<div class="meta" style="padding:10px 2px">${t('eventosVacios',{ciudad:CIUDADES[ciudadActual].nombre})}</div>`;
     }else{
-      cuerpo.innerHTML=evs.map((e,i)=>`<div class="listaRow" data-ev="${i}"><span class="logoBox" style="background:#0891B2;width:48px;height:48px">${glyph('evento','#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${e.n}</span>${e.propio?' <span class="meta">(tu evento)</span>':''}<br><span class="meta">${e.fecha||'Fecha por confirmar'}${e.hora?' · '+e.hora:''}</span><br><span class="meta">${e.dir||''}${e.nota?' · '+e.nota:''}</span></span></div>`).join('');
+      cuerpo.innerHTML=evs.map((e,i)=>`<div class="listaRow" data-ev="${i}"><span class="logoBox" style="background:#0891B2;width:48px;height:48px">${glyph('evento','#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${e.n}</span>${e.propio?' <span class="meta">'+t('tuEvento')+'</span>':''}<br><span class="meta">${e.fecha||t('fechaConfirmar')}${e.hora?' · '+e.hora:''}</span><br><span class="meta">${e.dir||''}${e.comunidad?' · '+t('comunidad'):(e.nota?' · '+e.nota:'')}</span></span></div>`).join('');
       cuerpo.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
         const e=evs[+row.dataset.ev];
         if(e.lat!=null&&e.lng!=null)seleccionar(e,true);
@@ -718,18 +1800,18 @@ function renderLista(){
     return;
   }
   form.style.display='none';
-  titulo.textContent=CAT_LABEL[filtroCat]+' · '+CIUDADES[ciudadActual].nombre;
+  titulo.textContent=etiquetaCat(filtroCat)+' · '+CIUDADES[ciudadActual].nombre;
   let lista;
   if(filtroCat==='h24')lista=ordenarLista(NEGOCIOS.filter(es24h));
   else lista=ordenarLista(NEGOCIOS.filter(b=>filtroCat==='todos'||b.cat===filtroCat));
-  if(!lista.length){cuerpo.innerHTML=filtroCat==='h24'?'<div class="meta" style="padding:10px 2px">No hay lugares 24/7 verificados en esta ciudad todavía.</div>':'<div class="meta" style="padding:10px 2px">No hay lugares de esta categoría en esta ciudad todavía.</div>';return;}
+  if(!lista.length){cuerpo.innerHTML=filtroCat==='h24'?'<div class="meta" style="padding:10px 2px">'+t('sin24')+'</div>':'<div class="meta" style="padding:10px 2px">'+t('sinCat')+'</div>';return;}
   cuerpo.innerHTML=lista.map(b=>{
     const c=CAT[b.cat];
-    const g=b.rating!=null?`<span class="stars">${estrellasTxt(b.rating)}</span> ${b.rating.toFixed(1)} <span style="color:#888">(Google)</span>`:'<span style="color:#888">Sin calificación en Google</span>';
+    const g=b.rating!=null?`<span class="stars">${estrellasTxt(b.rating)}</span> ${b.rating.toFixed(1)} <span style="color:#888">${t('googleParen')}</span>`:'<span style="color:#888">'+t('sinGoogle')+'</span>';
     const badge=b.h24?' <span class="badge24">24/7</span>':'';
     let estado='';
-    if(b.h24)estado=' · <b>Abierto ahora</b>';
-    else if(b.horas){const h=horaCiudad(),ab=b.horas[0]<=h&&h<b.horas[1];estado=ab?' · <b>Abierto ahora</b>':` · <span class="cerrado">Cerrado ahora</span>`;}
+    if(b.h24)estado=' · <b>'+t('abierto')+'</b>';
+    else if(b.horas){const h=horaCiudad(),ab=b.horas[0]<=h&&h<b.horas[1];estado=ab?' · <b>'+t('abierto')+'</b>':` · <span class="cerrado">${t('cerrado')}</span>`;}
     return `<div class="listaRow" data-n="${b.n.replace(/"/g,'&quot;')}"><span class="logoBox" style="background:${c.col};width:48px;height:48px">${glyph(c.g,'#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${b.n}</span>${badge}<br><span class="meta">${g} · a <b>${fmtDist(distanciaA(b))}</b>${estado}</span><br><span class="meta">${lineaVisitas(b)}</span></span></div>`;
   }).join('');
   cuerpo.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
@@ -763,23 +1845,23 @@ document.getElementById('buscador').addEventListener('input',e=>{
 /* ---------- Búsqueda por relevancia ---------- */
 function normalizar(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
 const SINONIMOS={
-  vet:['veterinaria','veterinarias','veterinario','veterinary','vet','clinica','salud','doctor'],
-  tienda:['tienda','tiendas','pet shop','petshop','comida','alimento','juguete','accesorio'],
-  farma:['farmacia','farmacias','medicina','medicamento','agropecuaria','drogueria'],
-  zoo:['zoo','zoologico','acuario','safari'],
-  granja:['granja','granjas','finca'],
-  refugio:['refugio','refugios','perrera','perreras','perdido','perdidos'],
-  adopcion:['adopcion','adopciones','adoptar'],
-  facultad:['facultad','facultades','universidad','instituto','estudiar'],
-  resto:['restaurante','restaurantes','comer','bar','cerveceria','cafe','cafeteria','pet-friendly','pet friendly'],
-  evento:['evento','eventos','fiesta','feria','festival']
+  vet:['veterinaria','veterinario','veterinary','vet','veterinaire','tierarzt','dierenarts','weterynarz','clinica','clinic','clinique','klinik','przychodnia','salud','sante','gesundheit','doctor','dokter','lekarz'],
+  tienda:['tienda','pet shop','petshop','comida','alimento','juguete','accesorio','pet store','animalerie','tierhandlung','dierenwinkel','sklep zoologiczny','zoohandlung','animal store'],
+  farma:['farmacia','medicina','medicamento','agropecuaria','drogueria','pharmacy','pharmacie','apotheke','tierapotheke','apteka','dierenapotheek'],
+  zoo:['zoo','zoologico','acuario','aquarium','safari','aquario','dierentuin'],
+  granja:['granja','finca','farm','ferme','bauernhof','fattoria','boerderij','gospodarstwo'],
+  refugio:['refugio','perrera','perdido','shelter','kennel','refuge','chenil','tierheim','rifugio','canile','asiel','schronisko'],
+  adopcion:['adopcion','adoptar','adoption','adopter','adopt','adozione','adoptie','adopcja'],
+  facultad:['facultad','universidad','instituto','estudiar','university','school','faculte','universite','fakultat','universitat','facolta','universita','faculteit','uniwersytet','wydzial'],
+  resto:['restaurante','comer','bar','cerveceria','cafe','cafeteria','pet-friendly','pet friendly','restaurant','eat','eating','brasserie','ristorante','restauracja','pub'],
+  evento:['evento','fiesta','feria','festival','event','fete','veranstaltung','festa','evenement','wydarzenie']
 };
 function categoriaDeBusqueda(q){
   const nq=normalizar(q);
   for(const c in SINONIMOS){if(SINONIMOS[c].some(w=>nq.includes(normalizar(w))))return c;}
   return null;
 }
-function esUrgencia(q){return /urgencia|emergencia|24\s*h|24\/7|abierto ahora/.test(normalizar(q));}
+function esUrgencia(q){return /urgencia|emergencia|emergency|urgence|notfall|emergenza|noodgeval|nagly|pilne|24\s*h|24\/7|abierto ahora|open now|ouvert|geoffnet|aperto|nu open|otwarte/.test(normalizar(q));}
 function esNoche(){const h=horaCiudad();return h>=20||h<7;}
 function abiertoAhora(b){
   if(es24h(b))return true;
@@ -793,7 +1875,7 @@ function puntajeBusqueda(b,q){
   let score=0;
   if(cat&&b.cat===cat)score+=100;
   if(normalizar(b.n).includes(nq))score+=80;
-  if(normalizar(CAT[b.cat].nombre).includes(nq))score+=60;
+  if(nombreCatEnAlgunIdioma(b.cat,nq))score+=60;
   if(normalizar(b.nota||'').includes(nq))score+=40;
   if(esUrgencia(nq)){
     if(es24h(b))score+=90;
@@ -809,13 +1891,13 @@ function renderSug(){
   const q=filtroTxt;
   let html='';
   if(q&&categoriaDeBusqueda(q)==='evento'){
-    html+=`<div class="sugItem" data-ev="1"><span class="dot" style="background:#0891B2;flex:none"></span><span><span class="nm">Ver eventos de animales</span><br><span class="cat">Eventos en ${CIUDADES[ciudadActual].nombre}</span></span></div>`;
+    html+=`<div class="sugItem" data-ev="1"><span class="dot" style="background:#0891B2;flex:none"></span><span><span class="nm">${t('verEventos')}</span><br><span class="cat">${t('eventosEn',{ciudad:CIUDADES[ciudadActual].nombre})}</span></span></div>`;
   }
   let lista;
   if(!q){
     lista=NEGOCIOS.filter(pasaCat).map(b=>({b,d:distanciaA(b)})).sort((x,y)=>x.d-y.d).slice(0,8);
     if(document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
-    box.innerHTML=lista.map(({b,d})=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span>${es24h(b)?' <span class="badge24">24/7</span>':''}<br><span class="cat">${c.nombre} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(d)}</span></div>`;}).join('');
+    box.innerHTML=lista.map(({b,d})=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span>${es24h(b)?' <span class="badge24">24/7</span>':''}<br><span class="cat">${catName(b.cat)} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(d)}</span></div>`;}).join('');
     box.style.display='block';
     return;
   }
@@ -824,7 +1906,7 @@ function renderSug(){
   lista=lista.slice(0,8);
   if(!lista.length&&!html){box.style.display='none';return;}
   if(document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
-  html+=lista.map(({b,p})=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span>${es24h(b)?' <span class="badge24">24/7</span>':''}<br><span class="cat">${c.nombre} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(p.dist)}</span></div>`;}).join('');
+  html+=lista.map(({b,p})=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span>${es24h(b)?' <span class="badge24">24/7</span>':''}<br><span class="cat">${catName(b.cat)} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(p.dist)}</span></div>`;}).join('');
   box.innerHTML=html;
   box.style.display='block';
 }
@@ -886,7 +1968,7 @@ document.getElementById('bCompartir').addEventListener('click',async()=>{
   const texto=`${seleccionado.n} — ${seleccionado.dir}`;
   try{
     if(navigator.share){await navigator.share({title:seleccionado.n,text:texto,url});}
-    else{await navigator.clipboard.writeText(texto+' '+url);const b=document.getElementById('bCompartir');const t=b.textContent;b.textContent='¡Copiado!';setTimeout(()=>b.textContent=t,1800);}
+    else{await navigator.clipboard.writeText(texto+' '+url);const b=document.getElementById('bCompartir');const tx=b.textContent;b.textContent=t('copiado');setTimeout(()=>b.textContent=tx,1800);}
   }catch(err){}
 });
 document.getElementById('bRutaCompleta').addEventListener('click',()=>{
@@ -917,11 +1999,11 @@ function actualizarVisitasInfo(){
   const info=document.getElementById('visitasInfo'); if(!info)return;
   if(!seleccionado){info.textContent='';return;}
   const v=leerVisitas()[claveVisita(seleccionado)];
-  if(!v){info.innerHTML='Aún no registras visitas aquí. Toca una estrella cuando vengas.';}
+  if(!v){info.innerHTML=t('aunNoVisitasCard');}
   else{
-    let t=`Has venido <b>${v.veces} ${v.veces===1?'vez':'veces'}</b> aquí · tu calificación: <span class="stars">${estrellasTxt(v.estrellas)}</span>`;
-    if(v.llegadas)t+=` · llegadas con GPS: <b>${v.llegadas}</b> (+${v.llegadas} estrella${v.llegadas===1?'':'s'} por llegar)`;
-    info.innerHTML=t;
+    let s=t('hasVenido',{v:v.veces,vez:vezPalabra(v.veces)})+`<span class="stars">${estrellasTxt(v.estrellas)}</span>`;
+    if(v.llegadas)s+=t('llegadasLine',{n:v.llegadas,palabra:estrellaPalabra(v.llegadas)});
+    info.innerHTML=s;
   }
   document.querySelectorAll('#filaVisitas .starBtn').forEach(s=>s.classList.toggle('on',!!v&&+s.dataset.v<=v.estrellas));
 }
@@ -929,15 +2011,15 @@ function registrarVisita(estrellas){
   if(!seleccionado)return;
   const v=leerVisitas(), k=claveVisita(seleccionado);
   const ant=v[k]||{n:seleccionado.n,cat:seleccionado.cat,dir:seleccionado.dir,veces:0,estrellas:0,ultima:''};
-  ant.veces++; ant.estrellas=estrellas; ant.ultima=new Date().toLocaleDateString('es-CO');
+  ant.veces++; ant.estrellas=estrellas; ant.ultima=new Date().toLocaleDateString(LOCALE());
   v[k]=ant; guardarVisitas(v);
   actualizarVisitasInfo(); renderVisitas();
 }
 function renderVisitas(){
   const box=document.getElementById('listaVisitas'); if(!box)return;
   const lista=Object.values(leerVisitas()).sort((a,b)=>b.veces-a.veces);
-  if(!lista.length){box.innerHTML='<div class="meta">Todavía no registras visitas. Abre un lugar y toca una estrella cuando lo visites.</div>';return;}
-  box.innerHTML=lista.map(x=>`<div class="panelRow"><span style="width:12px;height:12px;border-radius:50%;background:${(CAT[x.cat]||CAT.vet).col};flex:none"></span><span><b>${x.n}</b><br><span class="meta">${x.veces} ${x.veces===1?'visita':'visitas'} · <span class="stars">${estrellasTxt(x.estrellas)}</span> · última: ${x.ultima}${x.llegadas?` · llegadas con GPS: <b>${x.llegadas}</b> (+${x.llegadas}★)`:''}</span></span></div>`).join('');
+  if(!lista.length){box.innerHTML='<div class="meta">'+t('visitasVacias')+'</div>';return;}
+  box.innerHTML=lista.map(x=>`<div class="panelRow"><span style="width:12px;height:12px;border-radius:50%;background:${(CAT[x.cat]||CAT.vet).col};flex:none"></span><span><b>${x.n}</b><br><span class="meta">${x.veces} ${visitaPalabra(x.veces)} · <span class="stars">${estrellasTxt(x.estrellas)}</span> · ${t('ultima',{fecha:x.ultima})}${x.llegadas?` · ${t('llegadasCorto')}<b>${x.llegadas}</b> (+${x.llegadas}★)`:''}</span></span></div>`).join('');
 }
 document.querySelectorAll('#filaVisitas .starBtn').forEach(s=>s.addEventListener('click',()=>registrarVisita(+s.dataset.v)));
 const mascotaLS='mascotas_mascota_v1';
@@ -958,7 +2040,7 @@ function aplicarColorMascota(){
 }
 function renderColoresMascota(){
   const box=document.getElementById('petColores'); if(!box)return;
-  box.innerHTML=Object.keys(COLORES_MASCOTA).map(k=>`<button class="swatch ${k===petColor?'on':''}" data-c="${k}" title="${k}" style="background:${COLORES_MASCOTA[k].muestra}"></button>`).join('');
+  box.innerHTML=Object.keys(COLORES_MASCOTA).map(k=>`<button class="swatch ${k===petColor?'on':''}" data-c="${k}" title="${t('color.'+k)}" style="background:${COLORES_MASCOTA[k].muestra}"></button>`).join('');
   box.querySelectorAll('.swatch').forEach(s=>s.addEventListener('click',()=>{
     petColor=s.dataset.c;
     box.querySelectorAll('.swatch').forEach(x=>x.classList.toggle('on',x===s));
@@ -989,8 +2071,8 @@ document.getElementById('bPublicarEvento').addEventListener('click',()=>{
   const f=document.getElementById('evFecha').value.trim();
   const h=document.getElementById('evHora').value.trim();
   const l=document.getElementById('evLugar').value.trim();
-  if(!n){alert('Escribe el nombre del evento');return;}
-  const ev={n,cat:'evento',fecha:f,hora:h,dir:l,lat:YOU[1],lng:YOU[0],tel:null,horas:null,nota:'Publicado por la comunidad',ciudad:ciudadActual};
+  if(!n){alert(t('evAlerta'));return;}
+  const ev={n,cat:'evento',fecha:f,hora:h,dir:l,lat:YOU[1],lng:YOU[0],tel:null,horas:null,comunidad:true,ciudad:ciudadActual};
   const arr=leerEventosUsuario(); arr.push(ev); localStorage.setItem('mascotas_eventos_v1',JSON.stringify(arr));
   crearPinesEventosUsuario();
   ['evNombre','evFecha','evHora','evLugar'].forEach(id=>document.getElementById(id).value='');
@@ -999,27 +2081,26 @@ document.getElementById('bPublicarEvento').addEventListener('click',()=>{
 const marcadoresOSM=[];
 let osmCargando=false;
 async function cargarOSM(){
-  const btn=document.getElementById('bEEUU');
-  if(marcadoresOSM.length){marcadoresOSM.forEach(m=>m.mk.remove());marcadoresOSM.length=0;btn.textContent='Lugares en EE. UU.';return;}
+  const btn=document.getElementById('bMundo');
+  if(marcadoresOSM.length){marcadoresOSM.forEach(m=>m.mk.remove());marcadoresOSM.length=0;btn.textContent=t('osmBtn');return;}
   if(osmCargando)return;
   const lat=YOU[1], lng=YOU[0];
-  if(lat<24||lat>50||lng<-125||lng>-66){document.getElementById('cAviso').textContent='La capa en vivo cubre Estados Unidos. Activa tu GPS en EE. UU. para usarla.';return;}
-  osmCargando=true; btn.textContent='Buscando…';
+  osmCargando=true; btn.textContent=t('osmBuscando');
   try{
     const q=`[out:json][timeout:25];(node["amenity"~"veterinary|animal_shelter|zoo|animal_boarding"](around:30000,${lat},${lng});way["amenity"~"veterinary|animal_shelter|zoo|animal_boarding"](around:30000,${lat},${lng});node["shop"="pet"](around:30000,${lat},${lng});way["shop"="pet"](around:30000,${lat},${lng}););out center 100;`;
     const r=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(q)});
     const j=await r.json();
     let n=0;
     (j.elements||[]).forEach(el=>{
-      const t=el.tags||{}; if(!t.name)return;
+      const tg=el.tags||{}; if(!tg.name)return;
       const la=el.lat||(el.center&&el.center.lat), lo=el.lon||(el.center&&el.center.lon);
       if(la==null||lo==null)return;
-      let cat='tienda', extra='';
-      if(t.amenity==='veterinary')cat='vet';
-      else if(t.amenity==='animal_shelter')cat='refugio';
-      else if(t.amenity==='zoo')cat='zoo';
-      else if(t.amenity==='animal_boarding'){cat='tienda';extra='Guardería · ';}
-      const b={n:t.name,cat,lat:la,lng:lo,dir:(t['addr:street']?t['addr:street']+(t['addr:housenumber']?' '+t['addr:housenumber']:'')+', ':'')+'Dato de OpenStreetMap',tel:t.phone||null,horas:null,nota:extra+'Verifica antes de ir'};
+      let cat='tienda', guarderia=false;
+      if(tg.amenity==='veterinary')cat='vet';
+      else if(tg.amenity==='animal_shelter')cat='refugio';
+      else if(tg.amenity==='zoo')cat='zoo';
+      else if(tg.amenity==='animal_boarding'){cat='tienda';guarderia=true;}
+      const b={n:tg.name,cat,lat:la,lng:lo,dir:(tg['addr:street']?tg['addr:street']+(tg['addr:housenumber']?' '+tg['addr:housenumber']:''):'')||'',tel:tg.phone||null,horas:null,osm:true,guarderia};
       const c=CAT[cat];
       const mkEl=document.createElement('div');mkEl.className='pin2 '+c.cls;
       mkEl.innerHTML=`<span class="in">${glyph(c.g,c.col)}</span>`; mkEl.title=b.n;
@@ -1027,15 +2108,15 @@ async function cargarOSM(){
       mkEl.addEventListener('click',()=>seleccionar(b,false));
       marcadoresOSM.push({b,el:mkEl,mk}); n++;
     });
-    document.getElementById('cAviso').textContent=n?`Capa EE. UU.: ${n} lugares de OpenStreetMap cerca de ti. Toca “Lugares en EE. UU.” para limpiarlos.`:'Sin lugares de animales en OpenStreetMap cerca de ti (30 km).';
-    btn.textContent=n?'Limpiar capa EE. UU.':'Lugares en EE. UU.';
+    document.getElementById('cAviso').textContent=n?t('osmEncontrados',{n}):t('osmVacios');
+    btn.textContent=n?t('osmLimpiar'):t('osmBtn');
   }catch(e){
-    document.getElementById('cAviso').textContent='No se pudo consultar OpenStreetMap. Revisa tu conexión e intenta de nuevo.';
-    btn.textContent='Lugares en EE. UU.';
+    document.getElementById('cAviso').textContent=t('osmError');
+    btn.textContent=t('osmBtn');
   }
   osmCargando=false;
 }
-document.getElementById('bEEUU').addEventListener('click',cargarOSM);
+document.getElementById('bMundo').addEventListener('click',cargarOSM);
 function mostrarPanel(id){
   ['panelVisitas','panelMascota'].forEach(p=>{const el=document.getElementById(p); if(el)el.style.display=(p===id&&el.style.display!=='block')?'block':'none';});
   if(id==='panelVisitas')renderVisitas();
@@ -1081,5 +2162,8 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
+detectarIdioma();
+document.getElementById('selIdioma').addEventListener('change',e=>setLang(e.target.value));
+applyLang();
 seleccionar(NEGOCIOS[0],false);
 </script></body></html>
