@@ -40,6 +40,11 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 .btns{display:flex;gap:8px;margin-top:10px}
 .btn{flex:1;border:0;border-radius:13px;padding:11px 0;font-size:14.5px;font-weight:800;color:#fff;text-align:center;text-decoration:none;cursor:pointer}
 .btn.call{background:#0E7C66}.btn.wa{background:#25D366}.btn.go{background:#14342B}
+.chead{display:flex;gap:12px;align-items:center}
+.clogo{width:60px;height:60px;border-radius:16px;flex:none;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#F2F2F2;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.clogo img{width:100%;height:100%;object-fit:cover}
+.btns2{display:flex;margin-top:8px}
+.btn.share{background:#EFEFEF;color:#14342B}
 .attr{position:absolute;right:10px;bottom:196px;z-index:5;font-size:10px;color:rgba(255,255,255,.95);text-shadow:0 1px 2px rgba(0,0,0,.6)}
 .gpsbtn{position:absolute;top:246px;right:12px;z-index:6;border:0;border-radius:20px;padding:9px 15px;font-size:13px;font-weight:800;background:#fff;color:#444;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer}
 .gpsbtn.on{background:#0E7C66;color:#fff}
@@ -68,14 +73,22 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 <button id="btnYo" class="gpsbtn" style="top:296px">Mi ubicación</button>
 <div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM</div>
 <div class="card" id="card">
-  <h3 id="cNombre">Cargando…</h3>
-  <div><span class="stars" id="cEstrellas"></span> <span class="meta" id="cEstado"></span></div>
+  <div class="chead">
+    <div class="clogo" id="cLogo"></div>
+    <div>
+      <h3 id="cNombre">Cargando…</h3>
+      <div><span class="stars" id="cEstrellas"></span> <span class="meta" id="cEstado"></span></div>
+    </div>
+  </div>
   <div class="meta" id="cDir"></div>
   <div class="meta" id="cDist"></div>
   <div class="btns">
     <a class="btn call" id="bLlamar" href="#">Llamar</a>
     <a class="btn wa" id="bWa" href="#" target="_blank" rel="noopener">WhatsApp</a>
     <button class="btn go" id="bIr">Cómo llegar</button>
+  </div>
+  <div class="btns2">
+    <button class="btn share" id="bCompartir">Compartir</button>
   </div>
 </div>
 <script>
@@ -210,6 +223,13 @@ let seleccionado=null;
 function seleccionar(b,volar){
   seleccionado=b;
   marcadores.forEach(m=>m.el.classList.toggle('sel',m.b===b));
+  const cc=CAT[b.cat];
+  const logoEl=document.getElementById('cLogo');
+  if(b.logo){
+    const im=document.createElement('img'); im.src=b.logo; im.alt='';
+    im.onerror=()=>{logoEl.innerHTML=glyph(cc.g,cc.col);};
+    logoEl.innerHTML=''; logoEl.appendChild(im);
+  } else logoEl.innerHTML=glyph(cc.g,cc.col);
   document.getElementById('cNombre').textContent=b.n;
   document.getElementById('cEstrellas').textContent=b.rating?('★'.repeat(Math.round(b.rating))+' '+b.rating.toFixed(1)):'';
   let estado='';
@@ -236,6 +256,20 @@ function seleccionar(b,volar){
   if(volar&&!gpsOn) window.map.easeTo({center:[b.lng,b.lat],zoom:Math.max(window.map.getZoom(),15)});
 }
 document.getElementById('bIr').addEventListener('click',()=>{if(seleccionado){activarGps();seleccionar(seleccionado,true);}});
+document.getElementById('bCompartir').addEventListener('click',async()=>{
+  const btn=document.getElementById('bCompartir');
+  const texto=(seleccionado?seleccionado.n+' — ':'')+'Mascotas cerca de ti: '+location.href;
+  try{
+    if(navigator.share){await navigator.share({title:'Mascotas cerca de ti',text:texto,url:location.href});return;}
+    throw 0;
+  }catch(e){
+    try{await navigator.clipboard.writeText(texto);}catch(e2){
+      const ta=document.createElement('textarea');ta.value=texto;document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');}catch(e3){} ta.remove();
+    }
+    const viejo=btn.textContent; btn.textContent='¡Enlace copiado!'; setTimeout(()=>btn.textContent=viejo,2000);
+  }
+});
 document.getElementById('btnYo').addEventListener('click',()=>{window.map.easeTo({center:YOU,zoom:16.6});});
 document.getElementById('btnGps').addEventListener('click',()=>{
   gpsOn=!gpsOn;
@@ -259,11 +293,14 @@ document.getElementById('chips').addEventListener('click',e=>{
   filtroCat=btn.dataset.cat;aplicarFiltros();
 });
 document.getElementById('buscador').addEventListener('input',e=>{filtroTxt=e.target.value.trim().toLowerCase();aplicarFiltros();renderSug();});
+function distM(b){const dx=(b.lng-YOU[0])*111000, dy=(b.lat-YOU[1])*110600; return Math.hypot(dx,dy);}
+function fmtDist(m){return m>=1000? (m/1000).toFixed(1).replace('.',',')+' km' : Math.round(m)+' m';}
 function renderSug(){
   const box=document.getElementById('sug');
   const lista=NEGOCIOS_IBAGUE.filter(b=>!filtroTxt||b.n.toLowerCase().includes(filtroTxt));
+  lista.sort((a,b)=>distM(a)-distM(b));
   if(!lista.length||document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
-  box.innerHTML=lista.map((b,i)=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS_IBAGUE.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span><br><span class="cat">${c.nombre} · ${b.dir}</span></span></div>`;}).join('');
+  box.innerHTML=lista.map((b,i)=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS_IBAGUE.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span><br><span class="cat">${c.nombre} · ${b.dir} · a ${fmtDist(distM(b))}</span></span></div>`;}).join('');
   box.style.display='block';
 }
 document.getElementById('buscador').addEventListener('focus',()=>renderSug());
