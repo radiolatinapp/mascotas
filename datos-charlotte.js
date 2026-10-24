@@ -29,5 +29,34 @@ const NEGOCIOS_CHARLOTTE = [
  {n:"Pet Wants Camden", cat:"tienda", lat:35.213487, lng:-80.858169, dir:"1700 Camden Rd, Charlotte, NC", tel:"+17044122992", horas:[8,20], rating:5.0, nota:"South End, patio para perros"},
  {n:"Petco Metropolitan", cat:"tienda", lat:35.214758, lng:-80.835087, dir:"900 Metropolitan Ave Ste 1A, Charlotte, NC", tel:"+17049164047", horas:[9,21], nota:"Grooming, adiestramiento, clínica de vacunas"},
  {n:"Monroe Road Animal Hospital", cat:"farma", lat:35.199242, lng:-80.795487, dir:"3736 Monroe Rd, Charlotte, NC 28205", tel:"+17043333336", horas:[7.75,18], rating:4.5, nota:"Farmacia propia y en línea, exóticos"},
- {n:"CARE Charlotte Animal Referral & Emergency", cat:"farma", lat:35.194385, lng:-80.798519, dir:"3726 Latrobe Dr, Charlotte, NC 28211", tel:"+17044572300", horas:null, nota:"Urgencias 24 h, 365 días — hospital de referencia"}
+ {n:"CARE Charlotte Animal Referral & Emergency", cat:"farma", lat:35.194385, lng:-80.798519, dir:"3726 Latrobe Dr, Charlotte, NC 28211", tel:"+17044572300", horas:null, nota:"Urgencias 24 h, 365 días — hospital de referencia"},
+ // --- Zoológicos y acuarios ---
+ {n:"Lazy 5 Ranch", cat:"zoo", lat:35.622964, lng:-80.720769, dir:"15100 Mooresville Rd, Mooresville, NC 28115", tel:"+17046635100", horas:[9,17], rating:4.7, nota:"Safari en carro, +750 animales de 6 continentes; solo efectivo o cheque"},
+ {n:"SEA LIFE Charlotte-Concord", cat:"zoo", lat:35.369233, lng:-80.725108, dir:"8111 Concord Mills Blvd, Concord, NC 28027", tel:"+17044561955", horas:[10,18], rating:4.0, nota:"Túnel oceánico 180°, piscina táctil, tiburones y rayas"},
+ // --- Granjas para visitar ---
+ {n:"Carrigan Farms", cat:"granja", lat:35.600222, lng:-80.768861, dir:"1261 Oakridge Farm Hwy, Mooresville, NC 28115", tel:"+17046641450", horas:null, rating:4.4, nota:"Granja familiar de 300 acres: fresas, manzanas, calabazas; horario por temporada, confirma antes de ir"},
+ // --- Refugio / perrera municipal ---
+ {n:"CMPD Animal Care & Control", cat:"refugio", lat:35.191225, lng:-80.948284, dir:"8315 Byrum Dr, Charlotte, NC 28217", tel:"+17043367600", horas:[11,19], nota:"Perrera municipal: adopciones y mascotas perdidas o encontradas"},
+ // --- Adopciones ---
+ {n:"Humane Society of Charlotte", cat:"adopcion", lat:35.220766, lng:-80.879215, dir:"1348 Parker Dr, Charlotte, NC 28208", tel:"+17043770534", horas:[11,17], rating:4.7, nota:"Adopciones, esterilización y banco de alimentos para mascotas"},
+ // --- Facultades e institutos de veterinaria ---
+ {n:"Central Piedmont CC", cat:"facultad", lat:35.216762, lng:-80.829258, dir:"1201 Elizabeth Ave, Charlotte, NC", tel:"+17043302722", horas:[8,17], rating:4.2, nota:"Tecnología Médica Veterinaria (AVMA) y programa de Asistente Veterinario"},
+ // --- Restaurantes y comercios pet-friendly (solo los que SÍ admiten animales) ---
+ {n:"The Goodyear House", cat:"resto", lat:35.246089, lng:-80.807165, dir:"3032 N Davidson St, Charlotte, NC 28205", tel:"+17049100132", horas:[11,22.5], rating:4.3, nota:"NoDa, patio dog-friendly, brunch y música en vivo"},
+ {n:"NoDa Brewing Company", cat:"resto", lat:35.251711, lng:-80.812735, dir:"2921 N Tryon St, Charlotte, NC 28206", tel:"+17049006851", horas:[11.5,21], rating:4.8, nota:"Patio para perros, música en vivo y food trucks"},
+ {n:"Triple C Brewing Company", cat:"resto", lat:35.201254, lng:-80.8695, dir:"2900 Griffith St, Charlotte, NC 28203", tel:"+17043723212", horas:[12,22], rating:4.7, nota:"Patio dog-friendly, jornadas de adopción y música en vivo"},
+ {n:"Birdsong Brewing Co.", cat:"resto", lat:35.230819, lng:-80.826593, dir:"1016 N Davidson St, Charlotte, NC", tel:"+17043321810", horas:[11,22], rating:4.7, nota:"Patio dog-friendly en NoDa, food trucks"},
+ {n:"Seoul Food Meat Company", cat:"resto", lat:35.219257, lng:-80.857579, dir:"1400 S Church St, Charlotte, NC 28203", tel:"+19802995143", horas:[11.5,24], rating:4.8, nota:"South End, parque para perros y patio trasero, karaoke"},
+ {n:"Optimist Hall", cat:"resto", lat:35.234325, lng:-80.827256, dir:"1115 N Brevard St, Charlotte, NC", tel:"+19807010040", horas:[7,22], rating:4.0, nota:"Food hall, perros permitidos en la zona exterior"},
+ {n:"The Suffolk Punch", cat:"resto", lat:35.20044, lng:-80.86906, dir:"2911 Griffith St, Charlotte, NC 28203", tel:"+17043198650", horas:[9,22.75], nota:"South End, patio dog-friendly, café y cervecería"},
+ {n:"Lucky Dog Bark & Brew Steele Creek", cat:"resto", lat:35.10666, lng:-80.95914, dir:"13835 S Lakes Dr, Charlotte, NC 28273", tel:null, horas:null, nota:"Bar + parque para perros sin correa, eventos y adopciones; membresía $10/año o $10/día"}
+];
+// Eventos locales de animales en Charlotte (series recurrentes verificadas; confirmar fecha con el organizador).
+// fecha: texto libre (sin fecha exacta inventada). Los usuarios pueden publicar sus propios eventos desde la app.
+const EVENTOS_CHARLOTTE = [
+ {n:"Bark in the Park", cat:"evento", lat:35.22697, lng:-80.84732, dir:"Romare Bearden Park, 300 S Church St, Charlotte, NC", tel:null, horas:null, fecha:"Anual", nota:"Evento anual con concursos (mejor disfraz, cachorro más lindo) y apoyo a refugios — confirma fecha con el organizador"},
+ {n:"Bark in the Ballpark", cat:"evento", lat:35.22753, lng:-80.8487, dir:"Truist Field, 324 S Mint St, Charlotte, NC", tel:null, horas:null, fecha:"Temporada de béisbol", nota:"Perros bienvenidos en el estadio con los Charlotte Knights — revisa las fechas de la temporada"},
+ {n:"Fido Fest", cat:"evento", lat:35.21245, lng:-80.8354, dir:"Metropolitan, 1111 Metropolitan Ave, Charlotte, NC", tel:null, horas:null, fecha:"Septiembre", nota:"Festival canino con entrada gratis, en septiembre — confirma fecha"},
+ {n:"Jornadas de adopción en Triple C", cat:"evento", lat:35.201254, lng:-80.8695, dir:"Triple C Brewing, 2900 Griffith St, Charlotte, NC", tel:"+17043723212", horas:null, fecha:"Recurrente", nota:"El bar organiza jornadas de adopción con refugios locales — pregunta fechas en el local"},
+ {n:"Yappy Hour y adopciones en Lucky Dog", cat:"evento", lat:35.10666, lng:-80.95914, dir:"Lucky Dog Bark & Brew Steele Creek, 13835 S Lakes Dr, Charlotte, NC", tel:null, horas:null, fecha:"Semanal", nota:"Yappy Hour, noches de trivia y eventos de adopción durante la semana"}
 ];
