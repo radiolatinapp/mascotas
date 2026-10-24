@@ -32,6 +32,12 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 .gpsbtn{position:absolute;top:246px;right:12px;z-index:6;border:0;border-radius:20px;padding:9px 15px;font-size:13px;font-weight:800;background:#fff;color:#444;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer}
 .gpsbtn.on{background:#0E7C66;color:#fff}
 .brujula{position:absolute;top:350px;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.zoomBtn{position:absolute;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;font-size:24px;font-weight:800;color:#333}
+.logoBox{width:54px;height:54px;border-radius:15px;flex:none;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.logoBox svg{width:30px;height:30px}
+.perfilBtn{flex:1;border:0;border-radius:11px;padding:8px 0;font-size:13px;font-weight:700;background:#EEF2EE;color:#444;cursor:pointer}
+.perfilBtn.on{background:#0E7C66;color:#fff}
+.btn.shareBtn{background:#fff;color:#14342B;border:2px solid #ddd}
 .pin2{width:56px;height:56px;border-radius:50% 50% 50% 6px;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;border:3.5px solid #fff;box-shadow:0 6px 16px rgba(0,0,0,.45), inset 0 -6px 10px rgba(0,0,0,.18), inset 0 6px 9px rgba(255,255,255,.35);cursor:pointer}
 .pin2 .in{width:30px;height:30px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;transform:rotate(45deg);box-shadow:inset 0 2px 4px rgba(0,0,0,.18)}
 .pin2.green{background:radial-gradient(circle at 32% 28%, #7ED957, #22A355 68%)}
@@ -39,7 +45,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 .pin2.yellow{background:radial-gradient(circle at 32% 28%, #FFE066, #F5A800 68%)}
 .pin2.sel{outline:4px solid #14342B;outline-offset:1px}
 .you{width:22px;height:22px;border-radius:50%;background:#2E7CF6;border:4px solid #fff;box-shadow:0 0 0 9px rgba(46,124,246,.28),0 2px 8px rgba(0,0,0,.4)}
-.card{position:absolute;left:10px;right:10px;bottom:10px;z-index:6;background:#fff;border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.35);padding:13px 15px}
+.card{position:absolute;left:10px;right:10px;bottom:10px;z-index:6;background:#fff;border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.35);padding:13px 15px;max-height:62vh;overflow-y:auto}
 .card h3{margin:0;font-size:18.5px;color:#14342B}
 .stars{color:#F5A623;font-size:14px;letter-spacing:1px}
 .meta{font-size:13.5px;color:#555;margin-top:2px}
@@ -69,12 +75,26 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 <button id="btnGps" class="gpsbtn on">Modo GPS</button>
 <button id="btnYo" class="gpsbtn" style="top:296px">Mi ubicación</button>
 <button id="btnBrujula" class="brujula" title="Norte"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
+<button id="btnZoomMas" class="zoomBtn" style="top:410px">+</button>
+<button id="btnZoomMenos" class="zoomBtn" style="top:464px">−</button>
 <div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM</div>
 <div class="card" id="card">
-  <h3 id="cNombre">Cargando…</h3>
-  <div><span class="stars" id="cEstrellas"></span> <span class="meta" id="cEstado"></span></div>
+  <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
+  <div style="display:flex;gap:11px;align-items:center">
+    <div id="cLogo" class="logoBox"></div>
+    <div style="flex:1;min-width:0">
+      <h3 id="cNombre">Cargando…</h3>
+      <div><span class="stars" id="cEstrellas"></span> <span class="meta" id="cEstado"></span></div>
+    </div>
+  </div>
   <div class="meta" id="cDir"></div>
   <div class="meta" id="cDist"></div>
+  <div class="meta" id="cAviso" style="color:#B97E00;font-weight:700"></div>
+  <div class="btns" id="filaPerfil" style="gap:6px">
+    <button class="perfilBtn on" data-perfil="driving">En carro</button>
+    <button class="perfilBtn" data-perfil="walking">A pie</button>
+    <button class="perfilBtn" data-perfil="cycling">En bici</button>
+  </div>
   <div class="btns">
     <a class="btn call" id="bLlamar" href="#">Llamar</a>
     <a class="btn wa" id="bWa" href="#" target="_blank" rel="noopener">WhatsApp</a>
@@ -82,6 +102,10 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
   </div>
   <div class="btns" id="filaIniciar"><button class="btn iniciar" id="bIniciar">Iniciar viaje</button></div>
   <div class="btns" id="filaTerminar" style="display:none"><button class="btn terminar" id="bTerminar">Terminar viaje</button></div>
+  <div class="btns">
+    <button class="btn shareBtn" id="bCompartir">Compartir</button>
+    <button class="btn shareBtn" id="bRutaCompleta">Ver ruta completa</button>
+  </div>
 </div>
 <script>
 const BASE='https://tiles.basemaps.cartocdn.com/v/20261001-03';
@@ -158,13 +182,79 @@ function asegurarRuta(){ try{
   L('car-borde',{'line-color':'#FFFFFF','line-width':44});
   L('car-asfalto',{'line-color':'#22262E','line-width':36});
   if(!window.map.getLayer('car-linea'))window.map.addLayer({id:'car-linea',type:'line',source:'carretera',layout:{'line-cap':'butt','line-join':'round'},paint:{'line-color':'#FFFFFF','line-width':3.8,'line-dasharray':[2.4,2.6]}});
+  if(!window.map.getSource('recorrido')) window.map.addSource('recorrido',{type:'geojson',data:{type:'Feature',geometry:{type:'LineString',coordinates:trackPts}}});
+  if(!window.map.getLayer('recorrido-linea'))window.map.addLayer({id:'recorrido-linea',type:'line',source:'recorrido',paint:{'line-color':'#2E7CF6','line-width':5,'line-opacity':0.85}});
+  actualizarTrack();
  }catch(e){}
 }
 window.map.on('style.load',asegurarRuta);
 window.map.on('styledata',asegurarRuta);
 function pintarDatosRuta(){try{const s=window.map.getSource('carretera'); if(s) s.setData(datosRuta()); else asegurarRuta();}catch(e){}}
 let rutaToken=0, rutaEsReal=false, rutaDistancia=null;
-function urlRutaOSRM(a,b){return `https://router.project-osrm.org/route/v1/driving/${a[0]},${a[1]};${b[0]},${b[1]}?overview=full&geometries=geojson`;}
+let perfil='driving', pasos=[], pasosAlong=[], rutaDuracion=0, ultimoSnap=null, contadorDesvio=0, trackPts=[];
+function actualizarTrack(){try{const s=window.map.getSource('recorrido'); if(s) s.setData({type:'Feature',geometry:{type:'LineString',coordinates:trackPts}});}catch(e){}}
+function urlRutaOSRM(a,b){return `https://router.project-osrm.org/route/v1/${perfil}/${a[0]},${a[1]};${b[0]},${b[1]}?overview=full&geometries=geojson&steps=true`;}
+function pedirRuta(b,intento,miToken){
+  fetch(urlRutaOSRM(YOU,[b.lng,b.lat])).then(r=>r.json()).then(j=>{
+    if(miToken!==rutaToken||!j.routes||!j.routes[0]||seleccionado!==b)return;
+    const coords=j.routes[0].geometry.coordinates;
+    if(coords&&coords.length>1){
+      RUTA=coords; rutaEsReal=true; rutaDistancia=j.routes[0].distance;
+      pasos=(j.routes[0].legs[0]&&j.routes[0].legs[0].steps)||[];
+      rutaDuracion=j.routes[0].duration||0;
+      construirRuta();
+      pasosAlong=pasos.map(st=>puntoMasCercano(st.maneuver.location).along);
+      pintarDatosRuta();
+      document.getElementById('cAviso').textContent='';
+      if(tripActivo){actualizarRestante(); actualizarBanner();}
+      else actualizarDistancia();
+    }
+  }).catch(()=>{
+    if(miToken!==rutaToken||seleccionado!==b)return;
+    if(intento<2){setTimeout(()=>pedirRuta(b,intento+1,miToken),intento===0?2500:6000);}
+    else{document.getElementById('cAviso').textContent='Ruta aproximada: no se pudo conectar con el servidor de rutas. Se reintentará al recalcular.';}
+  });
+}
+function recalcularRuta(){
+  if(!seleccionado)return;
+  lastRouteFrom=[...YOU]; lastRouteAt=Date.now();
+  RUTA=rutaSuave(YOU,[seleccionado.lng,seleccionado.lat]);
+  construirRuta(); pintarDatosRuta();
+  rutaEsReal=false; rutaDistancia=null; pasos=[];
+  const token=++rutaToken;
+  pedirRuta(seleccionado,0,token);
+}
+function textoManeuver(st){
+  const m=st.maneuver||{}, mod=m.modifier||'';
+  const calle=st.name?(' en '+st.name):'';
+  if(m.type==='arrive')return 'Llegaste a tu destino';
+  if(m.type==='depart')return 'Inicia el viaje'+calle;
+  if(m.type==='roundabout')return 'En la glorieta, sigue'+calle;
+  const giro={left:'Gira a la izquierda',right:'Gira a la derecha','slight left':'Gira levemente a la izquierda','slight right':'Gira levemente a la derecha','sharp left':'Gira cerrada a la izquierda','sharp right':'Gira cerrada a la derecha',uturn:'Da la vuelta'}[mod];
+  if(giro)return giro+calle;
+  return 'Sigue recto'+calle;
+}
+function flechaSVG(st){
+  const m=st.maneuver||{};
+  if(m.type==='arrive')return `<svg width="30" height="30" viewBox="0 0 24 24"><path d="M12 2 C8 2 5 5 5 9 C5 14 12 22 12 22 C12 22 19 14 19 9 C19 5 16 2 12 2 Z" fill="#fff"/><circle cx="12" cy="9" r="3" fill="#14342B"/></svg>`;
+  const deg={left:-90,right:90,'slight left':-45,'slight right':45,'sharp left':-135,'sharp right':135,uturn:180}[m.modifier||'']||0;
+  return `<svg width="30" height="30" viewBox="0 0 24 24" style="transform:rotate(${deg}deg);flex:none"><path d="M12 2 L19 13 H14 V22 H10 V13 H5 Z" fill="#fff"/></svg>`;
+}
+function actualizarBanner(){
+  const ban=document.getElementById('bannerTurno');
+  if(!tripActivo||!pasos.length||!ultimoSnap){ban.style.display='none';return;}
+  let idx=pasos.findIndex((st,i)=>pasosAlong[i]>ultimoSnap.along+5);
+  if(idx<0)idx=pasos.length-1;
+  const st=pasos[idx];
+  const dist=Math.max(0,pasosAlong[idx]-ultimoSnap.along);
+  let idxCalle=0;
+  pasosAlong.forEach((a,i)=>{if(a<=ultimoSnap.along)idxCalle=i;});
+  const calleActual=(pasos[idxCalle]&&pasos[idxCalle].name)||'esta vía';
+  const rest=Math.max(0,total-ultimoSnap.along);
+  const eta=rutaDuracion&&rutaDistancia?Math.max(1,Math.round((rest/rutaDistancia)*(rutaDuracion/60))):null;
+  ban.innerHTML=`<div style="display:flex;gap:10px;align-items:center">${flechaSVG(st)}<div><div style="font-size:16px;font-weight:800">En ${fmtDist(dist)} · ${textoManeuver(st)}</div><div style="font-size:12.5px;opacity:.85">Vas por ${calleActual}${eta?` · Llegas en ~${eta} min`:''}</div></div></div>`;
+  ban.style.display='block';
+}
 function actualizarDistancia(){
   const el=document.getElementById('cDist'); if(!el)return;
   const dist=(rutaEsReal&&rutaDistancia)?rutaDistancia:total;
@@ -229,20 +319,25 @@ function mostrarBotonesViaje(){
 }
 function actualizarRestante(){
   if(!tripActivo||!seleccionado)return;
-  const snap=puntoMasCercano(YOU);
+  const snap=puntoMasCercano(YOU); ultimoSnap=snap;
   const rest=Math.max(0,total-snap.along);
   document.getElementById('cDist').innerHTML=`Faltan <b>${fmtDist(rest)}</b> para llegar`;
-  if(rest<50) llegar();
+  actualizarBanner();
+  if(rest<50){llegar();return;}
+  if(snap.dist>60){contadorDesvio++;} else {contadorDesvio=0;}
+  if(contadorDesvio>=2){contadorDesvio=0; recalcularRuta();}
 }
 function llegar(){
   if(!seleccionado)return;
   tripActivo=false;
   llegadaEn=[seleccionado.lng,seleccionado.lat];
+  document.getElementById('bannerTurno').style.display='none';
   document.getElementById('cDist').innerHTML=`¡Llegaste a <b>${seleccionado.n}</b>!`;
   mostrarBotonesViaje();
 }
 function terminarViaje(){
   tripActivo=false; llegadaEn=null;
+  document.getElementById('bannerTurno').style.display='none';
   mostrarBotonesViaje();
   actualizarDistancia();
 }
@@ -251,6 +346,7 @@ function iniciarViaje(){
   tripActivo=true; llegadaEn=null; follow=true; followPausado=false;
   camBearing=window.map.getBearing();
   document.getElementById('btnGps').classList.add('on');
+  trackPts=[[...YOU]]; actualizarTrack();
   mostrarBotonesViaje();
   actualizarRestante();
 }
@@ -273,7 +369,11 @@ if(navigator.geolocation){
   navigator.geolocation.watchPosition(p=>{
     if(!aceptarFix(p.coords.latitude,p.coords.longitude,p.coords.accuracy))return;
     YOU[0]=p.coords.longitude; YOU[1]=p.coords.latitude; youMarker.setLngLat(YOU);
-    if(tripActivo){actualizarRestante();}
+    if(tripActivo){
+      const ult=trackPts[trackPts.length-1];
+      if(!ult||Math.hypot((YOU[0]-ult[0])*M_LNG,(YOU[1]-ult[1])*M_LAT)>15){trackPts.push([...YOU]); actualizarTrack();}
+      actualizarRestante();
+    }
     else{
       const dx=(YOU[0]-lastRouteFrom[0])*M_LNG, dy=(YOU[1]-lastRouteFrom[1])*M_LAT;
       if(seleccionado&&Math.hypot(dx,dy)>120&&Date.now()-lastRouteAt>20000)seleccionar(seleccionado,false);
@@ -292,6 +392,8 @@ function seleccionar(b,volar){
   seleccionado=b;
   marcadores.forEach(m=>m.el.classList.toggle('sel',m.b===b));
   document.getElementById('cNombre').textContent=b.n;
+  document.getElementById('cLogo').style.background=CAT[b.cat].col;
+  document.getElementById('cLogo').innerHTML=glyph(CAT[b.cat].g,'#fff');
   document.getElementById('cEstrellas').textContent=b.rating?('★'.repeat(Math.round(b.rating))+' '+b.rating.toFixed(1)):'';
   let estado='';
   if(b.horas){
@@ -303,17 +405,14 @@ function seleccionar(b,volar){
   document.getElementById('bLlamar').href='tel:'+b.tel;
   document.getElementById('bWa').href='https://wa.me/'+b.tel.replace('+','');
   rutaEsReal=false; rutaDistancia=null;
+  document.getElementById('cAviso').textContent='';
   lastRouteFrom=[...YOU]; lastRouteAt=Date.now();
   RUTA=rutaSuave(YOU,[b.lng,b.lat]);
   construirRuta();
   pintarDatosRuta();
   actualizarDistancia();
   const token=++rutaToken;
-  fetch(urlRutaOSRM(YOU,[b.lng,b.lat])).then(r=>r.json()).then(j=>{
-    if(token!==rutaToken||!j.routes||!j.routes[0])return;
-    const coords=j.routes[0].geometry.coordinates;
-    if(coords&&coords.length>1){RUTA=coords;rutaEsReal=true;rutaDistancia=j.routes[0].distance;construirRuta();pintarDatosRuta();actualizarDistancia();}
-  }).catch(()=>{});
+  pedirRuta(b,0,token);
   if(volar) window.map.easeTo({center:[b.lng,b.lat],zoom:Math.max(window.map.getZoom(),15)});
 }
 document.getElementById('bIr').addEventListener('click',()=>{if(seleccionado)seleccionar(seleccionado,true);});
@@ -337,9 +436,10 @@ document.getElementById('chips').addEventListener('click',e=>{
 document.getElementById('buscador').addEventListener('input',e=>{filtroTxt=e.target.value.trim().toLowerCase();aplicarFiltros();renderSug();});
 function renderSug(){
   const box=document.getElementById('sug');
-  const lista=NEGOCIOS_IBAGUE.filter(b=>!filtroTxt||b.n.toLowerCase().includes(filtroTxt));
+  let lista=NEGOCIOS_IBAGUE.filter(b=>!filtroTxt||b.n.toLowerCase().includes(filtroTxt));
+  lista=lista.map(b=>{const dx=(b.lng-YOU[0])*M_LNG, dy=(b.lat-YOU[1])*M_LAT; return {b,d:Math.hypot(dx,dy)};}).sort((x,y)=>x.d-y.d);
   if(!lista.length||document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
-  box.innerHTML=lista.map(b=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS_IBAGUE.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span><br><span class="cat">${c.nombre} · ${b.dir}</span></span></div>`;}).join('');
+  box.innerHTML=lista.map(({b,d})=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS_IBAGUE.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span><br><span class="cat">${c.nombre} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(d)}</span></div>`;}).join('');
   box.style.display='block';
 }
 document.getElementById('buscador').addEventListener('focus',()=>renderSug());
@@ -377,6 +477,30 @@ document.getElementById('btnYo').addEventListener('click',()=>{
 });
 document.getElementById('btnBrujula').addEventListener('click',()=>{
   window.map.easeTo({bearing:0,duration:500});
+  if(tripActivo)followPausado=true;
+});
+document.getElementById('btnZoomMas').addEventListener('click',()=>{if(tripActivo)followPausado=true;window.map.zoomIn();});
+document.getElementById('btnZoomMenos').addEventListener('click',()=>{if(tripActivo)followPausado=true;window.map.zoomOut();});
+document.getElementById('filaPerfil').addEventListener('click',e=>{
+  const btn=e.target.closest('.perfilBtn');if(!btn)return;
+  document.querySelectorAll('.perfilBtn').forEach(x=>x.classList.toggle('on',x===btn));
+  perfil=btn.dataset.perfil;
+  if(seleccionado)recalcularRuta();
+});
+document.getElementById('bCompartir').addEventListener('click',async()=>{
+  if(!seleccionado)return;
+  const url=`https://www.google.com/maps/dir/?api=1&destination=${seleccionado.lat},${seleccionado.lng}`;
+  const texto=`${seleccionado.n} — ${seleccionado.dir}`;
+  try{
+    if(navigator.share){await navigator.share({title:seleccionado.n,text:texto,url});}
+    else{await navigator.clipboard.writeText(texto+' '+url);const b=document.getElementById('bCompartir');const t=b.textContent;b.textContent='¡Copiado!';setTimeout(()=>b.textContent=t,1800);}
+  }catch(err){}
+});
+document.getElementById('bRutaCompleta').addEventListener('click',()=>{
+  if(!RUTA.length)return;
+  let minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9;
+  RUTA.forEach(p=>{minX=Math.min(minX,p[0]);maxX=Math.max(maxX,p[0]);minY=Math.min(minY,p[1]);maxY=Math.max(maxY,p[1]);});
+  window.map.fitBounds([[minX,minY],[maxX,maxY]],{padding:70});
   if(tripActivo)followPausado=true;
 });
 
