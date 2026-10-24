@@ -8,6 +8,7 @@
 <link href="vendor/maplibre-gl.css" rel="stylesheet">
 <script src="vendor/maplibre-gl.js"></script>
 <script src="datos-ibague.js"></script>
+<script src="datos-charlotte.js"></script>
 <style>
 html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:#79C25F;overflow:hidden}
 #map{position:absolute;inset:0}
@@ -26,12 +27,12 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 .chip{border:0;background:rgba(255,255,255,.97);border-radius:18px;padding:7px 13px;font-size:13px;font-weight:700;color:#333;box-shadow:0 2px 5px rgba(0,0,0,.25);display:flex;align-items:center;gap:5px;cursor:pointer}
 .chip.on{background:#0E7C66;color:#fff}
 .dot{width:9px;height:9px;border-radius:50%}
-.views{position:absolute;top:196px;right:12px;z-index:6;display:flex;border-radius:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.35)}
+.views{position:absolute;top:236px;right:12px;z-index:6;display:flex;border-radius:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.35)}
 .views button{border:0;padding:8px 10px;font-size:13px;font-weight:800;background:#fff;color:#444;cursor:pointer}
 .views button.on{background:#14342B;color:#fff}
-.gpsbtn{position:absolute;top:246px;right:12px;z-index:6;border:0;border-radius:20px;padding:9px 15px;font-size:13px;font-weight:800;background:#fff;color:#444;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer}
+.gpsbtn{position:absolute;top:286px;right:12px;z-index:6;border:0;border-radius:20px;padding:9px 15px;font-size:13px;font-weight:800;background:#fff;color:#444;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer}
 .gpsbtn.on{background:#0E7C66;color:#fff}
-.brujula{position:absolute;top:350px;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.brujula{position:absolute;top:390px;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .zoomBtn{position:absolute;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;font-size:24px;font-weight:800;color:#333}
 .logoBox{width:54px;height:54px;border-radius:15px;flex:none;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .logoBox svg{width:30px;height:30px}
@@ -68,15 +69,19 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
     <button class="chip" data-cat="tienda"><span class="dot" style="background:#F5A800"></span>Tiendas</button>
     <button class="chip" data-cat="farma"><span class="dot" style="background:#E5322D"></span>Farmacias</button>
   </div>
+  <div class="chips" id="ciudades" style="margin-top:6px">
+    <button class="chip ciudadBtn on" data-ciudad="ibague">Ibagué</button>
+    <button class="chip ciudadBtn" data-ciudad="charlotte">Charlotte</button>
+  </div>
 </div>
 <div class="views">
   <button id="vIlus" class="on">Ilustrado</button><button id="vSat">Satélite</button><button id="v3d">Mapa 3D</button><button id="vActual">Actual</button>
 </div>
 <button id="btnGps" class="gpsbtn on">Modo GPS</button>
-<button id="btnYo" class="gpsbtn" style="top:296px">Mi ubicación</button>
+<button id="btnYo" class="gpsbtn" style="top:336px">Mi ubicación</button>
 <button id="btnBrujula" class="brujula" title="Norte"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
-<button id="btnZoomMas" class="zoomBtn" style="top:410px">+</button>
-<button id="btnZoomMenos" class="zoomBtn" style="top:464px">−</button>
+<button id="btnZoomMas" class="zoomBtn" style="top:450px">+</button>
+<button id="btnZoomMenos" class="zoomBtn" style="top:504px">−</button>
 <div class="attr">© OpenStreetMap · © CARTO · Esri · OSRM · v4</div>
 <div class="card" id="card">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
@@ -114,7 +119,7 @@ const SAT_TILES='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imag
 const FONT_STACK=['Montserrat SemiBold','Open Sans Bold','Noto Sans Regular','Noto Sans CJK JP Regular'];
 const YOU=[-75.2330,4.4388];
 const heightExpr=['coalesce',['get','height'],9];
-const M_LNG=111000, M_LAT=110600;
+let M_LNG=111000; const M_LAT=110600;
 const normAng=a=>((a+540)%360)-180;
 const fmtDist=d=>d>=1000? (d/1000).toFixed(1).replace('.',',')+' km' : Math.round(d)+' m';
 
@@ -337,16 +342,44 @@ const CAT={
   tienda:{cls:'yellow',g:'bag',col:'#B97E00',nombre:'Tienda de mascotas'},
   farma:{cls:'red',g:'cross',col:'#E5322D',nombre:'Farmacia agropecuaria'}
 };
+const CIUDADES={
+  ibague:{nombre:'Ibagué', centro:[-75.2362,4.4425], zoom:14.7, tz:'America/Bogota', mlng:111000, datos:NEGOCIOS_IBAGUE},
+  charlotte:{nombre:'Charlotte', centro:[-80.84,35.22], zoom:11.8, tz:'America/New_York', mlng:90850, datos:NEGOCIOS_CHARLOTTE}
+};
+let ciudadActual='ibague', NEGOCIOS=NEGOCIOS_IBAGUE;
 const marcadores=[];
-NEGOCIOS_IBAGUE.forEach(b=>{
-  const c=CAT[b.cat];
-  const el=document.createElement('div');el.className='pin2 '+c.cls;
-  el.innerHTML=`<span class="in">${glyph(c.g,c.col)}</span>`;
-  el.title=b.n;
-  const mk=new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat([b.lng,b.lat]).addTo(window.map);
-  el.addEventListener('click',()=>seleccionar(b,false));
-  marcadores.push({b,el,mk});
-});
+function crearPines(){
+  NEGOCIOS.forEach(b=>{
+    const c=CAT[b.cat];
+    const el=document.createElement('div');el.className='pin2 '+c.cls;
+    el.innerHTML=`<span class="in">${glyph(c.g,c.col)}</span>`;
+    el.title=b.n;
+    const mk=new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat([b.lng,b.lat]).addTo(window.map);
+    el.addEventListener('click',()=>seleccionar(b,false));
+    marcadores.push({b,el,mk});
+  });
+}
+crearPines();
+function cargarCiudad(id,volar){
+  const c=CIUDADES[id]; if(!c)return;
+  ciudadActual=id; NEGOCIOS=c.datos; M_LNG=c.mlng;
+  marcadores.forEach(m=>m.mk.remove());
+  marcadores.length=0;
+  crearPines();
+  document.querySelectorAll('.ciudadBtn').forEach(x=>x.classList.toggle('on',x.dataset.ciudad===id));
+  aplicarFiltros();
+  if(volar) window.map.easeTo({center:c.centro,zoom:c.zoom});
+  seleccionar(NEGOCIOS[0],false);
+}
+function distanciaACiudad(id){
+  let mejor=1e18;
+  for(const b of CIUDADES[id].datos){
+    const dx=(b.lng-YOU[0])*111000, dy=(b.lat-YOU[1])*110600;
+    const d=Math.hypot(dx,dy);
+    if(d<mejor)mejor=d;
+  }
+  return mejor;
+}
 const youEl=document.createElement('div');youEl.className='you';
 const youMarker=new maplibregl.Marker({element:youEl}).setLngLat(YOU).addTo(window.map);
 
@@ -410,11 +443,17 @@ function aceptarFix(lat,lng,acc){
   }
   ultimoFix=[lng,lat]; return true;
 }
+let ciudadAuto=false;
 if(navigator.geolocation){
   navigator.geolocation.getCurrentPosition(p=>{
     if(!aceptarFix(p.coords.latitude,p.coords.longitude,p.coords.accuracy))return;
     YOU[0]=p.coords.longitude; YOU[1]=p.coords.latitude; youMarker.setLngLat(YOU);
-    if(!gpsListo){gpsListo=true; if(seleccionado&&!tripActivo)seleccionar(seleccionado,false);}
+    let cambioCiudad=false;
+    if(!ciudadAuto){
+      ciudadAuto=true;
+      if(distanciaACiudad('charlotte')<distanciaACiudad('ibague')&&ciudadActual!=='charlotte'){cargarCiudad('charlotte',true); cambioCiudad=true;}
+    }
+    if(!gpsListo){gpsListo=true; if(!cambioCiudad&&seleccionado&&!tripActivo)seleccionar(seleccionado,false);}
   },()=>{},{enableHighAccuracy:true,timeout:10000});
   navigator.geolocation.watchPosition(p=>{
     if(!aceptarFix(p.coords.latitude,p.coords.longitude,p.coords.accuracy))return;
@@ -434,7 +473,7 @@ if(navigator.geolocation){
 ['mousedown','touchstart','wheel'].forEach(ev=>window.map.on(ev,()=>{if(tripActivo)followPausado=true;}));
 
 /* ---------- Tarjeta del negocio ---------- */
-function horaBogota(){const d=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Bogota'}));return d.getHours()+d.getMinutes()/60;}
+function horaCiudad(){const tz=(CIUDADES[ciudadActual]&&CIUDADES[ciudadActual].tz)||'America/Bogota';const d=new Date(new Date().toLocaleString('en-US',{timeZone:tz}));return d.getHours()+d.getMinutes()/60;}
 function fmtHora(h){if(h==null)return '';const hh=Math.floor(h),mm=Math.round((h-hh)*60);const ap=hh<12?'a. m.':'p. m.';const h12=hh%12===0?12:hh%12;return h12+':'+String(mm).padStart(2,'0')+' '+ap;}
 function seleccionar(b,volar){
   if(tripActivo)terminarViaje();
@@ -447,7 +486,7 @@ function seleccionar(b,volar){
   document.getElementById('cEstrellas').textContent=b.rating?('★'.repeat(Math.round(b.rating))+' '+b.rating.toFixed(1)):'';
   let estado='';
   if(b.horas){
-    const h=horaBogota(),abierto=h>=b.horas[0]&&h<b.horas[1];
+    const h=horaCiudad(),abierto=h>=b.horas[0]&&h<b.horas[1];
     estado=abierto?`<b>Abierto ahora</b> · cierra ${fmtHora(b.horas[1])}`:`<span class="cerrado">Cerrado ahora</span> · abre ${fmtHora(b.horas[0])}`;
   }
   document.getElementById('cEstado').innerHTML=estado;
@@ -490,16 +529,16 @@ document.getElementById('chips').addEventListener('click',e=>{
 document.getElementById('buscador').addEventListener('input',e=>{filtroTxt=e.target.value.trim().toLowerCase();aplicarFiltros();renderSug();});
 function renderSug(){
   const box=document.getElementById('sug');
-  let lista=NEGOCIOS_IBAGUE.filter(b=>!filtroTxt||b.n.toLowerCase().includes(filtroTxt));
+  let lista=NEGOCIOS.filter(b=>!filtroTxt||b.n.toLowerCase().includes(filtroTxt));
   lista=lista.map(b=>{const dx=(b.lng-YOU[0])*M_LNG, dy=(b.lat-YOU[1])*M_LAT; return {b,d:Math.hypot(dx,dy)};}).sort((x,y)=>x.d-y.d);
   if(!lista.length||document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
-  box.innerHTML=lista.map(({b,d})=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS_IBAGUE.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span><br><span class="cat">${c.nombre} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(d)}</span></div>`;}).join('');
+  box.innerHTML=lista.map(({b,d})=>{const c=CAT[b.cat];return `<div class="sugItem" data-i="${NEGOCIOS.indexOf(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span><br><span class="cat">${c.nombre} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(d)}</span></div>`;}).join('');
   box.style.display='block';
 }
 document.getElementById('buscador').addEventListener('focus',()=>renderSug());
 document.getElementById('sug').addEventListener('click',e=>{
   const item=e.target.closest('.sugItem'); if(!item)return;
-  const b=NEGOCIOS_IBAGUE[+item.dataset.i];
+  const b=NEGOCIOS[+item.dataset.i];
   document.getElementById('sug').style.display='none';
   document.getElementById('buscador').blur();
   seleccionar(b,true);
@@ -536,6 +575,10 @@ document.getElementById('btnBrujula').addEventListener('click',()=>{
 });
 document.getElementById('btnZoomMas').addEventListener('click',()=>{if(tripActivo)followPausado=true;window.map.zoomIn();});
 document.getElementById('btnZoomMenos').addEventListener('click',()=>{if(tripActivo)followPausado=true;window.map.zoomOut();});
+document.getElementById('ciudades').addEventListener('click',e=>{
+  const btn=e.target.closest('.ciudadBtn');if(!btn)return;
+  cargarCiudad(btn.dataset.ciudad,true);
+});
 document.getElementById('filaPerfil').addEventListener('click',e=>{
   const btn=e.target.closest('.perfilBtn');if(!btn)return;
   document.querySelectorAll('.perfilBtn').forEach(x=>x.classList.toggle('on',x===btn));
@@ -593,5 +636,5 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-seleccionar(NEGOCIOS_IBAGUE[0],false);
+seleccionar(NEGOCIOS[0],false);
 </script></body></html>
