@@ -27,7 +27,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
 .chip.on{background:#0E7C66;color:#fff}
 .dot{width:9px;height:9px;border-radius:50%}
 .views{position:absolute;top:196px;right:12px;z-index:6;display:flex;border-radius:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.35)}
-.views button{border:0;padding:8px 12px;font-size:13px;font-weight:800;background:#fff;color:#444;cursor:pointer}
+.views button{border:0;padding:8px 10px;font-size:13px;font-weight:800;background:#fff;color:#444;cursor:pointer}
 .views button.on{background:#14342B;color:#fff}
 .gpsbtn{position:absolute;top:246px;right:12px;z-index:6;border:0;border-radius:20px;padding:9px 15px;font-size:13px;font-weight:800;background:#fff;color:#444;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer}
 .gpsbtn.on{background:#0E7C66;color:#fff}
@@ -70,7 +70,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;backg
   </div>
 </div>
 <div class="views">
-  <button id="vIlus" class="on">Ilustrado</button><button id="vSat">Satélite</button><button id="v3d">Mapa 3D</button>
+  <button id="vIlus" class="on">Ilustrado</button><button id="vSat">Satélite</button><button id="v3d">Mapa 3D</button><button id="vActual">Actual</button>
 </div>
 <button id="btnGps" class="gpsbtn on">Modo GPS</button>
 <button id="btnYo" class="gpsbtn" style="top:296px">Mi ubicación</button>
@@ -148,6 +148,9 @@ function mapa3dStyle(){return {version:8,sources:{
   {id:'calles',source:'carto','source-layer':'roads',type:'line',minzoom:10,paint:{'line-color':'#FFFFFF','line-width':['interpolate',['linear'],['zoom'],12,1,15,5]}},
   {id:'edificios-3d',source:'carto','source-layer':'buildings',type:'fill-extrusion',minzoom:13,paint:{'fill-extrusion-color':'#EFC98C','fill-extrusion-height':heightExpr,'fill-extrusion-base':0,'fill-extrusion-opacity':0.95}}
  ]};}
+function actualStyle(){return {version:8,sources:{
+  osm:{type:'raster',tiles:['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],tileSize:256,maxzoom:19}},
+ layers:[{id:'osm',type:'raster',source:'osm'}]};}
 
 window.map=new maplibregl.Map({container:'map',style:ilustradoStyle(),center:[-75.2362,4.4425],zoom:14.7,pitch:0,bearing:0,attributionControl:false,fadeDuration:0});
 
@@ -175,15 +178,40 @@ function rutaSuave(a,b){
 }
 let RUTA=rutaSuave(YOU,[-75.23657,4.444974]);
 function datosRuta(){return {type:'Feature',geometry:{type:'LineString',coordinates:RUTA}};}
+function aplicarEstiloCarretera(){
+  try{
+    const m=window.map;
+    if(rutaEsReal){
+      m.setPaintProperty('car-sombra','line-opacity',1);
+      m.setPaintProperty('car-borde','line-opacity',1);
+      m.setPaintProperty('car-asfalto','line-opacity',1);
+      m.setPaintProperty('car-linea','line-color','#FFFFFF');
+      m.setPaintProperty('car-linea','line-width',3.8);
+      m.setPaintProperty('car-linea','line-dasharray',[2.4,2.6]);
+      m.setPaintProperty('car-linea','line-opacity',1);
+    }else{
+      m.setPaintProperty('car-sombra','line-opacity',0);
+      m.setPaintProperty('car-borde','line-opacity',0);
+      m.setPaintProperty('car-asfalto','line-opacity',0);
+      m.setPaintProperty('car-linea','line-color','#666666');
+      m.setPaintProperty('car-linea','line-width',5);
+      m.setPaintProperty('car-linea','line-dasharray',[2.5,2.5]);
+      m.setPaintProperty('car-linea','line-opacity',0.9);
+    }
+  }catch(err){}
+}
 function asegurarRuta(){ try{
   if(!window.map.getSource('carretera')) window.map.addSource('carretera',{type:'geojson',data:datosRuta()});
-  const L=(id,paint,layout)=>{if(!window.map.getLayer(id))window.map.addLayer({id,type:'line',source:'carretera',layout:layout||{'line-cap':'round','line-join':'round'},paint});};
+  let beforeId;
+  try{const layers=window.map.getStyle().layers; const sym=layers.find(l=>l.type==='symbol'); if(sym)beforeId=sym.id;}catch(err){}
+  const L=(id,paint,layout)=>{if(!window.map.getLayer(id))window.map.addLayer({id,type:'line',source:'carretera',layout:layout||{'line-cap':'round','line-join':'round'},paint},beforeId);};
   L('car-sombra',{'line-color':'rgba(0,0,0,0.20)','line-width':50,'line-blur':6});
   L('car-borde',{'line-color':'#FFFFFF','line-width':44});
   L('car-asfalto',{'line-color':'#22262E','line-width':36});
-  if(!window.map.getLayer('car-linea'))window.map.addLayer({id:'car-linea',type:'line',source:'carretera',layout:{'line-cap':'butt','line-join':'round'},paint:{'line-color':'#FFFFFF','line-width':3.8,'line-dasharray':[2.4,2.6]}});
+  if(!window.map.getLayer('car-linea'))window.map.addLayer({id:'car-linea',type:'line',source:'carretera',layout:{'line-cap':'butt','line-join':'round'},paint:{'line-color':'#FFFFFF','line-width':3.8,'line-dasharray':[2.4,2.6]}},beforeId);
   if(!window.map.getSource('recorrido')) window.map.addSource('recorrido',{type:'geojson',data:{type:'Feature',geometry:{type:'LineString',coordinates:trackPts}}});
   if(!window.map.getLayer('recorrido-linea'))window.map.addLayer({id:'recorrido-linea',type:'line',source:'recorrido',paint:{'line-color':'#2E7CF6','line-width':5,'line-opacity':0.85}});
+  aplicarEstiloCarretera();
   actualizarTrack();
  }catch(e){}
 }
@@ -193,25 +221,30 @@ function pintarDatosRuta(){try{const s=window.map.getSource('carretera'); if(s) 
 let rutaToken=0, rutaEsReal=false, rutaDistancia=null;
 let perfil='driving', pasos=[], pasosAlong=[], rutaDuracion=0, ultimoSnap=null, contadorDesvio=0, trackPts=[];
 function actualizarTrack(){try{const s=window.map.getSource('recorrido'); if(s) s.setData({type:'Feature',geometry:{type:'LineString',coordinates:trackPts}});}catch(e){}}
-function urlRutaOSRM(a,b){return `https://router.project-osrm.org/route/v1/${perfil}/${a[0]},${a[1]};${b[0]},${b[1]}?overview=full&geometries=geojson&steps=true`;}
 function pedirRuta(b,intento,miToken){
-  fetch(urlRutaOSRM(YOU,[b.lng,b.lat])).then(r=>r.json()).then(j=>{
-    if(miToken!==rutaToken||!j.routes||!j.routes[0]||seleccionado!==b)return;
+  const prof2={driving:'car',walking:'foot',cycling:'bike'}[perfil]||'car';
+  const hosts=[
+    `https://router.project-osrm.org/route/v1/${perfil}/`,
+    `https://routing.openstreetmap.de/routed-${prof2}/route/v1/${perfil}/`
+  ];
+  const url=hosts[intento%2]+`${YOU[0]},${YOU[1]};${b.lng},${b.lat}?overview=full&geometries=geojson&steps=true`;
+  fetch(url).then(r=>{if(!r.ok)throw new Error('http '+r.status);return r.json();}).then(j=>{
+    if(miToken!==rutaToken||!j.routes||!j.routes[0]||seleccionado!==b)throw new Error('vieja');
     const coords=j.routes[0].geometry.coordinates;
-    if(coords&&coords.length>1){
-      RUTA=coords; rutaEsReal=true; rutaDistancia=j.routes[0].distance;
-      pasos=(j.routes[0].legs[0]&&j.routes[0].legs[0].steps)||[];
-      rutaDuracion=j.routes[0].duration||0;
-      construirRuta();
-      pasosAlong=pasos.map(st=>puntoMasCercano(st.maneuver.location).along);
-      pintarDatosRuta();
-      document.getElementById('cAviso').textContent='';
-      if(tripActivo){actualizarRestante(); actualizarBanner();}
-      else actualizarDistancia();
-    }
+    if(!coords||coords.length<2)throw new Error('sin ruta');
+    RUTA=coords; rutaEsReal=true; rutaDistancia=j.routes[0].distance;
+    pasos=(j.routes[0].legs[0]&&j.routes[0].legs[0].steps)||[];
+    rutaDuracion=j.routes[0].duration||0;
+    construirRuta();
+    pasosAlong=pasos.map(st=>puntoMasCercano(st.maneuver.location).along);
+    pintarDatosRuta();
+    aplicarEstiloCarretera();
+    document.getElementById('cAviso').textContent='';
+    if(tripActivo){actualizarRestante(); actualizarBanner();}
+    else actualizarDistancia();
   }).catch(()=>{
     if(miToken!==rutaToken||seleccionado!==b)return;
-    if(intento<2){setTimeout(()=>pedirRuta(b,intento+1,miToken),intento===0?2500:6000);}
+    if(intento<3){setTimeout(()=>pedirRuta(b,intento+1,miToken),intento===0?1500:3000);}
     else{document.getElementById('cAviso').textContent='Ruta aproximada: no se pudo conectar con el servidor de rutas. Se reintentará al recalcular.';}
   });
 }
@@ -220,6 +253,7 @@ function recalcularRuta(){
   lastRouteFrom=[...YOU]; lastRouteAt=Date.now();
   RUTA=rutaSuave(YOU,[seleccionado.lng,seleccionado.lat]);
   construirRuta(); pintarDatosRuta();
+  aplicarEstiloCarretera();
   rutaEsReal=false; rutaDistancia=null; pasos=[];
   const token=++rutaToken;
   pedirRuta(seleccionado,0,token);
@@ -405,11 +439,12 @@ function seleccionar(b,volar){
   document.getElementById('bLlamar').href='tel:'+b.tel;
   document.getElementById('bWa').href='https://wa.me/'+b.tel.replace('+','');
   rutaEsReal=false; rutaDistancia=null;
-  document.getElementById('cAviso').textContent='';
+  document.getElementById('cAviso').textContent='Calculando ruta por las calles…';
   lastRouteFrom=[...YOU]; lastRouteAt=Date.now();
   RUTA=rutaSuave(YOU,[b.lng,b.lat]);
   construirRuta();
   pintarDatosRuta();
+  aplicarEstiloCarretera();
   actualizarDistancia();
   const token=++rutaToken;
   pedirRuta(b,0,token);
@@ -463,6 +498,7 @@ function vista(btn,style,opts){
 document.getElementById('vIlus').addEventListener('click',e=>vista(e.target,ilustradoStyle(),{pitch:0,zoom:14.7}));
 document.getElementById('vSat').addEventListener('click',e=>vista(e.target,satStyle(),{pitch:50,zoom:15.6}));
 document.getElementById('v3d').addEventListener('click',e=>vista(e.target,mapa3dStyle(),{pitch:58,zoom:15.1}));
+document.getElementById('vActual').addEventListener('click',e=>vista(e.target,actualStyle(),{pitch:0,zoom:15}));
 
 /* ---------- Botones GPS / Mi ubicación / Brújula ---------- */
 document.getElementById('btnGps').addEventListener('click',()=>{
