@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#0E7C66">
+<title>Mascotas cerca de ti</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icono-192.png">
+<link href="vendor/maplibre-gl.css" rel="stylesheet">
+<script src="vendor/maplibre-gl.js"></script>
+<script src="datos-ibague.js"></script>
+<style>
+html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:#79C25F;overflow:hidden}
+#map{position:absolute;inset:0}
+.topbar{position:absolute;top:0;left:0;right:0;z-index:6;padding:12px 12px 30px;background:linear-gradient(rgba(20,52,43,.85),rgba(20,52,43,0));pointer-events:none}
+.topbar>*{pointer-events:auto}
+.brand{display:flex;align-items:center;gap:9px;color:#fff;font-size:21px;font-weight:800;text-shadow:0 1px 4px rgba(0,0,0,.45)}
+.brand img{width:36px;height:36px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.35);background:#fff}
+.search{margin-top:10px;background:#fff;border-radius:24px;padding:4px 8px 4px 16px;box-shadow:0 3px 10px rgba(0,0,0,.25);display:flex;gap:8px;align-items:center}
+.search input{border:0;outline:0;font-size:15px;width:100%;padding:8px 0;color:#333;background:transparent}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.chip{border:0;background:rgba(255,255,255,.97);border-radius:18px;padding:7px 13px;font-size:13px;font-weight:700;color:#333;box-shadow:0 2px 5px rgba(0,0,0,.25);display:flex;align-items:center;gap:5px;cursor:pointer}
+.chip.on{background:#0E7C66;color:#fff}
+.dot{width:9px;height:9px;border-radius:50%}
+.views{position:absolute;top:196px;right:12px;z-index:6;display:flex;border-radius:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.35)}
+.views button{border:0;padding:8px 12px;font-size:13px;font-weight:800;background:#fff;color:#444;cursor:pointer}
+.views button.on{background:#14342B;color:#fff}
+.pin2{width:56px;height:56px;border-radius:50% 50% 50% 6px;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;border:3.5px solid #fff;box-shadow:0 6px 16px rgba(0,0,0,.45), inset 0 -6px 10px rgba(0,0,0,.18), inset 0 6px 9px rgba(255,255,255,.35);cursor:pointer}
+.pin2 .in{width:30px;height:30px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;transform:rotate(45deg);box-shadow:inset 0 2px 4px rgba(0,0,0,.18)}
+.pin2.green{background:radial-gradient(circle at 32% 28%, #7ED957, #22A355 68%)}
+.pin2.red{background:radial-gradient(circle at 32% 28%, #FF8A75, #E5322D 68%)}
+.pin2.yellow{background:radial-gradient(circle at 32% 28%, #FFE066, #F5A800 68%)}
+.pin2.sel{outline:4px solid #14342B;outline-offset:1px}
+.you{width:22px;height:22px;border-radius:50%;background:#2E7CF6;border:4px solid #fff;box-shadow:0 0 0 9px rgba(46,124,246,.28),0 2px 8px rgba(0,0,0,.4)}
+.card{position:absolute;left:10px;right:10px;bottom:10px;z-index:6;background:#fff;border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.35);padding:13px 15px}
+.card h3{margin:0;font-size:18.5px;color:#14342B}
+.stars{color:#F5A623;font-size:14px;letter-spacing:1px}
+.meta{font-size:13.5px;color:#555;margin-top:2px}
+.meta b{color:#0E7C66}
+.meta .cerrado{color:#C0392B;font-weight:700}
+.btns{display:flex;gap:8px;margin-top:10px}
+.btn{flex:1;border:0;border-radius:13px;padding:11px 0;font-size:14.5px;font-weight:800;color:#fff;text-align:center;text-decoration:none;cursor:pointer}
+.btn.call{background:#0E7C66}.btn.wa{background:#25D366}.btn.go{background:#14342B}
+.attr{position:absolute;right:10px;bottom:196px;z-index:5;font-size:10px;color:rgba(255,255,255,.95);text-shadow:0 1px 2px rgba(0,0,0,.6)}
+</style></head><body>
+<div id="map"></div>
+<div class="topbar">
+  <div class="brand"><img src="icono-512.png" alt="Mascotas">Mascotas cerca de ti</div>
+  <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="buscador" type="text" placeholder="Buscar veterinarias, tiendas, farmacias…"></div>
+  <div class="chips" id="chips">
+    <button class="chip on" data-cat="todos">Todos</button>
+    <button class="chip" data-cat="vet"><span class="dot" style="background:#22A355"></span>Veterinarias</button>
+    <button class="chip" data-cat="tienda"><span class="dot" style="background:#F5A800"></span>Tiendas</button>
+    <button class="chip" data-cat="farma"><span class="dot" style="background:#E5322D"></span>Farmacias</button>
+  </div>
+</div>
+<div class="views">
+  <button id="vIlus" class="on">Ilustrado</button><button id="vSat">Satélite</button><button id="v3d">Mapa 3D</button>
+</div>
+<div class="attr">© OpenStreetMap · © CARTO · Esri</div>
+<div class="card" id="card">
+  <h3 id="cNombre">Cargando…</h3>
+  <div><span class="stars" id="cEstrellas"></span> <span class="meta" id="cEstado"></span></div>
+  <div class="meta" id="cDir"></div>
+  <div class="btns">
+    <a class="btn call" id="bLlamar" href="#">Llamar</a>
+    <a class="btn wa" id="bWa" href="#" target="_blank" rel="noopener">WhatsApp</a>
+    <button class="btn go" id="bIr">Cómo llegar</button>
+  </div>
+</div>
+<script>
+const BASE='https://tiles.basemaps.cartocdn.com/v/20261001-03';
+const CARTO_TILES=BASE+'/vectortiles/carto.streets/v2/{z}/{x}/{y}.mvt';
+const SAT_TILES='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+const FONT_STACK=['Montserrat SemiBold','Open Sans Bold','Noto Sans Regular','Noto Sans CJK JP Regular'];
+const YOU=[-75.2330,4.4388];
+const heightExpr=['coalesce',['get','height'],9];
+
+function ilustradoStyle(){return {version:8,
+ glyphs:BASE+'/fonts/{fontstack}/{range}.pbf',
+ sources:{carto:{type:'vector',tiles:[CARTO_TILES],minzoom:0,maxzoom:15}},
+ layers:[
+  {id:'fondo',type:'background',paint:{'background-color':'#B9E39A'}},
+  {id:'tierra',source:'carto','source-layer':'land',type:'fill',paint:{'fill-color':'#A5DC86','fill-opacity':0.9}},
+  {id:'agua',source:'carto','source-layer':'water',type:'fill',paint:{'fill-color':'#4FB6F5'}},
+  {id:'edificios',source:'carto','source-layer':'buildings',type:'fill',minzoom:13,paint:{'fill-color':'#F7DCB9','fill-outline-color':'#E3B77E'}},
+  {id:'calles-borde',source:'carto','source-layer':'roads',type:'line',minzoom:10,layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#D8D2C0','line-width':['interpolate',['linear'],['zoom'],12,2,15,10]}},
+  {id:'calles',source:'carto','source-layer':'roads',type:'line',minzoom:10,layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#FFFFFF','line-width':['interpolate',['linear'],['zoom'],12,1.4,15,7.5]}},
+  {id:'nombres-calles',source:'carto','source-layer':'roads',type:'symbol',minzoom:13.5,layout:{'symbol-placement':'line','text-field':['get','name'],'text-font':FONT_STACK,'text-size':12.5},paint:{'text-color':'#6B6257','text-halo-color':'#FFFFFF','text-halo-width':1.6}},
+  {id:'nombres-lugares',source:'carto','source-layer':'places',type:'symbol',minzoom:12.5,layout:{'text-field':['get','name'],'text-font':FONT_STACK,'text-size':13.5},paint:{'text-color':'#2F5D33','text-halo-color':'#FFFFFF','text-halo-width':1.8}}
+ ]};}
+function satStyle(){return {version:8,sources:{
+  sat:{type:'raster',tiles:[SAT_TILES],tileSize:256,maxzoom:18},
+  carto:{type:'vector',tiles:[CARTO_TILES],minzoom:0,maxzoom:15}},
+ layers:[
+  {id:'sat',type:'raster',source:'sat'},
+  {id:'calles-sat',source:'carto','source-layer':'roads',type:'line',minzoom:12,paint:{'line-color':'rgba(255,255,255,0.55)','line-width':1.6}}
+ ]};}
+function mapa3dStyle(){return {version:8,sources:{
+  carto:{type:'vector',tiles:[CARTO_TILES],minzoom:0,maxzoom:15}},
+ layers:[
+  {id:'fondo',type:'background',paint:{'background-color':'#E8F0E4'}},
+  {id:'agua',source:'carto','source-layer':'water',type:'fill',paint:{'fill-color':'#8FC1E3'}},
+  {id:'parques',source:'carto','source-layer':'land',type:'fill',paint:{'fill-color':'#BEE3B0','fill-opacity':0.8}},
+  {id:'calles-borde',source:'carto','source-layer':'roads',type:'line',minzoom:10,paint:{'line-color':'#C9C2B4','line-width':['interpolate',['linear'],['zoom'],12,1.5,15,7]}},
+  {id:'calles',source:'carto','source-layer':'roads',type:'line',minzoom:10,paint:{'line-color':'#FFFFFF','line-width':['interpolate',['linear'],['zoom'],12,1,15,5]}},
+  {id:'edificios-3d',source:'carto','source-layer':'buildings',type:'fill-extrusion',minzoom:13,paint:{'fill-extrusion-color':'#EFC98C','fill-extrusion-height':heightExpr,'fill-extrusion-base':0,'fill-extrusion-opacity':0.95}}
+ ]};}
+
+window.map=new maplibregl.Map({container:'map',style:ilustradoStyle(),center:[-75.2362,4.4425],zoom:14.7,pitch:0,bearing:0,attributionControl:false,fadeDuration:0});
+
+/* ---------- Ruta suave (curva) ---------- */
+function curva(pts,muestras){
+  const P=[pts[0],...pts,pts[pts.length-1]],salida=[];
+  for(let i=0;i<P.length-3;i++){
+    for(let j=0;j<muestras;j++){
+      const t=j/muestras,t2=t*t,t3=t2*t,p0=P[i],p1=P[i+1],p2=P[i+2],p3=P[i+3];
+      salida.push([
+        0.5*((2*p1[0])+(-p0[0]+p2[0])*t+(2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*t2+(-p0[0]+3*p1[0]-3*p2[0]+p3[0])*t3),
+        0.5*((2*p1[1])+(-p0[1]+p2[1])*t+(2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*t2+(-p0[1]+3*p1[1]-3*p2[1]+p3[1])*t3)
+      ]);
+    }
+  }
+  salida.push(pts[pts.length-1]);
+  return salida;
+}
+function rutaSuave(a,b){
+  const dx=(b[0]-a[0])*96000, dy=(b[1]-a[1])*110600, len=Math.hypot(dx,dy)||1;
+  const px=-dy/len, py=dx/len, off1=len*0.16, off2=len*0.11;
+  const m1=[a[0]+(b[0]-a[0])*0.35 + px*off1/96000, a[1]+(b[1]-a[1])*0.35 + py*off1/110600];
+  const m2=[a[0]+(b[0]-a[0])*0.70 - px*off2/96000, a[1]+(b[1]-a[1])*0.70 - py*off2/110600];
+  return curva([a,m1,m2,b],16);
+}
+let RUTA=rutaSuave(YOU,[-75.23657,4.444974]);
+function datosRuta(){return {type:'Feature',geometry:{type:'LineString',coordinates:RUTA}};}
+function asegurarRuta(){
+  if(!window.map.getSource('carretera')) window.map.addSource('carretera',{type:'geojson',data:datosRuta()});
+  const L=(id,paint,layout)=>{if(!window.map.getLayer(id))window.map.addLayer({id,type:'line',source:'carretera',layout:layout||{'line-cap':'round','line-join':'round'},paint});};
+  L('car-sombra',{'line-color':'rgba(0,0,0,0.20)','line-width':50,'line-blur':6});
+  L('car-borde',{'line-color':'#FFFFFF','line-width':44});
+  L('car-asfalto',{'line-color':'#22262E','line-width':36});
+  if(!window.map.getLayer('car-linea'))window.map.addLayer({id:'car-linea',type:'line',source:'carretera',layout:{'line-cap':'butt','line-join':'round'},paint:{'line-color':'#FFFFFF','line-width':3.8,'line-dasharray':[2.4,2.6]}});
+}
+window.map.on('style.load',asegurarRuta);
+window.map.on('styledata',asegurarRuta);
+
+/* ---------- Pines de negocios reales ---------- */
+function glyph(kind,color){
+  if(kind==='paw')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="${color}"><ellipse cx="12" cy="15.5" rx="4.2" ry="3.4"/><circle cx="4.6" cy="10.5" r="1.9"/><circle cx="8.2" cy="6.8" r="2"/><circle cx="12.6" cy="5.9" r="2"/><circle cx="16.9" cy="7.6" r="1.9"/><circle cx="19.6" cy="11.4" r="1.7"/></svg>`;
+  if(kind==='cross')return `<svg width="16" height="16" viewBox="0 0 24 24" fill="${color}"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg>`;
+  return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.4"><path d="M5 8h14l-1.2 12.2a1.8 1.8 0 0 1-1.8 1.8H8a1.8 1.8 0 0 1-1.8-1.8L5 8z"/><path d="M8.5 10V6.5a3.5 3.5 0 0 1 7 0V10"/></svg>`;
+}
+const CAT={
+  vet:{cls:'green',g:'paw',col:'#22A355',nombre:'Veterinaria'},
+  tienda:{cls:'yellow',g:'bag',col:'#B97E00',nombre:'Tienda de mascotas'},
+  farma:{cls:'red',g:'cross',col:'#E5322D',nombre:'Farmacia agropecuaria'}
+};
+const marcadores=[];
+NEGOCIOS_IBAGUE.forEach(b=>{
+  const c=CAT[b.cat];
+  const el=document.createElement('div');el.className='pin2 '+c.cls;
+  el.innerHTML=`<span class="in">${glyph(c.g,c.col)}</span>`;
+  el.title=b.n;
+  const mk=new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat([b.lng,b.lat]).addTo(window.map);
+  el.addEventListener('click',()=>seleccionar(b,false));
+  marcadores.push({b,el,mk});
+});
+const youEl=document.createElement('div');youEl.className='you';
+new maplibregl.Marker({element:youEl}).setLngLat(YOU).addTo(window.map);
+if(navigator.geolocation){
+  navigator.geolocation.getCurrentPosition(p=>{YOU[0]=p.coords.longitude;YOU[1]=p.coords.latitude;},()=>{},{timeout:4000});
+}
+
+/* ---------- Tarjeta del negocio ---------- */
+function horaBogota(){const d=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Bogota'}));return d.getHours()+d.getMinutes()/60;}
+function fmtHora(h){if(h==null)return '';const hh=Math.floor(h),mm=Math.round((h-hh)*60);const ap=hh<12?'a. m.':'p. m.';const h12=hh%12===0?12:hh%12;return h12+':'+String(mm).padStart(2,'0')+' '+ap;}
+let seleccionado=null;
+function seleccionar(b,volar){
+  seleccionado=b;
+  marcadores.forEach(m=>m.el.classList.toggle('sel',m.b===b));
+  document.getElementById('cNombre').textContent=b.n;
+  document.getElementById('cEstrellas').textContent=b.rating?('★'.repeat(Math.round(b.rating))+' '+b.rating.toFixed(1)):'';
+  let estado='';
+  if(b.horas){
+    const h=horaBogota(),abierto=h>=b.horas[0]&&h<b.horas[1];
+    estado=abierto?`<b>Abierto ahora</b> · cierra ${fmtHora(b.horas[1])}`:`<span class="cerrado">Cerrado ahora</span> · abre ${fmtHora(b.horas[0])}`;
+  }
+  document.getElementById('cEstado').innerHTML=estado;
+  document.getElementById('cDir').textContent=b.dir+(b.nota?(' · '+b.nota):'');
+  document.getElementById('bLlamar').href='tel:'+b.tel;
+  document.getElementById('bWa').href='https://wa.me/'+b.tel.replace('+','');
+  RUTA=rutaSuave(YOU,[b.lng,b.lat]);
+  prepararAnimacion();
+  const srcRuta=window.map.getSource('carretera');
+  if(srcRuta) srcRuta.setData(datosRuta()); else asegurarRuta();
+  if(volar) window.map.easeTo({center:[b.lng,b.lat],zoom:Math.max(window.map.getZoom(),15)});
+}
+document.getElementById('bIr').addEventListener('click',()=>{if(seleccionado)seleccionar(seleccionado,true);});
+
+/* ---------- Filtros y buscador ---------- */
+let filtroCat='todos', filtroTxt='';
+function aplicarFiltros(){
+  marcadores.forEach(m=>{
+    const okCat=filtroCat==='todos'||m.b.cat===filtroCat;
+    const okTxt=!filtroTxt||m.b.n.toLowerCase().includes(filtroTxt);
+    m.el.style.display=(okCat&&okTxt)?'':'none';
+  });
+}
+document.getElementById('chips').addEventListener('click',e=>{
+  const btn=e.target.closest('.chip');if(!btn)return;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===btn));
+  filtroCat=btn.dataset.cat;aplicarFiltros();
+});
+document.getElementById('buscador').addEventListener('input',e=>{filtroTxt=e.target.value.trim().toLowerCase();aplicarFiltros();});
+
+/* ---------- Vistas ---------- */
+function vista(btn,style,opts){
+  document.querySelectorAll('.views button').forEach(x=>x.classList.toggle('on',x===btn));
+  window.map.setStyle(style);window.map.easeTo(opts);
+}
+document.getElementById('vIlus').addEventListener('click',e=>vista(e.target,ilustradoStyle(),{pitch:0,zoom:14.7}));
+document.getElementById('vSat').addEventListener('click',e=>vista(e.target,satStyle(),{pitch:50,zoom:15.6}));
+document.getElementById('v3d').addEventListener('click',e=>vista(e.target,mapa3dStyle(),{pitch:58,zoom:15.1}));
+
+/* ---------- La mascota corriendo ---------- */
+const dogEl=document.createElement('div');
+dogEl.innerHTML='<img id="dogImg" src="mascota/g1.png" style="width:186px;height:auto;display:block;filter:drop-shadow(0 6px 7px rgba(0,0,0,.45))">';
+const dog=new maplibregl.Marker({element:dogEl,anchor:'center'}).setLngLat(RUTA[0]).addTo(window.map);
+let segs=[],total=0,DUR=12000;const PAUSA=3000;let t0=performance.now();
+function prepararAnimacion(){
+  segs=[];total=0;
+  for(let i=0;i<RUTA.length-1;i++){
+    const dx=(RUTA[i+1][0]-RUTA[i][0])*96000, dy=(RUTA[i+1][1]-RUTA[i][1])*110600;
+    const len=Math.hypot(dx,dy); segs.push({a:RUTA[i],b:RUTA[i+1],len,dx}); total+=len;
+  }
+  DUR=Math.min(16000,Math.max(6000,total*9));
+  t0=performance.now();
+}
+function posEn(d){
+  let acc=0;
+  for(const s of segs){
+    if(d<=acc+s.len){const t=(d-acc)/s.len;return {c:[s.a[0]+(s.b[0]-s.a[0])*t, s.a[1]+(s.b[1]-s.a[1])*t], flip:s.dx<0};}
+    acc+=s.len;
+  }
+  return {c:RUTA[RUTA.length-1],flip:false};
+}
+const RUNF=['mascota/g1.png','mascota/g2.png','mascota/g3.png','mascota/g4.png'];
+let lastSrc='';
+function tick(now){
+  const ciclo=(now-t0)%(DUR+PAUSA);
+  const corriendo=ciclo<DUR;
+  const p=posEn(Math.min(ciclo/DUR,1)*total);
+  dog.setLngLat(p.c);
+  const img=dogEl.firstElementChild;
+  img.style.transform=`scaleX(${p.flip?-1:1})`;
+  const src=corriendo?RUNF[Math.floor(now/140)%4]:'mascota/gstop.png';
+  if(src!==lastSrc){img.src=src;lastSrc=src;}
+  requestAnimationFrame(tick);
+}
+prepararAnimacion();
+requestAnimationFrame(tick);
+seleccionar(NEGOCIOS_IBAGUE[0],false);
+</script></body></html>
