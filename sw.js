@@ -1,11 +1,12 @@
-/* Mascotas cerca de ti — service worker mínimo (v10.4).
+/* Mascotas cerca de ti — service worker mínimo (v10.5).
    Solo same-origin, network-first con fallback a caché.
    NO intercepta teselas ni APIs externas (CARTO/OpenFreeMap/Overpass/OSRM/Firebase). */
-const CACHE='mascotas-v104';
+const CACHE='mascotas-v105';
 const NUCLEO=['./','index.html','manifest.json','icono-192.png','icono-512.png',
  'vendor/maplibre-gl.css','vendor/maplibre-gl.js',
  'datos-ibague.js','datos-charlotte.js','datos-colombia.js','datos-usa.js',
- 'mascota/gstop.png','mascota/g1.png','mascota/g2.png','mascota/g3.png','mascota/g4.png'];
+ 'mascota/gstop.png','mascota/g1.png','mascota/g2.png','mascota/g3.png','mascota/g4.png',
+ 'mascota/avatares/pug-negro.png','mascota/avatares/naranja-peludo.png','mascota/avatares/husky.png','mascota/avatares/dorado.png','mascota/avatares/negro-marron.png','mascota/avatares/dalmata.png','mascota/avatares/chihuahua.png','mascota/avatares/boxer.png','mascota/avatares/bulldog-frances.png','mascota/avatares/canela-claro.png','mascota/avatares/dalmata-bebe.png','mascota/avatares/beagle.png','mascota/avatares/basset.png'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(NUCLEO)).catch(()=>{}));
   self.skipWaiting();
