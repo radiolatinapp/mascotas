@@ -74,6 +74,10 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .pin2.orange{background:radial-gradient(circle at 32% 28%, #FDBA74, #F97316 68%)}
 .pin2.cyan{background:radial-gradient(circle at 32% 28%, #67E8F9, #0891B2 68%)}
 .pin2.lima{background:radial-gradient(circle at 32% 28%, #BEF264, #65A30D 68%)}
+/* v10.4 — pin de ciudad: píldora verde con el nombre y el conteo real de
+   lugares. Distinto del pin de comercio (gota), misma identidad visual. */
+.pinCiudad{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,#0E7C66,#0a5c4c);color:#fff;border:2.5px solid #fff;border-radius:999px;padding:8px 13px 8px 9px;font-size:14px;font-weight:700;line-height:1;box-shadow:0 6px 16px rgba(0,0,0,.45);cursor:pointer;white-space:nowrap;animation:pinPop .3s ease}
+.pinCiudad svg{flex:none;display:block}
 .cerrarCard{flex:none;width:30px;height:30px;border:0;border-radius:50%;background:#EEF2EE;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .panel{position:absolute;left:10px;right:10px;bottom:10px;z-index:7;background:#fff;border-radius:22px;box-shadow:0 12px 32px rgba(0,0,0,.38);padding:14px 15px;max-height:70vh;overflow-y:auto;animation:slideUp .3s ease}
 @keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
@@ -150,7 +154,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.3</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.4</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -451,6 +455,11 @@ const I18N={
   "osmError": "No se pudo consultar OpenStreetMap. Revisa tu conexión e intenta de nuevo.",
   "buscandoZona": "Buscando lugares en esta zona…",
   "acercateZona": "Acércate para ver los lugares",
+  "unaCiudad": "1 ciudad",
+  "ciudadesN": "{n} ciudades",
+  "unLugar": "1 lugar",
+  "lugaresN": "{n} lugares",
+  "tocaCiudad": "toca una ciudad para verlos",
   "zonaOk": "{n} lugares en esta zona",
   "zonaVacia": "Sin lugares de animales en esta zona",
   "eventosCerca": "Eventos cerca de ti",
@@ -672,6 +681,11 @@ const I18N={
   "osmError": "Could not reach OpenStreetMap. Check your connection and try again.",
   "buscandoZona": "Looking for places in this area…",
   "acercateZona": "Zoom in to see places",
+  "unaCiudad": "1 city",
+  "ciudadesN": "{n} cities",
+  "unLugar": "1 place",
+  "lugaresN": "{n} places",
+  "tocaCiudad": "tap a city to see them",
   "zonaOk": "{n} places in this area",
   "zonaVacia": "No animal places in this area",
   "eventosCerca": "Events near you",
@@ -893,6 +907,11 @@ const I18N={
   "osmError": "Não foi possível consultar o OpenStreetMap. Verifique sua conexão e tente novamente.",
   "buscandoZona": "Buscando lugares nesta zona…",
   "acercateZona": "Aproxime para ver os lugares",
+  "unaCiudad": "1 cidade",
+  "ciudadesN": "{n} cidades",
+  "unLugar": "1 lugar",
+  "lugaresN": "{n} lugares",
+  "tocaCiudad": "toque numa cidade para vê-los",
   "zonaOk": "{n} lugares nesta zona",
   "zonaVacia": "Sem lugares de animais nesta zona",
   "eventosCerca": "Eventos perto de você",
@@ -1114,6 +1133,11 @@ const I18N={
   "osmError": "Impossible de consulter OpenStreetMap. Vérifiez votre connexion et réessayez.",
   "buscandoZona": "Recherche de lieux dans cette zone…",
   "acercateZona": "Zoomez pour voir les lieux",
+  "unaCiudad": "1 ville",
+  "ciudadesN": "{n} villes",
+  "unLugar": "1 lieu",
+  "lugaresN": "{n} lieux",
+  "tocaCiudad": "touchez une ville pour les voir",
   "zonaOk": "{n} lieux dans cette zone",
   "zonaVacia": "Aucun lieu animalier dans cette zone",
   "eventosCerca": "Événements près de chez vous",
@@ -1335,6 +1359,11 @@ const I18N={
   "osmError": "OpenStreetMap konnte nicht erreicht werden. Prüfe deine Verbindung und versuche es erneut.",
   "buscandoZona": "Suche nach Orten in diesem Gebiet…",
   "acercateZona": "Vergrößern, um Orte zu sehen",
+  "unaCiudad": "1 Stadt",
+  "ciudadesN": "{n} Städte",
+  "unLugar": "1 Ort",
+  "lugaresN": "{n} Orte",
+  "tocaCiudad": "tippe auf eine Stadt, um sie zu sehen",
   "zonaOk": "{n} Orte in diesem Gebiet",
   "zonaVacia": "Keine Tierorte in diesem Gebiet",
   "eventosCerca": "Veranstaltungen in deiner Nähe",
@@ -1556,6 +1585,11 @@ const I18N={
   "osmError": "Impossibile consultare OpenStreetMap. Controlla la connessione e riprova.",
   "buscandoZona": "Ricerca di luoghi in questa zona…",
   "acercateZona": "Ingrandisci per vedere i luoghi",
+  "unaCiudad": "1 città",
+  "ciudadesN": "{n} città",
+  "unLugar": "1 luogo",
+  "lugaresN": "{n} luoghi",
+  "tocaCiudad": "tocca una città per vederli",
   "zonaOk": "{n} luoghi in questa zona",
   "zonaVacia": "Nessun luogo per animali in questa zona",
   "eventosCerca": "Eventi vicino a te",
@@ -1777,6 +1811,11 @@ const I18N={
   "osmError": "OpenStreetMap kon niet worden bereikt. Controleer je verbinding en probeer het opnieuw.",
   "buscandoZona": "Zoeken naar plekken in dit gebied…",
   "acercateZona": "Zoom in om plekken te zien",
+  "unaCiudad": "1 stad",
+  "ciudadesN": "{n} steden",
+  "unLugar": "1 plek",
+  "lugaresN": "{n} plekken",
+  "tocaCiudad": "tik op een stad om ze te zien",
   "zonaOk": "{n} plekken in dit gebied",
   "zonaVacia": "Geen dierenplekken in dit gebied",
   "eventosCerca": "Evenementen bij jou in de buurt",
@@ -1998,6 +2037,11 @@ const I18N={
   "osmError": "Nie można skontaktować się z OpenStreetMap. Sprawdź połączenie i spróbuj ponownie.",
   "buscandoZona": "Szukanie miejsc w tej okolicy…",
   "acercateZona": "Przybliż, aby zobaczyć miejsca",
+  "unaCiudad": "1 miasto",
+  "ciudadesN": "{n} miast",
+  "unLugar": "1 miejsce",
+  "lugaresN": "{n} miejsc",
+  "tocaCiudad": "dotknij miasto, aby je zobaczyć",
   "zonaOk": "{n} miejsc w tej okolicy",
   "zonaVacia": "Brak miejsc dla zwierząt w tej okolicy",
   "eventosCerca": "Wydarzenia w pobliżu",
@@ -2191,7 +2235,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.3':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.3';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.4':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.4';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -2428,6 +2472,12 @@ const NEGOCIOS=[...NEGOCIOS_IBAGUE,...NEGOCIOS_CHARLOTTE];
 const CIUDADES_TODAS={};
 if(typeof CIUDADES_COLOMBIA!=='undefined')Object.assign(CIUDADES_TODAS,CIUDADES_COLOMBIA);
 if(typeof CIUDADES_USA!=='undefined')Object.assign(CIUDADES_TODAS,CIUDADES_USA);
+/* v10.4 — Charlotte e Ibagué son ciudades curadas de la app (datos legados
+   cargados al inicio en NEGOCIOS) y no están en los datasets USA/Colombia.
+   Se suman aquí para que también tengan su pin de ciudad al alejar;
+   cargarCiudad las deduce (ya están en NEGOCIOS) y no duplica nada. */
+if(typeof NEGOCIOS_CHARLOTTE!=='undefined'&&NEGOCIOS_CHARLOTTE.length)CIUDADES_TODAS['charlotte']={nombre:'Charlotte',centro:[35.2271,-80.8431],tz:'America/New_York',lugares:NEGOCIOS_CHARLOTTE};
+if(typeof NEGOCIOS_IBAGUE!=='undefined'&&NEGOCIOS_IBAGUE.length)CIUDADES_TODAS['ibague']={nombre:'Ibagué',centro:[4.4389,-75.2322],tz:'America/Bogota',lugares:NEGOCIOS_IBAGUE};
 const ciudadesCargadas=new Set();
 for(const slug in CIUDADES_TODAS){
   const c=CIUDADES_TODAS[slug]; let laMin=90,laMax=-90,loMin=180,loMax=-180;
@@ -2468,6 +2518,57 @@ function crearPin(b){
 }
 function crearPines(){NEGOCIOS.forEach(b=>crearPin(b));}
 crearPines();
+
+/* ---------- v10.4 — Pines de ciudad (panorama al alejar) ----------
+   Al alejar (zoom < 11) se ve UN pin por ciudad (nombre + conteo real de
+   lugares) en vez de solo la ciudad centrada. Los pines de ciudad solo usan
+   metadatos (nombre, centro, conteo): NO se cargan los 3.171 lugares en
+   NEGOCIOS ni se crean 3.171 marcadores. Al tocar un pin de ciudad, la app
+   vuela a esa ciudad (zoom 13.5, irALugar) y carga sus comercios.
+   Con zoom >= 11 los pines de ciudad se ocultan y se ven los comercios. */
+const marcadoresCiudad=[];
+const TOTAL_CIUDADES=Object.keys(CIUDADES_TODAS).length;
+let TOTAL_LUGARES=0; for(const _s in CIUDADES_TODAS)TOTAL_LUGARES+=CIUDADES_TODAS[_s].lugares.length;
+/* v10.4 — plural correcto en los 8 idiomas (evita "1 ciudades" / "1 lugares"). */
+function txtCiudadLugar(nc,nl){
+  const cTxt=nc===1?t('unaCiudad'):t('ciudadesN',{n:nc});
+  const lTxt=nl===1?t('unLugar'):t('lugaresN',{n:nl});
+  return cTxt+' · '+lTxt+' · '+t('tocaCiudad');
+}
+function txtConteoLugares(n){return n===1?t('unLugar'):t('lugaresN',{n:n});}
+function crearPinesCiudad(){
+  for(const slug in CIUDADES_TODAS){
+    const c=CIUDADES_TODAS[slug];
+    const el=document.createElement('div');
+    el.className='pinCiudad';
+    const cnt=txtConteoLugares(c.lugares.length);
+    el.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="3" fill="#0E7C66"/></svg><span>'+c.nombre+' &middot; '+cnt+'</span>';
+    el.title=c.nombre+' · '+cnt;
+    const mk=new maplibregl.Marker({element:el,anchor:'center'}).setLngLat([c.centro[1],c.centro[0]]).addTo(window.map);
+    el.addEventListener('click',()=>{irALugar({lng:c.centro[1],lat:c.centro[0]});});
+    el.style.display='none';
+    marcadoresCiudad.push({slug,el,mk});
+  }
+}
+function actualizarPinesCiudad(){
+  if(!window.map)return;
+  const lejos=window.map.getZoom()<11;
+  marcadoresCiudad.forEach(m=>{m.el.style.display=lejos?'':'none';});
+  if(lejos){
+    marcadores.forEach(m=>{m.el.style.display='none';});
+    marcadoresOSM.forEach(m=>{m.el.style.display='none';});
+    marcadoresPerdidas.forEach(m=>{m.el.style.display='none';});
+    marcadoresUsuario.forEach(m=>{m.el.style.display='none';});
+    const b=window.map.getBounds();
+    let nc=0,nl=0;
+    if(b){for(const slug in CIUDADES_TODAS){const c=CIUDADES_TODAS[slug];const la=c.centro[0],lo=c.centro[1];if(lo>=b.getWest()&&lo<=b.getEast()&&la>=b.getSouth()&&la<=b.getNorth()){nc++;nl+=c.lugares.length;}}}
+    if(nc>0)mostrarZonaEstado(txtCiudadLugar(nc,nl));
+    else mostrarZonaEstado(txtCiudadLugar(TOTAL_CIUDADES,TOTAL_LUGARES));
+  }else{
+    aplicarFiltros();
+  }
+}
+crearPinesCiudad();
 const youEl=document.createElement('div');youEl.className='you';
 const youMarker=new maplibregl.Marker({element:youEl}).setLngLat(YOU).addTo(window.map);
 
@@ -2780,10 +2881,13 @@ function pasaCat(b){return filtroCat==='todos'||(filtroCat==='h24'?es24h(b):b.ca
 function aplicarFiltros(){
   const okTxt=b=>!filtroTxt||puntajeBusqueda(b,filtroTxt)!=null;
   const ok=b=>pasaCat(b)&&okTxt(b);
-  marcadores.forEach(m=>{m.el.style.display=ok(m.b)?'':'none';});
-  marcadoresOSM.forEach(m=>{m.el.style.display=ok(m.b)?'':'none';});
-  marcadoresPerdidas.forEach(m=>{m.el.style.display=ok(m.b)?'':'none';});
-  marcadoresUsuario.forEach(m=>{m.el.style.display=(filtroCat==='todos'||filtroCat==='evento')?'':'none';});
+  /* v10.4 — panorama: al alejar (zoom < 11) los comercios se ocultan y solo
+     se ven los pines de ciudad; al acercar se restauran según los filtros. */
+  const lejos=window.map&&window.map.getZoom()<11;
+  marcadores.forEach(m=>{m.el.style.display=(lejos||!ok(m.b))?'none':'';});
+  marcadoresOSM.forEach(m=>{m.el.style.display=(lejos||!ok(m.b))?'none':'';});
+  marcadoresPerdidas.forEach(m=>{m.el.style.display=(lejos||!ok(m.b))?'none':'';});
+  marcadoresUsuario.forEach(m=>{m.el.style.display=(lejos||(filtroCat!=='todos'&&filtroCat!=='evento'))?'none':'';});
 }
 
 /* ---------- Menú unificado de categorías + lista ordenada ---------- */
@@ -3261,7 +3365,7 @@ const marcadoresOSM=[];
 let zonaCargando=false, zonaTimer=null;
 const zonasCargadas=[];
 function zonaContenida(b){return zonasCargadas.some(z=>b.getWest()>=z[0]-0.15&&b.getSouth()>=z[1]-0.15&&b.getEast()<=z[2]+0.15&&b.getNorth()<=z[3]+0.15);}
-function mostrarZonaEstado(txt,ms){const p=document.getElementById('zonaEstado');if(!p)return;clearTimeout(p._t);p.textContent=txt;p.style.display=txt?'':'none';if(ms){p._t=setTimeout(()=>{p.style.display='none';},ms);}}
+function mostrarZonaEstado(txt,ms){const p=document.getElementById('zonaEstado');if(!p)return;clearTimeout(p._t);p.textContent=txt;p.style.display=txt?'':'none';p.style.pointerEvents=(typeof zonaError!=='undefined'&&zonaError)?'auto':'none';if(ms){p._t=setTimeout(()=>{p.style.display='none';},ms);}}
 document.getElementById('zonaEstado').addEventListener('click',()=>{if(zonaError)cargarZona(true);});
 
 const OVERPASS_URLS=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter'];
@@ -3312,7 +3416,7 @@ let zonaError=false;function agregarPinOSM(b,osmId){
 async function cargarZona(forzar){
   if(zonaCargando)return;
   const z=window.map.getZoom();
-  if(z<11){mostrarZonaEstado(t('acercateZona'));return;}
+  if(z<11){actualizarPinesCiudad();return;}
   const b=window.map.getBounds();
   if(!forzar&&zonaContenida(b))return;
   /* v10.2: si el centro está en una ciudad pre-cargada, sus lugares ya están
@@ -3378,7 +3482,8 @@ async function cargarZona(forzar){
   }
   zonaCargando=false;
 }
-window.map.on('moveend',()=>{if(tripActivo)return;clearTimeout(zonaTimer);zonaTimer=setTimeout(()=>cargarZona(false),600);cargarCiudadesCercanas();crearPinesEventosUsuario();cargarAlertasZona();});
+window.map.on('moveend',()=>{if(tripActivo)return;clearTimeout(zonaTimer);zonaTimer=setTimeout(()=>cargarZona(false),600);cargarCiudadesCercanas();actualizarPinesCiudad();crearPinesEventosUsuario();cargarAlertasZona();});
+window.map.on('zoomend',()=>actualizarPinesCiudad());
 function mostrarPanel(id){
   const el=document.getElementById(id);
   if(el&&el.style.display==='block'){irAtras();return;}
@@ -3392,7 +3497,7 @@ document.getElementById('bMascota').addEventListener('click',()=>mostrarPanel('p
 cargarMascota();
 crearPinesEventosUsuario();
 crearPinesEventos();
-window.map.on('load',()=>{cargarZona(true);cargarAlertasZona();});
+window.map.on('load',()=>{cargarZona(true);cargarAlertasZona();actualizarPinesCiudad();});
 
 /* ---------- La mascota: parte de TU ubicación y te sigue en el viaje ---------- */
 const dogEl=document.createElement('div');
