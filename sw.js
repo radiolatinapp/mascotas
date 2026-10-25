@@ -1,7 +1,7 @@
-/* Mascotas cerca de ti — service worker mínimo (v10.3).
+/* Mascotas cerca de ti — service worker mínimo (v10.4).
    Solo same-origin, network-first con fallback a caché.
    NO intercepta teselas ni APIs externas (CARTO/OpenFreeMap/Overpass/OSRM/Firebase). */
-const CACHE='mascotas-v103';
+const CACHE='mascotas-v104';
 const NUCLEO=['./','index.html','manifest.json','icono-192.png','icono-512.png',
  'vendor/maplibre-gl.css','vendor/maplibre-gl.js',
  'datos-ibague.js','datos-charlotte.js','datos-colombia.js','datos-usa.js',
