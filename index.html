@@ -192,7 +192,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.9</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.10</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -616,6 +616,11 @@ const I18N={
   "masCercanoA": "El más cercano está a {d}",
   "btnAtras": "Atrás",
   "irA": "Ir a {lugar}",
+  "regUSA": "Estados Unidos",
+  "regCanada": "Canadá",
+  "regEuropa": "Europa",
+  "regLatam": "América Latina",
+  "regColombia": "Colombia",
   "buscandoLugar": "Buscando lugar…",
   "zonaError": "No se pudo cargar esta zona",
   "reintentar": "Toca para reintentar",
@@ -903,6 +908,11 @@ const I18N={
   "masCercanoA": "Nearest is {d} away",
   "btnAtras": "Back",
   "irA": "Go to {lugar}",
+  "regUSA": "United States",
+  "regCanada": "Canada",
+  "regEuropa": "Europe",
+  "regLatam": "Latin America",
+  "regColombia": "Colombia",
   "buscandoLugar": "Searching place…",
   "zonaError": "Couldn't load this area",
   "reintentar": "Tap to retry",
@@ -1190,6 +1200,11 @@ const I18N={
   "masCercanoA": "O mais próximo está a {d}",
   "btnAtras": "Voltar",
   "irA": "Ir para {lugar}",
+  "regUSA": "Estados Unidos",
+  "regCanada": "Canadá",
+  "regEuropa": "Europa",
+  "regLatam": "América Latina",
+  "regColombia": "Colômbia",
   "buscandoLugar": "Procurando lugar…",
   "zonaError": "Não foi possível carregar esta zona",
   "reintentar": "Toque para tentar novamente",
@@ -1477,6 +1492,11 @@ const I18N={
   "masCercanoA": "Le plus proche est à {d}",
   "btnAtras": "Retour",
   "irA": "Aller à {lugar}",
+  "regUSA": "États-Unis",
+  "regCanada": "Canada",
+  "regEuropa": "Europe",
+  "regLatam": "Amérique latine",
+  "regColombia": "Colombie",
   "buscandoLugar": "Recherche du lieu…",
   "zonaError": "Impossible de charger cette zone",
   "reintentar": "Touchez pour réessayer",
@@ -1764,6 +1784,11 @@ const I18N={
   "masCercanoA": "Der nächste ist {d} entfernt",
   "btnAtras": "Zurück",
   "irA": "Zu {lugar}",
+  "regUSA": "Vereinigte Staaten",
+  "regCanada": "Kanada",
+  "regEuropa": "Europa",
+  "regLatam": "Lateinamerika",
+  "regColombia": "Kolumbien",
   "buscandoLugar": "Ort wird gesucht…",
   "zonaError": "Dieser Bereich konnte nicht geladen werden",
   "reintentar": "Zum Wiederholen tippen",
@@ -2051,6 +2076,11 @@ const I18N={
   "masCercanoA": "Il più vicino è a {d}",
   "btnAtras": "Indietro",
   "irA": "Vai a {lugar}",
+  "regUSA": "Stati Uniti",
+  "regCanada": "Canada",
+  "regEuropa": "Europa",
+  "regLatam": "America Latina",
+  "regColombia": "Colombia",
   "buscandoLugar": "Ricerca del luogo…",
   "zonaError": "Impossibile caricare questa zona",
   "reintentar": "Tocca per riprovare",
@@ -2338,6 +2368,11 @@ const I18N={
   "masCercanoA": "De dichtstbijzijnde is {d} hiervandaan",
   "btnAtras": "Terug",
   "irA": "Ga naar {lugar}",
+  "regUSA": "Verenigde Staten",
+  "regCanada": "Canada",
+  "regEuropa": "Europa",
+  "regLatam": "Latijns-Amerika",
+  "regColombia": "Colombia",
   "buscandoLugar": "Plaats zoeken…",
   "zonaError": "Dit gebied kon niet worden geladen",
   "reintentar": "Tik om opnieuw te proberen",
@@ -2625,6 +2660,11 @@ const I18N={
   "masCercanoA": "Najbliższe jest {d} stąd",
   "btnAtras": "Wstecz",
   "irA": "Idź do {lugar}",
+  "regUSA": "Stany Zjednoczone",
+  "regCanada": "Kanada",
+  "regEuropa": "Europa",
+  "regLatam": "Ameryka Łacińska",
+  "regColombia": "Kolumbia",
   "buscandoLugar": "Wyszukiwanie miejsca…",
   "zonaError": "Nie udało się wczytać tego obszaru",
   "reintentar": "Dotknij, aby ponowić",
@@ -2865,7 +2905,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.9':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.9';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.10':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.10';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -3357,6 +3397,36 @@ const REGIONES_PINES={
  europa:{archivo:'pins-europa.js',global:'PINS_EUROPA',oeste:-25,sur:35,este:45,norte:72},
  latam:{archivo:'pins-latam.js',global:'PINS_LATAM',oeste:-118,sur:-56,este:-34,norte:33}
 };
+/* ---------- v10.10 — Pines de caseríos (hamlet/suburb) ----------
+   Segunda capa perezosa: los archivos pins-hamlet-<región>.js traen los
+   lugares place=hamlet y place=suburb de OSM (tipo 'h'/'s'). Solo se
+   descargan cuando el mapa entra en la región con zoom >= 9 (es cuando
+   se ven; con menos zoom no se muestran). Mismo formato que PINS_*:
+   [slug, nombre, lat, lng, tipo, poblacion]. */
+const REGIONES_PINES_HAMLET={
+ usa:{archivo:'pins-hamlet-usa.js',global:'PINS_HAMLET_USA',oeste:-180,sur:15,este:-66,norte:72},
+ canada:{archivo:'pins-hamlet-canada.js',global:'PINS_HAMLET_CANADA',oeste:-168,sur:41,este:-52,norte:84},
+ europa:{archivo:'pins-hamlet-europa.js',global:'PINS_HAMLET_EUROPA',oeste:-25,sur:35,este:45,norte:72},
+ latam:{archivo:'pins-hamlet-latam.js',global:'PINS_HAMLET_LATAM',oeste:-118,sur:-56,este:-34,norte:33}
+};
+const pinesHamletCargados=new Set(), pinesHamletCargando=new Set();
+function pinesHamletDeRegion(id){
+  if(id==='usa')return (typeof PINS_HAMLET_USA!=='undefined')?PINS_HAMLET_USA:null;
+  if(id==='canada')return (typeof PINS_HAMLET_CANADA!=='undefined')?PINS_HAMLET_CANADA:null;
+  if(id==='europa')return (typeof PINS_HAMLET_EUROPA!=='undefined')?PINS_HAMLET_EUROPA:null;
+  if(id==='latam')return (typeof PINS_HAMLET_LATAM!=='undefined')?PINS_HAMLET_LATAM:null;
+  return null;
+}
+function cargarPinesHamletRegion(id){
+  const r=REGIONES_PINES_HAMLET[id];
+  if(!r||pinesHamletCargados.has(id)||pinesHamletCargando.has(id))return;
+  pinesHamletCargando.add(id);
+  const sc=document.createElement('script');
+  sc.src=r.archivo;
+  sc.onload=()=>{pinesHamletCargados.add(id);pinesHamletCargando.delete(id);actualizarPinesPueblo();};
+  sc.onerror=()=>{pinesHamletCargando.delete(id);};
+  document.head.appendChild(sc);
+}
 const pinesCargados=new Set(), pinesCargando=new Set();
 function pinesDeRegion(id){
   if(id==='usa')return (typeof PINS_USA!=='undefined')?PINS_USA:null;
@@ -3385,6 +3455,14 @@ function asegurarPinesRegiones(){
     const r=REGIONES_PINES[id];
     if(e<r.oeste||w>r.este||n<r.sur||s>r.norte)continue;
     cargarPinesRegion(id);
+  }
+  /* v10.10 — caseríos: solo con zoom >= 9 (es cuando se ven). */
+  if(z>=9){
+    for(const id in REGIONES_PINES_HAMLET){
+      const r=REGIONES_PINES_HAMLET[id];
+      if(e<r.oeste||w>r.este||n<r.sur||s>r.norte)continue;
+      cargarPinesHamletRegion(id);
+    }
   }
 }
 /* Rejilla espacial de centros de ciudad (se construye una sola vez):
@@ -3445,6 +3523,21 @@ function actualizarPinesPueblo(){
       if(z<9&&tipo==='v')continue;
       if(cercaDeCiudad(la,lo))continue;
       cands.push([id,p]);
+    }
+  }
+  /* v10.10 — caseríos (hamlet/suburb): solo con zoom >= 9. Clave con
+     prefijo 'hamlet:' para no chocar con un pin de pueblo del mismo slug. */
+  if(z>=9){
+    for(const id in REGIONES_PINES_HAMLET){
+      const arr=pinesHamletDeRegion(id); if(!arr)continue;
+      const cub=pueblosCubiertos(id);
+      for(const p of arr){
+        if(cub.has(p[0]))continue;
+        const la=p[2],lo=p[3];
+        if(lo<w||lo>e||la<s||la>n)continue;
+        if(cercaDeCiudad(la,lo))continue;
+        cands.push([id+':hamlet',p]);
+      }
     }
   }
   cands.sort((a,b2)=>((b2[1][5]||0)-(a[1][5]||0)));
@@ -4045,14 +4138,50 @@ function guardarCacheGeo(c){try{
   localStorage.setItem(GEO_CACHE_KEY,JSON.stringify(c));
 }catch(e){}}
 let ultimoGeoAt=0;
+/* v10.10 — Búsqueda de pueblos: el buscador sugiere TODAS las ciudades/
+   pueblos del registro (CIUDADES_TODAS, 7.721), no solo las curadas +
+   Colombia + 30 viejas. Índice precalculado una sola vez (nombre
+   normalizado) para no re-normalizar 7.721 nombres por tecla.
+   Relevancia: nombre exacto > empieza por > contiene; desempate por
+   número de lugares. La etiqueta de región/país se traduce en el
+   momento de buscar (claves regUSA/regCanada/regEuropa/regLatam/
+   regColombia), para que cambie con el idioma. Al elegir un pueblo
+   sugerido, irALugar vuela a zoom 13.5 y carga sus comercios
+   (comportamiento existente, intacto). Nominatim sigue solo bajo
+   demanda al pulsar Enter sin coincidencia local. */
+let INDICE_PUEBLOS=null;
+function etiquetaDeRegion(region,esCol){
+  if(region==='usa')return t('regUSA');
+  if(region==='canada')return t('regCanada');
+  if(region==='europa')return t('regEuropa');
+  if(region==='latam')return esCol?t('regColombia'):t('regLatam');
+  return '';
+}
+function indicePueblos(){
+  if(INDICE_PUEBLOS)return INDICE_PUEBLOS;
+  INDICE_PUEBLOS=[];
+  for(const slug in CIUDADES_TODAS){
+    const c=CIUDADES_TODAS[slug];
+    if(!c||!c.nombre||!c.centro)continue;
+    const esCol=(slug==='ibague')||(typeof CIUDADES_COLOMBIA!=='undefined'&&!!CIUDADES_COLOMBIA[slug]);
+    INDICE_PUEBLOS.push({slug:slug,nombre:c.nombre,norm:normalizar(c.nombre),lat:c.centro[0],lng:c.centro[1],region:c._region,esCol:esCol,nLugares:(c.lugares||[]).length});
+  }
+  return INDICE_PUEBLOS;
+}
 function buscarCiudadLocal(q){
   const nq=normalizar(q);
   if(!nq||nq.length<2)return [];
-  const ciudades=[{slug:'ibague',nombre:'Ibagué',centro:[4.4389,-75.2322],pais:'Colombia'},{slug:'charlotte-north-carolina',nombre:'Charlotte',centro:[35.2271,-80.8431],pais:'Estados Unidos'}];
-  if(typeof CIUDADES_COLOMBIA!=='undefined')for(const slug in CIUDADES_COLOMBIA){const c=CIUDADES_COLOMBIA[slug];ciudades.push({slug:slug,nombre:c.nombre,centro:c.centro,pais:'Colombia'});}
-  if(typeof CIUDADES_USA!=='undefined')for(const slug in CIUDADES_USA){const c=CIUDADES_USA[slug];ciudades.push({slug:slug,nombre:c.nombre,centro:c.centro,pais:'Estados Unidos'});}
-  return ciudades.filter(c=>normalizar(c.nombre).includes(nq)||nq.includes(normalizar(c.nombre))).slice(0,3)
-    .map(c=>({n:c.nombre,full:c.nombre+(c.pais?', '+c.pais:''),lat:c.centro[0],lng:c.centro[1],bb:null,local:true}));
+  const res=[];
+  for(const p of indicePueblos()){
+    let sc=0;
+    if(p.norm===nq)sc=3;
+    else if(p.norm.indexOf(nq)===0)sc=2;
+    else if(p.norm.indexOf(nq)>=0)sc=1;
+    else if(nq.indexOf(p.norm)>=0&&p.norm.length>=3)sc=1;
+    if(sc)res.push({p:p,sc:sc});
+  }
+  res.sort((a,b)=>b.sc-a.sc||b.p.nLugares-a.p.nLugares||(a.p.nombre<b.p.nombre?-1:1));
+  return res.slice(0,5).map(x=>({n:x.p.nombre,full:x.p.nombre+', '+etiquetaDeRegion(x.p.region,x.p.esCol),lat:x.p.lat,lng:x.p.lng,bb:null,local:true}));
 }
 function actualizarCiudadesSugeridas(){
   const q=filtroTxt;
@@ -4091,7 +4220,7 @@ function sugRow(b,d){
   lista=lista.slice(0,8);
   if(document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
   html+=lista.map(({b,p})=>sugRow(b,p.dist)).join('');
-  if(geoPara===q&&geoResultados.length&&lista.length<3){
+  if(geoPara===q&&geoResultados.length&&lista.length<5){
     html+=geoResultados.map((g,i)=>`<div class="sugItem" data-geo="${i}"><span style="flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="#0E7C66"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="3" fill="#fff"/></svg></span><span><span class="nm">${t('irA',{lugar:g.n})}</span><br><span class="cat">${g.full}</span></span></div>`).join('');
   }else if(geoPara===q&&geoPendiente){
     html+=`<div class="sugItem"><span class="cat">${t('buscandoLugar')}</span></div>`;
