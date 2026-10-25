@@ -23,6 +23,16 @@ window.addEventListener('DOMContentLoaded',function(){
 <script src="datos-charlotte.js" onerror="errRecurso('datos-charlotte')"></script>
 <script src="datos-colombia.js" onerror="errRecurso('datos-colombia')"></script>
 <script src="datos-usa.js" onerror="errRecurso('datos-usa')"></script>
+<script src="datos-usa-extra.js" onerror="errRecurso('datos-usa-extra')"></script>
+<script src="datos-usa-noreste.js" onerror="errRecurso('datos-usa-noreste')"></script>
+<script src="datos-usa-sureste.js" onerror="errRecurso('datos-usa-sureste')"></script>
+<script src="datos-usa-medioeste.js" onerror="errRecurso('datos-usa-medioeste')"></script>
+<script src="datos-usa-surcentral.js" onerror="errRecurso('datos-usa-surcentral')"></script>
+<script src="datos-usa-montana.js" onerror="errRecurso('datos-usa-montana')"></script>
+<script src="datos-usa-pacifico.js" onerror="errRecurso('datos-usa-pacifico')"></script>
+<script src="datos-europa.js" onerror="errRecurso('datos-europa')"></script>
+<script src="datos-latam.js" onerror="errRecurso('datos-latam')"></script>
+<script src="datos-canada.js" onerror="errRecurso('datos-canada')"></script>
 <style>
 html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#EFEDE6;overflow:hidden}
 #map{position:absolute;inset:0}
@@ -133,11 +143,29 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .fotoAlerta.sinFoto{background:#f2f2f2;color:#888;display:flex;align-items:center;justify-content:center;min-height:64px;font-weight:700}
 .campoLabel{display:block;font-weight:800;font-size:13px;margin:10px 0 4px}
 .especieBtn.on{background:#C0392B!important;color:#fff!important}
+.especieBtnAd.on{background:#EC4899!important;color:#fff!important}
+.tamBtn.on{background:#EC4899!important;color:#fff!important}
 .avItem{display:flex;gap:8px;padding:6px 0;border-top:1px solid #f0f0f0}
 .avDot{width:8px;height:8px;border-radius:50%;background:#C0392B;margin-top:6px;flex:none}
 .pin2.pinPerdida{animation:pinPop .3s ease,pinPulse 2.4s infinite}
 @keyframes pinPulse{0%,100%{box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 0 0 rgba(192,57,43,.45)}50%{box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 0 12px rgba(192,57,43,0)}}
+/* v10.7 — Premium: pin dorado para negocios destacados. */
+.pin2.gold{background:radial-gradient(circle at 35% 30%,#fff8dc,#f7c948 55%,#b8860b);border-color:#8b6508;box-shadow:0 0 0 3px rgba(247,201,72,.55),0 4px 10px rgba(0,0,0,.35)}
+.pin2.gold svg{color:#7a5c00}
+.chip.gold{background:linear-gradient(135deg,#f7c948,#e6a817);color:#3d2c00;border-color:#b8860b;font-weight:800}
+.badgePremium{background:linear-gradient(135deg,#f7c948,#e6a817);color:#3d2c00;border:1px solid #b8860b;border-radius:10px;padding:1px 7px;font-size:11px;font-weight:800;margin-left:6px;white-space:nowrap}
+/* v10.7 — Adopciones: pin rosa (corazón) con pulso suave. */
+.pin2.pinAdopcion{animation:pinPop .3s ease,pinPulseAd 2.4s infinite}
+@keyframes pinPulseAd{0%,100%{box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 0 0 rgba(236,72,153,.45)}50%{box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 0 12px rgba(236,72,153,0)}}
+/* v10.7 — Aviso de mascotas perdidas cerca (banner). */
+#bannerPerdidas{position:fixed;left:50%;transform:translateX(-50%);top:118px;z-index:40;display:none;align-items:center;gap:8px;background:#fff3f3;border:1.5px solid #c0392b;border-radius:14px;padding:8px 10px;max-width:min(92vw,430px);box-shadow:0 6px 20px rgba(0,0,0,.28);font-size:13px;font-weight:700;color:#7b1f16}
+#bannerPerdidas .bpVer{background:#c0392b;color:#fff;border:none;border-radius:9px;padding:6px 12px;font-weight:800;flex:none}
+#bannerPerdidas .bpX{background:transparent;border:none;font-size:16px;color:#7b1f16;padding:2px 6px;flex:none}
+/* v10.7 — Premium: beneficios y caja de precio. */
+.premBen{display:flex;gap:8px;align-items:center;padding:5px 0;font-size:14px}
+.premPrecioBox{background:#fff8dc;border:1.5px solid #e6a817;border-radius:12px;padding:10px;text-align:center;font-weight:800;margin:10px 0}
 </style></head><body>
+<div id="bannerPerdidas"><span id="bpTxt"></span><button class="bpVer" id="bpVer" data-i18n="avisoVer">Ver</button><button class="bpX" id="bpX" aria-label="Cerrar">✕</button></div>
 <div id="map"></div>
 <div class="topbar">
   <div class="brand"><img src="icono-512.png" alt="Mascotas"><span data-i18n="appTitle">Mascotas cerca de ti</span></div>
@@ -150,6 +178,8 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
     <button class="chip" id="bVisitas" data-i18n="btnVisitas">Mis visitas</button>
     <button class="chip" id="bMascota" data-i18n="btnMascota">Mi mascota</button>
     <button class="chip" id="bPerdidas" data-i18n="btnPerdida">Mascota perdida</button>
+    <button class="chip" id="bAdopciones" data-i18n="btnAdopcion">Adopciones</button>
+    <button class="chip gold" id="bPremium" data-i18n="btnPremium">Hazte premium</button>
     <span id="zonaEstado" class="zonaEstado" style="display:none"></span><select id="selIdioma" class="chip" style="appearance:none;-webkit-appearance:none" aria-label="Idioma"><option value="es">Español</option><option value="en">English</option><option value="pt">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="nl">Nederlands</option><option value="pl">Polski</option></select>
   </div>
 </div>
@@ -162,7 +192,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.5</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.9</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -176,7 +206,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
     <div id="cLogo" class="logoBox"></div>
     <div style="flex:1;min-width:0">
       <h3 id="cNombre" data-i18n="cardCargando">Cargando…</h3>
-      <div><span class="stars" id="cEstrellas"></span> <span class="meta" id="cEstado"></span></div>
+      <div><span class="stars" id="cEstrellas"></span> <span class="meta" id="cEstado"></span><span id="cPremium" class="badgePremium" style="display:none" data-i18n="premBadge">Premium</span></div>
     </div>
     <button id="btnCerrarCard" class="cerrarCard" aria-label="Cerrar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="3" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
   </div>
@@ -258,6 +288,46 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
     </div>
   </div>
 </div>
+<div class="card" id="cardAdopcion" style="display:none">
+  <img id="adFoto" class="fotoAlerta" style="display:none" alt="">
+  <div id="adSinFoto" class="fotoAlerta sinFoto"><span data-i18n="alSinFoto">Sin foto</span></div>
+  <div style="display:flex;gap:11px;align-items:center">
+    <div id="adLogo" class="logoBox" style="background:#EC4899"></div>
+    <div style="flex:1;min-width:0">
+      <h3 id="adNombre"></h3>
+      <div><span class="meta" id="adEstado"></span> · <span class="meta" id="adDist"></span></div>
+      <div><span class="meta" id="adCaduca"></span></div>
+    </div>
+  </div>
+  <p id="adDescTxt" style="margin:8px 0"></p>
+  <div class="meta" id="adMeta"></div>
+  <div class="meta" id="adZona"></div>
+  <div class="btns">
+    <a class="btn wa" id="adWa" style="display:none" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="btn go" id="adLlegar" target="_blank" rel="noopener" data-i18n="btnComoLlegar">Cómo llegar</a>
+    <button class="btn iniciar" id="adLlamar" style="display:none">Llamar</button>
+  </div>
+  <div class="btns">
+    <button class="btn shareBtn" id="adCompartir" data-i18n="btnCompartir">Compartir</button>
+    <button class="btn" id="adReportar" style="background:#888" data-i18n="btnReportar">Reportar</button>
+  </div>
+  <div id="adRepForm" style="display:none;margin-top:10px">
+    <div class="meta" style="font-weight:800" data-i18n="repTitulo">Reportar esta adopción</div>
+    <div class="btns" style="flex-wrap:wrap">
+      <button class="btn repBtnAd" data-motivo="falso" style="background:#888" data-i18n="repFalso">Contenido falso</button>
+      <button class="btn repBtnAd" data-motivo="venta" style="background:#888" data-i18n="repVenta">Es una venta</button>
+      <button class="btn repBtnAd" data-motivo="ofensivo" style="background:#888" data-i18n="repOfensivo">Contenido ofensivo</button>
+      <button class="btn repBtnAd" data-motivo="otro" style="background:#888" data-i18n="repOtro">Otro motivo</button>
+    </div>
+  </div>
+  <div id="adDuenio" style="display:none;margin-top:10px;border-top:1px solid #eee;padding-top:8px">
+    <div class="btns">
+      <button class="btn iniciar" id="adAdoptado" data-i18n="btnAdoptado">Marcar como adoptado</button>
+      <button class="btn" id="adRenovar" style="background:#0E7C66" data-i18n="btnRenovarAd">Renovar 60 días</button>
+      <button class="btn" id="adBorrar" style="background:#C0392B" data-i18n="btnBorrarAdopcion">Borrar adopción</button>
+    </div>
+  </div>
+</div>
 <div class="panel" id="panelPerdidas" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelPerdidas">Mascotas perdidas</h3><button class="chip" id="bCerrarPerdidas" data-i18n="btnCerrar">Cerrar</button></div>
   <button class="btn iniciar" id="bPubPerdida" style="width:100%;margin-top:8px" data-i18n="pubTitulo">Publicar mascota perdida</button>
@@ -266,6 +336,14 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
   <div id="listaPerdidas"></div>
   <div style="font-weight:800;font-size:14px;margin:12px 0 6px" data-i18n="misAlertas">Mis alertas publicadas</div>
   <div id="listaMisAlertas"></div>
+</div>
+<div class="panel" id="panelAdopciones" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelAdopciones">Adopciones</h3><button class="chip" id="bCerrarAdopciones" data-i18n="btnCerrar">Cerrar</button></div>
+  <button class="btn iniciar" id="bPubAdopcion" style="width:100%;margin-top:8px" data-i18n="adPubTitulo">Publicar adopción</button>
+  <div style="font-weight:800;font-size:14px;margin:12px 0 6px" data-i18n="adopCerca">Adopciones cerca de mí</div>
+  <div id="adLista"></div>
+  <div style="font-weight:800;font-size:14px;margin:12px 0 6px" data-i18n="misAdopciones">Mis adopciones publicadas</div>
+  <div id="adMias"></div>
 </div>
 <div class="panel" id="panelPerdidaForm" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="pubTitulo">Publicar mascota perdida</h3><button class="chip" id="bCerrarFormPerdida" data-i18n="btnCerrar">Cerrar</button></div>
@@ -298,6 +376,55 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
   </div>
   <div id="pubNumeroWrap" style="display:none;margin-top:6px"><input id="pubNumero" class="inputTxt" type="tel" data-i18n-ph="pubNumeroPh" placeholder="Número de WhatsApp"></div>
   <div style="margin-top:12px"><button class="btn iniciar" id="bPublicarPerdida" style="width:100%" data-i18n="pubPublicar">Publicar alerta</button></div>
+</div>
+<div class="panel" id="panelAdopcionForm" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="adPubTitulo">Publicar adopción</h3><button class="chip" id="bCerrarFormAdopcion" data-i18n="btnCerrar">Cerrar</button></div>
+  <label class="campoLabel" data-i18n="pubFoto">Foto de la mascota</label>
+  <button class="btn iniciar" id="adFotoBtn" style="padding:11px 18px" data-i18n="pubFotoBtn">Elegir foto</button>
+  <input type="file" id="adFotoInput" accept="image/*" style="display:none">
+  <img id="adFotoPrev" class="fotoAlerta" style="display:none" alt="">
+  <div class="meta" data-i18n="pubFotoAviso">Revisa la foto: que no se vea tu dirección, tu placa ni a otras personas.</div>
+  <label class="campoLabel" data-i18n="pubEspecie">Especie</label>
+  <div style="display:flex;gap:8px">
+    <button class="btn especieBtnAd on" data-especie="perro" data-i18n="pubPerro">Perro</button>
+    <button class="btn especieBtnAd" data-especie="gato" style="background:#888" data-i18n="pubGato">Gato</button>
+    <button class="btn especieBtnAd" data-especie="otro" style="background:#888" data-i18n="pubOtro">Otro</button>
+  </div>
+  <label class="campoLabel" data-i18n="pubNombre">Nombre</label>
+  <input id="adNombreInp" class="inputTxt" type="text" data-i18n-ph="pubNombrePh" placeholder="Nombre de la mascota">
+  <label class="campoLabel" data-i18n="adEdad">Edad</label>
+  <input id="adEdadInp" class="inputTxt" type="text" data-i18n-ph="adEdadPh" placeholder="Ej. 2 años, 6 meses…">
+  <label class="campoLabel" data-i18n="adTamano">Tamaño</label>
+  <div style="display:flex;gap:8px">
+    <button class="btn tamBtn on" data-tam="pequeno" data-i18n="adTamPequeno">Pequeño</button>
+    <button class="btn tamBtn" data-tam="mediano" style="background:#888" data-i18n="adTamMediano">Mediano</button>
+    <button class="btn tamBtn" data-tam="grande" style="background:#888" data-i18n="adTamGrande">Grande</button>
+  </div>
+  <label class="campoLabel" data-i18n="adDesc">Descripción: carácter, salud, vacunas…</label>
+  <textarea id="adDescInp" class="inputTxt" rows="3" data-i18n-ph="adDescPh" placeholder="Ej. Cariñoso, vacunado, le gustan los niños"></textarea>
+  <label class="campoLabel" data-i18n="pubZona">Zona (sin dirección exacta)</label>
+  <input id="adZonaInp" class="inputTxt" type="text">
+  <div class="meta" data-i18n="pubAvisoDireccion">No escribas tu dirección exacta, solo la zona.</div>
+  <label class="campoLabel" data-i18n="pubContacto">Contacto</label>
+  <div style="display:flex;gap:14px;flex-wrap:wrap">
+    <label><input type="radio" name="adContacto" value="whatsapp" checked> <span data-i18n="pubWhatsapp">WhatsApp</span></label>
+    <label><input type="radio" name="adContacto" value="telefono"> <span data-i18n="adTel">Teléfono</span></label>
+  </div>
+  <div style="margin-top:6px"><input id="adNumeroInp" class="inputTxt" type="tel" data-i18n-ph="pubNumeroPh" placeholder="Número de WhatsApp"></div>
+  <label class="campoLabel" data-i18n="adPunto">Punto donde está el animal</label>
+  <div class="meta" data-i18n="adPuntoAyuda">Mueve el mapa para poner el punto donde está el animal (refugio, casa de acogida). No pongas tu dirección.</div>
+  <div style="margin-top:12px"><button class="btn iniciar" id="bPublicarAdopcion" style="width:100%" data-i18n="adPublicar">Publicar adopción</button></div>
+</div>
+<div class="panel" id="panelPremium" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelPremium">Hazte premium</h3><button class="chip" id="bCerrarPremium" data-i18n="btnCerrar">Cerrar</button></div>
+  <p style="font-size:15px;font-weight:800;margin:10px 0 4px" data-i18n="premTitulo">Destaca tu negocio</p>
+  <p style="font-size:13px;margin:4px 0" data-i18n="premDesc">Con Premium tu negocio aparece con pin dorado en el mapa, WhatsApp directo y tus ofertas destacadas. Llega a más dueños de mascotas cerca de ti.</p>
+  <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#e6a817"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg><span data-i18n="premBenPin">Pin dorado en el mapa</span></div>
+  <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#25d366"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.5 14.1c-.2.6-1.2 1.2-1.7 1.2-.4.1-1 .1-1.6-.1-.4-.1-.9-.3-1.5-.6-2.6-1.1-4.3-3.7-4.4-3.9-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.7.3.2.5.1.7-.1l1-1.2c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.3.1.2.1.6-.1 1.1z"/></svg><span data-i18n="premBenWa">WhatsApp directo con los clientes</span></div>
+  <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#e6a817"><path d="M3 3h7.6L21 13.4 13.4 21 3 10.6V3zm5 4.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg><span data-i18n="premBenOferta">Tus ofertas destacadas</span></div>
+  <div class="premPrecioBox" data-i18n="premPrecio">Primer mes gratis, luego $25 USD/mes</div>
+  <div class="cBtns" style="margin-top:4px"><button class="btn iniciar" id="premInteresa" style="width:100%" data-i18n="premInteresa">Me interesa</button></div>
+  <p class="meta" style="margin-top:8px" data-i18n="premNota">El pago se activa con el equipo de la app. Sin permanencia: cancela cuando quieras.</p>
 </div>
 <div class="panel" id="panelCategorias" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelQueBuscas">¿Qué buscas?</h3><button class="chip" id="bCerrarCategorias" data-i18n="btnCerrar">Cerrar</button></div>
@@ -471,6 +598,9 @@ const I18N={
   "unLugar": "1 lugar",
   "lugaresN": "{n} lugares",
   "tocaCiudad": "toca una ciudad para verlos",
+  "unPueblo": "1 pueblo",
+  "pueblosN": "{n} pueblos",
+  "tocaPueblo": "toca un pueblo para verlo",
   "zonaOk": "{n} lugares en esta zona",
   "zonaVacia": "Sin lugares de animales en esta zona",
   "eventosCerca": "Eventos cerca de ti",
@@ -581,7 +711,49 @@ const I18N={
   "avatar.canela-claro": "Canela",
   "avatar.dalmata-bebe": "Dálmata bebé",
   "avatar.beagle": "Beagle",
-  "avatar.basset": "Basset"
+  "avatar.basset": "Basset",
+  "btnAdopcion": "Adopciones",
+  "panelAdopciones": "Adopciones",
+  "adopCerca": "Adopciones cerca de mí",
+  "misAdopciones": "Mis adopciones publicadas",
+  "misAdopcionesVacias": "No has publicado adopciones todavía.",
+  "sinAdopciones": "No hay animales en adopción por aquí.",
+  "adPubTitulo": "Publicar adopción",
+  "adEdad": "Edad",
+  "adEdadPh": "Ej. 2 años, 6 meses…",
+  "adTamano": "Tamaño",
+  "adTamPequeno": "Pequeño",
+  "adTamMediano": "Mediano",
+  "adTamGrande": "Grande",
+  "adDesc": "Descripción: carácter, salud, vacunas…",
+  "adDescPh": "Ej. Cariñoso, vacunado, le gustan los niños",
+  "adPublicar": "Publicar adopción",
+  "adPublicada": "¡Adopción publicada! Ya se ve en el mapa.",
+  "adTipoAdopcion": "En adopción",
+  "adTipoAdoptado": "Adoptado",
+  "adConfirmAdoptado": "¿Seguro? La adopción dejará de verse.",
+  "adConfirmBorrar": "¿Borrar esta adopción para siempre?",
+  "btnAdoptado": "Marcar como adoptado",
+  "btnBorrarAdopcion": "Borrar adopción",
+  "btnRenovarAd": "Renovar 60 días",
+  "adPunto": "Punto donde está el animal",
+  "adPuntoAyuda": "Mueve el mapa para poner el punto donde está el animal (refugio, casa de acogida). No pongas tu dirección.",
+  "btnPremium": "Hazte premium",
+  "panelPremium": "Hazte premium",
+  "premTitulo": "Destaca tu negocio",
+  "premDesc": "Con Premium tu negocio aparece con pin dorado en el mapa, WhatsApp directo y tus ofertas destacadas. Llega a más dueños de mascotas cerca de ti.",
+  "premBenPin": "Pin dorado en el mapa",
+  "premBenWa": "WhatsApp directo con los clientes",
+  "premBenOferta": "Tus ofertas destacadas",
+  "premPrecio": "Primer mes gratis, luego $25 USD/mes",
+  "premInteresa": "Me interesa",
+  "premBadge": "Premium",
+  "premNota": "El pago se activa con el equipo de la app. Sin permanencia: cancela cuando quieras.",
+  "avisoPerdidas": "Hay {n} mascotas perdidas cerca de ti",
+  "avisoPerdidas1": "Hay 1 mascota perdida cerca de ti",
+  "avisoVer": "Ver",
+  "premWaMsg": "Hola, quiero que mi negocio sea Premium en Mascotas cerca de ti.",
+  "adTel": "Teléfono"
  },
  "en": {
   "appTitle": "Pets Near You",
@@ -713,6 +885,9 @@ const I18N={
   "unLugar": "1 place",
   "lugaresN": "{n} places",
   "tocaCiudad": "tap a city to see them",
+  "unPueblo": "1 town",
+  "pueblosN": "{n} towns",
+  "tocaPueblo": "tap a town to see it",
   "zonaOk": "{n} places in this area",
   "zonaVacia": "No animal places in this area",
   "eventosCerca": "Events near you",
@@ -823,7 +998,49 @@ const I18N={
   "avatar.canela-claro": "Cinnamon",
   "avatar.dalmata-bebe": "Dalmatian puppy",
   "avatar.beagle": "Beagle",
-  "avatar.basset": "Basset hound"
+  "avatar.basset": "Basset hound",
+  "btnAdopcion": "Adoptions",
+  "panelAdopciones": "Adoptions",
+  "adopCerca": "Adoptions near me",
+  "misAdopciones": "My posted adoptions",
+  "misAdopcionesVacias": "You haven't posted adoptions yet.",
+  "sinAdopciones": "No animals for adoption around here.",
+  "adPubTitulo": "Post an adoption",
+  "adEdad": "Age",
+  "adEdadPh": "E.g. 2 years, 6 months…",
+  "adTamano": "Size",
+  "adTamPequeno": "Small",
+  "adTamMediano": "Medium",
+  "adTamGrande": "Large",
+  "adDesc": "Description: temperament, health, vaccines…",
+  "adDescPh": "E.g. Affectionate, vaccinated, likes kids",
+  "adPublicar": "Post adoption",
+  "adPublicada": "Adoption posted! It's now on the map.",
+  "adTipoAdopcion": "For adoption",
+  "adTipoAdoptado": "Adopted",
+  "adConfirmAdoptado": "Sure? The adoption will no longer show.",
+  "adConfirmBorrar": "Delete this adoption forever?",
+  "btnAdoptado": "Mark as adopted",
+  "btnBorrarAdopcion": "Delete adoption",
+  "btnRenovarAd": "Renew for 60 days",
+  "adPunto": "Point where the animal is",
+  "adPuntoAyuda": "Move the map to pin where the animal is (shelter, foster home). Don't use your home address.",
+  "btnPremium": "Go premium",
+  "panelPremium": "Go premium",
+  "premTitulo": "Stand out your business",
+  "premDesc": "With Premium, your business shows a gold pin on the map, direct WhatsApp and featured offers. Reach more pet owners near you.",
+  "premBenPin": "Gold pin on the map",
+  "premBenWa": "Direct WhatsApp with customers",
+  "premBenOferta": "Your featured offers",
+  "premPrecio": "First month free, then $25 USD/month",
+  "premInteresa": "I'm interested",
+  "premBadge": "Premium",
+  "premNota": "Payment is activated with the app team. No commitment: cancel anytime.",
+  "avisoPerdidas": "There are {n} lost pets near you",
+  "avisoPerdidas1": "There is 1 lost pet near you",
+  "avisoVer": "View",
+  "premWaMsg": "Hi, I want my business to go Premium in Pets Near You.",
+  "adTel": "Phone"
  },
  "pt": {
   "appTitle": "Animais perto de você",
@@ -955,6 +1172,9 @@ const I18N={
   "unLugar": "1 lugar",
   "lugaresN": "{n} lugares",
   "tocaCiudad": "toque numa cidade para vê-los",
+  "unPueblo": "1 vila",
+  "pueblosN": "{n} vilas",
+  "tocaPueblo": "toque numa vila para vê-la",
   "zonaOk": "{n} lugares nesta zona",
   "zonaVacia": "Sem lugares de animais nesta zona",
   "eventosCerca": "Eventos perto de você",
@@ -1065,7 +1285,49 @@ const I18N={
   "avatar.canela-claro": "Canela",
   "avatar.dalmata-bebe": "Filhote de dálmata",
   "avatar.beagle": "Beagle",
-  "avatar.basset": "Basset hound"
+  "avatar.basset": "Basset hound",
+  "btnAdopcion": "Adoções",
+  "panelAdopciones": "Adoções",
+  "adopCerca": "Adoções perto de você",
+  "misAdopciones": "Minhas adoções publicadas",
+  "misAdopcionesVacias": "Você ainda não publicou adoções.",
+  "sinAdopciones": "Não há animais para adoção por aqui.",
+  "adPubTitulo": "Publicar adoção",
+  "adEdad": "Idade",
+  "adEdadPh": "Ex. 2 anos, 6 meses…",
+  "adTamano": "Tamanho",
+  "adTamPequeno": "Pequeno",
+  "adTamMediano": "Médio",
+  "adTamGrande": "Grande",
+  "adDesc": "Descrição: temperamento, saúde, vacinas…",
+  "adDescPh": "Ex. Carinhoso, vacinado, gosta de crianças",
+  "adPublicar": "Publicar adoção",
+  "adPublicada": "Adoção publicada! Já está no mapa.",
+  "adTipoAdopcion": "Para adoção",
+  "adTipoAdoptado": "Adotado",
+  "adConfirmAdoptado": "Tem certeza? A adoção deixará de aparecer.",
+  "adConfirmBorrar": "Excluir esta adoção para sempre?",
+  "btnAdoptado": "Marcar como adotado",
+  "btnBorrarAdopcion": "Excluir adoção",
+  "btnRenovarAd": "Renovar por 60 dias",
+  "adPunto": "Ponto onde está o animal",
+  "adPuntoAyuda": "Mova o mapa para marcar onde está o animal (abrigo, lar temporário). Não use seu endereço.",
+  "btnPremium": "Seja premium",
+  "panelPremium": "Seja premium",
+  "premTitulo": "Destaque seu negócio",
+  "premDesc": "Com o Premium, seu negócio aparece com pin dourado no mapa, WhatsApp direto e ofertas em destaque. Alcance mais tutores perto de você.",
+  "premBenPin": "Pin dourado no mapa",
+  "premBenWa": "WhatsApp direto com os clientes",
+  "premBenOferta": "Suas ofertas em destaque",
+  "premPrecio": "Primeiro mês grátis, depois $25 USD/mês",
+  "premInteresa": "Tenho interesse",
+  "premBadge": "Premium",
+  "premNota": "O pagamento é ativado com a equipe do app. Sem fidelidade: cancele quando quiser.",
+  "avisoPerdidas": "Há {n} animais perdidos perto de você",
+  "avisoPerdidas1": "Há 1 animal perdido perto de você",
+  "avisoVer": "Ver",
+  "premWaMsg": "Olá, quero que meu negócio seja Premium no Pets Near You.",
+  "adTel": "Telefone"
  },
  "fr": {
   "appTitle": "Animaux près de chez vous",
@@ -1197,6 +1459,9 @@ const I18N={
   "unLugar": "1 lieu",
   "lugaresN": "{n} lieux",
   "tocaCiudad": "touchez une ville pour les voir",
+  "unPueblo": "1 village",
+  "pueblosN": "{n} villages",
+  "tocaPueblo": "touchez un village pour le voir",
   "zonaOk": "{n} lieux dans cette zone",
   "zonaVacia": "Aucun lieu animalier dans cette zone",
   "eventosCerca": "Événements près de chez vous",
@@ -1307,7 +1572,49 @@ const I18N={
   "avatar.canela-claro": "Cannelle",
   "avatar.dalmata-bebe": "Bébé dalmatien",
   "avatar.beagle": "Beagle",
-  "avatar.basset": "Basset"
+  "avatar.basset": "Basset",
+  "btnAdopcion": "Adoptions",
+  "panelAdopciones": "Adoptions",
+  "adopCerca": "Adoptions près de vous",
+  "misAdopciones": "Mes adoptions publiées",
+  "misAdopcionesVacias": "Vous n'avez pas encore publié d'adoptions.",
+  "sinAdopciones": "Aucun animal à adopter par ici.",
+  "adPubTitulo": "Publier une adoption",
+  "adEdad": "Âge",
+  "adEdadPh": "Ex. 2 ans, 6 mois…",
+  "adTamano": "Taille",
+  "adTamPequeno": "Petit",
+  "adTamMediano": "Moyen",
+  "adTamGrande": "Grand",
+  "adDesc": "Description : caractère, santé, vaccins…",
+  "adDescPh": "Ex. Affectueux, vacciné, aime les enfants",
+  "adPublicar": "Publier l'adoption",
+  "adPublicada": "Adoption publiée ! Elle est sur la carte.",
+  "adTipoAdopcion": "À adopter",
+  "adTipoAdoptado": "Adopté",
+  "adConfirmAdoptado": "Sûr ? L'adoption ne s'affichera plus.",
+  "adConfirmBorrar": "Supprimer cette adoption pour toujours ?",
+  "btnAdoptado": "Marquer comme adopté",
+  "btnBorrarAdopcion": "Supprimer l'adoption",
+  "btnRenovarAd": "Renouveler 60 jours",
+  "adPunto": "Point où se trouve l'animal",
+  "adPuntoAyuda": "Déplacez la carte pour épingler l'endroit où se trouve l'animal (refuge, famille d'accueil). N'utilisez pas votre adresse.",
+  "btnPremium": "Devenir premium",
+  "panelPremium": "Devenir premium",
+  "premTitulo": "Mettez votre commerce en avant",
+  "premDesc": "Avec Premium, votre commerce s'affiche avec une épingle dorée sur la carte, WhatsApp direct et des offres mises en avant. Touchez plus de propriétaires d'animaux près de vous.",
+  "premBenPin": "Épingle dorée sur la carte",
+  "premBenWa": "WhatsApp direct avec les clients",
+  "premBenOferta": "Vos offres mises en avant",
+  "premPrecio": "Premier mois gratuit, puis 25 $ US/mois",
+  "premInteresa": "Ça m'intéresse",
+  "premBadge": "Premium",
+  "premNota": "Le paiement s'active avec l'équipe de l'app. Sans engagement : résiliez quand vous voulez.",
+  "avisoPerdidas": "Il y a {n} animaux perdus près de vous",
+  "avisoPerdidas1": "Il y a 1 animal perdu près de vous",
+  "avisoVer": "Voir",
+  "premWaMsg": "Bonjour, je veux que mon commerce devienne Premium dans Pets Near You.",
+  "adTel": "Téléphone"
  },
  "de": {
   "appTitle": "Haustiere in deiner Nähe",
@@ -1439,6 +1746,9 @@ const I18N={
   "unLugar": "1 Ort",
   "lugaresN": "{n} Orte",
   "tocaCiudad": "tippe auf eine Stadt, um sie zu sehen",
+  "unPueblo": "1 Dorf",
+  "pueblosN": "{n} Dörfer",
+  "tocaPueblo": "tippe auf ein Dorf, um es zu sehen",
   "zonaOk": "{n} Orte in diesem Gebiet",
   "zonaVacia": "Keine Tierorte in diesem Gebiet",
   "eventosCerca": "Veranstaltungen in deiner Nähe",
@@ -1549,7 +1859,49 @@ const I18N={
   "avatar.canela-claro": "Zimt",
   "avatar.dalmata-bebe": "Dalmatinerwelpe",
   "avatar.beagle": "Beagle",
-  "avatar.basset": "Basset"
+  "avatar.basset": "Basset",
+  "btnAdopcion": "Adoptionen",
+  "panelAdopciones": "Adoptionen",
+  "adopCerca": "Adoptionen in meiner Nähe",
+  "misAdopciones": "Meine veröffentlichten Adoptionen",
+  "misAdopcionesVacias": "Du hast noch keine Adoptionen veröffentlicht.",
+  "sinAdopciones": "Keine Tiere zur Adoption in der Nähe.",
+  "adPubTitulo": "Adoption veröffentlichen",
+  "adEdad": "Alter",
+  "adEdadPh": "Z. B. 2 Jahre, 6 Monate…",
+  "adTamano": "Größe",
+  "adTamPequeno": "Klein",
+  "adTamMediano": "Mittel",
+  "adTamGrande": "Groß",
+  "adDesc": "Beschreibung: Charakter, Gesundheit, Impfungen…",
+  "adDescPh": "Z. B. Liebevoll, geimpft, mag Kinder",
+  "adPublicar": "Adoption veröffentlichen",
+  "adPublicada": "Adoption veröffentlicht! Sie ist jetzt auf der Karte.",
+  "adTipoAdopcion": "Zur Adoption",
+  "adTipoAdoptado": "Adoptiert",
+  "adConfirmAdoptado": "Sicher? Die Adoption wird nicht mehr angezeigt.",
+  "adConfirmBorrar": "Diese Adoption endgültig löschen?",
+  "btnAdoptado": "Als adoptiert markieren",
+  "btnBorrarAdopcion": "Adoption löschen",
+  "btnRenovarAd": "60 Tage verlängern",
+  "adPunto": "Punkt, an dem sich das Tier befindet",
+  "adPuntoAyuda": "Verschieben Sie die Karte, um den Ort zu markieren, an dem sich das Tier befindet (Tierheim, Pflegestelle). Verwenden Sie nicht Ihre Adresse.",
+  "btnPremium": "Premium werden",
+  "panelPremium": "Premium werden",
+  "premTitulo": "Heben Sie Ihr Geschäft hervor",
+  "premDesc": "Mit Premium erscheint Ihr Geschäft mit goldenem Pin auf der Karte, direktem WhatsApp und hervorgehobenen Angeboten. Erreichen Sie mehr Tierbesitzer in Ihrer Nähe.",
+  "premBenPin": "Goldener Pin auf der Karte",
+  "premBenWa": "Direktes WhatsApp mit Kunden",
+  "premBenOferta": "Ihre hervorgehobenen Angebote",
+  "premPrecio": "Erster Monat gratis, dann 25 $ USD/Monat",
+  "premInteresa": "Ich bin interessiert",
+  "premBadge": "Premium",
+  "premNota": "Die Zahlung wird mit dem App-Team aktiviert. Keine Bindung: jederzeit kündbar.",
+  "avisoPerdidas": "Es gibt {n} vermisste Tiere in deiner Nähe",
+  "avisoPerdidas1": "Es gibt 1 vermisstes Tier in deiner Nähe",
+  "avisoVer": "Ansehen",
+  "premWaMsg": "Hallo, ich möchte, dass mein Geschäft Premium wird in Pets Near You.",
+  "adTel": "Telefon"
  },
  "it": {
   "appTitle": "Animali vicino a te",
@@ -1681,6 +2033,9 @@ const I18N={
   "unLugar": "1 luogo",
   "lugaresN": "{n} luoghi",
   "tocaCiudad": "tocca una città per vederli",
+  "unPueblo": "1 paese",
+  "pueblosN": "{n} paesi",
+  "tocaPueblo": "tocca un paese per vederlo",
   "zonaOk": "{n} luoghi in questa zona",
   "zonaVacia": "Nessun luogo per animali in questa zona",
   "eventosCerca": "Eventi vicino a te",
@@ -1791,7 +2146,49 @@ const I18N={
   "avatar.canela-claro": "Cannella",
   "avatar.dalmata-bebe": "Cucciolo di dalmata",
   "avatar.beagle": "Beagle",
-  "avatar.basset": "Basset hound"
+  "avatar.basset": "Basset hound",
+  "btnAdopcion": "Adozioni",
+  "panelAdopciones": "Adozioni",
+  "adopCerca": "Adozioni vicino a te",
+  "misAdopciones": "Le mie adozioni pubblicate",
+  "misAdopcionesVacias": "Non hai ancora pubblicato adozioni.",
+  "sinAdopciones": "Nessun animale in adozione da queste parti.",
+  "adPubTitulo": "Pubblica un'adozione",
+  "adEdad": "Età",
+  "adEdadPh": "Es. 2 anni, 6 mesi…",
+  "adTamano": "Taglia",
+  "adTamPequeno": "Piccolo",
+  "adTamMediano": "Medio",
+  "adTamGrande": "Grande",
+  "adDesc": "Descrizione: carattere, salute, vaccini…",
+  "adDescPh": "Es. Affettuoso, vaccinato, ama i bambini",
+  "adPublicar": "Pubblica l'adozione",
+  "adPublicada": "Adozione pubblicata! Ora è sulla mappa.",
+  "adTipoAdopcion": "In adozione",
+  "adTipoAdoptado": "Adottato",
+  "adConfirmAdoptado": "Sicuro? L'adozione non sarà più visibile.",
+  "adConfirmBorrar": "Eliminare questa adozione per sempre?",
+  "btnAdoptado": "Segna come adottato",
+  "btnBorrarAdopcion": "Elimina adozione",
+  "btnRenovarAd": "Rinnova per 60 giorni",
+  "adPunto": "Punto dove si trova l'animale",
+  "adPuntoAyuda": "Sposta la mappa per segnare il punto dove si trova l'animale (rifugio, stallo). Non usare il tuo indirizzo.",
+  "btnPremium": "Diventa premium",
+  "panelPremium": "Diventa premium",
+  "premTitulo": "Fai risaltare la tua attività",
+  "premDesc": "Con Premium la tua attività appare con pin dorato sulla mappa, WhatsApp diretto e offerte in evidenza. Raggiungi più proprietari di animali vicino a te.",
+  "premBenPin": "Pin dorato sulla mappa",
+  "premBenWa": "WhatsApp diretto con i clienti",
+  "premBenOferta": "Le tue offerte in evidenza",
+  "premPrecio": "Primo mese gratis, poi 25 $ USD/mese",
+  "premInteresa": "Mi interessa",
+  "premBadge": "Premium",
+  "premNota": "Il pagamento si attiva con il team dell'app. Nessun vincolo: disdici quando vuoi.",
+  "avisoPerdidas": "Ci sono {n} animali smarriti vicino a te",
+  "avisoPerdidas1": "C'è 1 animale smarrito vicino a te",
+  "avisoVer": "Vedi",
+  "premWaMsg": "Ciao, voglio che la mia attività diventi Premium in Pets Near You.",
+  "adTel": "Telefono"
  },
  "nl": {
   "appTitle": "Huisdieren bij jou in de buurt",
@@ -1923,6 +2320,9 @@ const I18N={
   "unLugar": "1 plek",
   "lugaresN": "{n} plekken",
   "tocaCiudad": "tik op een stad om ze te zien",
+  "unPueblo": "1 dorp",
+  "pueblosN": "{n} dorpen",
+  "tocaPueblo": "tik op een dorp om het te zien",
   "zonaOk": "{n} plekken in dit gebied",
   "zonaVacia": "Geen dierenplekken in dit gebied",
   "eventosCerca": "Evenementen bij jou in de buurt",
@@ -2033,7 +2433,49 @@ const I18N={
   "avatar.canela-claro": "Kaneel",
   "avatar.dalmata-bebe": "Dalmatiërpuppy",
   "avatar.beagle": "Beagle",
-  "avatar.basset": "Basset"
+  "avatar.basset": "Basset",
+  "btnAdopcion": "Adopties",
+  "panelAdopciones": "Adopties",
+  "adopCerca": "Adopties bij jou in de buurt",
+  "misAdopciones": "Mijn geplaatste adopties",
+  "misAdopcionesVacias": "Je hebt nog geen adopties geplaatst.",
+  "sinAdopciones": "Geen dieren ter adoptie hier in de buurt.",
+  "adPubTitulo": "Adoptie plaatsen",
+  "adEdad": "Leeftijd",
+  "adEdadPh": "Bijv. 2 jaar, 6 maanden…",
+  "adTamano": "Grootte",
+  "adTamPequeno": "Klein",
+  "adTamMediano": "Middelgroot",
+  "adTamGrande": "Groot",
+  "adDesc": "Beschrijving: karakter, gezondheid, vaccinaties…",
+  "adDescPh": "Bijv. Lief, gevaccineerd, houdt van kinderen",
+  "adPublicar": "Adoptie plaatsen",
+  "adPublicada": "Adoptie geplaatst! Hij staat nu op de kaart.",
+  "adTipoAdopcion": "Ter adoptie",
+  "adTipoAdoptado": "Geadopteerd",
+  "adConfirmAdoptado": "Zeker? De adoptie wordt niet meer getoond.",
+  "adConfirmBorrar": "Deze adoptie definitief verwijderen?",
+  "btnAdoptado": "Markeren als geadopteerd",
+  "btnBorrarAdopcion": "Adoptie verwijderen",
+  "btnRenovarAd": "Verleng met 60 dagen",
+  "adPunto": "Punt waar het dier is",
+  "adPuntoAyuda": "Verplaats de kaart om aan te geven waar het dier is (asiel, opvanggezin). Gebruik je thuisadres niet.",
+  "btnPremium": "Word premium",
+  "panelPremium": "Word premium",
+  "premTitulo": "Laat je bedrijf opvallen",
+  "premDesc": "Met Premium krijgt je bedrijf een gouden pin op de kaart, directe WhatsApp en uitgelichte aanbiedingen. Bereik meer huisdiereigenaren bij jou in de buurt.",
+  "premBenPin": "Gouden pin op de kaart",
+  "premBenWa": "Directe WhatsApp met klanten",
+  "premBenOferta": "Je uitgelichte aanbiedingen",
+  "premPrecio": "Eerste maand gratis, daarna $25 USD/maand",
+  "premInteresa": "Ik heb interesse",
+  "premBadge": "Premium",
+  "premNota": "Betaling wordt geactiveerd via het app-team. Geen verplichting: annuleer wanneer je wilt.",
+  "avisoPerdidas": "Er zijn {n} vermiste huisdieren bij jou in de buurt",
+  "avisoPerdidas1": "Er is 1 vermist huisdier bij jou in de buurt",
+  "avisoVer": "Bekijk",
+  "premWaMsg": "Hallo, ik wil dat mijn bedrijf Premium wordt in Pets Near You.",
+  "adTel": "Telefoon"
  },
  "pl": {
   "appTitle": "Zwierzaki blisko Ciebie",
@@ -2165,6 +2607,9 @@ const I18N={
   "unLugar": "1 miejsce",
   "lugaresN": "{n} miejsc",
   "tocaCiudad": "dotknij miasto, aby je zobaczyć",
+  "unPueblo": "1 miasteczko",
+  "pueblosN": "{n} miasteczek",
+  "tocaPueblo": "dotknij miasteczka, aby je zobaczyć",
   "zonaOk": "{n} miejsc w tej okolicy",
   "zonaVacia": "Brak miejsc dla zwierząt w tej okolicy",
   "eventosCerca": "Wydarzenia w pobliżu",
@@ -2275,7 +2720,49 @@ const I18N={
   "avatar.canela-claro": "Cynamonowy",
   "avatar.dalmata-bebe": "Szczeniak dalmatyńczyka",
   "avatar.beagle": "Beagle",
-  "avatar.basset": "Basset"
+  "avatar.basset": "Basset",
+  "btnAdopcion": "Adopcje",
+  "panelAdopciones": "Adopcje",
+  "adopCerca": "Adopcje w pobliżu",
+  "misAdopciones": "Moje opublikowane adopcje",
+  "misAdopcionesVacias": "Nie opublikowałeś jeszcze adopcji.",
+  "sinAdopciones": "Brak zwierząt do adopcji w pobliżu.",
+  "adPubTitulo": "Opublikuj adopcję",
+  "adEdad": "Wiek",
+  "adEdadPh": "Np. 2 lata, 6 miesięcy…",
+  "adTamano": "Rozmiar",
+  "adTamPequeno": "Mały",
+  "adTamMediano": "Średni",
+  "adTamGrande": "Duży",
+  "adDesc": "Opis: charakter, zdrowie, szczepienia…",
+  "adDescPh": "Np. Przytulaśny, zaszczepiony, lubi dzieci",
+  "adPublicar": "Opublikuj adopcję",
+  "adPublicada": "Adopcja opublikowana! Jest już na mapie.",
+  "adTipoAdopcion": "Do adopcji",
+  "adTipoAdoptado": "Adoptowany",
+  "adConfirmAdoptado": "Na pewno? Adopcja przestanie być widoczna.",
+  "adConfirmBorrar": "Usunąć tę adopcję na zawsze?",
+  "btnAdoptado": "Oznacz jako adoptowane",
+  "btnBorrarAdopcion": "Usuń adopcję",
+  "btnRenovarAd": "Odnów na 60 dni",
+  "adPunto": "Punkt, w którym znajduje się zwierzę",
+  "adPuntoAyuda": "Przesuń mapę, aby zaznaczyć miejsce, w którym znajduje się zwierzę (schronisko, dom tymczasowy). Nie podawaj swojego adresu.",
+  "btnPremium": "Zostań premium",
+  "panelPremium": "Zostań premium",
+  "premTitulo": "Wyróżnij swoją firmę",
+  "premDesc": "Z Premium Twoja firma ma złotą pinezkę na mapie, bezpośredni WhatsApp i wyróżnione oferty. Dotrzyj do większej liczby właścicieli zwierząt w pobliżu.",
+  "premBenPin": "Złota pinezka na mapie",
+  "premBenWa": "Bezpośredni WhatsApp z klientami",
+  "premBenOferta": "Twoje wyróżnione oferty",
+  "premPrecio": "Pierwszy miesiąc gratis, potem 25 $ USD/miesiąc",
+  "premInteresa": "Jestem zainteresowany",
+  "premBadge": "Premium",
+  "premNota": "Płatność aktywuje zespół aplikacji. Bez zobowiązań: anuluj, kiedy chcesz.",
+  "avisoPerdidas": "W pobliżu jest {n} zaginionych zwierząt",
+  "avisoPerdidas1": "W pobliżu jest 1 zaginione zwierzę",
+  "avisoVer": "Zobacz",
+  "premWaMsg": "Cześć, chcę, aby moja firma została Premium w Pets Near You.",
+  "adTel": "Telefon"
  }
 };
 let idioma='es';
@@ -2323,6 +2810,7 @@ function setLang(l){if(!IDIOMAS[l])l='es';idioma=l;try{localStorage.setItem('mas
 function refrescarTarjeta(){
   if(!seleccionado)return;
   document.getElementById('cNombre').textContent=seleccionado.n;
+  const cp=document.getElementById('cPremium'); if(cp)cp.style.display=seleccionado.premium?'inline-block':'none';
   document.getElementById('cEstado').innerHTML=textoEstado(seleccionado);
   document.getElementById('cDir').textContent=textoDir(seleccionado);
   actualizarVisitasInfo();
@@ -2341,7 +2829,9 @@ function applyLang(){
   if(document.getElementById('panelLista').style.display==='block')renderLista();
   if(document.getElementById('panelVisitas').style.display==='block')renderVisitas();
   if(document.getElementById('panelPerdidas').style.display==='block')renderPanelPerdidas();
+  if(document.getElementById('panelAdopciones').style.display==='block')renderPanelAdopciones();
   if(typeof alertaSel!=='undefined'&&alertaSel)renderAlertaCard(alertaSel);
+  if(typeof adopcionSel!=='undefined'&&adopcionSel)renderAdopcionCard(adopcionSel);
   mostrarBotonesViaje();
   refrescarTarjeta();
   if(document.getElementById('sug').style.display==='block')renderSug();
@@ -2375,7 +2865,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.5':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.5';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.9':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.9';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -2605,19 +3095,126 @@ NEGOCIOS_CHARLOTTE.forEach(b=>b.tz='America/New_York');
 const NEGOCIOS=[...NEGOCIOS_IBAGUE,...NEGOCIOS_CHARLOTTE];
 
 /* ---------- v10.2: 50 ciudades pre-cargadas (datos reales de OpenStreetMap) ----------
+   v10.6: +29 ciudades USA extra (datos-usa-extra.js) = 59 ciudades USA con datos;
+   +26.935 pueblos de EE. UU. como pines (pins-usa.js).
+   v10.8: +6 regionales (noreste, sureste, medioeste, surcentral, montana,
+   pacifico) = ~7.532 pueblos USA con datos (~26.130 lugares); fusión con
+   resolución de colisiones de slug (ver fusionarCiudad).
    Los lugares de cada ciudad viven en datos-colombia.js / datos-usa.js con su
    centro, su tz y su caja (calculada desde los propios lugares, con margen).
    Al acercar el mapa a una ciudad, sus lugares se cargan en memoria SIN llamar
-   a Overpass; Overpass queda solo como respaldo para ciudades no pre-cargadas. */
+   a Overpass; Overpass queda solo como respaldo para ciudades no pre-cargadas.
+   v10.9: +149 ciudades (Europa 56, LatAm 62, Canadá 31) = 7.721 ciudades /
+   41.648 lugares; +530.030 pines mundiales con carga perezosa por región. */
 const CIUDADES_TODAS={};
-if(typeof CIUDADES_COLOMBIA!=='undefined')Object.assign(CIUDADES_TODAS,CIUDADES_COLOMBIA);
-if(typeof CIUDADES_USA!=='undefined')Object.assign(CIUDADES_TODAS,CIUDADES_USA);
+
+/* ---------- v10.8 — Fusión de datos USA con resolución de colisiones ----------
+   Los 6 regionales usan el slug EXACTO de pins-usa.js; los viejos
+   datos-usa.js / datos-usa-extra.js usan slugs sin desambiguar, así que 40
+   slugs colisionan. Se fusiona en este orden: regionales PRIMERO (slugs
+   correctos), luego los viejos. Misma ciudad (centros <0.06°, ~6 km, así
+   Kansas City MO/KS se une como un metro) -> se unen los lugares (dedup
+   por nombre+coords). Distinta ciudad con el mismo slug -> el ENTRANTE se
+   re-clavea a su pin más cercano (ej. viejo "austin" Austin TX pasa a
+   "austin-texas", donde se une con el regional). */
+/* ---------- v10.9 — Remaps estáticos + regiones mundiales ----------
+   Los pines (PINS_*) ya NO se cargan al arrancar (carga perezosa, ver
+   REGIONES_PINES): la fusión ya NO puede usar _pinMasCercano sobre PINS_USA.
+   Las colisiones se resuelven con la tabla REMAP_FUSION, calculada en el
+   build (sim-fusion-v109.js, verificada contra el dump v10.8: 0 errores).
+   - Viejos: austin→austin-texas, jacksonville→jacksonville-florida,
+     columbus→columbus-ohio, memphis→memphis-tennessee, el-paso→el-paso-texas,
+     cleveland→cleveland-ohio, greensboro→greensboro-north-carolina.
+   - ARREGLO v10.9: "bogota" era Bogota NJ (Noreste) y Bogotá CO se re-claveaba
+     a "marathon" (el pin USA más cercano a Bogotá, a 21°): ahora Bogota NJ es
+     "bogota-new-jersey" y Bogotá CO conserva "bogota"; Marathon FL recupera su pin.
+   - Nuevos (12 colisiones mismo slug, distinta ciudad): la ciudad nueva toma
+     sufijo de país (valencia-espana, manchester-inglaterra, birmingham-inglaterra,
+     dublin-irlanda, rotterdam-paises-bajos, la-plata-argentina, valparaiso-chile,
+     santa-cruz-bolivia, nassau-bahamas, vancouver-canada, ottawa-canada,
+     windsor-canada); además fortaleza→fortaleza-br (el pin de Fortaleza CE;
+     "fortaleza" sin sufijo es otra Fortaleza en Brasil). Verificado: 0 colisiones
+     restantes; totales 7.721 ciudades / 41.648 lugares.
+   Cada ciudad queda etiquetada con _region ('usa'|'latam'|'europa'|'canada'):
+   los pines de pueblo se deducen por región (ver pueblosCubiertos). */
+const REMAP_FUSION={
+ "CIUDADES_USA": {
+  "austin": "austin-texas",
+  "jacksonville": "jacksonville-florida",
+  "columbus": "columbus-ohio"
+ },
+ "CIUDADES_USA_EXTRA": {
+  "memphis": "memphis-tennessee",
+  "el-paso": "el-paso-texas",
+  "cleveland": "cleveland-ohio",
+  "greensboro": "greensboro-north-carolina"
+ },
+ "CIUDADES_USA_NORESTE": {
+  "bogota": "bogota-new-jersey"
+ },
+ "CIUDADES_EUROPA": {
+  "valencia": "valencia-espana",
+  "manchester": "manchester-inglaterra",
+  "birmingham": "birmingham-inglaterra",
+  "dublin": "dublin-irlanda",
+  "rotterdam": "rotterdam-paises-bajos"
+ },
+ "CIUDADES_LATAM": {
+  "la-plata": "la-plata-argentina",
+  "valparaiso": "valparaiso-chile",
+  "santa-cruz": "santa-cruz-bolivia",
+  "nassau": "nassau-bahamas",
+  "fortaleza": "fortaleza-br"
+ },
+ "CIUDADES_CANADA": {
+  "vancouver": "vancouver-canada",
+  "ottawa": "ottawa-canada",
+  "windsor": "windsor-canada"
+ }
+};
+function _mismaCiudad(a,b){return Math.abs(a.centro[0]-b.centro[0])<0.06&&Math.abs(a.centro[1]-b.centro[1])<0.06;}
+function _unirLugares(dst,src2){
+  const seen=new Set(dst.lugares.map(l=>l.n+'|'+(+l.lat).toFixed(5)+'|'+(+l.lng).toFixed(5)));
+  for(const l of src2.lugares){
+    const k=l.n+'|'+(+l.lat).toFixed(5)+'|'+(+l.lng).toFixed(5);
+    if(!seen.has(k)){dst.lugares.push(l);seen.add(k);}
+  }
+}
+function fusionarCiudad(slug,entry){
+  const ex=CIUDADES_TODAS[slug];
+  if(!ex){CIUDADES_TODAS[slug]=entry;return;}
+  if(_mismaCiudad(ex,entry)){_unirLugares(ex,entry);return;}
+  /* v10.9: colisión no prevista por el remap estático (no debería pasar).
+     Se conserva la primera y se avisa: nunca se pisa en silencio. */
+  console.error('v10.9 colisión de slug sin remap:',slug,ex.nombre,'vs',entry.nombre);
+}
+function fusionarDatos(obj,nombre,region){
+  if(!obj)return;
+  const remap=REMAP_FUSION[nombre]||{};
+  for(const slug in obj){const e=obj[slug];e._region=region;fusionarCiudad(remap[slug]||slug,e);}
+}
+
+fusionarDatos(typeof CIUDADES_USA_NORESTE!=='undefined'?CIUDADES_USA_NORESTE:null,'CIUDADES_USA_NORESTE','usa');
+fusionarDatos(typeof CIUDADES_USA_SURESTE!=='undefined'?CIUDADES_USA_SURESTE:null,'CIUDADES_USA_SURESTE','usa');
+fusionarDatos(typeof CIUDADES_USA_MEDIOESTE!=='undefined'?CIUDADES_USA_MEDIOESTE:null,'CIUDADES_USA_MEDIOESTE','usa');
+fusionarDatos(typeof CIUDADES_USA_SURCENTRAL!=='undefined'?CIUDADES_USA_SURCENTRAL:null,'CIUDADES_USA_SURCENTRAL','usa');
+fusionarDatos(typeof CIUDADES_USA_MONTANA!=='undefined'?CIUDADES_USA_MONTANA:null,'CIUDADES_USA_MONTANA','usa');
+fusionarDatos(typeof CIUDADES_USA_PACIFICO!=='undefined'?CIUDADES_USA_PACIFICO:null,'CIUDADES_USA_PACIFICO','usa');
+fusionarDatos(typeof CIUDADES_USA!=='undefined'?CIUDADES_USA:null,'CIUDADES_USA','usa');
+fusionarDatos(typeof CIUDADES_USA_EXTRA!=='undefined'?CIUDADES_USA_EXTRA:null,'CIUDADES_USA_EXTRA','usa');
+fusionarDatos(typeof CIUDADES_COLOMBIA!=='undefined'?CIUDADES_COLOMBIA:null,'CIUDADES_COLOMBIA','latam');
+fusionarDatos(typeof CIUDADES_EUROPA!=='undefined'?CIUDADES_EUROPA:null,'CIUDADES_EUROPA','europa');
+fusionarDatos(typeof CIUDADES_LATAM!=='undefined'?CIUDADES_LATAM:null,'CIUDADES_LATAM','latam');
+fusionarDatos(typeof CIUDADES_CANADA!=='undefined'?CIUDADES_CANADA:null,'CIUDADES_CANADA','canada');
 /* v10.4 — Charlotte e Ibagué son ciudades curadas de la app (datos legados
    cargados al inicio en NEGOCIOS) y no están en los datasets USA/Colombia.
    Se suman aquí para que también tengan su pin de ciudad al alejar;
    cargarCiudad las deduce (ya están en NEGOCIOS) y no duplica nada. */
-if(typeof NEGOCIOS_CHARLOTTE!=='undefined'&&NEGOCIOS_CHARLOTTE.length)CIUDADES_TODAS['charlotte']={nombre:'Charlotte',centro:[35.2271,-80.8431],tz:'America/New_York',lugares:NEGOCIOS_CHARLOTTE};
-if(typeof NEGOCIOS_IBAGUE!=='undefined'&&NEGOCIOS_IBAGUE.length)CIUDADES_TODAS['ibague']={nombre:'Ibagué',centro:[4.4389,-75.2322],tz:'America/Bogota',lugares:NEGOCIOS_IBAGUE};
+/* v10.8 — Charlotte curada se fusiona con el slug correcto de pins-usa.js
+   ("charlotte-north-carolina"; el slug "charlotte" es Charlotte, Iowa).
+   Así se une con los 45 lugares OSM del Sureste en vez de duplicar la ciudad. */
+if(typeof NEGOCIOS_CHARLOTTE!=='undefined'&&NEGOCIOS_CHARLOTTE.length){const _ch={nombre:'Charlotte',centro:[35.2271,-80.8431],tz:'America/New_York',lugares:NEGOCIOS_CHARLOTTE,_region:'usa'};fusionarCiudad('charlotte-north-carolina',_ch);}
+if(typeof NEGOCIOS_IBAGUE!=='undefined'&&NEGOCIOS_IBAGUE.length)CIUDADES_TODAS['ibague']={nombre:'Ibagué',centro:[4.4389,-75.2322],tz:'America/Bogota',lugares:NEGOCIOS_IBAGUE,_region:'latam'};
 const ciudadesCargadas=new Set();
 for(const slug in CIUDADES_TODAS){
   const c=CIUDADES_TODAS[slug]; let laMin=90,laMax=-90,loMin=180,loMax=-180;
@@ -2649,7 +3246,8 @@ function actualizarMLng(){M_LNG=111320*Math.cos((YOU[1]*Math.PI)/180);}
 const marcadores=[];
 function crearPin(b){
   const c=CAT[b.cat];
-  const el=document.createElement('div');el.className='pin2 '+c.cls;
+  /* v10.7 — Premium: el pin es dorado (la categoría se mantiene en el glifo). */
+  const el=document.createElement('div');el.className='pin2 '+(b.premium?'gold':c.cls);
   el.innerHTML=`<span class="in">${glyph(c.g,c.col)}</span>`;
   el.title=b.n;
   const mk=new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat([b.lng,b.lat]).addTo(window.map);
@@ -2676,6 +3274,7 @@ function txtCiudadLugar(nc,nl){
   return cTxt+' · '+lTxt+' · '+t('tocaCiudad');
 }
 function txtConteoLugares(n){return n===1?t('unLugar'):t('lugaresN',{n:n});}
+function txtPueblos(n){return (n===1?t('unPueblo'):t('pueblosN',{n}))+' · '+t('tocaPueblo');}
 function crearPinesCiudad(){
   for(const slug in CIUDADES_TODAS){
     const c=CIUDADES_TODAS[slug];
@@ -2692,23 +3291,186 @@ function crearPinesCiudad(){
 }
 function actualizarPinesCiudad(){
   if(!window.map)return;
+  actualizarPinesPueblo();
   const lejos=window.map.getZoom()<11;
-  marcadoresCiudad.forEach(m=>{m.el.style.display=lejos?'':'none';});
   if(lejos){
+    /* v10.8 — con 7.572 ciudades, mostrar solo las de más lugares dentro
+       del viewport, con tope por zoom (antes se mostraban todas y el DOM
+       colapsaba; con tope fijo 150 a zoom 4 seguían tapando el mapa). */
+    const b=window.map.getBounds();
+    const zc=window.map.getZoom();
+    const topeC=zc<5?15:zc<6?50:zc<8?100:150;
+    const enVista=[];
+    marcadoresCiudad.forEach(m=>{
+      const c=CIUDADES_TODAS[m.slug]; if(!c){m.el.style.display='none';return;}
+      const la=c.centro[0],lo=c.centro[1];
+      if(b&&lo>=b.getWest()&&lo<=b.getEast()&&la>=b.getSouth()&&la<=b.getNorth())enVista.push({m,n:c.lugares.length});
+      else m.el.style.display='none';
+    });
+    enVista.sort((a,b2)=>b2.n-a.n);
+    const top=new Set(enVista.slice(0,topeC).map(x=>x.m));
+    enVista.forEach(x=>{x.m.el.style.display=top.has(x.m)?'':'none';});
     marcadores.forEach(m=>{m.el.style.display='none';});
     marcadoresOSM.forEach(m=>{m.el.style.display='none';});
     marcadoresPerdidas.forEach(m=>{m.el.style.display='none';});
+    marcadoresAdopciones.forEach(m=>{m.el.style.display='none';});
     marcadoresUsuario.forEach(m=>{m.el.style.display='none';});
-    const b=window.map.getBounds();
     let nc=0,nl=0;
     if(b){for(const slug in CIUDADES_TODAS){const c=CIUDADES_TODAS[slug];const la=c.centro[0],lo=c.centro[1];if(lo>=b.getWest()&&lo<=b.getEast()&&la>=b.getSouth()&&la<=b.getNorth()){nc++;nl+=c.lugares.length;}}}
+    const np=marcadoresPueblo.size;
     if(nc>0)mostrarZonaEstado(txtCiudadLugar(nc,nl));
+    else if(np>0)mostrarZonaEstado(txtPueblos(np));
     else mostrarZonaEstado(txtCiudadLugar(TOTAL_CIUDADES,TOTAL_LUGARES));
   }else{
+    marcadoresCiudad.forEach(m=>{m.el.style.display='none';});
     aplicarFiltros();
   }
 }
 crearPinesCiudad();
+/* ---------- v10.6 — Pines de pueblo (EE. UU., 26.935 pueblos) ----------
+   PINS_USA trae todos los pueblos de EE. UU. (city/town/village) con su
+   población. Al alejar (zoom < 11) se muestran los pueblos del viewport,
+   por nivel: solo city con zoom < 6, +town con zoom 6-8, +village con
+   zoom >= 8. Tope de 500 marcadores (los más poblados) para no saturar
+   el DOM. Los pueblos que ya tienen pin de ciudad (CIUDADES_TODAS) no se
+   repiten: deduplicación por slug y por proximidad (<0.02°, ~2 km),
+   precalculada una sola vez. Al tocar un pin de pueblo, la app vuela ahí
+   (zoom 13.5) y carga sus comercios (pre-cargados o vía Overpass). */
+/* ---------- v10.9 — Pines mundiales con CARGA PEREZOSA ----------
+   530.030 pines en 4 archivos (~32,3 MB): NO se cargan al arrancar.
+   Cada archivo se descarga solo la primera vez que el mapa entra en su
+   región con zoom < 11 (inyección dinámica de <script>, una sola vez).
+   Al arrancar (Charlotte, zoom >= 11) no se descarga ningún pin.
+   Cajas aproximadas (se solapan en las fronteras y está bien: si el
+   viewport toca dos regiones, se cargan las dos).
+   Densidad por zoom: <6 solo city; 6-8 city+town; >=9 +village.
+   Tope por zoom (z<5:15, z<6:60, z<8:200, resto 500) para no tapar el mapa.
+   Los pueblos que ya tienen pin de ciudad (CIUDADES_TODAS) no se repiten:
+   deduplicación por slug (por región, con _region) y por proximidad
+   (<0.02°, ~2 km) contra los centros de ciudad, con rejilla espacial
+   (la comparación ingenua pin×ciudad sería 530k×7.7k). Al tocar un pin
+   de pueblo, la app vuela ahí (zoom 13.5) y carga sus comercios
+   (pre-cargados o vía Overpass). */
+const REGIONES_PINES={
+ usa:{archivo:'pins-usa.js',global:'PINS_USA',oeste:-180,sur:15,este:-66,norte:72},
+ canada:{archivo:'pins-canada.js',global:'PINS_CANADA',oeste:-168,sur:41,este:-52,norte:84},
+ europa:{archivo:'pins-europa.js',global:'PINS_EUROPA',oeste:-25,sur:35,este:45,norte:72},
+ latam:{archivo:'pins-latam.js',global:'PINS_LATAM',oeste:-118,sur:-56,este:-34,norte:33}
+};
+const pinesCargados=new Set(), pinesCargando=new Set();
+function pinesDeRegion(id){
+  if(id==='usa')return (typeof PINS_USA!=='undefined')?PINS_USA:null;
+  if(id==='canada')return (typeof PINS_CANADA!=='undefined')?PINS_CANADA:null;
+  if(id==='europa')return (typeof PINS_EUROPA!=='undefined')?PINS_EUROPA:null;
+  if(id==='latam')return (typeof PINS_LATAM!=='undefined')?PINS_LATAM:null;
+  return null;
+}
+function cargarPinesRegion(id){
+  const r=REGIONES_PINES[id];
+  if(!r||pinesCargados.has(id)||pinesCargando.has(id))return;
+  pinesCargando.add(id);
+  const s=document.createElement('script');
+  s.src=r.archivo;
+  s.onload=()=>{pinesCargados.add(id);pinesCargando.delete(id);actualizarPinesPueblo();};
+  s.onerror=()=>{pinesCargando.delete(id);};
+  document.head.appendChild(s);
+}
+function asegurarPinesRegiones(){
+  if(!window.map)return;
+  const z=window.map.getZoom();
+  if(z>=11)return;
+  const b=window.map.getBounds(); if(!b)return;
+  const w=b.getWest(),e=b.getEast(),s=b.getSouth(),n=b.getNorth();
+  for(const id in REGIONES_PINES){
+    const r=REGIONES_PINES[id];
+    if(e<r.oeste||w>r.este||n<r.sur||s>r.norte)continue;
+    cargarPinesRegion(id);
+  }
+}
+/* Rejilla espacial de centros de ciudad (se construye una sola vez):
+   para saber si un pin está a <0.02° de alguna ciudad sin comparar
+   contra las 7.721. Celda 0.1°; se miran las 3×3 vecinas. */
+let rejillaCiudades=null;
+function construirRejillaCiudades(){
+  if(rejillaCiudades)return rejillaCiudades;
+  rejillaCiudades=new Map();
+  for(const s in CIUDADES_TODAS){
+    const c=CIUDADES_TODAS[s]; if(!c.centro)continue;
+    const k=Math.floor(c.centro[0]/0.1)+':'+Math.floor(c.centro[1]/0.1);
+    if(!rejillaCiudades.has(k))rejillaCiudades.set(k,[]);
+    rejillaCiudades.get(k).push(c.centro);
+  }
+  return rejillaCiudades;
+}
+function cercaDeCiudad(lat,lng){
+  const g=construirRejillaCiudades();
+  const cx=Math.floor(lat/0.1), cy=Math.floor(lng/0.1);
+  for(let i=-1;i<=1;i++)for(let j=-1;j<=1;j++){
+    const celdas=g.get((cx+i)+':'+(cy+j)); if(!celdas)continue;
+    for(let k=0;k<celdas.length;k++){
+      if(Math.abs(lat-celdas[k][0])<0.02&&Math.abs(lng-celdas[k][1])<0.02)return true;
+    }
+  }
+  return false;
+}
+const marcadoresPueblo=new Map();
+const cubiertosPorRegion={};
+function pueblosCubiertos(region){
+  if(cubiertosPorRegion[region])return cubiertosPorRegion[region];
+  const cub=new Set();
+  for(const s in CIUDADES_TODAS)if(CIUDADES_TODAS[s]._region===region)cub.add(s);
+  cubiertosPorRegion[region]=cub;
+  return cub;
+}
+function actualizarPinesPueblo(){
+  if(!window.map)return;
+  asegurarPinesRegiones();
+  const z=window.map.getZoom();
+  if(z>=11){
+    marcadoresPueblo.forEach(m=>{m.el.style.display='none';});
+    return;
+  }
+  const b=window.map.getBounds(); if(!b)return;
+  const w=b.getWest(),e=b.getEast(),s=b.getSouth(),n=b.getNorth();
+  const cands=[];
+  for(const id in REGIONES_PINES){
+    const arr=pinesDeRegion(id); if(!arr)continue;
+    const cub=pueblosCubiertos(id);
+    for(const p of arr){
+      if(cub.has(p[0]))continue;
+      const la=p[2],lo=p[3];
+      if(lo<w||lo>e||la<s||la>n)continue;
+      const tipo=p[4];
+      if(z<6&&tipo!=='c')continue;
+      if(z<9&&tipo==='v')continue;
+      if(cercaDeCiudad(la,lo))continue;
+      cands.push([id,p]);
+    }
+  }
+  cands.sort((a,b2)=>((b2[1][5]||0)-(a[1][5]||0)));
+  /* v10.6/v10.8: tope por zoom para que al alejar no se tape el mapa de
+     pines (a zoom 4 los pines son grandes y se solapan: solo las 15
+     ciudades/pueblos más grandes; al acercar sube a 500). */
+  const tope=z<5?15:z<6?60:z<8?200:500;
+  const top=cands.slice(0,tope);
+  const vistos=new Set();
+  for(const [id,p] of top){
+    const key=id+':'+p[0];
+    vistos.add(key);
+    let m=marcadoresPueblo.get(key);
+    if(!m){
+      const el=document.createElement('div');
+      el.className='pinCiudad';
+      el.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="3" fill="#0E7C66"/></svg><span>'+escHtml(p[1])+'</span>';
+      el.title=p[1];
+      const mk=new maplibregl.Marker({element:el,anchor:'center'}).setLngLat([p[3],p[2]]).addTo(window.map);
+      el.addEventListener('click',()=>{irALugar({lng:p[3],lat:p[2]});});
+      m={el,mk}; marcadoresPueblo.set(key,m);
+    }
+    m.el.style.display='';
+  }
+  marcadoresPueblo.forEach((m,key)=>{if(!vistos.has(key)){m.mk.remove();marcadoresPueblo.delete(key);}});
+}
 const youEl=document.createElement('div');youEl.className='you';
 const youMarker=new maplibregl.Marker({element:youEl}).setLngLat(YOU).addTo(window.map);
 
@@ -2830,6 +3592,7 @@ if(navigator.geolocation){
     if(!aceptarFix(p.coords.latitude,p.coords.longitude,p.coords.accuracy))return;
     YOU[0]=p.coords.longitude; YOU[1]=p.coords.latitude; youMarker.setLngLat(YOU);
     actualizarMLng();
+    revisarAvisosCerca();
     if(tripActivo){
       const ult=trackPts[trackPts.length-1];
       if(!ult||Math.hypot((YOU[0]-ult[0])*M_LNG,(YOU[1]-ult[1])*M_LAT)>15){trackPts.push([...YOU]); actualizarTrack();}
@@ -2867,7 +3630,10 @@ function fmtHora(h){if(h==null)return '';const d=new Date();d.setHours(Math.floo
 function normalizarTel(tel){return String(tel||'').replace(/[^0-9]/g,'');}
 function seleccionar(b,volar){
   if(b.cat==='perdida'){seleccionarAlerta(b,volar);return;}
+  /* v10.7 — los animales en adopción van a su propia tarjeta */
+  if(b.tipo==='adopcion'){seleccionarAdopcion(b,volar);return;}
   document.getElementById('cardPerdida').style.display='none';
+  document.getElementById('cardAdopcion').style.display='none';
   if(typeof alertaSel!=='undefined'&&alertaSel){alertaSel=null;mostrarPinPunto(false);}
   if(tripActivo)terminarViaje();
   llegadaEn=null;
@@ -2879,6 +3645,8 @@ function seleccionar(b,volar){
   marcadores.forEach(m=>m.el.classList.toggle('sel',m.b===b));
   if(typeof marcadoresOSM!=='undefined')marcadoresOSM.forEach(m=>m.el.classList.toggle('sel',m.b===b));
   document.getElementById('cNombre').textContent=b.n;
+  /* v10.7 — distintivo dorado Premium en la tarjeta del negocio */
+  document.getElementById('cPremium').style.display=b.premium?'inline-block':'none';
   document.getElementById('cLogo').style.background=CAT[b.cat].col;
   document.getElementById('cLogo').innerHTML=glyph(CAT[b.cat].g,'#fff');
   document.getElementById('cEstrellas').textContent=b.rating?('★'.repeat(Math.round(b.rating))+' '+b.rating.toFixed(1)):'';
@@ -2939,8 +3707,10 @@ function cerrarCapa(){
   const tipo=capaAbierta; capaAbierta=null;
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
-  ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  document.getElementById('cardAdopcion').style.display='none';
+  ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
   if(typeof alertaSel!=='undefined'&&alertaSel){alertaSel=null;mostrarPinPunto(false);}
+  if(typeof adopcionSel!=='undefined'&&adopcionSel){adopcionSel=null;mostrarPinPunto(false);}
   if(tipo==='card')deseleccionar();
   else if(seleccionado)document.getElementById('card').style.display='block';
   actualizarBotonAtras();
@@ -2985,8 +3755,11 @@ function resetEstadoLimpio(){
     if(tripActivo)terminarViaje();
     if(seleccionado)deseleccionar();
     capaAbierta=null;
-    ['panelCategorias','panelLista','panelVisitas','panelMascota'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+    ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
     document.getElementById('card').style.display='none';
+    document.getElementById('cardPerdida').style.display='none';
+    document.getElementById('cardAdopcion').style.display='none';
+    document.getElementById('bannerPerdidas').style.display='none';
     document.getElementById('bannerTurno').style.display='none';
     const bq=document.getElementById('buscador'); if(bq){bq.value='';bq.blur();}
     const sg=document.getElementById('sug'); if(sg)sg.style.display='none';
@@ -3027,6 +3800,7 @@ function aplicarFiltros(){
   marcadores.forEach(m=>{m.el.style.display=(lejos||!ok(m.b))?'none':'';});
   marcadoresOSM.forEach(m=>{m.el.style.display=(lejos||!ok(m.b))?'none':'';});
   marcadoresPerdidas.forEach(m=>{m.el.style.display=(lejos||!ok(m.b))?'none':'';});
+  marcadoresAdopciones.forEach(m=>{m.el.style.display=(lejos||!ok(m.b))?'none':'';});
   marcadoresUsuario.forEach(m=>{m.el.style.display=(lejos||(filtroCat!=='todos'&&filtroCat!=='evento'))?'none':'';});
 }
 
@@ -3040,7 +3814,7 @@ function eventosCercanos(){
   return [...propios,...base].sort((a,b)=>distanciaA(a)-distanciaA(b));
 }
 
-function todosLugares(){return NEGOCIOS.concat(marcadoresOSM.map(m=>m.b)).concat(alertas);}
+function todosLugares(){return NEGOCIOS.concat(marcadoresOSM.map(m=>m.b)).concat(alertas).concat(adopciones);}
 function lugaresEnVista(){
   const b=window.map.getBounds(); if(!b)return [];
   return todosLugares().filter(x=>x.lng>=b.getWest()&&x.lng<=b.getEast()&&x.lat>=b.getSouth()&&x.lat<=b.getNorth());
@@ -3135,13 +3909,18 @@ function renderLista(){
   lista=lista.slice(0,60);
   if(!lista.length){cuerpo.innerHTML=filtroCat==='h24'?'<div class="meta" style="padding:10px 2px">'+t('sin24')+'</div>':'<div class="meta" style="padding:10px 2px">'+t('sinCat')+'</div>';return;}
   cuerpo.innerHTML=lista.map(b=>{
+    if(b.tipo==='adopcion'){
+      const meta=[]; if(b.edad)meta.push(escHtml(b.edad)); if(b.tamano)meta.push(escHtml(tamLabel(b.tamano)));
+      return `<div class="listaRow" data-k="${claveLugar(b)}"><span class="logoBox" style="background:#EC4899;width:48px;height:48px">${glyph('adopcion','#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${escHtml(b.nombre?b.nombre+' · '+especieLabel(b.especie):especieLabel(b.especie))}</span><br><span class="meta">${escHtml(t('adTipoAdopcion'))} · a <b>${fmtDist(distanciaA(b))}</b></span><br><span class="meta">${escHtml(b.zonaTexto||'')}${meta.length?' · '+meta.join(' · '):''}</span></span></div>`;
+    }
     const c=CAT[b.cat];
     const g=b.rating!=null?`<span class="stars">${estrellasTxt(b.rating)}</span> ${b.rating.toFixed(1)} <span style="color:#888">${t('googleParen')}</span>`:'<span style="color:#888">'+t('sinGoogle')+'</span>';
     const badge=b.h24?' <span class="badge24">24/7</span>':'';
     let estado='';
     if(b.h24)estado=' · <b>'+t('abierto')+'</b>';
     else if(b.horas){const ab=abiertoEn(horaDeNegocio(b),b.horas[0],b.horas[1]);estado=ab?' · <b>'+t('abierto')+'</b>':` · <span class="cerrado">${t('cerrado')}</span>`;}
-    return `<div class="listaRow" data-k="${claveLugar(b)}"><span class="logoBox" style="background:${c.col};width:48px;height:48px">${glyph(c.g,'#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${b.n}</span>${badge}<br><span class="meta">${g} · a <b>${fmtDist(distanciaA(b))}</b>${estado}</span><br><span class="meta">${lineaVisitas(b)}</span></span></div>`;
+    const badgePrem=b.premium?' <span class="badgePremium">'+t('premBadge')+'</span>':'';
+    return `<div class="listaRow" data-k="${claveLugar(b)}"><span class="logoBox" style="background:${c.col};width:48px;height:48px">${glyph(c.g,'#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${b.n}</span>${badge}${badgePrem}<br><span class="meta">${g} · a <b>${fmtDist(distanciaA(b))}</b>${estado}</span><br><span class="meta">${lineaVisitas(b)}</span></span></div>`;
   }).join('');
   cuerpo.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
     const b=todosLugares().find(x=>claveLugar(x)===row.dataset.k);
@@ -3155,6 +3934,7 @@ document.getElementById('bCategorias').addEventListener('click',()=>{
   document.getElementById('panelLista').style.display='none';
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
+  document.getElementById('cardAdopcion').style.display='none';
   p.style.display='block';
   fijarCapa('categorias');
 });
@@ -3268,7 +4048,7 @@ let ultimoGeoAt=0;
 function buscarCiudadLocal(q){
   const nq=normalizar(q);
   if(!nq||nq.length<2)return [];
-  const ciudades=[{slug:'ibague',nombre:'Ibagué',centro:[4.4389,-75.2322],pais:'Colombia'},{slug:'charlotte',nombre:'Charlotte',centro:[35.2271,-80.8431],pais:'Estados Unidos'}];
+  const ciudades=[{slug:'ibague',nombre:'Ibagué',centro:[4.4389,-75.2322],pais:'Colombia'},{slug:'charlotte-north-carolina',nombre:'Charlotte',centro:[35.2271,-80.8431],pais:'Estados Unidos'}];
   if(typeof CIUDADES_COLOMBIA!=='undefined')for(const slug in CIUDADES_COLOMBIA){const c=CIUDADES_COLOMBIA[slug];ciudades.push({slug:slug,nombre:c.nombre,centro:c.centro,pais:'Colombia'});}
   if(typeof CIUDADES_USA!=='undefined')for(const slug in CIUDADES_USA){const c=CIUDADES_USA[slug];ciudades.push({slug:slug,nombre:c.nombre,centro:c.centro,pais:'Estados Unidos'});}
   return ciudades.filter(c=>normalizar(c.nombre).includes(nq)||nq.includes(normalizar(c.nombre))).slice(0,3)
@@ -3290,7 +4070,7 @@ async function buscarGeoBajoDemanda(q){
 }
 function sugRow(b,d){
   const c=CAT[b.cat];
-  return `<div class="sugItem" data-k="${claveLugar(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span>${es24h(b)?' <span class="badge24">24/7</span>':''}<br><span class="cat">${catName(b.cat)} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(d)}</span></div>`;
+  return `<div class="sugItem" data-k="${claveLugar(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span>${es24h(b)?' <span class="badge24">24/7</span>':''}${b.premium?' <span class="badgePremium">'+t('premBadge')+'</span>':''}<br><span class="cat">${catName(b.cat)} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(d)}</span></div>`;
 }function renderSug(){
   const box=document.getElementById('sug');
   const q=filtroTxt;
@@ -3658,7 +4438,7 @@ async function cargarZona(forzar){
   }
   zonaCargando=false;
 }
-window.map.on('moveend',()=>{if(tripActivo)return;clearTimeout(zonaTimer);zonaTimer=setTimeout(()=>cargarZona(false),600);cargarCiudadesCercanas();actualizarPinesCiudad();crearPinesEventosUsuario();cargarAlertasZona();});
+window.map.on('moveend',()=>{if(tripActivo)return;clearTimeout(zonaTimer);zonaTimer=setTimeout(()=>cargarZona(false),600);cargarCiudadesCercanas();actualizarPinesCiudad();crearPinesEventosUsuario();cargarAlertasZona();cargarAdopcionesZona();});
 window.map.on('zoomend',()=>actualizarPinesCiudad());
 function mostrarPanel(id){
   const el=document.getElementById(id);
@@ -3673,7 +4453,7 @@ document.getElementById('bMascota').addEventListener('click',()=>mostrarPanel('p
 cargarMascota();
 crearPinesEventosUsuario();
 crearPinesEventos();
-window.map.on('load',()=>{cargarZona(true);cargarAlertasZona();actualizarPinesCiudad();});
+window.map.on('load',()=>{cargarZona(true);cargarAlertasZona();cargarAdopcionesZona();actualizarPinesCiudad();});
 
 /* ---------- La mascota: parte de TU ubicación y te sigue en el viaje ---------- */
 const dogEl=document.createElement('div');
@@ -3927,6 +4707,10 @@ async function fbActualizar(id,patch){
 /* ---------- Modelo de alerta (misma forma que un "lugar" para el mapa) ---------- */
 const alertasLS='mascotas_alertas_local_v1';
 const misAlertasLS='mascotas_mis_alertas_v1';
+/* v10.7 — Adopciones: mismas claves locales que las alertas */
+const adopcionesLS='mascotas_adopciones_local_v1';
+const misAdopcionesLS='mascotas_mis_adopciones_v1';
+const DIAS_ADOPCION=60;
 const DIAS_CADUCIDAD=30;
 function leerAlertasLocal(){try{return JSON.parse(localStorage.getItem(alertasLS))||[];}catch(e){return [];}}
 function guardarAlertasLocal(a){try{localStorage.setItem(alertasLS,JSON.stringify(a));}catch(e){}}
@@ -4061,6 +4845,130 @@ const PerdidasDB={
   }
 };
 
+/* ---------- v10.7 — Adopciones: animales en adopción (no solo negocios) ----------
+   Espejo de PerdidasDB: misma interfaz local/Firebase, colección 'adopciones'.
+   La foto va como miniatura Base64 en el documento (como las alertas), NO en
+   Storage (el plan Spark no lo permite sin pasar a Blaze). Caduca a los 60 días
+   (adoptar tarda más que encontrar una mascota perdida) y se puede renovar. */
+function leerAdopcionesLocal(){try{return JSON.parse(localStorage.getItem(adopcionesLS))||[];}catch(e){return [];}}
+function guardarAdopcionesLocal(a){try{localStorage.setItem(adopcionesLS,JSON.stringify(a));}catch(e){}}
+function leerMisAdopciones(){try{return JSON.parse(localStorage.getItem(misAdopcionesLS))||[];}catch(e){return [];}}
+function guardarMisAdopciones(a){try{localStorage.setItem(misAdopcionesLS,JSON.stringify(a));}catch(e){}}
+async function fbActualizarAdopcion(id,patch){
+  const url=FB.base+'/adopciones/'+id+'?updateMask.fieldPaths='+Object.keys(patch).map(encodeURIComponent).join('&updateMask.fieldPaths=');
+  const r=await fetch(url,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields(patch))});
+  if(!r.ok)throw new Error('fb patch ad '+r.status);
+}
+async function fbIncrementarAdopcion(id,campo,n){
+  const url='https://firestore.googleapis.com/v1/projects/'+FB.projectId+'/databases/(default)/documents:commit';
+  const body={writes:[{transform:{document:FB.base+'/adopciones/'+id,fieldTransforms:[{fieldPath:campo,increment:{integerValue:String(n)}}]}}]};
+  const r=await fetch(url,{method:'POST',headers:fbHeaders(),body:JSON.stringify(body)});
+  if(!r.ok)throw new Error('fb inc ad '+r.status);
+}
+function tamLabel(tm){return tm==='pequeno'?t('adTamPequeno'):tm==='mediano'?t('adTamMediano'):tm==='grande'?t('adTamGrande'):'';}
+function normalizarAdopcion(a){
+  const creadoEn=a.creadoEn||Date.now();
+  return {
+    id:a.id, tipo:'adopcion', especie:a.especie||'otro',
+    nombre:a.nombre||'', edad:a.edad||'', tamano:a.tamano||'',
+    descripcion:a.descripcion||'',
+    fotoUrl:a.fotoUrl||null, fotoRuta:a.fotoRuta||null,
+    lat:+a.lat, lng:+a.lng, zonaTexto:a.zonaTexto||'',
+    geohash:a.geohash||geohashEncode(+a.lat,+a.lng,7),
+    fechaPublicacion:a.fechaPublicacion||creadoEn, creadoEn:creadoEn,
+    expiraEn:a.expiraEn||(creadoEn+DIAS_ADOPCION*864e5),
+    estado:a.estado||'disponible', contactoTipo:a.contactoTipo||'whatsapp', contactoValor:a.contactoValor||'',
+    creadoPor:a.creadoPor||'', reportes:a.reportes||0,
+    renovada:!!a.renovada, idioma:a.idioma||idioma,
+    reportesLista:a.reportesLista||[],
+    /* forma de "lugar": reutiliza buscador, filtros, lista y conteos */
+    n:a.nombre||especieLabel(a.especie||'otro'),
+    cat:'adopcion', dir:a.zonaTexto||'', tel:a.contactoValor||null, horas:null, rating:null, nota:a.descripcion||''
+  };
+}
+const AdopcionesDB={
+  async listar(bounds){
+    const ahora=Date.now();
+    const ok=a=>a.estado==='disponible'&&a.expiraEn>ahora&&a.reportes<3&&a.lng>=bounds.w&&a.lng<=bounds.e&&a.lat>=bounds.s&&a.lat<=bounds.n;
+    if(FB.enabled){
+      const r=await fetch(FB.base+'/adopciones?pageSize=50&orderBy=creadoEn%20desc',{headers:fbHeaders()});
+      if(!r.ok)throw new Error('fb list ad '+r.status);
+      const j=await r.json();
+      return (j.documents||[]).map(fsDocToObj).map(normalizarAdopcion).filter(ok);
+    }
+    return leerAdopcionesLocal().map(normalizarAdopcion).filter(ok).sort((x,y)=>y.creadoEn-x.creadoEn).slice(0,50);
+  },
+  async publicar(d){
+    /* d: {especie,nombre,edad,tamano,descripcion,lat,lng,zonaTexto,
+           contactoTipo,contactoValor,fotoBlob} */
+    if(FB.enabled){
+      let fotoUrl=null, fotoNoCabe=false;
+      if(d.fotoBlob){fotoUrl=await fotoAMiniatura(d.fotoBlob); if(fotoUrl===null)fotoNoCabe=true;}
+      const doc={tipo:'adopcion',especie:d.especie,nombre:d.nombre||'',edad:d.edad||'',tamano:d.tamano||'',
+        descripcion:d.descripcion,fotoUrl:fotoUrl,lat:d.lat,lng:d.lng,zonaTexto:d.zonaTexto||'',
+        geohash:geohashEncode(d.lat,d.lng,7),fechaPublicacion:new Date(),
+        creadoEn:new Date(),expiraEn:new Date(Date.now()+DIAS_ADOPCION*864e5),
+        estado:'disponible',contactoTipo:d.contactoTipo||'whatsapp',contactoValor:d.contactoValor||'',
+        creadoPor:FB.uid,reportes:0,renovada:false,idioma:idioma};
+      const r=await fetch(FB.base+'/adopciones',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
+      if(!r.ok)throw new Error('fb create ad '+r.status);
+      const j=await r.json();
+      const creada=normalizarAdopcion({...doc,id:j.name.split('/').pop(),fechaPublicacion:doc.fechaPublicacion.getTime(),creadoEn:doc.creadoEn.getTime(),expiraEn:doc.expiraEn.getTime()});
+      creada.fotoNoCompartida=fotoNoCabe;
+      return creada;
+    }
+    const ahora=Date.now();
+    let fotoUrl=null;
+    if(d.fotoBlob){fotoUrl=await new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.readAsDataURL(d.fotoBlob);});}
+    const a=normalizarAdopcion({id:'loc-'+ahora.toString(36)+'-'+Math.random().toString(36).slice(2,7),
+      tipo:'adopcion',especie:d.especie,nombre:d.nombre||'',edad:d.edad||'',tamano:d.tamano||'',
+      descripcion:d.descripcion,fotoUrl:fotoUrl,fotoRuta:null,lat:d.lat,lng:d.lng,zonaTexto:d.zonaTexto||'',
+      geohash:geohashEncode(d.lat,d.lng,7),fechaPublicacion:ahora,creadoEn:ahora,
+      expiraEn:ahora+DIAS_ADOPCION*864e5,estado:'disponible',contactoTipo:d.contactoTipo||'whatsapp',
+      contactoValor:d.contactoValor||'',creadoPor:uidAnon(),reportes:0,renovada:false,idioma:idioma});
+    const todas=leerAdopcionesLocal(); todas.unshift(a); guardarAdopcionesLocal(todas);
+    return a;
+  },
+  async reportar(id,motivo){
+    /* 1 reporte por usuario; a los 3 la adopción se oculta sola */
+    if(FB.enabled){
+      const docRef=FB.base+'/adopciones/'+id+'/reportes/'+FB.uid;
+      const ex=await fetch(docRef,{headers:fbHeaders()});
+      if(ex.ok)return null;
+      const r=await fetch(docRef,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields({motivo:motivo,creadoEn:new Date()}))});
+      if(!r.ok)throw new Error('fb rep ad '+r.status);
+      await fbIncrementarAdopcion(id,'reportes',1);
+      return 'ok';
+    }
+    const todas=leerAdopcionesLocal(); const a=todas.find(x=>x.id===id); if(!a)return null;
+    a.reportesLista=a.reportesLista||[];
+    if(a.reportesLista.some(r=>r.uid===uidAnon()))return null;
+    a.reportesLista.push({uid:uidAnon(),motivo:motivo,creadoEn:Date.now()});
+    a.reportes=a.reportesLista.length;
+    guardarAdopcionesLocal(todas); return 'ok';
+  },
+  async marcarAdoptado(id){
+    if(FB.enabled){await fbActualizarAdopcion(id,{estado:'adoptado'});return true;}
+    const todas=leerAdopcionesLocal(); const a=todas.find(x=>x.id===id); if(!a)return false;
+    a.estado='adoptado'; guardarAdopcionesLocal(todas); return true;
+  },
+  async borrar(id){
+    if(FB.enabled){
+      const r=await fetch(FB.base+'/adopciones/'+id,{method:'DELETE',headers:fbHeaders()});
+      if(!r.ok)throw new Error('fb del ad '+r.status);
+      return true;
+    }
+    guardarAdopcionesLocal(leerAdopcionesLocal().filter(x=>x.id!==id)); return true;
+  },
+  async renovar(id){
+    /* solo una vez: +60 días desde hoy */
+    if(FB.enabled){await fbActualizarAdopcion(id,{expiraEn:new Date(Date.now()+DIAS_ADOPCION*864e5),renovada:true});return true;}
+    const todas=leerAdopcionesLocal(); const a=todas.find(x=>x.id===id); if(!a)return false;
+    if(a.renovada)return false;
+    a.expiraEn=Date.now()+DIAS_ADOPCION*864e5; a.renovada=true; guardarAdopcionesLocal(todas); return true;
+  }
+};
+
 /* ---------- Estado y pines en el mapa ---------- */
 let alertas=[];               /* alertas normalizadas en la vista actual */
 let marcadoresPerdidas=[];    /* {b,el,mk} igual que marcadores/marcadoresOSM */
@@ -4079,6 +4987,7 @@ async function cargarAlertasZona(){
   try{
     alertas=await PerdidasDB.listar({w:b.getWest(),s:b.getSouth(),e:b.getEast(),n:b.getNorth()});
     renderPinesPerdidas();
+    revisarAvisosCerca();
     const p=document.getElementById('panelPerdidas');
     if(p&&p.style.display==='block')renderPanelPerdidas();
     if(filtroCat==='perdida'&&document.getElementById('panelLista').style.display==='block')renderLista();
@@ -4088,6 +4997,42 @@ async function cargarAlertasZona(){
   }
   alertasCargando=false;
 }
+/* ---------- v10.7 — Avisos de mascotas perdidas cerca ----------
+   Cuando hay una alerta activa a menos de 5 km del usuario, se muestra un
+   banner descartable ("Hay N mascotas perdidas cerca de ti" + Ver).
+   Sin spam: cada alerta solo dispara el banner UNA vez (avisosMostrados);
+   si el usuario lo descarta, no vuelve a salir por las mismas alertas.
+   Solo reaparece si llega una alerta NUEVA cerca. */
+const RADIO_AVISO_KM=5;
+const avisosMostrados=new Set();
+function posicionarBannerPerdidas(){
+  const tb=document.querySelector('.topbar');
+  const bn=document.getElementById('bannerPerdidas');
+  if(tb&&bn)bn.style.top=(tb.offsetHeight+8)+'px';
+}
+function revisarAvisosCerca(){
+  const bn=document.getElementById('bannerPerdidas');
+  if(!bn||typeof alertas==='undefined')return;
+  const cerca=alertas.filter(a=>distanciaA(a)<=RADIO_AVISO_KM*1000);
+  const nuevas=cerca.filter(a=>!avisosMostrados.has(a.id));
+  if(nuevas.length>0){
+    const n=cerca.length;
+    document.getElementById('bpTxt').textContent=n===1?t('avisoPerdidas1'):t('avisoPerdidas',{n:n});
+    bn.style.display='flex';
+    posicionarBannerPerdidas();
+    nuevas.forEach(a=>avisosMostrados.add(a.id));
+  }else if(cerca.length===0){
+    bn.style.display='none';
+  }
+}
+document.getElementById('bpVer').addEventListener('click',()=>{
+  document.getElementById('bannerPerdidas').style.display='none';
+  abrirPanelPerdidas();
+});
+document.getElementById('bpX').addEventListener('click',()=>{
+  document.getElementById('bannerPerdidas').style.display='none';
+});
+window.addEventListener('resize',posicionarBannerPerdidas);
 function renderPinesPerdidas(){
   marcadoresPerdidas.forEach(m=>{try{m.mk.remove();}catch(e){}});
   marcadoresPerdidas=[];
@@ -4106,6 +5051,51 @@ function quitarPinPerdida(id){
   const i=marcadoresPerdidas.findIndex(m=>m.b.id===id);
   if(i>=0){try{marcadoresPerdidas[i].mk.remove();}catch(e){}marcadoresPerdidas.splice(i,1);}
   alertas=alertas.filter(a=>a.id!==id);
+}
+
+/* ---------- v10.7 — Estado y pines de adopciones ---------- */
+let adopciones=[];            /* adopciones normalizadas en la vista actual */
+let marcadoresAdopciones=[];  /* {b,el,mk} igual que marcadoresPerdidas */
+let adopcionSel=null;
+let adopcionesCargando=false;
+function adopcionesEnVista(){
+  const b=window.map.getBounds(); if(!b)return adopciones;
+  return adopciones.filter(a=>a.lng>=b.getWest()&&a.lng<=b.getEast()&&a.lat>=b.getSouth()&&a.lat<=b.getNorth());
+}
+async function cargarAdopcionesZona(){
+  if(adopcionesCargando||!window.map)return;
+  const b=window.map.getBounds(); if(!b)return;
+  adopcionesCargando=true;
+  try{
+    adopciones=await AdopcionesDB.listar({w:b.getWest(),s:b.getSouth(),e:b.getEast(),n:b.getNorth()});
+    renderPinesAdopciones();
+    const p=document.getElementById('panelAdopciones');
+    if(p&&p.style.display==='block')renderPanelAdopciones();
+    if(filtroCat==='adopcion'&&document.getElementById('panelLista').style.display==='block')renderLista();
+  }catch(e){
+    const p=document.getElementById('panelAdopciones');
+    if(p&&p.style.display==='block')mostrarZonaEstado(t('alErrorCargar'),4000);
+  }
+  adopcionesCargando=false;
+}
+function renderPinesAdopciones(){
+  marcadoresAdopciones.forEach(m=>{try{m.mk.remove();}catch(e){}});
+  marcadoresAdopciones=[];
+  adopciones.forEach(a=>{
+    const el=document.createElement('div');
+    el.className='pin2 pink pinAdopcion';
+    el.innerHTML=`<span class="in">${glyph('adopcion','#EC4899')}</span>`;
+    el.title=a.n;
+    const mk=new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat([a.lng,a.lat]).addTo(window.map);
+    el.addEventListener('click',()=>seleccionarAdopcion(a,false));
+    marcadoresAdopciones.push({b:a,el,mk});
+  });
+  aplicarFiltros();
+}
+function quitarPinAdopcion(id){
+  const i=marcadoresAdopciones.findIndex(m=>m.b.id===id);
+  if(i>=0){try{marcadoresAdopciones[i].mk.remove();}catch(e){}marcadoresAdopciones.splice(i,1);}
+  adopciones=adopciones.filter(a=>a.id!==id);
 }
 
 /* ---------- Marcador del punto (centro del mapa) para publicar/avistar ---------- */
@@ -4174,6 +5164,58 @@ function renderAlertaCard(a){
   if(a.demo)document.getElementById('apDemo').style.display='';else document.getElementById('apDemo').style.display='none';
   renderAvistamientos([]);
 }
+/* ---------- v10.7 — Tarjeta de adopción ---------- */
+function esMiaAd(a){return a.creadoPor&&a.creadoPor===uidAnon()||leerMisAdopciones().includes(a.id);}
+function seleccionarAdopcion(a,volar){
+  if(tripActivo)terminarViaje();
+  llegadaEn=null; seleccionado=null;
+  adopcionSel=a;
+  fijarCapa('adopcion');
+  document.getElementById('panelLista').style.display='none';
+  document.getElementById('panelCategorias').style.display='none';
+  document.getElementById('panelAdopciones').style.display='none';
+  document.getElementById('panelAdopcionForm').style.display='none';
+  document.getElementById('card').style.display='none';
+  document.getElementById('cardPerdida').style.display='none';
+  renderAdopcionCard(a);
+  document.getElementById('cardAdopcion').style.display='block';
+  marcadoresAdopciones.forEach(m=>m.el.classList.toggle('sel',m.b===a));
+  if(volar)window.map.easeTo({center:[a.lng,a.lat],zoom:Math.max(window.map.getZoom(),15)});
+}
+function renderAdopcionCard(a){
+  const foto=document.getElementById('adFoto');
+  if(a.fotoUrl){foto.src=a.fotoUrl;foto.style.display='block';document.getElementById('adSinFoto').style.display='none';}
+  else{foto.style.display='none';document.getElementById('adSinFoto').style.display='block';}
+  document.getElementById('adLogo').innerHTML=glyph('adopcion','#fff');
+  document.getElementById('adNombre').textContent=(a.nombre?a.nombre+' · ':'')+especieLabel(a.especie);
+  document.getElementById('adEstado').textContent=t('adTipoAdopcion');
+  document.getElementById('adDescTxt').textContent=a.descripcion;
+  const meta=[];
+  if(a.edad)meta.push(t('adEdad')+': '+a.edad);
+  if(a.tamano)meta.push(t('adTamano')+': '+tamLabel(a.tamano));
+  document.getElementById('adMeta').textContent=meta.join(' · ');
+  document.getElementById('adZona').textContent=a.zonaTexto?t('alZona',{z:a.zonaTexto}):'';
+  document.getElementById('adDist').textContent='a '+fmtDist(distanciaA(a));
+  document.getElementById('adCaduca').textContent=caducaEnTxt(a.expiraEn);
+  const wa=document.getElementById('adWa');
+  const llamar=document.getElementById('adLlamar');
+  if(a.contactoTipo==='whatsapp'&&a.contactoValor){
+    wa.style.display='';wa.href='https://wa.me/'+String(a.contactoValor).replace(/[^0-9]/g,'');
+    llamar.style.display='none';
+  }else if(a.contactoTipo==='telefono'&&a.contactoValor){
+    wa.style.display='none';
+    const dig=normalizarTel(a.contactoValor);
+    llamar.style.display='';llamar.textContent=t('btnLlamar');
+    llamar.onclick=()=>{location.href='tel:'+(String(a.contactoValor).trim().startsWith('+')?'+':'')+dig;};
+  }else{
+    wa.style.display='none';llamar.style.display='none';
+  }
+  document.getElementById('adLlegar').href='https://www.google.com/maps/dir/?api=1&destination='+a.lat+','+a.lng;
+  const dueno=esMiaAd(a);
+  document.getElementById('adDuenio').style.display=dueno?'':'none';
+  document.getElementById('adRenovar').style.display=dueno&&!a.renovada?'':'none';
+  document.getElementById('adRepForm').style.display='none';
+}
 function renderAvistamientos(list){
   const box=document.getElementById('apAvLista');
   const a=alertaSel; if(!a)return;
@@ -4233,6 +5275,52 @@ function renderPanelPerdidas(){
   }
 }
 
+/* ---------- v10.7 — Panel "Adopciones" (lista + mis adopciones) ---------- */
+function abrirPanelAdopciones(){
+  const p=document.getElementById('panelAdopciones');
+  if(p.style.display==='block'){irAtras();return;}
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopcionForm'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  document.getElementById('card').style.display='none';
+  document.getElementById('cardPerdida').style.display='none';
+  document.getElementById('cardAdopcion').style.display='none';
+  p.style.display='block';
+  fijarCapa('adopciones');
+  renderPanelAdopciones();
+}
+function renderPanelAdopciones(){
+  const box=document.getElementById('adLista');
+  const lista=adopcionesEnVista().slice().sort((a,b)=>distanciaA(a)-distanciaA(b));
+  if(!lista.length){
+    box.innerHTML='<div class="meta" style="padding:10px 2px">'+escHtml(t('sinAdopciones'))+'</div>';
+  }else{
+    box.innerHTML=lista.map(a=>{
+      const meta=[];
+      if(a.edad)meta.push(escHtml(a.edad));
+      if(a.tamano)meta.push(escHtml(tamLabel(a.tamano)));
+      return '<div class="listaRow" data-id="'+escHtml(a.id)+'"><span class="logoBox" style="background:#EC4899;width:48px;height:48px">'+glyph('adopcion','#fff')+'</span><span style="flex:1;min-width:0"><span class="nm">'+escHtml(a.nombre?a.nombre+' · '+especieLabel(a.especie):especieLabel(a.especie))+'</span><br><span class="meta">'+escHtml(t('adTipoAdopcion'))+' · a <b>'+fmtDist(distanciaA(a))+'</b></span><br><span class="meta">'+escHtml(a.zonaTexto||'')+(meta.length?' · '+meta.join(' · '):'')+'</span></span></div>';
+    }).join('');
+    box.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
+      const a=adopciones.find(x=>x.id===row.dataset.id);
+      if(a)seleccionarAdopcion(a,true);
+    }));
+  }
+  const misBox=document.getElementById('adMias');
+  const misIds=leerMisAdopciones();
+  const mias=leerAdopcionesLocal().map(normalizarAdopcion).filter(a=>misIds.includes(a.id));
+  if(FB.enabled){
+    mias.push(...adopciones.filter(a=>a.creadoPor===FB.uid&&!misIds.includes(a.id)));
+  }
+  if(!mias.length){
+    misBox.innerHTML='<div class="meta" style="padding:6px 2px">'+escHtml(t('misAdopcionesVacias'))+'</div>';
+  }else{
+    misBox.innerHTML=mias.map(a=>'<div class="listaRow" data-id="'+escHtml(a.id)+'"><span class="logoBox" style="background:#EC4899;width:48px;height:48px">'+glyph('adopcion','#fff')+'</span><span style="flex:1;min-width:0"><span class="nm">'+escHtml(a.nombre||especieLabel(a.especie))+'</span><br><span class="meta">'+escHtml(a.estado==='adoptado'?t('adTipoAdoptado'):t('adTipoAdopcion'))+' · '+escHtml(caducaEnTxt(a.expiraEn))+'</span></span></div>').join('');
+    misBox.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
+      const a=mias.find(x=>x.id===row.dataset.id);
+      if(a)seleccionarAdopcion(a,true);
+    }));
+  }
+}
+
 /* ---------- Formulario: publicar mascota perdida ---------- */
 let especiePub='perro', fotoPubBlob=null, contactoPub='ninguno';
 function abrirFormPerdida(){
@@ -4287,6 +5375,65 @@ async function publicarPerdida(){
     await cargarAlertasZona();
     const creada=alertas.find(x=>x.id===a.id)||a;
     seleccionarAlerta(creada,false);
+  }catch(e){
+    mostrarZonaEstado(t('pubError'),5000);
+  }
+  btn.disabled=false;
+}
+
+/* ---------- v10.7 — Formulario: publicar adopción ---------- */
+let especieAd='perro', tamAd='pequeno', fotoAdBlob=null, contactoAd='whatsapp';
+function abrirFormAdopcion(){
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelAdopciones'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  document.getElementById('card').style.display='none';
+  document.getElementById('cardPerdida').style.display='none';
+  document.getElementById('cardAdopcion').style.display='none';
+  const f=document.getElementById('panelAdopcionForm');
+  f.style.display='block';
+  fijarCapa('formAdopcion');
+  mostrarPinPunto(true);
+  document.getElementById('adDescInp').value='';
+  document.getElementById('adZonaInp').value='';
+  document.getElementById('adNombreInp').value='';
+  document.getElementById('adEdadInp').value='';
+  document.getElementById('adNumeroInp').value='';
+  document.getElementById('adFotoPrev').style.display='none';
+  document.getElementById('adFotoInput').value='';
+  fotoAdBlob=null;
+}
+function cerrarFormAdopcion(){mostrarPinPunto(false);irAtras();}
+async function publicarAdopcion(){
+  const desc=document.getElementById('adDescInp').value.trim();
+  if(!desc){mostrarZonaEstado(t('pubFaltaDesc'),4000);document.getElementById('adDescInp').focus();return;}
+  const zona=document.getElementById('adZonaInp').value.trim();
+  if(pareceDireccion(desc)||pareceDireccion(zona)){
+    if(!confirm(t('pubConfirmDireccion')))return;
+  }
+  let contactoValor='';
+  if(contactoAd==='whatsapp'||contactoAd==='telefono'){
+    contactoValor=document.getElementById('adNumeroInp').value.trim();
+    if(!contactoValor){document.getElementById('adNumeroInp').style.borderColor='#C0392B';document.getElementById('adNumeroInp').focus();return;}
+  }
+  const btn=document.getElementById('bPublicarAdopcion');
+  btn.disabled=true;
+  try{
+    const c=window.map.getCenter();
+    const a=await AdopcionesDB.publicar({
+      especie:especieAd,
+      nombre:document.getElementById('adNombreInp').value.trim(),
+      edad:document.getElementById('adEdadInp').value.trim(),
+      tamano:tamAd,
+      descripcion:desc, lat:c.lat, lng:c.lng, zonaTexto:zona,
+      contactoTipo:contactoAd, contactoValor:contactoValor,
+      fotoBlob:fotoAdBlob
+    });
+    const mis=leerMisAdopciones(); if(!mis.includes(a.id)){mis.push(a.id);guardarMisAdopciones(mis);}
+    mostrarPinPunto(false);
+    document.getElementById('panelAdopcionForm').style.display='none';
+    mostrarZonaEstado(a.fotoNoCompartida?t('fotoNoCompartida'):t('adPublicada'),6000);
+    await cargarAdopcionesZona();
+    const creada=adopciones.find(x=>x.id===a.id)||a;
+    seleccionarAdopcion(creada,false);
   }catch(e){
     mostrarZonaEstado(t('pubError'),5000);
   }
@@ -4353,12 +5500,109 @@ async function accionDueno(accion){
   }
 }
 
+/* ---------- v10.7 — Reportar abuso / acciones del dueño de una adopción ---------- */
+async function reportarAdopcion(motivo){
+  const a=adopcionSel; if(!a)return;
+  try{
+    await AdopcionesDB.reportar(a.id,motivo);
+    document.getElementById('adRepForm').style.display='none';
+    mostrarZonaEstado(t('repGracias'),4000);
+    await cargarAdopcionesZona();
+    if(!adopciones.some(x=>x.id===a.id)){
+      irAtras();
+      mostrarZonaEstado(t('repOculta'),5000);
+    }
+  }catch(e){mostrarZonaEstado(t('pubError'),4000);}
+}
+async function accionDuenoAdopcion(accion){
+  const a=adopcionSel; if(!a)return;
+  if(accion==='adoptado'){
+    if(!confirm(t('adConfirmAdoptado')))return;
+    await AdopcionesDB.marcarAdoptado(a.id);
+    quitarPinAdopcion(a.id);
+    irAtras();
+    mostrarZonaEstado(t('adTipoAdoptado'),4000);
+  }else if(accion==='borrar'){
+    if(!confirm(t('adConfirmBorrar')))return;
+    await AdopcionesDB.borrar(a.id);
+    const mis=leerMisAdopciones().filter(x=>x!==a.id); guardarMisAdopciones(mis);
+    quitarPinAdopcion(a.id);
+    irAtras();
+  }else if(accion==='renovar'){
+    if(a.renovada){mostrarZonaEstado(t('alYaRenovada'),4000);return;}
+    const dias=Math.max(0,Math.ceil((a.expiraEn-Date.now())/864e5));
+    if(!confirm(t('alRenovarAviso',{d:dias})))return;
+    const ok=await AdopcionesDB.renovar(a.id);
+    if(ok){a.renovada=true;a.expiraEn=Date.now()+DIAS_ADOPCION*864e5;document.getElementById('adCaduca').textContent=caducaEnTxt(a.expiraEn);document.getElementById('adRenovar').style.display='none';mostrarZonaEstado(t('alRenovada'),4000);}
+    else mostrarZonaEstado(t('alYaRenovada'),4000);
+  }
+}
+
 /* ---------- Cableado de botones ---------- */
 document.getElementById('bPerdidas').addEventListener('click',abrirPanelPerdidas);
+/* v10.7 — Premium: panel explicativo (sin cobro; solo visualización). */
+function abrirPanelPremium(){
+  const p=document.getElementById('panelPremium');
+  if(p.style.display==='block'){irAtras();return;}
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  document.getElementById('card').style.display='none';
+  document.getElementById('cardPerdida').style.display='none';
+  document.getElementById('cardAdopcion').style.display='none';
+  p.style.display='block';
+  fijarCapa('premium');
+}
+document.getElementById('bPremium').addEventListener('click',abrirPanelPremium);
+document.getElementById('bCerrarPremium').addEventListener('click',()=>irAtras());
+document.getElementById('premInteresa').addEventListener('click',()=>{
+  window.open('https://wa.me/19804750880?text='+encodeURIComponent(t('premWaMsg')),'_blank');
+});
 document.getElementById('bPubPerdida').addEventListener('click',abrirFormPerdida);
 document.getElementById('bCerrarPerdidas').addEventListener('click',()=>irAtras());
 document.getElementById('bCerrarFormPerdida').addEventListener('click',cerrarFormPerdida);
 document.getElementById('bPublicarPerdida').addEventListener('click',publicarPerdida);
+/* v10.7 — Cableado de Adopciones */
+document.getElementById('bAdopciones').addEventListener('click',abrirPanelAdopciones);
+document.getElementById('bPubAdopcion').addEventListener('click',abrirFormAdopcion);
+document.getElementById('bCerrarAdopciones').addEventListener('click',()=>irAtras());
+document.getElementById('bCerrarFormAdopcion').addEventListener('click',cerrarFormAdopcion);
+document.getElementById('bPublicarAdopcion').addEventListener('click',publicarAdopcion);
+document.getElementById('adFotoBtn').addEventListener('click',()=>document.getElementById('adFotoInput').click());
+document.getElementById('adFotoInput').addEventListener('change',async e=>{
+  const f=e.target.files&&e.target.files[0]; if(!f)return;
+  try{
+    fotoAdBlob=await bajarFoto(f);
+    const prev=document.getElementById('adFotoPrev');
+    prev.src=URL.createObjectURL(fotoAdBlob); prev.style.display='block';
+  }catch(err){fotoAdBlob=null;}
+});
+document.querySelectorAll('.especieBtnAd').forEach(b=>b.addEventListener('click',()=>{
+  especieAd=b.dataset.especie;
+  document.querySelectorAll('.especieBtnAd').forEach(x=>x.classList.toggle('on',x===b));
+}));
+document.querySelectorAll('.tamBtn').forEach(b=>b.addEventListener('click',()=>{
+  tamAd=b.dataset.tam;
+  document.querySelectorAll('.tamBtn').forEach(x=>x.classList.toggle('on',x===b));
+}));
+document.querySelectorAll('input[name="adContacto"]').forEach(r=>r.addEventListener('change',()=>{
+  contactoAd=r.value;
+  document.getElementById('adNumeroInp').style.borderColor='';
+}));
+document.getElementById('adReportar').addEventListener('click',()=>{
+  const f=document.getElementById('adRepForm');
+  const abrir=f.style.display!=='block';
+  f.style.display=abrir?'block':'none';
+});
+document.querySelectorAll('.repBtnAd').forEach(b=>b.addEventListener('click',()=>reportarAdopcion(b.dataset.motivo)));
+document.getElementById('adAdoptado').addEventListener('click',()=>accionDuenoAdopcion('adoptado'));
+document.getElementById('adBorrar').addEventListener('click',()=>accionDuenoAdopcion('borrar'));
+document.getElementById('adRenovar').addEventListener('click',()=>accionDuenoAdopcion('renovar'));
+document.getElementById('adCompartir').addEventListener('click',()=>{
+  const a=adopcionSel; if(!a)return;
+  const url=location.origin+location.pathname+'?adopcion='+encodeURIComponent(a.id);
+  const texto=(a.nombre?a.nombre+' · ':'')+especieLabel(a.especie)+' — '+a.descripcion;
+  if(navigator.share){navigator.share({title:t('panelAdopciones'),text:texto,url:url}).catch(()=>{});}
+  else if(navigator.clipboard){navigator.clipboard.writeText(texto+' '+url).catch(()=>{});}
+});
 document.getElementById('pubFotoBtn').addEventListener('click',()=>document.getElementById('pubFotoInput').click());
 document.getElementById('pubFotoInput').addEventListener('change',async e=>{
   const f=e.target.files&&e.target.files[0]; if(!f)return;
@@ -4406,9 +5650,19 @@ document.getElementById('apCompartir').addEventListener('click',()=>{
 });
 
 /* ---------- Arranque: Firebase en segundo plano + primera carga de alertas ---------- */
-fbInit().then(ok=>{fbListo=ok;if(ok)cargarAlertasZona();});
-if(window.map.loaded())cargarAlertasZona();
-else window.map.on('load',()=>cargarAlertasZona());
+fbInit().then(ok=>{fbListo=ok;if(ok){cargarAlertasZona();cargarAdopcionesZona();}});
+if(window.map.loaded()){cargarAlertasZona();cargarAdopcionesZona();}
+else window.map.on('load',()=>{cargarAlertasZona();cargarAdopcionesZona();});
+/* v10.7 — Enlace profundo ?adopcion=<id> (compartir): abre la adopción cuando cargue */
+(function(){
+  let id=null; try{id=new URLSearchParams(location.search).get('adopcion');}catch(e){}
+  if(!id)return;
+  const iv=setInterval(()=>{
+    const a=adopciones.find(x=>x.id===id);
+    if(a){clearInterval(iv);seleccionarAdopcion(a,true);}
+  },800);
+  setTimeout(()=>clearInterval(iv),15000);
+})();
 /* Enlace profundo ?alerta=<id> (compartir): abre la alerta cuando cargue */
 (function(){
   let id=null; try{id=new URLSearchParams(location.search).get('alerta');}catch(e){}
@@ -4423,6 +5677,7 @@ else window.map.on('load',()=>cargarAlertasZona());
 detectarIdioma();
 document.getElementById('selIdioma').addEventListener('change',e=>setLang(e.target.value));
 applyLang();
+posicionarBannerPerdidas();
 /* v10.3 — H13: service worker mínimo (solo same-origin, network-first con
    fallback a caché). La app ya se puede instalar; sin conexión sirve la última
    versión guardada. Solo en http(s). */
