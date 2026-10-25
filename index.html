@@ -24,13 +24,15 @@ window.addEventListener('DOMContentLoaded',function(){
 <script src="datos-colombia.js" onerror="errRecurso('datos-colombia')"></script>
 <script src="datos-usa.js" onerror="errRecurso('datos-usa')"></script>
 <script src="datos-usa-extra.js" onerror="errRecurso('datos-usa-extra')"></script>
-<script src="pins-usa.js" onerror="errRecurso('pins-usa')"></script>
 <script src="datos-usa-noreste.js" onerror="errRecurso('datos-usa-noreste')"></script>
 <script src="datos-usa-sureste.js" onerror="errRecurso('datos-usa-sureste')"></script>
 <script src="datos-usa-medioeste.js" onerror="errRecurso('datos-usa-medioeste')"></script>
 <script src="datos-usa-surcentral.js" onerror="errRecurso('datos-usa-surcentral')"></script>
 <script src="datos-usa-montana.js" onerror="errRecurso('datos-usa-montana')"></script>
 <script src="datos-usa-pacifico.js" onerror="errRecurso('datos-usa-pacifico')"></script>
+<script src="datos-europa.js" onerror="errRecurso('datos-europa')"></script>
+<script src="datos-latam.js" onerror="errRecurso('datos-latam')"></script>
+<script src="datos-canada.js" onerror="errRecurso('datos-canada')"></script>
 <style>
 html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#EFEDE6;overflow:hidden}
 #map{position:absolute;inset:0}
@@ -190,7 +192,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.8</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.9</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -2863,7 +2865,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.8':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.8';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.9':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.9';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -3101,7 +3103,9 @@ const NEGOCIOS=[...NEGOCIOS_IBAGUE,...NEGOCIOS_CHARLOTTE];
    Los lugares de cada ciudad viven en datos-colombia.js / datos-usa.js con su
    centro, su tz y su caja (calculada desde los propios lugares, con margen).
    Al acercar el mapa a una ciudad, sus lugares se cargan en memoria SIN llamar
-   a Overpass; Overpass queda solo como respaldo para ciudades no pre-cargadas. */
+   a Overpass; Overpass queda solo como respaldo para ciudades no pre-cargadas.
+   v10.9: +149 ciudades (Europa 56, LatAm 62, Canadá 31) = 7.721 ciudades /
+   41.648 lugares; +530.030 pines mundiales con carga perezosa por región. */
 const CIUDADES_TODAS={};
 
 /* ---------- v10.8 — Fusión de datos USA con resolución de colisiones ----------
@@ -3113,13 +3117,62 @@ const CIUDADES_TODAS={};
    por nombre+coords). Distinta ciudad con el mismo slug -> el ENTRANTE se
    re-clavea a su pin más cercano (ej. viejo "austin" Austin TX pasa a
    "austin-texas", donde se une con el regional). */
+/* ---------- v10.9 — Remaps estáticos + regiones mundiales ----------
+   Los pines (PINS_*) ya NO se cargan al arrancar (carga perezosa, ver
+   REGIONES_PINES): la fusión ya NO puede usar _pinMasCercano sobre PINS_USA.
+   Las colisiones se resuelven con la tabla REMAP_FUSION, calculada en el
+   build (sim-fusion-v109.js, verificada contra el dump v10.8: 0 errores).
+   - Viejos: austin→austin-texas, jacksonville→jacksonville-florida,
+     columbus→columbus-ohio, memphis→memphis-tennessee, el-paso→el-paso-texas,
+     cleveland→cleveland-ohio, greensboro→greensboro-north-carolina.
+   - ARREGLO v10.9: "bogota" era Bogota NJ (Noreste) y Bogotá CO se re-claveaba
+     a "marathon" (el pin USA más cercano a Bogotá, a 21°): ahora Bogota NJ es
+     "bogota-new-jersey" y Bogotá CO conserva "bogota"; Marathon FL recupera su pin.
+   - Nuevos (12 colisiones mismo slug, distinta ciudad): la ciudad nueva toma
+     sufijo de país (valencia-espana, manchester-inglaterra, birmingham-inglaterra,
+     dublin-irlanda, rotterdam-paises-bajos, la-plata-argentina, valparaiso-chile,
+     santa-cruz-bolivia, nassau-bahamas, vancouver-canada, ottawa-canada,
+     windsor-canada); además fortaleza→fortaleza-br (el pin de Fortaleza CE;
+     "fortaleza" sin sufijo es otra Fortaleza en Brasil). Verificado: 0 colisiones
+     restantes; totales 7.721 ciudades / 41.648 lugares.
+   Cada ciudad queda etiquetada con _region ('usa'|'latam'|'europa'|'canada'):
+   los pines de pueblo se deducen por región (ver pueblosCubiertos). */
+const REMAP_FUSION={
+ "CIUDADES_USA": {
+  "austin": "austin-texas",
+  "jacksonville": "jacksonville-florida",
+  "columbus": "columbus-ohio"
+ },
+ "CIUDADES_USA_EXTRA": {
+  "memphis": "memphis-tennessee",
+  "el-paso": "el-paso-texas",
+  "cleveland": "cleveland-ohio",
+  "greensboro": "greensboro-north-carolina"
+ },
+ "CIUDADES_USA_NORESTE": {
+  "bogota": "bogota-new-jersey"
+ },
+ "CIUDADES_EUROPA": {
+  "valencia": "valencia-espana",
+  "manchester": "manchester-inglaterra",
+  "birmingham": "birmingham-inglaterra",
+  "dublin": "dublin-irlanda",
+  "rotterdam": "rotterdam-paises-bajos"
+ },
+ "CIUDADES_LATAM": {
+  "la-plata": "la-plata-argentina",
+  "valparaiso": "valparaiso-chile",
+  "santa-cruz": "santa-cruz-bolivia",
+  "nassau": "nassau-bahamas",
+  "fortaleza": "fortaleza-br"
+ },
+ "CIUDADES_CANADA": {
+  "vancouver": "vancouver-canada",
+  "ottawa": "ottawa-canada",
+  "windsor": "windsor-canada"
+ }
+};
 function _mismaCiudad(a,b){return Math.abs(a.centro[0]-b.centro[0])<0.06&&Math.abs(a.centro[1]-b.centro[1])<0.06;}
-function _pinMasCercano(lat,lng){
-  if(typeof PINS_USA==='undefined')return null;
-  let best=null,bd=1e9;
-  for(const p of PINS_USA){const d=(p[2]-lat)*(p[2]-lat)+(p[3]-lng)*(p[3]-lng);if(d<bd){bd=d;best=p;}}
-  return best;
-}
 function _unirLugares(dst,src2){
   const seen=new Set(dst.lugares.map(l=>l.n+'|'+(+l.lat).toFixed(5)+'|'+(+l.lng).toFixed(5)));
   for(const l of src2.lugares){
@@ -3131,25 +3184,28 @@ function fusionarCiudad(slug,entry){
   const ex=CIUDADES_TODAS[slug];
   if(!ex){CIUDADES_TODAS[slug]=entry;return;}
   if(_mismaCiudad(ex,entry)){_unirLugares(ex,entry);return;}
-  const pin=_pinMasCercano(entry.centro[0],entry.centro[1]);
-  const nuevoSlug=pin?pin[0]:slug;
-  if(nuevoSlug===slug){CIUDADES_TODAS[slug]=entry;return;} /* no debería pasar */
-  fusionarCiudad(nuevoSlug,entry);
+  /* v10.9: colisión no prevista por el remap estático (no debería pasar).
+     Se conserva la primera y se avisa: nunca se pisa en silencio. */
+  console.error('v10.9 colisión de slug sin remap:',slug,ex.nombre,'vs',entry.nombre);
 }
-function fusionarDatos(obj){
+function fusionarDatos(obj,nombre,region){
   if(!obj)return;
-  for(const slug in obj)fusionarCiudad(slug,obj[slug]);
+  const remap=REMAP_FUSION[nombre]||{};
+  for(const slug in obj){const e=obj[slug];e._region=region;fusionarCiudad(remap[slug]||slug,e);}
 }
 
-fusionarDatos(typeof CIUDADES_USA_NORESTE!=='undefined'?CIUDADES_USA_NORESTE:null);
-fusionarDatos(typeof CIUDADES_USA_SURESTE!=='undefined'?CIUDADES_USA_SURESTE:null);
-fusionarDatos(typeof CIUDADES_USA_MEDIOESTE!=='undefined'?CIUDADES_USA_MEDIOESTE:null);
-fusionarDatos(typeof CIUDADES_USA_SURCENTRAL!=='undefined'?CIUDADES_USA_SURCENTRAL:null);
-fusionarDatos(typeof CIUDADES_USA_MONTANA!=='undefined'?CIUDADES_USA_MONTANA:null);
-fusionarDatos(typeof CIUDADES_USA_PACIFICO!=='undefined'?CIUDADES_USA_PACIFICO:null);
-fusionarDatos(typeof CIUDADES_USA!=='undefined'?CIUDADES_USA:null);
-fusionarDatos(typeof CIUDADES_USA_EXTRA!=='undefined'?CIUDADES_USA_EXTRA:null);
-fusionarDatos(typeof CIUDADES_COLOMBIA!=='undefined'?CIUDADES_COLOMBIA:null);
+fusionarDatos(typeof CIUDADES_USA_NORESTE!=='undefined'?CIUDADES_USA_NORESTE:null,'CIUDADES_USA_NORESTE','usa');
+fusionarDatos(typeof CIUDADES_USA_SURESTE!=='undefined'?CIUDADES_USA_SURESTE:null,'CIUDADES_USA_SURESTE','usa');
+fusionarDatos(typeof CIUDADES_USA_MEDIOESTE!=='undefined'?CIUDADES_USA_MEDIOESTE:null,'CIUDADES_USA_MEDIOESTE','usa');
+fusionarDatos(typeof CIUDADES_USA_SURCENTRAL!=='undefined'?CIUDADES_USA_SURCENTRAL:null,'CIUDADES_USA_SURCENTRAL','usa');
+fusionarDatos(typeof CIUDADES_USA_MONTANA!=='undefined'?CIUDADES_USA_MONTANA:null,'CIUDADES_USA_MONTANA','usa');
+fusionarDatos(typeof CIUDADES_USA_PACIFICO!=='undefined'?CIUDADES_USA_PACIFICO:null,'CIUDADES_USA_PACIFICO','usa');
+fusionarDatos(typeof CIUDADES_USA!=='undefined'?CIUDADES_USA:null,'CIUDADES_USA','usa');
+fusionarDatos(typeof CIUDADES_USA_EXTRA!=='undefined'?CIUDADES_USA_EXTRA:null,'CIUDADES_USA_EXTRA','usa');
+fusionarDatos(typeof CIUDADES_COLOMBIA!=='undefined'?CIUDADES_COLOMBIA:null,'CIUDADES_COLOMBIA','latam');
+fusionarDatos(typeof CIUDADES_EUROPA!=='undefined'?CIUDADES_EUROPA:null,'CIUDADES_EUROPA','europa');
+fusionarDatos(typeof CIUDADES_LATAM!=='undefined'?CIUDADES_LATAM:null,'CIUDADES_LATAM','latam');
+fusionarDatos(typeof CIUDADES_CANADA!=='undefined'?CIUDADES_CANADA:null,'CIUDADES_CANADA','canada');
 /* v10.4 — Charlotte e Ibagué son ciudades curadas de la app (datos legados
    cargados al inicio en NEGOCIOS) y no están en los datasets USA/Colombia.
    Se suman aquí para que también tengan su pin de ciudad al alejar;
@@ -3157,8 +3213,8 @@ fusionarDatos(typeof CIUDADES_COLOMBIA!=='undefined'?CIUDADES_COLOMBIA:null);
 /* v10.8 — Charlotte curada se fusiona con el slug correcto de pins-usa.js
    ("charlotte-north-carolina"; el slug "charlotte" es Charlotte, Iowa).
    Así se une con los 45 lugares OSM del Sureste en vez de duplicar la ciudad. */
-if(typeof NEGOCIOS_CHARLOTTE!=='undefined'&&NEGOCIOS_CHARLOTTE.length)fusionarCiudad('charlotte-north-carolina',{nombre:'Charlotte',centro:[35.2271,-80.8431],tz:'America/New_York',lugares:NEGOCIOS_CHARLOTTE});
-if(typeof NEGOCIOS_IBAGUE!=='undefined'&&NEGOCIOS_IBAGUE.length)CIUDADES_TODAS['ibague']={nombre:'Ibagué',centro:[4.4389,-75.2322],tz:'America/Bogota',lugares:NEGOCIOS_IBAGUE};
+if(typeof NEGOCIOS_CHARLOTTE!=='undefined'&&NEGOCIOS_CHARLOTTE.length){const _ch={nombre:'Charlotte',centro:[35.2271,-80.8431],tz:'America/New_York',lugares:NEGOCIOS_CHARLOTTE,_region:'usa'};fusionarCiudad('charlotte-north-carolina',_ch);}
+if(typeof NEGOCIOS_IBAGUE!=='undefined'&&NEGOCIOS_IBAGUE.length)CIUDADES_TODAS['ibague']={nombre:'Ibagué',centro:[4.4389,-75.2322],tz:'America/Bogota',lugares:NEGOCIOS_IBAGUE,_region:'latam'};
 const ciudadesCargadas=new Set();
 for(const slug in CIUDADES_TODAS){
   const c=CIUDADES_TODAS[slug]; let laMin=90,laMax=-90,loMin=180,loMax=-180;
@@ -3280,25 +3336,95 @@ crearPinesCiudad();
    repiten: deduplicación por slug y por proximidad (<0.02°, ~2 km),
    precalculada una sola vez. Al tocar un pin de pueblo, la app vuela ahí
    (zoom 13.5) y carga sus comercios (pre-cargados o vía Overpass). */
-const marcadoresPueblo=new Map();
-let pinesPuebloCubiertos=null;
-function pueblosCubiertos(){
-  if(pinesPuebloCubiertos)return pinesPuebloCubiertos;
-  pinesPuebloCubiertos=new Set();
-  if(typeof PINS_USA==='undefined')return pinesPuebloCubiertos;
-  for(const s in CIUDADES_TODAS)pinesPuebloCubiertos.add(s);
-  const centros=[];
-  for(const s in CIUDADES_TODAS){const c=CIUDADES_TODAS[s];if(c.centro)centros.push(c.centro);}
-  for(const p of PINS_USA){
-    if(pinesPuebloCubiertos.has(p[0]))continue;
-    for(let i=0;i<centros.length;i++){
-      if(Math.abs(p[2]-centros[i][0])<0.02&&Math.abs(p[3]-centros[i][1])<0.02){pinesPuebloCubiertos.add(p[0]);break;}
+/* ---------- v10.9 — Pines mundiales con CARGA PEREZOSA ----------
+   530.030 pines en 4 archivos (~32,3 MB): NO se cargan al arrancar.
+   Cada archivo se descarga solo la primera vez que el mapa entra en su
+   región con zoom < 11 (inyección dinámica de <script>, una sola vez).
+   Al arrancar (Charlotte, zoom >= 11) no se descarga ningún pin.
+   Cajas aproximadas (se solapan en las fronteras y está bien: si el
+   viewport toca dos regiones, se cargan las dos).
+   Densidad por zoom: <6 solo city; 6-8 city+town; >=9 +village.
+   Tope por zoom (z<5:15, z<6:60, z<8:200, resto 500) para no tapar el mapa.
+   Los pueblos que ya tienen pin de ciudad (CIUDADES_TODAS) no se repiten:
+   deduplicación por slug (por región, con _region) y por proximidad
+   (<0.02°, ~2 km) contra los centros de ciudad, con rejilla espacial
+   (la comparación ingenua pin×ciudad sería 530k×7.7k). Al tocar un pin
+   de pueblo, la app vuela ahí (zoom 13.5) y carga sus comercios
+   (pre-cargados o vía Overpass). */
+const REGIONES_PINES={
+ usa:{archivo:'pins-usa.js',global:'PINS_USA',oeste:-180,sur:15,este:-66,norte:72},
+ canada:{archivo:'pins-canada.js',global:'PINS_CANADA',oeste:-168,sur:41,este:-52,norte:84},
+ europa:{archivo:'pins-europa.js',global:'PINS_EUROPA',oeste:-25,sur:35,este:45,norte:72},
+ latam:{archivo:'pins-latam.js',global:'PINS_LATAM',oeste:-118,sur:-56,este:-34,norte:33}
+};
+const pinesCargados=new Set(), pinesCargando=new Set();
+function pinesDeRegion(id){
+  if(id==='usa')return (typeof PINS_USA!=='undefined')?PINS_USA:null;
+  if(id==='canada')return (typeof PINS_CANADA!=='undefined')?PINS_CANADA:null;
+  if(id==='europa')return (typeof PINS_EUROPA!=='undefined')?PINS_EUROPA:null;
+  if(id==='latam')return (typeof PINS_LATAM!=='undefined')?PINS_LATAM:null;
+  return null;
+}
+function cargarPinesRegion(id){
+  const r=REGIONES_PINES[id];
+  if(!r||pinesCargados.has(id)||pinesCargando.has(id))return;
+  pinesCargando.add(id);
+  const s=document.createElement('script');
+  s.src=r.archivo;
+  s.onload=()=>{pinesCargados.add(id);pinesCargando.delete(id);actualizarPinesPueblo();};
+  s.onerror=()=>{pinesCargando.delete(id);};
+  document.head.appendChild(s);
+}
+function asegurarPinesRegiones(){
+  if(!window.map)return;
+  const z=window.map.getZoom();
+  if(z>=11)return;
+  const b=window.map.getBounds(); if(!b)return;
+  const w=b.getWest(),e=b.getEast(),s=b.getSouth(),n=b.getNorth();
+  for(const id in REGIONES_PINES){
+    const r=REGIONES_PINES[id];
+    if(e<r.oeste||w>r.este||n<r.sur||s>r.norte)continue;
+    cargarPinesRegion(id);
+  }
+}
+/* Rejilla espacial de centros de ciudad (se construye una sola vez):
+   para saber si un pin está a <0.02° de alguna ciudad sin comparar
+   contra las 7.721. Celda 0.1°; se miran las 3×3 vecinas. */
+let rejillaCiudades=null;
+function construirRejillaCiudades(){
+  if(rejillaCiudades)return rejillaCiudades;
+  rejillaCiudades=new Map();
+  for(const s in CIUDADES_TODAS){
+    const c=CIUDADES_TODAS[s]; if(!c.centro)continue;
+    const k=Math.floor(c.centro[0]/0.1)+':'+Math.floor(c.centro[1]/0.1);
+    if(!rejillaCiudades.has(k))rejillaCiudades.set(k,[]);
+    rejillaCiudades.get(k).push(c.centro);
+  }
+  return rejillaCiudades;
+}
+function cercaDeCiudad(lat,lng){
+  const g=construirRejillaCiudades();
+  const cx=Math.floor(lat/0.1), cy=Math.floor(lng/0.1);
+  for(let i=-1;i<=1;i++)for(let j=-1;j<=1;j++){
+    const celdas=g.get((cx+i)+':'+(cy+j)); if(!celdas)continue;
+    for(let k=0;k<celdas.length;k++){
+      if(Math.abs(lat-celdas[k][0])<0.02&&Math.abs(lng-celdas[k][1])<0.02)return true;
     }
   }
-  return pinesPuebloCubiertos;
+  return false;
+}
+const marcadoresPueblo=new Map();
+const cubiertosPorRegion={};
+function pueblosCubiertos(region){
+  if(cubiertosPorRegion[region])return cubiertosPorRegion[region];
+  const cub=new Set();
+  for(const s in CIUDADES_TODAS)if(CIUDADES_TODAS[s]._region===region)cub.add(s);
+  cubiertosPorRegion[region]=cub;
+  return cub;
 }
 function actualizarPinesPueblo(){
-  if(!window.map||typeof PINS_USA==='undefined')return;
+  if(!window.map)return;
+  asegurarPinesRegiones();
   const z=window.map.getZoom();
   if(z>=11){
     marcadoresPueblo.forEach(m=>{m.el.style.display='none';});
@@ -3306,27 +3432,32 @@ function actualizarPinesPueblo(){
   }
   const b=window.map.getBounds(); if(!b)return;
   const w=b.getWest(),e=b.getEast(),s=b.getSouth(),n=b.getNorth();
-  const cub=pueblosCubiertos();
   const cands=[];
-  for(const p of PINS_USA){
-    if(cub.has(p[0]))continue;
-    const la=p[2],lo=p[3];
-    if(lo<w||lo>e||la<s||la>n)continue;
-    const tipo=p[4];
-    if(z<6&&tipo!=='c')continue;
-    if(z<8&&tipo==='v')continue;
-    cands.push(p);
+  for(const id in REGIONES_PINES){
+    const arr=pinesDeRegion(id); if(!arr)continue;
+    const cub=pueblosCubiertos(id);
+    for(const p of arr){
+      if(cub.has(p[0]))continue;
+      const la=p[2],lo=p[3];
+      if(lo<w||lo>e||la<s||la>n)continue;
+      const tipo=p[4];
+      if(z<6&&tipo!=='c')continue;
+      if(z<9&&tipo==='v')continue;
+      if(cercaDeCiudad(la,lo))continue;
+      cands.push([id,p]);
+    }
   }
-  cands.sort((a,b)=>(b[5]||0)-(a[5]||0));
+  cands.sort((a,b2)=>((b2[1][5]||0)-(a[1][5]||0)));
   /* v10.6/v10.8: tope por zoom para que al alejar no se tape el mapa de
      pines (a zoom 4 los pines son grandes y se solapan: solo las 15
      ciudades/pueblos más grandes; al acercar sube a 500). */
   const tope=z<5?15:z<6?60:z<8?200:500;
   const top=cands.slice(0,tope);
   const vistos=new Set();
-  for(const p of top){
-    vistos.add(p[0]);
-    let m=marcadoresPueblo.get(p[0]);
+  for(const [id,p] of top){
+    const key=id+':'+p[0];
+    vistos.add(key);
+    let m=marcadoresPueblo.get(key);
     if(!m){
       const el=document.createElement('div');
       el.className='pinCiudad';
@@ -3334,11 +3465,11 @@ function actualizarPinesPueblo(){
       el.title=p[1];
       const mk=new maplibregl.Marker({element:el,anchor:'center'}).setLngLat([p[3],p[2]]).addTo(window.map);
       el.addEventListener('click',()=>{irALugar({lng:p[3],lat:p[2]});});
-      m={el,mk}; marcadoresPueblo.set(p[0],m);
+      m={el,mk}; marcadoresPueblo.set(key,m);
     }
     m.el.style.display='';
   }
-  marcadoresPueblo.forEach((m,slug)=>{if(!vistos.has(slug)){m.mk.remove();marcadoresPueblo.delete(slug);}});
+  marcadoresPueblo.forEach((m,key)=>{if(!vistos.has(key)){m.mk.remove();marcadoresPueblo.delete(key);}});
 }
 const youEl=document.createElement('div');youEl.className='you';
 const youMarker=new maplibregl.Marker({element:youEl}).setLngLat(YOU).addTo(window.map);
