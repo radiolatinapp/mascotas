@@ -6,11 +6,23 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icono-192.png">
 <link href="vendor/maplibre-gl.css" rel="stylesheet">
-<script src="vendor/maplibre-gl.js"></script>
-<script src="datos-ibague.js"></script>
-<script src="datos-charlotte.js"></script>
-<script src="datos-colombia.js"></script>
-<script src="datos-usa.js"></script>
+<script>
+/* v10.3 — H9: si un archivo no carga, se avisa en pantalla (antes de que exista i18n). */
+window.__recursosFaltan=[];
+window.errRecurso=function(n){window.__recursosFaltan.push(n);};
+window.addEventListener('DOMContentLoaded',function(){
+  if(!window.__recursosFaltan.length)return;
+  var d=document.createElement('div');
+  d.style.cssText='position:fixed;top:8px;left:10px;right:10px;z-index:9999;background:#B3261E;color:#fff;border-radius:12px;padding:10px 12px;font:700 13px system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)';
+  d.textContent='No se pudo cargar un archivo de la aplicación ('+window.__recursosFaltan.join(', ')+'). Revisa tu conexión y recarga la página.';
+  document.body.appendChild(d);
+});
+</script>
+<script src="vendor/maplibre-gl.js" onerror="errRecurso('maplibre')"></script>
+<script src="datos-ibague.js" onerror="errRecurso('datos-ibague')"></script>
+<script src="datos-charlotte.js" onerror="errRecurso('datos-charlotte')"></script>
+<script src="datos-colombia.js" onerror="errRecurso('datos-colombia')"></script>
+<script src="datos-usa.js" onerror="errRecurso('datos-usa')"></script>
 <style>
 html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#EFEDE6;overflow:hidden}
 #map{position:absolute;inset:0}
@@ -61,6 +73,8 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .pin2.blue{background:radial-gradient(circle at 32% 28%, #93C5FD, #1D4ED8 68%)}
 .pin2.orange{background:radial-gradient(circle at 32% 28%, #FDBA74, #F97316 68%)}
 .pin2.cyan{background:radial-gradient(circle at 32% 28%, #67E8F9, #0891B2 68%)}
+.pin2.lima{background:radial-gradient(circle at 32% 28%, #BEF264, #65A30D 68%)}
+.cerrarCard{flex:none;width:30px;height:30px;border:0;border-radius:50%;background:#EEF2EE;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .panel{position:absolute;left:10px;right:10px;bottom:10px;z-index:7;background:#fff;border-radius:22px;box-shadow:0 12px 32px rgba(0,0,0,.38);padding:14px 15px;max-height:70vh;overflow-y:auto;animation:slideUp .3s ease}
 @keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -136,15 +150,23 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri · OSRM · v10.2</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.3</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
+  <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
+    <div id="pregTexto" style="font-weight:700;font-size:14.5px;color:#14342B"></div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="btn" id="bPregSi" style="background:#0E7C66;color:#fff" data-i18n="pregSi">Sí</button>
+      <button class="btn" id="bPregNo" style="background:#EEF2EE;color:#14342B" data-i18n="pregNo">No</button>
+    </div>
+  </div>
   <div class="ocultarViaje" style="display:flex;gap:11px;align-items:center">
     <div id="cLogo" class="logoBox"></div>
     <div style="flex:1;min-width:0">
       <h3 id="cNombre" data-i18n="cardCargando">Cargando…</h3>
       <div><span class="stars" id="cEstrellas"></span> <span class="meta" id="cEstado"></span></div>
     </div>
+    <button id="btnCerrarCard" class="cerrarCard" aria-label="Cerrar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="3" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
   </div>
   <div class="meta ocultarViaje" id="cDir"></div>
   <div class="meta ocultarViaje" id="cDist"></div>
@@ -357,6 +379,8 @@ const I18N={
   "cat.adopcion": "Adopción de animales",
   "cat.facultad": "Facultad / instituto de veterinaria",
   "cat.resto": "Restaurante pet-friendly",
+  "cat.parque": "Parque para perros",
+  "cat.peluqueria": "Peluquería de mascotas",
   "cat.evento": "Evento de animales",
   "color.original": "Original",
   "color.negro": "Negro",
@@ -394,6 +418,11 @@ const I18N={
   "man.en": " en {calle}",
   "llegaste": "¡Llegaste a {n}!",
   "llegasteEstrella": "¡Llegaste a {n}! +1 estrella por llegar · Has venido {v} {vez}",
+  "pregVisita": "¿Visitaste {n} con tu mascota?",
+  "pregSi": "Sí",
+  "pregNo": "No",
+  "gpsDenegado": "No se pudo usar tu ubicación: la app abrió en Ibagué. Activa el GPS o el permiso de ubicación para ver los lugares cerca de ti.",
+  "errorCarga": "Algo falló en la aplicación. Toca este aviso para cerrarlo y recarga la página si algo no responde.",
   "vez": "vez",
   "veces": "veces",
   "visitaSing": "visita",
@@ -571,6 +600,8 @@ const I18N={
   "cat.adopcion": "Animal adoption",
   "cat.facultad": "Veterinary school / institute",
   "cat.resto": "Pet-friendly restaurant",
+  "cat.parque": "Dog park",
+  "cat.peluqueria": "Pet grooming",
   "cat.evento": "Animal event",
   "color.original": "Original",
   "color.negro": "Black",
@@ -608,6 +639,11 @@ const I18N={
   "man.en": " on {calle}",
   "llegaste": "You arrived at {n}!",
   "llegasteEstrella": "You arrived at {n}! +1 star for arriving · You have been here {v} {vez}",
+  "pregVisita": "Did you visit {n} with your pet?",
+  "pregSi": "Yes",
+  "pregNo": "No",
+  "gpsDenegado": "Your location could not be used: the app opened in Ibagué. Turn on GPS or location permission to see places near you.",
+  "errorCarga": "Something went wrong in the app. Tap this notice to dismiss it and reload the page if something doesn't respond.",
   "vez": "time",
   "veces": "times",
   "visitaSing": "visit",
@@ -785,6 +821,8 @@ const I18N={
   "cat.adopcion": "Adoção de animais",
   "cat.facultad": "Faculdade / instituto de veterinária",
   "cat.resto": "Restaurante pet-friendly",
+  "cat.parque": "Parque para cães",
+  "cat.peluqueria": "Banho e tosa",
   "cat.evento": "Evento de animais",
   "color.original": "Original",
   "color.negro": "Preto",
@@ -822,6 +860,11 @@ const I18N={
   "man.en": " na {calle}",
   "llegaste": "Você chegou a {n}!",
   "llegasteEstrella": "Você chegou a {n}! +1 estrela por chegar · Você veio aqui {v} {vez}",
+  "pregVisita": "Você visitou {n} com seu pet?",
+  "pregSi": "Sim",
+  "pregNo": "Não",
+  "gpsDenegado": "Não foi possível usar sua localização: o app abriu em Ibagué. Ative o GPS ou a permissão de localização para ver lugares perto de você.",
+  "errorCarga": "Algo deu errado no aplicativo. Toque neste aviso para fechá-lo e recarregue a página se algo não responder.",
   "vez": "vez",
   "veces": "vezes",
   "visitaSing": "visita",
@@ -999,6 +1042,8 @@ const I18N={
   "cat.adopcion": "Adoption d'animaux",
   "cat.facultad": "Faculté / institut vétérinaire",
   "cat.resto": "Restaurant pet-friendly",
+  "cat.parque": "Parc pour chiens",
+  "cat.peluqueria": "Toilettage",
   "cat.evento": "Événement animalier",
   "color.original": "Original",
   "color.negro": "Noir",
@@ -1036,6 +1081,11 @@ const I18N={
   "man.en": " sur {calle}",
   "llegaste": "Vous êtes arrivé à {n} !",
   "llegasteEstrella": "Vous êtes arrivé à {n} ! +1 étoile pour être arrivé · Vous êtes venu ici {v} {vez}",
+  "pregVisita": "As-tu visité {n} avec ton animal ?",
+  "pregSi": "Oui",
+  "pregNo": "Non",
+  "gpsDenegado": "Impossible d'utiliser ta position : l'app s'est ouverte à Ibagué. Active le GPS ou l'autorisation de localisation pour voir les lieux près de toi.",
+  "errorCarga": "Un problème est survenu dans l'application. Touche cet avis pour le fermer et recharge la page si quelque chose ne répond pas.",
   "vez": "fois",
   "veces": "fois",
   "visitaSing": "visite",
@@ -1213,6 +1263,8 @@ const I18N={
   "cat.adopcion": "Tieradoption",
   "cat.facultad": "Veterinärfakultät / -institut",
   "cat.resto": "Tierfreundliches Restaurant",
+  "cat.parque": "Hundepark",
+  "cat.peluqueria": "Hundesalon",
   "cat.evento": "Tierveranstaltung",
   "color.original": "Original",
   "color.negro": "Schwarz",
@@ -1250,6 +1302,11 @@ const I18N={
   "man.en": " auf {calle}",
   "llegaste": "Du bist bei {n} angekommen!",
   "llegasteEstrella": "Du bist bei {n} angekommen! +1 Stern fürs Ankommen · Du warst {v} {vez} hier",
+  "pregVisita": "Hast du {n} mit deinem Haustier besucht?",
+  "pregSi": "Ja",
+  "pregNo": "Nein",
+  "gpsDenegado": "Dein Standort konnte nicht genutzt werden: Die App hat in Ibagué geöffnet. Aktiviere GPS oder die Standortberechtigung, um Orte in deiner Nähe zu sehen.",
+  "errorCarga": "In der App ist ein Fehler aufgetreten. Tippe auf diesen Hinweis, um ihn zu schließen, und lade die Seite neu, falls etwas nicht reagiert.",
   "vez": "Mal",
   "veces": "Mal",
   "visitaSing": "Besuch",
@@ -1427,6 +1484,8 @@ const I18N={
   "cat.adopcion": "Adozione di animali",
   "cat.facultad": "Facoltà / istituto di veterinaria",
   "cat.resto": "Ristorante pet-friendly",
+  "cat.parque": "Parco per cani",
+  "cat.peluqueria": "Toelettatura",
   "cat.evento": "Evento per animali",
   "color.original": "Originale",
   "color.negro": "Nero",
@@ -1464,6 +1523,11 @@ const I18N={
   "man.en": " in {calle}",
   "llegaste": "Sei arrivato a {n}!",
   "llegasteEstrella": "Sei arrivato a {n}! +1 stella per l'arrivo · Sei stato qui {v} {vez}",
+  "pregVisita": "Hai visitato {n} con il tuo animale?",
+  "pregSi": "Sì",
+  "pregNo": "No",
+  "gpsDenegado": "Impossibile usare la tua posizione: l'app si è aperta a Ibagué. Attiva il GPS o il permesso di posizione per vedere i luoghi vicino a te.",
+  "errorCarga": "Qualcosa non ha funzionato nell'app. Tocca questo avviso per chiuderlo e ricarica la pagina se qualcosa non risponde.",
   "vez": "volta",
   "veces": "volte",
   "visitaSing": "visita",
@@ -1641,6 +1705,8 @@ const I18N={
   "cat.adopcion": "Dierenadoptie",
   "cat.facultad": "Faculteit / instituut diergeneeskunde",
   "cat.resto": "Huisdiervriendelijk restaurant",
+  "cat.parque": "Hondenpark",
+  "cat.peluqueria": "Trimsalon",
   "cat.evento": "Dierenevenement",
   "color.original": "Origineel",
   "color.negro": "Zwart",
@@ -1678,6 +1744,11 @@ const I18N={
   "man.en": " op {calle}",
   "llegaste": "Je bent aangekomen bij {n}!",
   "llegasteEstrella": "Je bent aangekomen bij {n}! +1 ster voor aankomst · Je bent hier {v} {vez} geweest",
+  "pregVisita": "Heb je {n} bezocht met je huisdier?",
+  "pregSi": "Ja",
+  "pregNo": "Nee",
+  "gpsDenegado": "Je locatie kon niet worden gebruikt: de app is geopend in Ibagué. Schakel GPS of locatietoestemming in om plekken bij jou in de buurt te zien.",
+  "errorCarga": "Er is iets misgegaan in de app. Tik op deze melding om hem te sluiten en laad de pagina opnieuw als iets niet reageert.",
   "vez": "keer",
   "veces": "keer",
   "visitaSing": "bezoek",
@@ -1855,6 +1926,8 @@ const I18N={
   "cat.adopcion": "Adopcja zwierząt",
   "cat.facultad": "Wydział / instytut weterynarii",
   "cat.resto": "Restauracja przyjazna zwierzętom",
+  "cat.parque": "Park dla psów",
+  "cat.peluqueria": "Salon groomingu",
   "cat.evento": "Wydarzenie dla zwierząt",
   "color.original": "Oryginalny",
   "color.negro": "Czarny",
@@ -1892,6 +1965,11 @@ const I18N={
   "man.en": " na {calle}",
   "llegaste": "Dotarłeś do {n}!",
   "llegasteEstrella": "Dotarłeś do {n}! +1 gwiazdka za przybycie · Byłeś tu {v} {vez}",
+  "pregVisita": "Czy odwiedziłeś {n} ze swoim zwierzakiem?",
+  "pregSi": "Tak",
+  "pregNo": "Nie",
+  "gpsDenegado": "Nie można użyć Twojej lokalizacji: aplikacja otworzyła się w Ibagué. Włącz GPS lub uprawnienia lokalizacji, aby zobaczyć miejsca w pobliżu.",
+  "errorCarga": "Coś poszło nie tak w aplikacji. Dotknij to powiadomienie, aby je zamknąć, i odśwież stronę, jeśli coś nie odpowiada.",
   "vez": "raz",
   "veces": "razy",
   "visitaSing": "wizyta",
@@ -2019,6 +2097,18 @@ const I18N={
 };
 let idioma='es';
 function t(k,vars){let s=(I18N[idioma]&&I18N[idioma][k])||I18N.es[k]||k;if(vars)for(const v in vars)s=s.split('{'+v+'}').join(String(vars[v]));return s;}
+/* v10.3 — H9: un error JS no capturado ya no pasa en silencio: aviso visible (una sola vez, se cierra al tocarlo). */
+let bannerErrorMostrado=false;
+window.addEventListener('error',function(){
+  if(bannerErrorMostrado)return; bannerErrorMostrado=true;
+  try{
+    const d=document.createElement('div');
+    d.style.cssText='position:fixed;top:8px;left:10px;right:10px;z-index:9999;background:#B3261E;color:#fff;border-radius:12px;padding:10px 12px;font:700 13px system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35);cursor:pointer';
+    d.textContent=t('errorCarga');
+    d.addEventListener('click',function(){d.remove();});
+    document.body.appendChild(d);
+  }catch(e){}
+});
 function LOCALE(){return IDIOMAS[idioma]||'es-ES';}
 function catName(c){return t('cat.'+c);}
 function etiquetaCat(c){return c==='todos'?t('menu.todos'):c==='h24'?t('menu.h24'):catName(c);}
@@ -2087,7 +2177,7 @@ const SAT_TILES='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imag
 const FONT_STACK=['Montserrat SemiBold','Open Sans Bold','Noto Sans Regular','Noto Sans CJK JP Regular'];
 const YOU=[-75.2330,4.4388];
 const heightExpr=['coalesce',['get','height'],9];
-let M_LNG=111000; const M_LAT=110600;
+let M_LNG=111320*Math.cos(4.4388*Math.PI/180); const M_LAT=110600; /* v10.3 — H15: metros por grado de longitud a la latitud inicial (Ibagué), no el valor ecuatorial */
 const normAng=a=>((a+540)%360)-180;
 const fmtDist=d=>d>=1000? new Intl.NumberFormat(LOCALE(),{maximumFractionDigits:1}).format(d/1000)+' km' : Math.round(d)+' m';
 
@@ -2101,7 +2191,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri · OSRM · v10.2':'© OpenStreetMap · © OpenFreeMap · Esri · OSRM · v10.2';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.3':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.3';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -2304,6 +2394,8 @@ function glyph(kind,color){
   if(kind==='facultad')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="${color}"><path d="M12 4L2 9l10 5 10-5z"/><path d="M6 11.5V16c0 1.4 2.7 3 6 3s6-1.6 6-3v-4.5" fill="none" stroke="${color}" stroke-width="1.8"/><path d="M22 9v5" stroke="${color}" stroke-width="1.8"/></svg>`;
   if(kind==='resto')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.1" stroke-linecap="round"><path d="M6 2v6a2 2 0 0 0 4 0V2M8 2v20"/><path d="M17 2c2.2 3 2.2 6.5 0 8.5V22"/></svg>`;
   if(kind==='evento')return `<svg width="16" height="16" viewBox="0 0 24 24" fill="${color}"><rect x="4" y="5.5" width="16" height="15" rx="2"/><path d="M4 10.5h16M8 3v4M16 3v4" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="15.5" r="2.2" fill="#fff"/></svg>`;
+  if(kind==='parque')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="${color}"><path d="M12 2L19 12h-3.5L21 19H3l5.5-7H5z"/><rect x="11" y="19" width="2.4" height="3.4"/></svg>`;
+  if(kind==='peluqueria')return `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2"><circle cx="6" cy="6.5" r="2.6"/><circle cx="6" cy="17.5" r="2.6"/><path d="M8.2 8.2L20 17.5M8.2 15.8L20 6.5"/></svg>`;
   return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.4"><path d="M5 8h14l-1.2 12.2a1.8 1.8 0 0 1-1.8 1.8H8a1.8 1.8 0 0 1-1.8-1.8L5 8z"/><path d="M8.5 10V6.5a3.5 3.5 0 0 1 7 0V10"/></svg>`;
 }
 const CAT={
@@ -2317,8 +2409,13 @@ const CAT={
   perdida:{cls:'red',g:'perdida',col:'#C0392B'},
   facultad:{cls:'blue',g:'facultad',col:'#1D4ED8'},
   resto:{cls:'orange',g:'resto',col:'#F97316'},
-  evento:{cls:'cyan',g:'evento',col:'#0891B2'}
+  evento:{cls:'cyan',g:'evento',col:'#0891B2'},
+  parque:{cls:'lima',g:'parque',col:'#65A30D'},
+  peluqueria:{cls:'pink',g:'peluqueria',col:'#DB2777'}
 };
+/* v10.3 — H9: si un archivo de datos no cargó, la app degrada con sus listas vacías en vez de morir. */
+if(typeof NEGOCIOS_IBAGUE==='undefined')window.NEGOCIOS_IBAGUE=[];
+if(typeof NEGOCIOS_CHARLOTTE==='undefined')window.NEGOCIOS_CHARLOTTE=[];
 NEGOCIOS_IBAGUE.forEach(b=>b.tz='America/Bogota');
 NEGOCIOS_CHARLOTTE.forEach(b=>b.tz='America/New_York');
 const NEGOCIOS=[...NEGOCIOS_IBAGUE,...NEGOCIOS_CHARLOTTE];
@@ -2403,33 +2500,52 @@ function actualizarRestante(){
   if(contadorDesvio>=2){contadorDesvio=0; recalcularRuta();}
 }
 let llegadaRegistrada=false;
-function registrarLlegada(b){
+function registrarLlegada(b,sumarEstrella){
   const v=leerVisitas(), k=claveVisita(b);
   const ant=v[k]||{n:b.n,cat:b.cat,dir:b.dir,veces:0,estrellas:0,llegadas:0,ultima:''};
   ant.veces++; ant.llegadas=(ant.llegadas||0)+1; ant.ultima=new Date().toLocaleDateString(LOCALE());
+  if(sumarEstrella)ant.estrellas=Math.min(5,(ant.estrellas||0)+1);
   v[k]=ant; guardarVisitas(v);
   actualizarVisitasInfo(); renderVisitas();
   return ant;
 }
+/* v10.3 — Fase 3 (Instrucción Maestra): la visita NUNCA se confirma solo por
+   proximidad/GPS. Al llegar, la app PREGUNTA; solo con Sí se registra la visita
+   y se suma +1 estrella (máx. 5). Con No no se registra nada. */
+function mostrarPreguntaLlegada(b){
+  document.getElementById('pregTexto').textContent=t('pregVisita',{n:b.n});
+  document.getElementById('pregLlegada').style.display='block';
+}
+function ocultarPreguntaLlegada(){
+  const p=document.getElementById('pregLlegada');
+  if(p)p.style.display='none';
+}
+function responderPreguntaLlegada(si){
+  if(!seleccionado){ocultarPreguntaLlegada();return;}
+  if(si){
+    const ant=registrarLlegada(seleccionado,true);
+    document.getElementById('cDist').innerHTML=`<b>${t('llegasteEstrella',{n:seleccionado.n,v:ant.veces,vez:vezPalabra(ant.veces)})}</b>`;
+  }
+  ocultarPreguntaLlegada();
+}
+document.getElementById('bPregSi').addEventListener('click',()=>responderPreguntaLlegada(true));
+document.getElementById('bPregNo').addEventListener('click',()=>responderPreguntaLlegada(false));
 function llegar(){
   if(!seleccionado)return;
   tripActivo=false;
   llegadaEn=[seleccionado.lng,seleccionado.lat];
-  let confirm='';
-  if(!llegadaRegistrada){
-    llegadaRegistrada=true;
-    const ant=registrarLlegada(seleccionado);
-    confirm=t('llegasteEstrella',{n:seleccionado.n,v:ant.veces,vez:vezPalabra(ant.veces)});
-  }else{
-    confirm=t('llegaste',{n:seleccionado.n});
-  }
   document.getElementById('bannerTurno').style.display='none';
-  document.getElementById('cDist').innerHTML=`<b>${confirm}</b>`;
+  document.getElementById('cDist').innerHTML=`<b>${t('llegaste',{n:seleccionado.n})}</b>`;
   window.map.easeTo({pitch:0,bearing:0,offset:[0,0],duration:700});
   mostrarBotonesViaje();
+  if(!llegadaRegistrada){
+    llegadaRegistrada=true;
+    mostrarPreguntaLlegada(seleccionado);
+  }
 }
 function terminarViaje(){
   tripActivo=false; llegadaEn=null;
+  ocultarPreguntaLlegada();
   document.getElementById('bannerTurno').style.display='none';
   window.map.easeTo({pitch:0,bearing:0,offset:[0,0],duration:700});
   mostrarBotonesViaje();
@@ -2437,6 +2553,7 @@ function terminarViaje(){
 }
 function iniciarViaje(){
   if(!seleccionado)return;
+  ocultarPreguntaLlegada();
   tripActivo=true; llegadaEn=null; llegadaRegistrada=false; follow=true; followPausado=false;
   camBearing=window.map.getBearing();
   document.getElementById('btnGps').classList.add('on');
@@ -2455,13 +2572,19 @@ function aceptarFix(lat,lng,acc){
   }
   ultimoFix=[lng,lat]; return true;
 }
+/* v10.3 — H10: si el GPS está denegado o no responde, se avisa una sola vez (la app abre en Ibagué por defecto). */
+let gpsAvisoMostrado=false;
+function avisoGpsDenegado(){
+  if(gpsAvisoMostrado)return; gpsAvisoMostrado=true;
+  mostrarZonaEstado(t('gpsDenegado'),8000);
+}
 if(navigator.geolocation){
   navigator.geolocation.getCurrentPosition(p=>{
     if(!aceptarFix(p.coords.latitude,p.coords.longitude,p.coords.accuracy))return;
     YOU[0]=p.coords.longitude; YOU[1]=p.coords.latitude; youMarker.setLngLat(YOU);
     actualizarMLng();
     if(!gpsListo){gpsListo=true; window.map.easeTo({center:YOU,zoom:Math.max(window.map.getZoom(),13),duration:900}); cargarZona(true);}
-  },()=>{},{enableHighAccuracy:true,timeout:10000});
+  },()=>{avisoGpsDenegado();},{enableHighAccuracy:true,timeout:10000});
   navigator.geolocation.watchPosition(p=>{
     if(!aceptarFix(p.coords.latitude,p.coords.longitude,p.coords.accuracy))return;
     YOU[0]=p.coords.longitude; YOU[1]=p.coords.latitude; youMarker.setLngLat(YOU);
@@ -2475,7 +2598,7 @@ if(navigator.geolocation){
       const dx=(YOU[0]-lastRouteFrom[0])*M_LNG, dy=(YOU[1]-lastRouteFrom[1])*M_LAT;
       if(seleccionado&&Math.hypot(dx,dy)>120&&Date.now()-lastRouteAt>20000)seleccionar(seleccionado,false);
     }
-  },()=>{},{enableHighAccuracy:true,timeout:15000,maximumAge:5000});
+  },()=>{avisoGpsDenegado();},{enableHighAccuracy:true,timeout:15000,maximumAge:5000});
 }
 /* Si el usuario arrastra el mapa, el seguimiento se pausa hasta recentrar */
 ['mousedown','touchstart','wheel'].forEach(ev=>window.map.on(ev,()=>{if(tripActivo)followPausado=true;}));
@@ -2499,6 +2622,8 @@ function abiertoEn(h,abre,cierra){
   return false;
 }
 function fmtHora(h){if(h==null)return '';const d=new Date();d.setHours(Math.floor(h),Math.round((h-Math.floor(h))*60),0,0);return new Intl.DateTimeFormat(LOCALE(),{hour:'numeric',minute:'2-digit'}).format(d);}
+/* v10.3 — H6: los teléfonos de Overpass vienen con espacios/guiones; WhatsApp (wa.me) exige solo dígitos. */
+function normalizarTel(tel){return String(tel||'').replace(/[^0-9]/g,'');}
 function seleccionar(b,volar){
   if(b.cat==='perdida'){seleccionarAlerta(b,volar);return;}
   document.getElementById('cardPerdida').style.display='none';
@@ -2520,9 +2645,11 @@ function seleccionar(b,volar){
   document.getElementById('cDir').textContent=textoDir(b);
   document.getElementById('filaContacto').style.display=b.tel?'':'none';
   if(b.tel){
-    document.getElementById('bLlamar').href='tel:'+b.tel;
-    document.getElementById('bWa').href='https://wa.me/'+b.tel.replace('+','');
+    const dig=normalizarTel(b.tel);
+    document.getElementById('bLlamar').href='tel:'+(String(b.tel).trim().startsWith('+')?'+':'')+dig;
+    document.getElementById('bWa').href='https://wa.me/'+dig;
   }
+  ocultarPreguntaLlegada();
   actualizarVisitasInfo();
   rutaEsReal=false; rutaDistancia=null; estadoRuta='calculando';
   pasos=[]; pasosAlong=[];
@@ -2546,6 +2673,7 @@ document.getElementById('bTerminar').addEventListener('click',()=>terminarViaje(
 /* ---------- v9: deselección y botón ATRÁS con historial ---------- */
 function deseleccionar(){
   seleccionado=null; llegadaEn=null;
+  ocultarPreguntaLlegada();
   document.getElementById('card').style.display='none';
   document.getElementById('bannerTurno').style.display='none';
   marcadores.forEach(m=>m.el.classList.remove('sel'));
@@ -2585,6 +2713,21 @@ function irAtras(){
 }
 window.addEventListener('popstate',()=>{if(capaAbierta)cerrarCapa();});
 document.getElementById('btnAtras').addEventListener('click',irAtras);
+
+/* v10.3 — H3: la tarjeta ya se puede cerrar: botón X y toque en el mapa vacío.
+   Durante un viaje no se cierra (el viaje necesita la tarjeta). */
+function cerrarTarjeta(){
+  if(tripActivo)return;
+  ocultarPreguntaLlegada();
+  if(capaAbierta)irAtras();
+  else deseleccionar();
+}
+document.getElementById('btnCerrarCard').addEventListener('click',cerrarTarjeta);
+window.map.on('click',e=>{
+  if(tripActivo)return;
+  if(!e.originalEvent||e.originalEvent.target.tagName!=='CANVAS')return;
+  if(seleccionado||capaAbierta)cerrarTarjeta();
+});
 
 /* ---------- v10: apertura siempre desde cero (como Google Maps) ----------
    En el teléfono, al tocar el enlace con la app ya abierta (o al volver con
@@ -2644,7 +2787,7 @@ function aplicarFiltros(){
 }
 
 /* ---------- Menú unificado de categorías + lista ordenada ---------- */
-const CATS_ORDEN=['todos','h24','vet','tienda','farma','zoo','granja','refugio','adopcion','perdida','facultad','resto','evento'];
+const CATS_ORDEN=['todos','h24','vet','tienda','parque','peluqueria','farma','zoo','granja','refugio','adopcion','perdida','facultad','resto','evento'];
 function distanciaA(b){const dx=(b.lng-YOU[0])*M_LNG, dy=(b.lat-YOU[1])*M_LAT; return Math.hypot(dx,dy);}
 function eventosCercanos(){
   const dentro=e=>e.lat!=null&&e.lng!=null&&distanciaA(e)<120000;
@@ -2741,8 +2884,10 @@ function renderLista(){
   form.style.display='none';
   titulo.textContent=etiquetaCat(filtroCat);
   let lista;
-  if(filtroCat==='h24')lista=ordenarLista(NEGOCIOS.filter(es24h));
-  else lista=ordenarLista(todosLugares().filter(b=>filtroCat==='todos'||b.cat===filtroCat));
+  /* v10.3 — H7: la lista es la del mapa visible (como el conteo), no la de todo el mundo. */
+  const enVista=lugaresEnVista();
+  if(filtroCat==='h24')lista=ordenarLista(enVista.filter(es24h));
+  else lista=ordenarLista(enVista.filter(b=>filtroCat==='todos'||b.cat===filtroCat));
   lista=lista.slice(0,60);
   if(!lista.length){cuerpo.innerHTML=filtroCat==='h24'?'<div class="meta" style="padding:10px 2px">'+t('sin24')+'</div>':'<div class="meta" style="padding:10px 2px">'+t('sinCat')+'</div>';return;}
   cuerpo.innerHTML=lista.map(b=>{
@@ -2751,7 +2896,7 @@ function renderLista(){
     const badge=b.h24?' <span class="badge24">24/7</span>':'';
     let estado='';
     if(b.h24)estado=' · <b>'+t('abierto')+'</b>';
-    else if(b.horas){const h=horaLocal(),ab=b.horas[0]<=h&&h<b.horas[1];estado=ab?' · <b>'+t('abierto')+'</b>':` · <span class="cerrado">${t('cerrado')}</span>`;}
+    else if(b.horas){const ab=abiertoEn(horaDeNegocio(b),b.horas[0],b.horas[1]);estado=ab?' · <b>'+t('abierto')+'</b>':` · <span class="cerrado">${t('cerrado')}</span>`;}
     return `<div class="listaRow" data-k="${claveLugar(b)}"><span class="logoBox" style="background:${c.col};width:48px;height:48px">${glyph(c.g,'#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${b.n}</span>${badge}<br><span class="meta">${g} · a <b>${fmtDist(distanciaA(b))}</b>${estado}</span><br><span class="meta">${lineaVisitas(b)}</span></span></div>`;
   }).join('');
   cuerpo.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
@@ -2787,6 +2932,8 @@ function normalizar(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\
 const SINONIMOS={
   vet:['veterinaria','veterinario','veterinary','vet','veterinaire','tierarzt','dierenarts','weterynarz','clinica','clinic','clinique','klinik','przychodnia','salud','sante','gesundheit','doctor','dokter','lekarz'],
   tienda:['tienda','pet shop','petshop','comida','alimento','juguete','accesorio','pet store','animalerie','tierhandlung','dierenwinkel','sklep zoologiczny','zoohandlung','animal store'],
+  parque:['parque para perros','parque canino','dog park','dogpark','parc canin','hundepark','parco cani','hondenpark','park dla psów'],
+  peluqueria:['peluqueria','peluquería','grooming','pet grooming','toilettage','hundesalon','toelettatura','trimsalon','groomer','salon groomingu','banho e tosa'],
   farma:['farmacia','medicina','medicamento','agropecuaria','drogueria','pharmacy','pharmacie','apotheke','tierapotheke','apteka','dierenapotheek'],
   zoo:['zoo','zoologico','acuario','aquarium','safari','aquario','dierentuin'],
   granja:['granja','finca','farm','ferme','bauernhof','fattoria','boerderij','gospodarstwo'],
@@ -3187,7 +3334,8 @@ async function cargarZona(forzar){
   if(n-s2>3){const c=(s2+n)/2;s2=c-1.5;n=c+1.5;}
   zonaCargando=true; zonaError=false; mostrarZonaEstado(t('buscandoZona'));
   try{
-    const q=`[out:json][timeout:25];(node["amenity"~"veterinary|animal_shelter|zoo|animal_boarding"](${s2},${w},${n},${e});way["amenity"~"veterinary|animal_shelter|zoo|animal_boarding"](${s2},${w},${n},${e});node["shop"="pet"](${s2},${w},${n},${e});way["shop"="pet"](${s2},${w},${n},${e}););out center 150;`;
+    /* v10.3 — H8: también parques para perros y peluquerías (antes no se pedían). */
+    const q=`[out:json][timeout:25];(node["amenity"~"veterinary|animal_shelter|zoo|animal_boarding"](${s2},${w},${n},${e});way["amenity"~"veterinary|animal_shelter|zoo|animal_boarding"](${s2},${w},${n},${e});node["shop"~"pet|pet_grooming"](${s2},${w},${n},${e});way["shop"~"pet|pet_grooming"](${s2},${w},${n},${e});node["leisure"="dog_park"](${s2},${w},${n},${e});way["leisure"="dog_park"](${s2},${w},${n},${e}););out center 300;`;
     const j=await consultarOverpass(q);
     let nuevos=0;
     (j.elements||[]).forEach(el=>{
@@ -3199,6 +3347,8 @@ async function cargarZona(forzar){
       else if(tg.amenity==='animal_shelter')cat='refugio';
       else if(tg.amenity==='zoo')cat='zoo';
       else if(tg.amenity==='animal_boarding'){cat='tienda';guarderia=true;}
+      else if(tg.leisure==='dog_park')cat='parque';
+      else if(tg.shop==='pet_grooming')cat='peluqueria';
       const b2={n:tg.name,cat,lat:la,lng:lo,dir:(tg['addr:street']?tg['addr:street']+(tg['addr:housenumber']?' '+tg['addr:housenumber']:''):'')||'',tel:tg.phone||null,horas:null,osm:true,guarderia};
       if(agregarPinOSM(b2,el.type+el.id))nuevos++;
     });
@@ -3944,4 +4094,10 @@ else window.map.on('load',()=>cargarAlertasZona());
 detectarIdioma();
 document.getElementById('selIdioma').addEventListener('change',e=>setLang(e.target.value));
 applyLang();
+/* v10.3 — H13: service worker mínimo (solo same-origin, network-first con
+   fallback a caché). La app ya se puede instalar; sin conexión sirve la última
+   versión guardada. Solo en http(s). */
+if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0){
+  try{navigator.serviceWorker.register('sw.js').catch(function(){});}catch(e){}
+}
 </script></body></html>
