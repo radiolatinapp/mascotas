@@ -316,6 +316,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
     <button class="btn shareBtn" id="apCompartir" data-i18n="btnCompartir">Compartir</button>
     <button class="btn" id="apReportar" style="background:#888" data-i18n="btnReportar">Reportar</button>
   </div>
+  <div style="margin-top:8px"><a href="#" id="apDenunciar" style="font-size:12.5px;color:#0E7C66;text-decoration:underline" data-i18n="alDenunciar">Denunciar o pedir la eliminación</a></div>
   <div id="apAvForm" style="display:none;margin-top:10px">
     <div class="meta" style="font-weight:800" data-i18n="avTitulo">¿La viste? Cuéntanos dónde</div>
     <div class="meta" data-i18n="avPuntoAyuda">Mueve el mapa al punto exacto donde la viste.</div>
@@ -424,6 +425,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
   <label class="campoLabel" data-i18n="pubZona">Zona (sin dirección exacta)</label>
   <input id="pubZona" class="inputTxt" type="text">
   <div class="meta" data-i18n="pubAvisoDireccion">No escribas tu dirección exacta, solo la zona.</div>
+  <div class="meta" style="margin-top:6px" data-i18n="alConsentimiento">Al publicar aceptas que esta alerta (foto, zona aproximada y contacto, si lo das) sea visible para todos. No escribas tu dirección exacta de casa.</div>
   <label class="campoLabel" data-i18n="pubContacto">Contacto (opcional)</label>
   <div style="display:flex;gap:14px;flex-wrap:wrap">
     <label><input type="radio" name="pubContacto" value="ninguno" checked> <span data-i18n="pubSinContacto">Sin contacto (solo avisos en la app)</span></label>
@@ -460,6 +462,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
   <label class="campoLabel" data-i18n="pubZona">Zona (sin dirección exacta)</label>
   <input id="adZonaInp" class="inputTxt" type="text">
   <div class="meta" data-i18n="pubAvisoDireccion">No escribas tu dirección exacta, solo la zona.</div>
+  <div class="meta" style="margin-top:6px" data-i18n="alConsentimiento">Al publicar aceptas que esta alerta (foto, zona aproximada y contacto, si lo das) sea visible para todos. No escribas tu dirección exacta de casa.</div>
   <label class="campoLabel" data-i18n="pubContacto">Contacto</label>
   <div style="display:flex;gap:14px;flex-wrap:wrap">
     <label><input type="radio" name="adContacto" value="whatsapp" checked> <span data-i18n="pubWhatsapp">WhatsApp</span></label>
@@ -474,6 +477,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelPremium">Hazte premium</h3><button class="chip" id="bCerrarPremium" data-i18n="btnCerrar">Cerrar</button></div>
   <div id="premEstado" style="display:none;margin-top:10px"></div>
   <p style="font-size:13px;margin:8px 0" data-i18n="premPortalDesc">Elige el plan que te conviene. El cobro lo gestiona Google Play cuando instalas la app desde Play Store.</p>
+  <p class="meta" style="margin-top:8px;color:#B97E00;font-weight:700" data-i18n="premDemoNota">Demostración informativa: se muestran precios y beneficios, pero la compra aún no está disponible.</p>
   <div class="premCard gold">
     <h4 data-i18n="premPlanNegocio">Negocio</h4>
     <div class="premPrecio" data-i18n="premPlanNegocioPrecio">$8 USD/mes</div>
@@ -1060,6 +1064,13 @@ const I18N={
   "ofMiNegocio": "Mi negocio",
   "premBeneficios": "Mis beneficios premium",
   "premSinBeneficios": "Aún no hay beneficios premium por aquí.",
+  "premDemoAviso": "Premium próximamente (demo): nada se activa ni se cobra todavía.",
+  "premDemoNota": "Demostración informativa: se muestran precios y beneficios, pero la compra aún no está disponible.",
+  "alConsentimiento": "Al publicar aceptas que esta alerta (foto, zona aproximada y contacto, si lo das) sea visible para todos. No escribas tu dirección exacta de casa.",
+  "alDenunciar": "Denunciar o pedir la eliminación",
+  "ofSinNegocioPropio": "Primero registra tu negocio para publicar ofertas o avisos.",
+  "fbSesionError": "Sesión no disponible: tus datos locales están a salvo. Inténtalo más tarde.",
+  "nResultados": "{n} resultados",
   "premInsignia": "Premium",
   "premVerOfertas": "Ver ofertas y avisos",
   "premRegNegocio": "Registrar mi negocio",
@@ -1481,6 +1492,13 @@ const I18N={
   "ofMiNegocio": "My business",
   "premBeneficios": "My premium perks",
   "premSinBeneficios": "No premium perks around here yet.",
+  "premDemoAviso": "Premium coming soon (demo): nothing is activated or charged yet.",
+  "premDemoNota": "Informational demo: prices and benefits are shown, but purchase is not available yet.",
+  "alConsentimiento": "By publishing, you agree this alert (photo, approximate area and contact, if you give one) will be visible to everyone. Do not write your exact home address.",
+  "alDenunciar": "Report or request removal",
+  "ofSinNegocioPropio": "First register your business to publish offers or notices.",
+  "fbSesionError": "Session unavailable: your local data is safe. Try again later.",
+  "nResultados": "{n} results",
   "premInsignia": "Premium",
   "premVerOfertas": "See offers and notices",
   "premRegNegocio": "Register my business",
@@ -1902,6 +1920,13 @@ const I18N={
   "ofMiNegocio": "Meu negócio",
   "premBeneficios": "Meus benefícios premium",
   "premSinBeneficios": "Ainda não há benefícios premium por aqui.",
+  "premDemoAviso": "Premium em breve (demo): nada é ativado nem cobrado ainda.",
+  "premDemoNota": "Demonstração informativa: preços e benefícios são exibidos, mas a compra ainda não está disponível.",
+  "alConsentimiento": "Ao publicar, você concorda que este alerta (foto, área aproximada e contato, se informado) fique visível para todos. Não escreva seu endereço residencial exato.",
+  "alDenunciar": "Denunciar ou pedir remoção",
+  "ofSinNegocioPropio": "Primeiro cadastre seu negócio para publicar ofertas ou avisos.",
+  "fbSesionError": "Sessão indisponível: seus dados locais estão seguros. Tente novamente mais tarde.",
+  "nResultados": "{n} resultados",
   "premInsignia": "Premium",
   "premVerOfertas": "Ver ofertas e avisos",
   "premRegNegocio": "Cadastrar meu negócio",
@@ -2323,6 +2348,13 @@ const I18N={
   "ofMiNegocio": "Mon commerce",
   "premBeneficios": "Mes avantages premium",
   "premSinBeneficios": "Aucun avantage premium par ici pour le moment.",
+  "premDemoAviso": "Premium bientôt (démo) : rien n'est activé ni facturé pour l'instant.",
+  "premDemoNota": "Démo informative : les prix et avantages sont affichés, mais l'achat n'est pas encore disponible.",
+  "alConsentimiento": "En publiant, vous acceptez que cette alerte (photo, zone approximative et contact, si vous en donnez un) soit visible par tous. N'écrivez pas votre adresse exacte.",
+  "alDenunciar": "Signaler ou demander la suppression",
+  "ofSinNegocioPropio": "Enregistrez d'abord votre commerce pour publier des offres ou des avis.",
+  "fbSesionError": "Session indisponible : vos données locales sont en sécurité. Réessayez plus tard.",
+  "nResultados": "{n} résultats",
   "premInsignia": "Premium",
   "premVerOfertas": "Voir les offres et avis",
   "premRegNegocio": "Enregistrer mon commerce",
@@ -2744,6 +2776,13 @@ const I18N={
   "ofMiNegocio": "Mein Geschäft",
   "premBeneficios": "Meine Premium-Vorteile",
   "premSinBeneficios": "Noch keine Premium-Vorteile hier.",
+  "premDemoAviso": "Premium bald verfügbar (Demo): Es wird noch nichts aktiviert oder berechnet.",
+  "premDemoNota": "Informative Demo: Preise und Vorteile werden angezeigt, aber der Kauf ist noch nicht verfügbar.",
+  "alConsentimiento": "Mit der Veröffentlichung stimmst du zu, dass diese Meldung (Foto, ungefähre Gegend und Kontakt, falls angegeben) für alle sichtbar ist. Schreibe nicht deine genaue Wohnadresse.",
+  "alDenunciar": "Melden oder Entfernung beantragen",
+  "ofSinNegocioPropio": "Registriere zuerst dein Geschäft, um Angebote oder Mitteilungen zu veröffentlichen.",
+  "fbSesionError": "Sitzung nicht verfügbar: Deine lokalen Daten sind sicher. Versuche es später erneut.",
+  "nResultados": "{n} Ergebnisse",
   "premInsignia": "Premium",
   "premVerOfertas": "Angebote und Mitteilungen ansehen",
   "premRegNegocio": "Mein Geschäft registrieren",
@@ -3165,6 +3204,13 @@ const I18N={
   "ofMiNegocio": "La mia attività",
   "premBeneficios": "I miei vantaggi premium",
   "premSinBeneficios": "Ancora nessun vantaggio premium qui.",
+  "premDemoAviso": "Premium in arrivo (demo): nulla viene attivato o addebitato per ora.",
+  "premDemoNota": "Demo informativa: prezzi e vantaggi sono mostrati, ma l'acquisto non è ancora disponibile.",
+  "alConsentimiento": "Pubblicando accetti che questo avviso (foto, zona approssimativa e contatto, se lo indichi) sia visibile a tutti. Non scrivere il tuo indirizzo di casa esatto.",
+  "alDenunciar": "Segnala o chiedi la rimozione",
+  "ofSinNegocioPropio": "Prima registra la tua attività per pubblicare offerte o avvisi.",
+  "fbSesionError": "Sessione non disponibile: i tuoi dati locali sono al sicuro. Riprova più tardi.",
+  "nResultados": "{n} risultati",
   "premInsignia": "Premium",
   "premVerOfertas": "Vedi offerte e avvisi",
   "premRegNegocio": "Registra la mia attività",
@@ -3586,6 +3632,13 @@ const I18N={
   "ofMiNegocio": "Mijn bedrijf",
   "premBeneficios": "Mijn premiumvoordelen",
   "premSinBeneficios": "Nog geen premiumvoordelen hier.",
+  "premDemoAviso": "Premium binnenkort (demo): er wordt nog niets geactiveerd of in rekening gebracht.",
+  "premDemoNota": "Informatieve demo: prijzen en voordelen worden getoond, maar aankoop is nog niet beschikbaar.",
+  "alConsentimiento": "Door te publiceren ga je ermee akkoord dat deze melding (foto, ongeveer gebied en contact, als je die opgeeft) voor iedereen zichtbaar is. Schrijf je exacte thuisadres niet op.",
+  "alDenunciar": "Melden of verwijdering aanvragen",
+  "ofSinNegocioPropio": "Registreer eerst je bedrijf om aanbiedingen of meldingen te publiceren.",
+  "fbSesionError": "Sessie niet beschikbaar: je lokale gegevens zijn veilig. Probeer het later opnieuw.",
+  "nResultados": "{n} resultaten",
   "premInsignia": "Premium",
   "premVerOfertas": "Aanbiedingen en meldingen bekijken",
   "premRegNegocio": "Mijn bedrijf registreren",
@@ -4007,6 +4060,13 @@ const I18N={
   "ofMiNegocio": "Moja firma",
   "premBeneficios": "Moje korzyści premium",
   "premSinBeneficios": "Brak korzyści premium w pobliżu.",
+  "premDemoAviso": "Premium wkrótce (demo): nic nie jest jeszcze aktywowane ani pobierane.",
+  "premDemoNota": "Demo informacyjne: ceny i korzyści są wyświetlane, ale zakup nie jest jeszcze dostępny.",
+  "alConsentimiento": "Publikując, zgadzasz się, że ten alert (zdjęcie, przybliżona okolica i kontakt, jeśli go podasz) będzie widoczny dla wszystkich. Nie wpisuj dokładnego adresu domowego.",
+  "alDenunciar": "Zgłoś lub poproś o usunięcie",
+  "ofSinNegocioPropio": "Najpierw zarejestruj swoją firmę, aby publikować oferty lub ogłoszenia.",
+  "fbSesionError": "Sesja niedostępna: Twoje lokalne dane są bezpieczne. Spróbuj ponownie później.",
+  "nResultados": "{n} wyników",
   "premInsignia": "Premium",
   "premVerOfertas": "Zobacz oferty i powiadomienia",
   "premRegNegocio": "Zarejestruj moją firmę",
@@ -4073,7 +4133,7 @@ function setLang(l){if(!IDIOMAS[l])l='en';idioma=l;try{localStorage.setItem('mas
 function refrescarTarjeta(){
   if(!seleccionado)return;
   document.getElementById('cNombre').textContent=seleccionado.n;
-  const cp=document.getElementById('cPremium'); if(cp)cp.style.display=seleccionado.premium?'inline-block':'none';
+  const cp=document.getElementById('cPremium'); if(cp)cp.style.display=negocioEsPremiumVerificado(seleccionado)?'inline-block':'none';
   document.getElementById('cEstado').innerHTML=textoEstado(seleccionado);
   document.getElementById('cDir').textContent=textoDir(seleccionado);
   actualizarVisitasInfo();
@@ -4513,7 +4573,7 @@ const marcadores=[];
 function crearPin(b){
   const c=CAT[b.cat];
   /* v10.7 — Premium: el pin es dorado (la categoría se mantiene en el glifo). */
-  const el=document.createElement('div');el.className='pin2 '+(b.premium?'gold':c.cls);
+  const el=document.createElement('div');el.className='pin2 '+(negocioEsPremiumVerificado(b)?'gold':c.cls);
   el.innerHTML=`<span class="in">${glyph(c.g,c.col)}</span>`;
   el.title=b.n;
   const mk=new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat([b.lng,b.lat]).addTo(window.map);
@@ -4984,11 +5044,12 @@ function seleccionar(b,volar){
   if(typeof marcadoresOSM!=='undefined')marcadoresOSM.forEach(m=>m.el.classList.toggle('sel',m.b===b));
   document.getElementById('cNombre').textContent=b.n;
   /* v10.7 — distintivo dorado Premium en la tarjeta del negocio */
-  document.getElementById('cPremium').style.display=b.premium?'inline-block':'none';
+  document.getElementById('cPremium').style.display=negocioEsPremiumVerificado(b)?'inline-block':'none';
   document.getElementById('cLogo').style.background=CAT[b.cat].col;
   document.getElementById('cLogo').innerHTML=glyph(CAT[b.cat].g,'#fff');
   /* v10.13 — Negocio registrado: logo propio en la tarjeta + sus ofertas */
-  if(b.logoUrl){document.getElementById('cLogo').style.background='#fff';document.getElementById('cLogo').innerHTML='<img src="'+escHtml(b.logoUrl)+'" style="width:100%;height:100%;object-fit:cover;border-radius:10px" alt="">';}
+  const logoSeguro=sanUrl(b.logoUrl);
+  if(logoSeguro){document.getElementById('cLogo').style.background='#fff';document.getElementById('cLogo').innerHTML='<img src="'+escHtml(logoSeguro)+'" style="width:100%;height:100%;object-fit:cover;border-radius:10px" alt="">';}
   document.getElementById('cHorarios').textContent=b.horariosTxt||'';
   renderOfertasCard(b);
   document.getElementById('cEstrellas').textContent=b.rating?('★'.repeat(Math.round(b.rating))+' '+b.rating.toFixed(1)):'';
@@ -5220,7 +5281,7 @@ function renderLista(){
     if(!evs.length){
       cuerpo.innerHTML=`<div class="meta" style="padding:10px 2px">${t('eventosVacios')}</div>`;
     }else{
-      cuerpo.innerHTML=evs.map((e,i)=>`<div class="listaRow" data-ev="${i}"><span class="logoBox" style="background:#0891B2;width:48px;height:48px">${glyph('evento','#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${e.n}</span>${e.propio?' <span class="meta">'+t('tuEvento')+'</span>':''}<br><span class="meta">${e.fecha||t('fechaConfirmar')}${e.hora?' · '+e.hora:''}</span><br><span class="meta">${e.dir||''}${(e.soloLocal||e.comunidad)?' · '+t('soloLocal'):(e.nota?' · '+e.nota:'')}</span></span></div>`).join('');
+      cuerpo.innerHTML=evs.map((e,i)=>`<div class="listaRow" data-ev="${i}"><span class="logoBox" style="background:#0891B2;width:48px;height:48px">${glyph('evento','#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${escHtml(e.n)}</span>${e.propio?' <span class="meta">'+t('tuEvento')+'</span>':''}<br><span class="meta">${e.fecha||t('fechaConfirmar')}${e.hora?' · '+e.hora:''}</span><br><span class="meta">${escHtml(e.dir||'')}${(e.soloLocal||e.comunidad)?' · '+t('soloLocal'):(e.nota?' · '+escHtml(e.nota):'')}</span></span></div>`).join('');
       cuerpo.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
         const e=evs[+row.dataset.ev];
         if(e.lat!=null&&e.lng!=null)seleccionar(e,true);
@@ -5235,7 +5296,7 @@ function renderLista(){
     if(!lista.length){cuerpo.innerHTML='<div class="meta" style="padding:10px 2px">'+t('sinAlertas')+'</div>';return;}
     cuerpo.innerHTML=lista.map(a=>{
       const nAv=a.avistamientos||0;
-      return `<div class="listaRow" data-id="${a.id}"><span class="logoBox" style="background:#C0392B;width:48px;height:48px">${glyph('perdida','#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${escHtml(a.nombre?a.nombre+' · '+especieLabel(a.especie):especieLabel(a.especie))}</span><br><span class="meta">${t('alPerdidaHace',{d:haceDiasTxt(a.fechaPerdida)})} · a <b>${fmtDist(distanciaA(a))}</b></span><br><span class="meta">${escHtml(a.zonaTexto||'')}${nAv?' · '+(nAv===1?t('alAvistamientos1'):t('alAvistamientos',{n:nAv})):''}</span></span></div>`;
+      return `<div class="listaRow" data-id="${escHtml(a.id)}"><span class="logoBox" style="background:#C0392B;width:48px;height:48px">${glyph('perdida','#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${escHtml(a.nombre?a.nombre+' · '+especieLabel(a.especie):especieLabel(a.especie))}</span><br><span class="meta">${t('alPerdidaHace',{d:haceDiasTxt(a.fechaPerdida)})} · a <b>${fmtDist(distanciaA(a))}</b></span><br><span class="meta">${escHtml(a.zonaTexto||'')}${nAv?' · '+(nAv===1?t('alAvistamientos1'):t('alAvistamientos',{n:nAv})):''}</span></span></div>`;
     }).join('');
     cuerpo.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
       const a=alertas.find(x=>x.id===row.dataset.id);
@@ -5255,7 +5316,7 @@ function renderLista(){
   cuerpo.innerHTML=lista.map(b=>{
     if(b.tipo==='adopcion'){
       const meta=[]; if(b.edad)meta.push(escHtml(b.edad)); if(b.tamano)meta.push(escHtml(tamLabel(b.tamano)));
-      return `<div class="listaRow" data-k="${claveLugar(b)}"><span class="logoBox" style="background:#EC4899;width:48px;height:48px">${glyph('adopcion','#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${escHtml(b.nombre?b.nombre+' · '+especieLabel(b.especie):especieLabel(b.especie))}</span><br><span class="meta">${escHtml(t('adTipoAdopcion'))} · a <b>${fmtDist(distanciaA(b))}</b></span><br><span class="meta">${escHtml(b.zonaTexto||'')}${meta.length?' · '+meta.join(' · '):''}</span></span></div>`;
+      return `<div class="listaRow" data-k="${escHtml(claveLugar(b))}"><span class="logoBox" style="background:#EC4899;width:48px;height:48px">${glyph('adopcion','#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${escHtml(b.nombre?b.nombre+' · '+especieLabel(b.especie):especieLabel(b.especie))}</span><br><span class="meta">${escHtml(t('adTipoAdopcion'))} · a <b>${fmtDist(distanciaA(b))}</b></span><br><span class="meta">${escHtml(b.zonaTexto||'')}${meta.length?' · '+meta.join(' · '):''}</span></span></div>`;
     }
     const c=CAT[b.cat];
     const g=b.rating!=null?`<span class="stars">${estrellasTxt(b.rating)}</span> ${b.rating.toFixed(1)} <span style="color:#888">${t('googleParen')}</span>`:'<span style="color:#888">'+t('sinGoogle')+'</span>';
@@ -5263,8 +5324,8 @@ function renderLista(){
     let estado='';
     if(b.h24)estado=' · <b>'+t('abierto')+'</b>';
     else if(b.horas){const ab=abiertoEn(horaDeNegocio(b),b.horas[0],b.horas[1]);estado=ab?' · <b>'+t('abierto')+'</b>':` · <span class="cerrado">${t('cerrado')}</span>`;}
-    const badgePrem=b.premium?' <span class="badgePremium">'+t('premBadge')+'</span>':'';
-    return `<div class="listaRow" data-k="${claveLugar(b)}"><span class="logoBox" style="background:${c.col};width:48px;height:48px">${glyph(c.g,'#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${b.n}</span>${badge}${badgePrem}<br><span class="meta">${g} · a <b>${fmtDist(distanciaA(b))}</b>${estado}</span><br><span class="meta">${lineaVisitas(b)}</span></span><button class="favBtn ${esFavorito(b)?'on':''}" data-fav="${claveLugar(b)}" title="${t('favTitulo')}">${corazonSVG()}</button></div>`;
+    const badgePrem=negocioEsPremiumVerificado(b)?' <span class="badgePremium">'+t('premBadge')+'</span>':'';
+    return `<div class="listaRow" data-k="${escHtml(claveLugar(b))}"><span class="logoBox" style="background:${c.col};width:48px;height:48px">${glyph(c.g,'#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${escHtml(b.n)}</span>${badge}${badgePrem}<br><span class="meta">${g} · a <b>${fmtDist(distanciaA(b))}</b>${estado}</span><br><span class="meta">${lineaVisitas(b)}</span></span><button class="favBtn ${esFavorito(b)?'on':''}" data-fav="${claveLugar(b)}" title="${t('favTitulo')}">${corazonSVG()}</button></div>`;
   }).join('');
   cuerpo.querySelectorAll('.listaRow').forEach(row=>row.addEventListener('click',()=>{
     const b=todosLugares().find(x=>claveLugar(x)===row.dataset.k);
@@ -5457,7 +5518,7 @@ async function buscarGeoBajoDemanda(q){
 }
 function sugRow(b,d){
   const c=CAT[b.cat];
-  return `<div class="sugItem" data-k="${claveLugar(b)}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${b.n}</span>${es24h(b)?' <span class="badge24">24/7</span>':''}${b.premium?' <span class="badgePremium">'+t('premBadge')+'</span>':''}<br><span class="cat">${catName(b.cat)} · ${b.dir}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(d)}</span></div>`;
+  return `<div class="sugItem" data-k="${escHtml(claveLugar(b))}"><span class="dot" style="background:${c.col};flex:none"></span><span><span class="nm">${escHtml(b.n)}</span>${es24h(b)?' <span class="badge24">24/7</span>':''}${negocioEsPremiumVerificado(b)?' <span class="badgePremium">'+t('premBadge')+'</span>':''}<br><span class="cat">${escHtml(catName(b.cat))} · ${escHtml(b.dir||'')}</span></span><span style="margin-left:auto;font-size:12.5px;color:#0E7C66;font-weight:800;white-space:nowrap">a ${fmtDist(d)}</span></div>`;
 }function renderSug(){
   const box=document.getElementById('sug');
   const q=filtroTxt;
@@ -5479,7 +5540,7 @@ function sugRow(b,d){
   if(document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
   html+=lista.map(({b,p})=>sugRow(b,p.dist)).join('');
   if(geoPara===q&&geoResultados.length&&lista.length<5){
-    html+=geoResultados.map((g,i)=>`<div class="sugItem" data-geo="${i}"><span style="flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="#0E7C66"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="3" fill="#fff"/></svg></span><span><span class="nm">${t('irA',{lugar:g.n})}</span><br><span class="cat">${g.full}</span></span></div>`).join('');
+    html+=geoResultados.map((g,i)=>`<div class="sugItem" data-geo="${i}"><span style="flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="#0E7C66"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="3" fill="#fff"/></svg></span><span><span class="nm">${escHtml(t('irA',{lugar:g.n}))}</span><br><span class="cat">${escHtml(g.full)}</span></span></div>`).join('');
   }else if(geoPara===q&&geoPendiente){
     html+=`<div class="sugItem"><span class="cat">${t('buscandoLugar')}</span></div>`;
   }else if(!lista.length&&!html&&geoPara===q&&!geoResultados.length){
@@ -5609,7 +5670,7 @@ function renderVisitas(){
   const box=document.getElementById('listaVisitas'); if(!box)return;
   const lista=Object.values(leerVisitas()).sort((a,b)=>b.veces-a.veces);
   if(!lista.length){box.innerHTML='<div class="meta">'+t('visitasVacias')+'</div>';return;}
-  box.innerHTML=lista.map(x=>`<div class="panelRow"><span style="width:12px;height:12px;border-radius:50%;background:${(CAT[x.cat]||CAT.vet).col};flex:none"></span><span><b>${x.n}</b><br><span class="meta">${x.veces} ${visitaPalabra(x.veces)} · <span class="stars">${estrellasTxt(x.estrellas)}</span> · ${t('ultima',{fecha:x.ultima})}${x.llegadas?` · ${t('llegadasCorto')}<b>${x.llegadas}</b> (+${x.llegadas}★)`:''}</span></span></div>`).join('');
+  box.innerHTML=lista.map(x=>`<div class="panelRow"><span style="width:12px;height:12px;border-radius:50%;background:${(CAT[x.cat]||CAT.vet).col};flex:none"></span><span><b>${escHtml(x.n)}</b><br><span class="meta">${x.veces} ${visitaPalabra(x.veces)} · <span class="stars">${estrellasTxt(x.estrellas)}</span> · ${t('ultima',{fecha:x.ultima})}${x.llegadas?` · ${t('llegadasCorto')}<b>${x.llegadas}</b> (+${x.llegadas}★)`:''}</span></span></div>`).join('');
 }
 document.querySelectorAll('#filaVisitas .starBtn').forEach(s=>s.addEventListener('click',()=>registrarVisita(+s.dataset.v)));
 /* v10.11 — Favoritos: lugares guardados en este teléfono (localStorage,
@@ -5806,7 +5867,7 @@ function renderMisMascotas(){
   const box=document.getElementById('listaMisMascotas'); if(!box)return;
   const lista=leerMisMascotas();
   if(!lista.length){box.innerHTML='<div class="meta">'+t('misMascotasVacias')+'</div>';return;}
-  box.innerHTML=lista.map(p=>`<div class="panelRow" data-id="${p.id}"><img src="${escHtml(thumbMascota(p))}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none" alt=""><span style="flex:1;min-width:0"><b>${escHtml(p.nombre||t('misSinNombre'))}</b>${p.principal?' <span class="badgePrincipal">'+t('misPrincipal')+'</span>':''}<br><span class="meta">${p.foto?t('misFoto'):escHtml(t('avatar.'+(p.avatar||'clasico')))}</span></span>${p.principal?'':'<button class="chip" data-principal="'+p.id+'">'+t('misHacerPrincipal')+'</button>'}<button class="chip" data-borrar="${p.id}" aria-label="${t('misEliminar')}">✕</button></div>`).join('');
+  box.innerHTML=lista.map(p=>`<div class="panelRow" data-id="${p.id}"><img src="${escHtml(sanUrl(thumbMascota(p))||'mascota/gstop.png')}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none" alt=""><span style="flex:1;min-width:0"><b>${escHtml(p.nombre||t('misSinNombre'))}</b>${p.principal?' <span class="badgePrincipal">'+t('misPrincipal')+'</span>':''}<br><span class="meta">${p.foto?t('misFoto'):escHtml(t('avatar.'+(p.avatar||'clasico')))}</span></span>${p.principal?'':'<button class="chip" data-principal="'+escHtml(p.id)+'">'+t('misHacerPrincipal')+'</button>'}<button class="chip" data-borrar="${escHtml(p.id)}" aria-label="${t('misEliminar')}">✕</button></div>`).join('');
   box.querySelectorAll('[data-principal]').forEach(b=>b.addEventListener('click',()=>{hacerPrincipal(b.dataset.principal);}));
   box.querySelectorAll('[data-borrar]').forEach(b=>b.addEventListener('click',()=>{
     if(!confirm(t('misConfirmEliminar')))return;
@@ -6189,6 +6250,21 @@ const FIREBASE_CONFIG = {apiKey:'AIzaSyB-bIlyVxI5BJb9DMYb-W4Q3GhhWMvNgSU', authD
 
 /* ---------- Utilidades ---------- */
 function escHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+/* PN-09: sanear URLs antes de ponerlas en src/href. Solo https: o
+   data:image/ (jpeg/png/webp/gif, con tope de tamaño). Nada de
+   javascript:, data:text/html ni SVG con scripts. Devuelve '' si no es segura. */
+function sanUrl(u,maxLen){
+  const s=String(u||'').trim();
+  if(!s)return '';
+  if(maxLen&&s.length>maxLen)return '';
+  if(/^https:\/\//i.test(s))return s;
+  if(/^data:image\/(jpeg|png|webp|gif);base64,/i.test(s))return s;
+  return '';
+}
+/* PN-24: precisión pública de coordenadas: 3 decimales (~100 m). Los pines
+   del mapa mantienen la posición exacta (es la función de la alerta:
+   encontrar a la mascota); los enlaces y textos públicos van redondeados. */
+function coordPublica(v){const n=+v;return isFinite(n)?Math.round(n*1000)/1000:0;}
 function geohashEncode(lat,lng,prec){
   const B='0123456789bcdefghjkmnpqrstuvwxyz'; let even=true,bit=0,ch=0,hash='';
   let latR=[-90,90],lngR=[-180,180];
@@ -6223,7 +6299,9 @@ function caducaEnTxt(ts){
    exacta de casa (calle/carrera + número). Solo la zona. */
 function pareceDireccion(txt){
   const s=String(txt||'');
-  return /\b(calle|carrera|avenida|av\.?|transversal|diagonal|manzana|mz\.?|apartamento|apto\.?|interior|piso|n\.?°?\s*\d)/i.test(s) && /\d/.test(s);
+  if(/#\s*\d/.test(s))return true; /* "calle 5 # 12-34" */
+  if(/\b\d{1,4}\s*-\s*\d{1,4}\b/.test(s))return true; /* "12-34", "34-56" */
+  return /\b(calle|carrera|avenida|av\.?|transversal|diagonal|manzana|mz\.?|apartamento|apto\.?|interior|piso|edificio|casa|lote|n\.?°?\s*\d)/i.test(s) && /\d/.test(s);
 }
 function bajarFoto(file){
   return new Promise((res,rej)=>{
@@ -6264,7 +6342,8 @@ async function fotoAMiniatura(blob){
 }
 
 /* ---------- Firestore por REST (sin SDK, sin clave de pago) ---------- */
-const FB={enabled:false,uid:null,idToken:null,key:null,base:null,projectId:null};
+const FB={enabled:false,uid:null,idToken:null,refreshToken:null,tokenExpiraEn:0,renovacionTimer:null,sesionError:false,key:null,base:null,projectId:null};
+const FB_AUTH_LS='mascotas_fb_auth_v1'; /* uid + idToken + refreshToken (PN-07) */
 function fbConfigEfectiva(){
   if(typeof window!=='undefined'&&window.__FB_OVERRIDE__)return window.__FB_OVERRIDE__;
   return FIREBASE_CONFIG;
@@ -6273,18 +6352,107 @@ async function fbInit(){
   const cfg=fbConfigEfectiva();
   if(FIREBASE_CONFIG_PENDIENTE && !window.__FB_OVERRIDE__)return false;
   if(!cfg.apiKey||!cfg.projectId)return false;
+  FB.key=cfg.apiKey; FB.projectId=cfg.projectId;
+  FB.base='https://firestore.googleapis.com/v1/projects/'+cfg.projectId+'/databases/(default)/documents';
+  /* PN-07: si hay refreshToken guardado, renovarlo para mantener el MISMO UID. */
+  const guardado=leerAuthLocal();
+  if(guardado&&guardado.refreshToken){
+    FB.refreshToken=guardado.refreshToken;
+    try{
+      if(await fbRefrescarToken()){FB.enabled=true;fbProgramarRenovacion();return true;}
+    }catch(e){}
+    /* refresh fallido (revocado/expirado): caer a signUp nuevo */
+  }
   try{
-    FB.key=cfg.apiKey; FB.projectId=cfg.projectId;
-    FB.base='https://firestore.googleapis.com/v1/projects/'+cfg.projectId+'/databases/(default)/documents';
     const r=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key='+cfg.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({returnSecureToken:true})});
-    if(!r.ok)return false;
+    if(!r.ok){FB.sesionError=true;return false;}
     const j=await r.json();
-    FB.idToken=j.idToken; FB.uid=j.localId;
-    try{localStorage.setItem('mascotas_anon_uid_v1',FB.uid);}catch(e){}
-    FB.enabled=true; return true;
-  }catch(e){return false;}
+    FB.idToken=j.idToken; FB.uid=j.localId; FB.refreshToken=j.refreshToken||null;
+    FB.tokenExpiraEn=Date.now()+(parseInt(j.expiresIn,10)||3600)*1000;
+    guardarAuthLocal();
+    FB.enabled=true; fbProgramarRenovacion(); return true;
+  }catch(e){FB.sesionError=true;return false;}
 }
 function fbHeaders(){return {'Content-Type':'application/json','Authorization':'Bearer '+FB.idToken};}
+/* PN-07/08 — Auth anónima persistente (sin SDK, REST de Identity Toolkit).
+   El refreshToken se guarda en localStorage, igual que la persistencia por
+   defecto del SDK de Firebase Auth: con él se renueva el idToken sin crear
+   un UID nuevo en cada apertura. Sin refreshToken válido se crea una sesión
+   anónima nueva y se guardan los tres valores (uid, idToken, refreshToken). */
+function guardarAuthLocal(){
+  try{
+    if(FB.uid&&FB.idToken&&FB.refreshToken)localStorage.setItem(FB_AUTH_LS,JSON.stringify({uid:FB.uid,idToken:FB.idToken,refreshToken:FB.refreshToken,expiraEn:FB.tokenExpiraEn}));
+  }catch(e){}
+}
+function leerAuthLocal(){try{return JSON.parse(localStorage.getItem(FB_AUTH_LS))||null;}catch(e){return null;}}
+async function fbRefrescarToken(){
+  if(!FB.refreshToken)return false;
+  try{
+    const r=await fetch('https://securetoken.googleapis.com/v1/token?key='+FB.key,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({grant_type:'refresh_token',refresh_token:FB.refreshToken})});
+    if(!r.ok)return false;
+    const j=await r.json();
+    FB.idToken=j.id_token; FB.uid=j.user_id; FB.refreshToken=j.refresh_token||FB.refreshToken;
+    FB.tokenExpiraEn=Date.now()+(parseInt(j.expires_in,10)||3600)*1000;
+    guardarAuthLocal(); return true;
+  }catch(e){return false;}
+}
+function fbProgramarRenovacion(){
+  try{clearTimeout(FB.renovacionTimer);}catch(e){}
+  /* renovar ~50 min (o 5 min antes de caducar, lo antes que toque) */
+  const hastaCaducar=FB.tokenExpiraEn-Date.now()-5*60*1000;
+  const delay=Math.max(60*1000,Math.min(50*60*1000,hastaCaducar||50*60*1000));
+  FB.renovacionTimer=setTimeout(async()=>{
+    if(await fbRefrescarToken())fbProgramarRenovacion();
+    else FB.sesionError=true;
+  },delay);
+}
+/* PN-08: fetch a Firestore con reintento ÚNICO tras un 401 con token renovado. */
+async function fbFetch(url,opts){
+  opts=opts||{};
+  const hacer=async()=>{const h=Object.assign({},opts.headers||{},fbHeaders());return fetch(url,Object.assign({},opts,{headers:h}));};
+  let r=await hacer();
+  if(r&&r.status===401&&FB.refreshToken){
+    if(await fbRefrescarToken()){fbProgramarRenovacion();r=await hacer();}
+    else FB.sesionError=true;
+  }
+  return r;
+}
+/* PN-10: listar una colección REST siguiendo nextPageToken hasta maxDocs
+   (límite de UX) o agotar páginas. Devuelve documentos crudos. */
+async function fbListarColeccion(coleccion,params,maxDocs){
+  let docs=[],pageToken='';
+  const base=FB.base+'/'+coleccion+'?'+params;
+  do{
+    const url=base+(pageToken?'&pageToken='+encodeURIComponent(pageToken):'');
+    const r=await fbFetch(url,{headers:fbHeaders()});
+    if(!r.ok)throw new Error('fb list '+coleccion+' '+r.status);
+    const j=await r.json();
+    docs=docs.concat(j.documents||[]);
+    pageToken=j.nextPageToken||'';
+  }while(pageToken&&docs.length<maxDocs);
+  return docs.slice(0,maxDocs);
+}
+/* PN-11: filtro por zona en el SERVIDOR (runQuery con rango de geohash).
+   Si el viewport cabe en un prefijo común de geohash (>=2 caracteres) se
+   consulta solo esa zona; si no, devuelve null y el llamador usa
+   fbListarColeccion + filtro de cliente. runQuery no usa orderBy aquí para
+   no exigir índices compuestos: el orden se aplica en cliente. */
+async function fbListarPorZona(coleccion,bounds,maxDocs){
+  const g1=geohashEncode(bounds.s,bounds.w,5),g2=geohashEncode(bounds.n,bounds.e,5);
+  let pref='';for(let i=0;i<5;i++){if(g1[i]===g2[i])pref+=g1[i];else break;}
+  if(pref.length<2)return null;
+  try{
+    const sup=pref.slice(0,-1)+String.fromCharCode(pref.charCodeAt(pref.length-1)+1);
+    const body={structuredQuery:{from:[{collectionId:coleccion}],where:{compositeFilter:{op:'AND',filters:[
+      {fieldFilter:{field:{fieldPath:'geohash'},op:'GREATER_THAN_OR_EQUAL',value:{stringValue:pref}}},
+      {fieldFilter:{field:{fieldPath:'geohash'},op:'LESS_THAN',value:{stringValue:sup}}}
+    ]}},limit:maxDocs}};
+    const r=await fbFetch('https://firestore.googleapis.com/v1/projects/'+FB.projectId+'/databases/(default)/documents:runQuery',{method:'POST',headers:fbHeaders(),body:JSON.stringify(body)});
+    if(!r.ok)return null;
+    const j=await r.json();
+    return (j||[]).map(x=>x.document).filter(Boolean);
+  }catch(e){return null;}
+}
 function fsVal(v){
   if(v==null)return {nullValue:null};
   if(typeof v==='number')return Number.isInteger(v)?{integerValue:String(v)}:{doubleValue:v};
@@ -6318,15 +6486,12 @@ function fsDocToObj(doc){
   return o;
 }
 /* Sin Storage: la foto va como miniatura Base64 en fotoUrl (ver fotoAMiniatura). */
-async function fbIncrementar(id,campo,n){
-  const url='https://firestore.googleapis.com/v1/projects/'+FB.projectId+'/databases/(default)/documents:commit';
-  const body={writes:[{transform:{document:FB.base+'/alertas/'+id,fieldTransforms:[{fieldPath:campo,increment:{integerValue:String(n)}}]}}]};
-  const r=await fetch(url,{method:'POST',headers:fbHeaders(),body:JSON.stringify(body)});
-  if(!r.ok)throw new Error('fb inc '+r.status);
-}
+/* PN-05/reglas v10.17: fbIncrementar ELIMINADO. Las reglas no permiten al
+   dueño modificar contadores del documento padre (avistamientos/reportes):
+   los reportes y avistamientos viven solo en sus subcolecciones. */
 async function fbActualizar(id,patch){
   const url=FB.base+'/alertas/'+id+'?updateMask.fieldPaths='+Object.keys(patch).map(encodeURIComponent).join('&updateMask.fieldPaths=');
-  const r=await fetch(url,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields(patch))});
+  const r=await fbFetch(url,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields(patch))});
   if(!r.ok)throw new Error('fb patch '+r.status);
 }
 
@@ -6368,10 +6533,9 @@ const PerdidasDB={
     const ahora=Date.now();
     const ok=a=>a.estado==='activa'&&a.expiraEn>ahora&&a.reportes<3&&a.lng>=bounds.w&&a.lng<=bounds.e&&a.lat>=bounds.s&&a.lat<=bounds.n;
     if(FB.enabled){
-      const r=await fetch(FB.base+'/alertas?pageSize=50&orderBy=creadoEn%20desc',{headers:fbHeaders()});
-      if(!r.ok)throw new Error('fb list '+r.status);
-      const j=await r.json();
-      return (j.documents||[]).map(fsDocToObj).map(normalizarAlerta).filter(ok);
+      const porZona=await fbListarPorZona('alertas',bounds,200);
+      const docs=porZona||await fbListarColeccion('alertas','pageSize=50&orderBy=creadoEn%20desc',200);
+      return docs.map(fsDocToObj).map(normalizarAlerta).filter(ok);
     }
     return leerAlertasLocal().map(normalizarAlerta).filter(ok).sort((x,y)=>y.creadoEn-x.creadoEn).slice(0,50);
   },
@@ -6387,7 +6551,7 @@ const PerdidasDB={
         creadoEn:new Date(),expiraEn:new Date(Date.now()+DIAS_CADUCIDAD*864e5),
         estado:'activa',contactoTipo:d.contactoTipo||'ninguno',contactoValor:d.contactoValor||'',
         creadoPor:FB.uid,avistamientos:0,reportes:0,renovada:false,idioma:idioma};
-      const r=await fetch(FB.base+'/alertas',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
+      const r=await fbFetch(FB.base+'/alertas',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
       if(!r.ok)throw new Error('fb create '+r.status);
       const j=await r.json();
       const creada=normalizarAlerta({...doc,id:j.name.split('/').pop(),fechaPerdida:doc.fechaPerdida.getTime(),creadoEn:doc.creadoEn.getTime(),expiraEn:doc.expiraEn.getTime()});
@@ -6410,9 +6574,11 @@ const PerdidasDB={
     /* av: {nota,lat,lng,fotoUrl?} — el punto es donde se vio, no la casa */
     if(FB.enabled){
       const doc={creadoPor:FB.uid,creadoEn:new Date(),nota:av.nota||'',lat:av.lat,lng:av.lng,fotoUrl:av.fotoUrl||null,idioma:idioma};
-      const r=await fetch(FB.base+'/alertas/'+id+'/avistamientos',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
+      const r=await fbFetch(FB.base+'/alertas/'+id+'/avistamientos',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
       if(!r.ok)throw new Error('fb av '+r.status);
-      await fbIncrementar(id,'avistamientos',1);
+      /* PN-05/reglas v10.17: NO incrementar 'avistamientos' en el padre.
+         Las reglas no permiten al dueño modificar contadores; el conteo
+         vive en la subcolección. El flujo no depende del incremento. */
       return true;
     }
     const todas=leerAlertasLocal(); const a=todas.find(x=>x.id===id); if(!a)return false;
@@ -6423,10 +6589,10 @@ const PerdidasDB={
   },
   async listarAvistamientos(id){
     if(FB.enabled){
-      const r=await fetch(FB.base+'/alertas/'+id+'/avistamientos?pageSize=20&orderBy=creadoEn%20desc',{headers:fbHeaders()});
-      if(!r.ok)return [];
-      const j=await r.json();
-      return (j.documents||[]).map(fsDocToObj);
+      try{
+        const docs=await fbListarColeccion('alertas/'+id+'/avistamientos','pageSize=20&orderBy=creadoEn%20desc',100);
+        return docs.map(fsDocToObj);
+      }catch(e){return [];}
     }
     const a=leerAlertasLocal().find(x=>x.id===id);
     return a?(a.avistamientosLista||[]):[];
@@ -6435,11 +6601,12 @@ const PerdidasDB={
     /* 1 reporte por usuario; a los 3 la alerta se oculta sola */
     if(FB.enabled){
       const docRef=FB.base+'/alertas/'+id+'/reportes/'+FB.uid;
-      const ex=await fetch(docRef,{headers:fbHeaders()});
+      const ex=await fbFetch(docRef,{headers:fbHeaders()});
       if(ex.ok)return null; /* ya reportó */
-      const r=await fetch(docRef,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields({motivo:motivo,creadoEn:new Date()}))});
+      const r=await fbFetch(docRef,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields({motivo:motivo,creadoEn:new Date()}))});
       if(!r.ok)throw new Error('fb rep '+r.status);
-      await fbIncrementar(id,'reportes',1);
+      /* PN-05/reglas v10.17: NO incrementar 'reportes' en el padre (denegado
+         por reglas). El reporte queda como documento en la subcolección. */
       return 'ok';
     }
     const todas=leerAlertasLocal(); const a=todas.find(x=>x.id===id); if(!a)return null;
@@ -6456,7 +6623,7 @@ const PerdidasDB={
   },
   async borrar(id){
     if(FB.enabled){
-      const r=await fetch(FB.base+'/alertas/'+id,{method:'DELETE',headers:fbHeaders()});
+      const r=await fbFetch(FB.base+'/alertas/'+id,{method:'DELETE',headers:fbHeaders()});
       if(!r.ok)throw new Error('fb del '+r.status);
       return true;
     }
@@ -6482,15 +6649,11 @@ function leerMisAdopciones(){try{return JSON.parse(localStorage.getItem(misAdopc
 function guardarMisAdopciones(a){try{localStorage.setItem(misAdopcionesLS,JSON.stringify(a));}catch(e){}}
 async function fbActualizarAdopcion(id,patch){
   const url=FB.base+'/adopciones/'+id+'?updateMask.fieldPaths='+Object.keys(patch).map(encodeURIComponent).join('&updateMask.fieldPaths=');
-  const r=await fetch(url,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields(patch))});
+  const r=await fbFetch(url,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields(patch))});
   if(!r.ok)throw new Error('fb patch ad '+r.status);
 }
-async function fbIncrementarAdopcion(id,campo,n){
-  const url='https://firestore.googleapis.com/v1/projects/'+FB.projectId+'/databases/(default)/documents:commit';
-  const body={writes:[{transform:{document:FB.base+'/adopciones/'+id,fieldTransforms:[{fieldPath:campo,increment:{integerValue:String(n)}}]}}]};
-  const r=await fetch(url,{method:'POST',headers:fbHeaders(),body:JSON.stringify(body)});
-  if(!r.ok)throw new Error('fb inc ad '+r.status);
-}
+/* PN-05/reglas v10.17: fbIncrementarAdopcion ELIMINADO (mismo motivo: los
+   contadores del padre no se pueden modificar desde el cliente). */
 function tamLabel(tm){return tm==='pequeno'?t('adTamPequeno'):tm==='mediano'?t('adTamMediano'):tm==='grande'?t('adTamGrande'):'';}
 function normalizarAdopcion(a){
   const creadoEn=a.creadoEn||Date.now();
@@ -6517,10 +6680,9 @@ const AdopcionesDB={
     const ahora=Date.now();
     const ok=a=>a.estado==='disponible'&&a.expiraEn>ahora&&a.reportes<3&&a.lng>=bounds.w&&a.lng<=bounds.e&&a.lat>=bounds.s&&a.lat<=bounds.n;
     if(FB.enabled){
-      const r=await fetch(FB.base+'/adopciones?pageSize=50&orderBy=creadoEn%20desc',{headers:fbHeaders()});
-      if(!r.ok)throw new Error('fb list ad '+r.status);
-      const j=await r.json();
-      return (j.documents||[]).map(fsDocToObj).map(normalizarAdopcion).filter(ok);
+      const porZona=await fbListarPorZona('adopciones',bounds,200);
+      const docs=porZona||await fbListarColeccion('adopciones','pageSize=50&orderBy=creadoEn%20desc',200);
+      return docs.map(fsDocToObj).map(normalizarAdopcion).filter(ok);
     }
     return leerAdopcionesLocal().map(normalizarAdopcion).filter(ok).sort((x,y)=>y.creadoEn-x.creadoEn).slice(0,50);
   },
@@ -6536,7 +6698,7 @@ const AdopcionesDB={
         creadoEn:new Date(),expiraEn:new Date(Date.now()+DIAS_ADOPCION*864e5),
         estado:'disponible',contactoTipo:d.contactoTipo||'whatsapp',contactoValor:d.contactoValor||'',
         creadoPor:FB.uid,reportes:0,renovada:false,idioma:idioma};
-      const r=await fetch(FB.base+'/adopciones',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
+      const r=await fbFetch(FB.base+'/adopciones',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
       if(!r.ok)throw new Error('fb create ad '+r.status);
       const j=await r.json();
       const creada=normalizarAdopcion({...doc,id:j.name.split('/').pop(),fechaPublicacion:doc.fechaPublicacion.getTime(),creadoEn:doc.creadoEn.getTime(),expiraEn:doc.expiraEn.getTime()});
@@ -6559,11 +6721,12 @@ const AdopcionesDB={
     /* 1 reporte por usuario; a los 3 la adopción se oculta sola */
     if(FB.enabled){
       const docRef=FB.base+'/adopciones/'+id+'/reportes/'+FB.uid;
-      const ex=await fetch(docRef,{headers:fbHeaders()});
+      const ex=await fbFetch(docRef,{headers:fbHeaders()});
       if(ex.ok)return null;
-      const r=await fetch(docRef,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields({motivo:motivo,creadoEn:new Date()}))});
+      const r=await fbFetch(docRef,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields({motivo:motivo,creadoEn:new Date()}))});
       if(!r.ok)throw new Error('fb rep ad '+r.status);
-      await fbIncrementarAdopcion(id,'reportes',1);
+      /* PN-05/reglas v10.17: NO incrementar 'reportes' en el padre (denegado
+         por reglas). El reporte queda como documento en la subcolección. */
       return 'ok';
     }
     const todas=leerAdopcionesLocal(); const a=todas.find(x=>x.id===id); if(!a)return null;
@@ -6580,7 +6743,7 @@ const AdopcionesDB={
   },
   async borrar(id){
     if(FB.enabled){
-      const r=await fetch(FB.base+'/adopciones/'+id,{method:'DELETE',headers:fbHeaders()});
+      const r=await fbFetch(FB.base+'/adopciones/'+id,{method:'DELETE',headers:fbHeaders()});
       if(!r.ok)throw new Error('fb del ad '+r.status);
       return true;
     }
@@ -6724,16 +6887,17 @@ function quitarPinAdopcion(id){
   adopciones=adopciones.filter(a=>a.id!==id);
 }
 
-/* ---------- v10.13 — Portal Premium (Google Play Billing) ----------
-   Cobro: Google Play Billing con la Digital Goods API
-   (navigator.getDigitalGoodsService('https://play.google.com/billing')).
-   SKUs de suscripción (se crean en Play Console al publicar la app):
-   premium_business_monthly ($8 USD/mes), premium_user_monthly ($3 USD/mes).
-   En la versión web/PWA el servicio NO existe: la app lo dice con
-   honestidad y NO cobra ni activa premium. La activación es v1, lado
-   cliente: el estado premium vive en Firestore (colección "premium", doc
-   por UID) + localStorage. La verificación del recibo en servidor queda
-   para después; aquí no se inventa ninguna compra.
+/* ---------- v10.13 — Portal Premium (Google Play Billing) — MODO DEMO (v10.17, PN-01/02/03) ----------
+   PREMIUM ES SOLO DEMO/INFORMATIVO. No hay verificador de compras del lado
+   del servidor y la lógica del cliente NUNCA puede otorgar derechos reales:
+   un cliente modificado podría autodeclararse premium (auditoría PN-01).
+   Por eso: esPremium()/esPremiumNegocio()/esPremiumUsuario() devuelven
+   SIEMPRE false; activarPremium() y comprarPremium() NO activan nada ni
+   escriben estado 'activo' en Firestore ni en localStorage; el portal solo
+   MUESTRA precios y beneficios; las ofertas soloPremium solo muestran su
+   teaser bloqueado; los negocios se crean siempre con premium:false.
+   Cuando exista verificación de compras en servidor (Play Billing validado
+   fuera del cliente), se repone aquí la lectura del entitlement del servidor.
    Precios (orden del dueño 2026-10-26): Negocio $8/mes, Usuario $3/mes.
    Sin publicidad: la app NO tiene contenedores de anuncios hoy. El flag
    ADS_ENABLED existe para que, cuando los haya, se oculten al premium.
@@ -6751,87 +6915,38 @@ const misNegociosLS='mascotas_mis_negocios_v1';
 const ofertasLS='mascotas_ofertas_local_v1';
 const avisosLS='mascotas_avisos_local_v1';
 function leerPremium(){try{return JSON.parse(localStorage.getItem(premiumLS))||null;}catch(e){return null;}}
-function guardarPremiumLocal(p){try{if(p)localStorage.setItem(premiumLS,JSON.stringify(p));else localStorage.removeItem(premiumLS);}catch(e){}}
-function esPremium(){const p=leerPremium();return !!(p&&p.estado==='activo'&&p.plan);}
-function esPremiumNegocio(){const p=leerPremium();return !!(p&&p.estado==='activo'&&p.plan==='business');}
-function esPremiumUsuario(){const p=leerPremium();return !!(p&&p.estado==='activo'&&p.plan==='user');}
+/* PN-01 DEMO: nadie es premium. Estas tres funciones devuelven siempre false
+   hasta que un verificador de compras del lado del servidor emita el
+   entitlement. NO leer localStorage ni Firestore como prueba de pago. */
+function esPremium(){return false;}
+function esPremiumNegocio(){return false;}
+function esPremiumUsuario(){return false;}
+/* PN-01 DEMO: un negocio solo es premium si el SERVIDOR lo verifica. Hoy
+   ningún negocio lo es: el pin dorado y los beneficios NO se otorgan. */
+function negocioEsPremiumVerificado(b){return false;}
 function aplicarAds(){
   const prem=esPremium();
   try{document.body.dataset.ads=prem?'off':'on';}catch(e){}
   document.querySelectorAll('[data-ads-slot]').forEach(el=>{el.style.display=prem?'none':'';});
 }
+/* PN-01 DEMO: NO activa nada. No escribe estado 'activo' en Firestore ni
+   en localStorage, ni acepta un purchaseToken como prueba de pago. */
 async function activarPremium(plan,purchaseToken){
-  const ahora=Date.now();
-  const p={plan:plan,estado:'activo',purchaseToken:purchaseToken||null,creadoEn:ahora,actualizadoEn:ahora};
-  guardarPremiumLocal(p);
-  if(FB.enabled){
-    try{
-      const url=FB.base+'/premium/'+FB.uid;
-      const doc={plan:plan,estado:'activo',purchaseToken:purchaseToken||'',creadoEn:new Date(ahora),actualizadoEn:new Date(ahora)};
-      await fetch(url,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
-    }catch(e){/* local ya guardado; la nube se sincroniza al restaurar */}
-  }
+  mostrarZonaEstado(t('premDemoAviso'),6000);
   aplicarEstadoPremium();
-  return p;
+  return null;
 }
 async function restaurarPremium(){
+  /* PN-01 DEMO: no se restaura ningún estado premium. Se limpia el registro
+     local heredado de v10.16 (si lo había) para que nada lo lea como derecho. */
+  try{localStorage.removeItem(premiumLS);}catch(e){}
   aplicarEstadoPremium();
-  if(FB.enabled){
-    try{
-      const r=await fetch(FB.base+'/premium/'+FB.uid,{headers:fbHeaders()});
-      if(r.ok){
-        const j=await r.json();
-        const o=fsDocToObj(j);
-        if(o&&o.estado==='activo'&&(o.plan==='business'||o.plan==='user')){
-          guardarPremiumLocal({plan:o.plan,estado:'activo',purchaseToken:o.purchaseToken||null,creadoEn:o.creadoEn||Date.now(),actualizadoEn:o.actualizadoEn||Date.now()});
-          aplicarEstadoPremium();
-        }
-      }
-    }catch(e){}
-  }
-  /* Si la app viene de Play Store, refrescar desde las compras reales. */
-  try{
-    if('getDigitalGoodsService' in window){
-      const service=await navigator.getDigitalGoodsService(PREMIUM_CONFIG.billingServiceUrl);
-      if(service){
-        const compras=await service.listPurchases();
-        const skuActivo=(compras||[]).find(c=>c.itemId===PREMIUM_CONFIG.skus.business||c.itemId===PREMIUM_CONFIG.skus.user);
-        if(skuActivo){
-          const plan=skuActivo.itemId===PREMIUM_CONFIG.skus.business?'business':'user';
-          await activarPremium(plan,skuActivo.purchaseToken||null);
-        }
-      }
-    }
-  }catch(e){/* web/PWA: sin servicio, el estado local manda */}
 }
+/* PN-01 DEMO: la compra NO está disponible. Solo avisa; no llama a Play
+   Billing, no cobra y no otorga nada. */
 async function comprarPremium(plan){
-  const sku=PREMIUM_CONFIG.skus[plan];
-  if(!sku)return false;
-  if(!('getDigitalGoodsService' in window)){mostrarZonaEstado(t('premNoPlay'),6000);return false;}
-  let service=null;
-  try{service=await navigator.getDigitalGoodsService(PREMIUM_CONFIG.billingServiceUrl);}catch(e){service=null;}
-  if(!service){mostrarZonaEstado(t('premNoPlay'),6000);return false;}
-  let details=[];
-  try{details=await service.getDetails([sku]);}catch(e){details=[];}
-  if(!details.length){mostrarZonaEstado(t('premPlayNoDisponible'),6000);return false;}
-  try{
-    const res=await service.purchase(details[0]);
-    let token=res&&res.purchaseToken?res.purchaseToken:null;
-    if(!token){
-      try{
-        const compras=await service.listPurchases();
-        const c=(compras||[]).find(x=>x.itemId===sku);
-        if(c)token=c.purchaseToken||null;
-      }catch(e){}
-    }
-    if(token){try{await service.acknowledge(token,'recurring');}catch(e){/* Play puede confirmar solo */}}
-    await activarPremium(plan,token);
-    mostrarZonaEstado(t('premCompraOk'),6000);
-    return true;
-  }catch(e){
-    mostrarZonaEstado(t('premCompraCancelada'),5000);
-    return false;
-  }
+  mostrarZonaEstado(t('premDemoAviso'),6000);
+  return false;
 }
 
 /* ---------- Negocios registrados (local + Firestore, espejo de AdopcionesDB) ----------
@@ -6850,7 +6965,7 @@ function normalizarNegocio(a){
     direccion:a.direccion||'', zonaTexto:a.zonaTexto||'', horarios:a.horarios||'',
     beneficioPremium:a.beneficioPremium||'', logoUrl:a.logoUrl||null,
     lat:+a.lat, lng:+a.lng, geohash:a.geohash||geohashEncode(+a.lat,+a.lng,7),
-    estado:a.estado||'activo', premium:!!a.premium,
+    estado:a.estado||'activo', premium:false, /* PN-01/03 DEMO: el flag del cliente no se confía */
     creadoPor:a.creadoPor||'', creadoEn:creadoEn, idioma:a.idioma||idioma,
     /* forma de "lugar": reutiliza buscador, filtros, lista y tarjeta.
        OJO: "horas" DEBE ser null o [apertura,cierre] numérico: textoEstado()
@@ -6867,25 +6982,23 @@ const NegociosDB={
     const ahora=Date.now();
     const ok=a=>a.estado==='activo'&&a.lng>=bounds.w&&a.lng<=bounds.e&&a.lat>=bounds.s&&a.lat<=bounds.n;
     if(FB.enabled){
-      const r=await fetch(FB.base+'/negocios?pageSize=50&orderBy=creadoEn%20desc',{headers:fbHeaders()});
-      if(!r.ok)throw new Error('fb list neg '+r.status);
-      const j=await r.json();
-      return (j.documents||[]).map(fsDocToObj).map(normalizarNegocio).filter(ok);
+      const porZona=await fbListarPorZona('negocios',bounds,200);
+      const docs=porZona||await fbListarColeccion('negocios','pageSize=50&orderBy=creadoEn%20desc',200);
+      return docs.map(fsDocToObj).map(normalizarNegocio).filter(ok);
     }
     return leerNegociosLocal().map(normalizarNegocio).filter(ok).sort((x,y)=>y.creadoEn-x.creadoEn).slice(0,50);
   },
   async publicar(d){
     /* d: {nombre,categoria,descripcion,telefono,whatsapp,direccion,zonaTexto,
            horarios,beneficioPremium,logoDataUrl,lat,lng} */
-    const premiumAhora=esPremiumNegocio();
     if(FB.enabled){
       const doc={nombre:d.nombre,categoria:d.categoria,descripcion:d.descripcion||'',
         telefono:d.telefono||'',whatsapp:d.whatsapp||'',direccion:d.direccion||'',
         zonaTexto:d.zonaTexto||'',horarios:d.horarios||'',beneficioPremium:d.beneficioPremium||'',
         logoUrl:d.logoDataUrl||null,lat:d.lat,lng:d.lng,
-        geohash:geohashEncode(d.lat,d.lng,7),estado:'activo',premium:premiumAhora,
+        geohash:geohashEncode(d.lat,d.lng,7),estado:'activo',premium:false, /* PN-03 DEMO: siempre false */
         creadoPor:FB.uid,creadoEn:new Date(),idioma:idioma};
-      const r=await fetch(FB.base+'/negocios',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
+      const r=await fbFetch(FB.base+'/negocios',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
       if(!r.ok)throw new Error('fb create neg '+r.status);
       const j=await r.json();
       return normalizarNegocio({...doc,id:j.name.split('/').pop(),creadoEn:doc.creadoEn.getTime()});
@@ -6896,7 +7009,7 @@ const NegociosDB={
       telefono:d.telefono||'',whatsapp:d.whatsapp||'',direccion:d.direccion||'',
       zonaTexto:d.zonaTexto||'',horarios:d.horarios||'',beneficioPremium:d.beneficioPremium||'',
       logoUrl:d.logoDataUrl||null,lat:d.lat,lng:d.lng,
-      geohash:geohashEncode(d.lat,d.lng,7),estado:'activo',premium:premiumAhora,
+      geohash:geohashEncode(d.lat,d.lng,7),estado:'activo',premium:false, /* PN-03 DEMO: siempre false */
       creadoPor:uidAnon(),creadoEn:ahora,idioma:idioma});
     const todas=leerNegociosLocal(); todas.unshift(a); guardarNegociosLocal(todas);
     return a;
@@ -6905,9 +7018,9 @@ const NegociosDB={
     /* Solo el dueño; nunca toca premium, estado ni creadoPor. */
     if(FB.enabled){
       const url=FB.base+'/negocios/'+id+'?updateMask.fieldPaths='+Object.keys(patch).map(encodeURIComponent).join('&updateMask.fieldPaths=');
-      const r=await fetch(url,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields(patch))});
+      const r=await fbFetch(url,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields(patch))});
       if(!r.ok)throw new Error('fb patch neg '+r.status);
-      const g=await fetch(FB.base+'/negocios/'+id,{headers:fbHeaders()});
+      const g=await fbFetch(FB.base+'/negocios/'+id,{headers:fbHeaders()});
       if(!g.ok)throw new Error('fb get neg '+g.status);
       return normalizarNegocio(fsDocToObj(await g.json()));
     }
@@ -6917,7 +7030,7 @@ const NegociosDB={
   },
   async borrar(id){
     if(FB.enabled){
-      const r=await fetch(FB.base+'/negocios/'+id,{method:'DELETE',headers:fbHeaders()});
+      const r=await fbFetch(FB.base+'/negocios/'+id,{method:'DELETE',headers:fbHeaders()});
       if(!r.ok)throw new Error('fb del neg '+r.status);
       return true;
     }
@@ -6971,10 +7084,10 @@ function normalizarOferta(o){
 const OfertasDB={
   async listar(){
     if(FB.enabled){
-      const r=await fetch(FB.base+'/ofertas?pageSize=100&orderBy=creadoEn%20desc',{headers:fbHeaders()});
-      if(!r.ok)throw new Error('fb list of '+r.status);
-      const j=await r.json();
-      return (j.documents||[]).map(fsDocToObj).map(normalizarOferta);
+      /* PN-11 PARCIAL: 'ofertas' no tiene geohash; no se puede filtrar por
+         zona en el servidor. Se pagina completa y se filtra en cliente. */
+      const docs=await fbListarColeccion('ofertas','pageSize=100&orderBy=creadoEn%20desc',200);
+      return docs.map(fsDocToObj).map(normalizarOferta);
     }
     return leerOfertasLocal().map(normalizarOferta).sort((x,y)=>y.creadoEn-x.creadoEn).slice(0,100);
   },
@@ -6983,13 +7096,17 @@ const OfertasDB={
     return todas.filter(o=>o.negocioId===negocioId);
   },
   async publicar(d){
-    /* d: {negocioId,negocioNombre,titulo,descripcion,descuento,desde,hasta,soloPremium} */
+    /* d: {negocioId,negocioNombre,titulo,descuento,desde,hasta,soloPremium}
+       PN-02: el documento público es SOLO teaser (sin 'descripcion'): el
+       detalle exclusivo no viaja en la oferta pública.
+       PN-26: el negocioId debe ser de un negocio propio. */
+    if(!leerMisNegocios().includes(d.negocioId))throw new Error('negocio no propio');
     if(FB.enabled){
       const doc={negocioId:d.negocioId,negocioNombre:d.negocioNombre||'',
-        titulo:d.titulo,descripcion:d.descripcion||'',descuento:Math.max(0,Math.min(100,d.descuento|0)),
+        titulo:d.titulo,descuento:Math.max(0,Math.min(100,d.descuento|0)),
         desde:new Date(d.desde),hasta:new Date(d.hasta),soloPremium:!!d.soloPremium,
         estado:'activa',creadoPor:FB.uid,creadoEn:new Date(),idioma:idioma};
-      const r=await fetch(FB.base+'/ofertas',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
+      const r=await fbFetch(FB.base+'/ofertas',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
       if(!r.ok)throw new Error('fb create of '+r.status);
       const j=await r.json();
       return normalizarOferta({...doc,id:j.name.split('/').pop(),desde:doc.desde.getTime(),hasta:doc.hasta.getTime(),creadoEn:doc.creadoEn.getTime()});
@@ -6997,7 +7114,7 @@ const OfertasDB={
     const ahora=Date.now();
     const o=normalizarOferta({id:'loc-'+ahora.toString(36)+'-'+Math.random().toString(36).slice(2,7),
       negocioId:d.negocioId,negocioNombre:d.negocioNombre||'',titulo:d.titulo,
-      descripcion:d.descripcion||'',descuento:Math.max(0,Math.min(100,d.descuento|0)),
+      descuento:Math.max(0,Math.min(100,d.descuento|0)),
       desde:d.desde,hasta:d.hasta,soloPremium:!!d.soloPremium,
       estado:'activa',creadoPor:uidAnon(),creadoEn:ahora,idioma:idioma});
     const todas=leerOfertasLocal(); todas.unshift(o); guardarOfertasLocal(todas);
@@ -7035,19 +7152,21 @@ function normalizarAviso(a){
 const AvisosDB={
   async listar(){
     if(FB.enabled){
-      const r=await fetch(FB.base+'/avisos?pageSize=50&orderBy=creadoEn%20desc',{headers:fbHeaders()});
-      if(!r.ok)throw new Error('fb list av '+r.status);
-      const j=await r.json();
-      return (j.documents||[]).map(fsDocToObj).map(normalizarAviso);
+      /* PN-11 PARCIAL: 'avisos' no tiene geohash; no se puede filtrar por
+         zona en el servidor. Se pagina completa y se filtra en cliente. */
+      const docs=await fbListarColeccion('avisos','pageSize=50&orderBy=creadoEn%20desc',200);
+      return docs.map(fsDocToObj).map(normalizarAviso);
     }
     return leerAvisosLocal().map(normalizarAviso).sort((x,y)=>y.creadoEn-x.creadoEn).slice(0,50);
   },
   async publicar(d){
-    /* d: {negocioId,negocioNombre,titulo,texto} */
+    /* d: {negocioId,negocioNombre,titulo,texto}
+       PN-26: el negocioId debe ser de un negocio propio. */
+    if(!leerMisNegocios().includes(d.negocioId))throw new Error('negocio no propio');
     if(FB.enabled){
       const doc={negocioId:d.negocioId,negocioNombre:d.negocioNombre||'',
         titulo:d.titulo,texto:d.texto,creadoPor:FB.uid,creadoEn:new Date(),idioma:idioma};
-      const r=await fetch(FB.base+'/avisos',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
+      const r=await fbFetch(FB.base+'/avisos',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
       if(!r.ok)throw new Error('fb create av '+r.status);
       const j=await r.json();
       return normalizarAviso({...doc,id:j.name.split('/').pop(),creadoEn:doc.creadoEn.getTime()});
@@ -7086,7 +7205,7 @@ if(typeof window!=='undefined'&&window.map){
 }
 
 /* ---------- Tarjeta de alerta ---------- */
-function esMia(a){return a.creadoPor&&a.creadoPor===uidAnon()||leerMisAlertas().includes(a.id);}
+function esMia(a){return (a.creadoPor&&(a.creadoPor===uidAnon()||a.creadoPor===FB.uid))||leerMisAlertas().includes(a.id);} /* PN-07: FB.uid estable entre recargas */
 function seleccionarAlerta(a,volar){
   if(tripActivo)terminarViaje();
   llegadaEn=null; seleccionado=null;
@@ -7107,7 +7226,8 @@ function seleccionarAlerta(a,volar){
 }
 function renderAlertaCard(a){
   const foto=document.getElementById('apFoto');
-  if(a.fotoUrl){foto.src=a.fotoUrl;foto.style.display='block';document.getElementById('apSinFoto').style.display='none';}
+  const fotoSegura=sanUrl(a.fotoUrl,140000);
+  if(fotoSegura){foto.src=fotoSegura;foto.style.display='block';document.getElementById('apSinFoto').style.display='none';}
   else{foto.style.display='none';document.getElementById('apSinFoto').style.display='block';}
   document.getElementById('apLogo').innerHTML=glyph('perdida','#fff');
   document.getElementById('apNombre').textContent=(a.nombre?a.nombre+' · ':'')+especieLabel(a.especie);
@@ -7125,7 +7245,7 @@ function renderAlertaCard(a){
     c.style.display='none';
   }
   document.getElementById('apSinContacto').style.display=(a.contactoTipo==='whatsapp'&&a.contactoValor)?'none':'block';
-  document.getElementById('apLlegar').href='https://www.google.com/maps/dir/?api=1&destination='+a.lat+','+a.lng;
+  document.getElementById('apLlegar').href='https://www.google.com/maps/dir/?api=1&destination='+coordPublica(a.lat)+','+coordPublica(a.lng); /* PN-24: destino aproximado (3 decimales) */
   const dueno=esMia(a);
   document.getElementById('apDuenio').style.display=dueno?'':'none';
   document.getElementById('apRenovar').style.display=dueno&&!a.renovada?'':'none';
@@ -7136,7 +7256,7 @@ function renderAlertaCard(a){
   renderAvistamientos([]);
 }
 /* ---------- v10.7 — Tarjeta de adopción ---------- */
-function esMiaAd(a){return a.creadoPor&&a.creadoPor===uidAnon()||leerMisAdopciones().includes(a.id);}
+function esMiaAd(a){return (a.creadoPor&&(a.creadoPor===uidAnon()||a.creadoPor===FB.uid))||leerMisAdopciones().includes(a.id);} /* PN-07: FB.uid estable entre recargas */
 function seleccionarAdopcion(a,volar){
   if(tripActivo)terminarViaje();
   llegadaEn=null; seleccionado=null;
@@ -7155,7 +7275,8 @@ function seleccionarAdopcion(a,volar){
 }
 function renderAdopcionCard(a){
   const foto=document.getElementById('adFoto');
-  if(a.fotoUrl){foto.src=a.fotoUrl;foto.style.display='block';document.getElementById('adSinFoto').style.display='none';}
+  const fotoSegura=sanUrl(a.fotoUrl,140000);
+  if(fotoSegura){foto.src=fotoSegura;foto.style.display='block';document.getElementById('adSinFoto').style.display='none';}
   else{foto.style.display='none';document.getElementById('adSinFoto').style.display='block';}
   document.getElementById('adLogo').innerHTML=glyph('adopcion','#fff');
   document.getElementById('adNombre').textContent=(a.nombre?a.nombre+' · ':'')+especieLabel(a.especie);
@@ -7181,7 +7302,7 @@ function renderAdopcionCard(a){
   }else{
     wa.style.display='none';llamar.style.display='none';
   }
-  document.getElementById('adLlegar').href='https://www.google.com/maps/dir/?api=1&destination='+a.lat+','+a.lng;
+  document.getElementById('adLlegar').href='https://www.google.com/maps/dir/?api=1&destination='+coordPublica(a.lat)+','+coordPublica(a.lng); /* PN-24: destino aproximado (3 decimales) */
   const dueno=esMiaAd(a);
   document.getElementById('adDuenio').style.display=dueno?'':'none';
   document.getElementById('adRenovar').style.display=dueno&&!a.renovada?'':'none';
@@ -7216,10 +7337,11 @@ function renderPanelPerdidas(){
   const lista=alertasEnVista().slice().sort((a,b)=>distanciaA(a)-distanciaA(b));
   const nota=document.getElementById('notaModoLocal');
   nota.style.display=FB.enabled?'none':'block';
+  const conteoTxt='<div class="meta" style="padding:4px 2px">'+escHtml(t('nResultados',{n:lista.length}))+'</div>';
   if(!lista.length){
-    box.innerHTML='<div class="meta" style="padding:10px 2px">'+escHtml(t('sinAlertas'))+'</div>';
+    box.innerHTML=conteoTxt+'<div class="meta" style="padding:10px 2px">'+escHtml(t('sinAlertas'))+'</div>';
   }else{
-    box.innerHTML=lista.map(a=>{
+    box.innerHTML=conteoTxt+lista.map(a=>{
       const nAv=a.avistamientos||0;
       return '<div class="listaRow" data-id="'+escHtml(a.id)+'"><span class="logoBox" style="background:#C0392B;width:48px;height:48px">'+glyph('perdida','#fff')+'</span><span style="flex:1;min-width:0"><span class="nm">'+escHtml(a.nombre?a.nombre+' · '+especieLabel(a.especie):especieLabel(a.especie))+'</span><br><span class="meta">'+escHtml(t('alPerdidaHace',{d:haceDiasTxt(a.fechaPerdida)}))+' · a <b>'+fmtDist(distanciaA(a))+'</b></span><br><span class="meta">'+escHtml(a.zonaTexto||'')+(nAv?' · '+escHtml(nAv===1?t('alAvistamientos1'):t('alAvistamientos',{n:nAv})):'')+'</span></span></div>';
     }).join('');
@@ -7261,10 +7383,11 @@ function abrirPanelAdopciones(){
 function renderPanelAdopciones(){
   const box=document.getElementById('adLista');
   const lista=adopcionesEnVista().slice().sort((a,b)=>distanciaA(a)-distanciaA(b));
+  const conteoTxt='<div class="meta" style="padding:4px 2px">'+escHtml(t('nResultados',{n:lista.length}))+'</div>';
   if(!lista.length){
-    box.innerHTML='<div class="meta" style="padding:10px 2px">'+escHtml(t('sinAdopciones'))+'</div>';
+    box.innerHTML=conteoTxt+'<div class="meta" style="padding:10px 2px">'+escHtml(t('sinAdopciones'))+'</div>';
   }else{
-    box.innerHTML=lista.map(a=>{
+    box.innerHTML=conteoTxt+lista.map(a=>{
       const meta=[];
       if(a.edad)meta.push(escHtml(a.edad));
       if(a.tamano)meta.push(escHtml(tamLabel(a.tamano)));
@@ -7414,11 +7537,13 @@ async function publicarAdopcion(){
 /* ---------- "La vi aquí" (avistamiento) ---------- */
 async function enviarAvistamiento(){
   const a=alertaSel; if(!a)return;
+  const notaAv=document.getElementById('apAvNota').value.trim();
+  if(pareceDireccion(notaAv)){if(!confirm(t('pubConfirmDireccion')))return;} /* PN-24 */
   const btn=document.getElementById('apEnviarAv');
   btn.disabled=true;
   try{
     const c=window.map.getCenter();
-    await PerdidasDB.avistamiento(a.id,{nota:document.getElementById('apAvNota').value.trim(),lat:c.lat,lng:c.lng});
+    await PerdidasDB.avistamiento(a.id,{nota:notaAv,lat:c.lat,lng:c.lng});
     document.getElementById('apAvForm').style.display='none';
     mostrarPinPunto(false);
     mostrarZonaEstado(t('avGracias'),4000);
@@ -7529,7 +7654,7 @@ document.getElementById('bCerrarPremium').addEventListener('click',()=>irAtras()
 /* ---------- v10.13 — Portal Premium: interfaz ---------- */
 function renderBeneficiosPremium(){
   const box=document.getElementById('listaBeneficios'); if(!box)return;
-  const lista=negociosEnVista().filter(n=>n.premium&&n.beneficioPremium);
+  const lista=negociosEnVista().filter(n=>negocioEsPremiumVerificado(n)&&n.beneficioPremium);
   if(!lista.length){box.innerHTML='<div class="meta">'+t('premSinBeneficios')+'</div>';}
   else box.innerHTML=lista.map(n=>'<div class="panelRow"><span style="flex:1;min-width:0"><b>'+escHtml(n.nombre)+'</b><br><span class="meta">'+escHtml(n.beneficioPremium)+'</span></span><span class="badgePremium">'+t('premInsignia')+'</span></div>').join('');
   /* refresco: si los negocios aún no cargaron al abrir el portal, volver a
@@ -7537,30 +7662,23 @@ function renderBeneficiosPremium(){
   cargarNegociosZona().then(()=>{
     const pp=document.getElementById('panelPremium');
     if(!pp||pp.style.display!=='block')return;
-    const lista2=negociosEnVista().filter(n=>n.premium&&n.beneficioPremium);
+    const lista2=negociosEnVista().filter(n=>negocioEsPremiumVerificado(n)&&n.beneficioPremium);
     if(lista2.length)box.innerHTML=lista2.map(n=>'<div class="panelRow"><span style="flex:1;min-width:0"><b>'+escHtml(n.nombre)+'</b><br><span class="meta">'+escHtml(n.beneficioPremium)+'</span></span><span class="badgePremium">'+t('premInsignia')+'</span></div>').join('');
   }).catch(()=>{});
 }
 function renderPortalPremium(){
-  const p=leerPremium();
+  /* PN-01 DEMO: el portal es informativo; nunca muestra "Premium activo"
+     ni beneficios, porque nadie tiene derechos premium verificados. */
   const estado=document.getElementById('premEstado');
   const subN=document.getElementById('premSubNegocio');
   const subU=document.getElementById('premSubUsuario');
-  if(p&&p.estado==='activo'){
-    estado.style.display='block';
-    estado.innerHTML='<div style="background:#FFF7D6;border:1px solid #e6a817;border-radius:12px;padding:10px 12px"><b>★ '+t('premActivo')+' · '+t(p.plan==='business'?'premPlanNegocio':'premPlanUsuario')+'</b><br><span class="meta">'+t('premGestionPlay')+'</span></div>';
-    if(subN)subN.style.display='none';
-    if(subU)subU.style.display='none';
-  }else{
-    estado.style.display='none';
-    estado.innerHTML='';
-    if(subN)subN.style.display='';
-    if(subU)subU.style.display='';
-  }
+  if(estado){estado.style.display='none';estado.innerHTML='';}
+  if(subN)subN.style.display='';
+  if(subU)subU.style.display='';
   const btnReg=document.getElementById('premRegNegocio');
   if(btnReg)btnReg.textContent=miNegocio()?t('ofMiNegocio'):t('premRegNegocio');
   const benBox=document.getElementById('premBeneficiosBox');
-  if(benBox){benBox.style.display=esPremium()?'block':'none';if(esPremium())renderBeneficiosPremium();}
+  if(benBox)benBox.style.display='none';
 }
 function aplicarEstadoPremium(){
   aplicarAds();
@@ -7569,7 +7687,7 @@ function aplicarEstadoPremium(){
   if(badge)badge.style.display=prem?'block':'none';
   const ins=document.getElementById('premInsigniaMascota');
   if(ins)ins.style.display=prem?'inline-block':'none';
-  try{document.body.dataset.premium=prem?(leerPremium().plan||'') :'';}catch(e){}
+  try{document.body.dataset.premium='';}catch(e){} /* PN-01 DEMO: sin plan verificado */
   const pp=document.getElementById('panelPremium');
   if(pp&&pp.style.display==='block')renderPortalPremium();
   const po=document.getElementById('panelOfertas');
@@ -7617,9 +7735,9 @@ function abrirFormNegocio(){
   if(ex)document.getElementById('negCategoria').value=ex.categoria;
   negLogoTemp=ex?ex.logoUrl:null;
   const prev=document.getElementById('negLogoPrev');
-  if(negLogoTemp){prev.src=negLogoTemp;prev.style.display='block';}else{prev.style.display='none';}
+  if(negLogoTemp){prev.src=sanUrl(negLogoTemp)||'';prev.style.display='block';}else{prev.style.display='none';}
   document.getElementById('negLogoInput').value='';
-  document.getElementById('negPlanNota').style.display=esPremiumNegocio()?'none':'block';
+  document.getElementById('negPlanNota').style.display='none'; /* PN-01 DEMO: registrar no exige plan; premium no se otorga */
   actualizarCoordsNegocio();
 }
 function cerrarFormNegocio(){mostrarPinPunto(false);irAtras();}
@@ -7710,19 +7828,23 @@ function filaOferta(o,conDetalle){
 function renderOfertas(){
   const box=document.getElementById('listaOfertas'); if(!box)return;
   const act=ofertasActivas();
+  /* PN-02 DEMO: las soloPremium se muestran SOLO como teaser bloqueado
+     (título + insignia), nunca con su detalle. */
   const visibles=act.filter(o=>!o.soloPremium||esPremium());
-  const ocultas=act.length-visibles.length;
+  const bloqueadas=act.filter(o=>o.soloPremium&&!esPremium());
+  const ocultas=bloqueadas.length;
   visibles.sort((a,b)=>((b.soloPremium?1:0)-(a.soloPremium?1:0))||(a.desde-b.desde));
   let html='';
   if(ocultas>0)html+='<div class="meta" style="margin:6px 0">'+t('ofExclusivas',{n:ocultas})+' · '+t('ofVerPremium')+'</div>';
   if(!visibles.length&&!ocultas)html+='<div class="meta">'+t('ofVacias')+'</div>';
   html+=visibles.map(o=>filaOferta(o,true)).join('');
-  box.innerHTML=html;
+  html+=bloqueadas.map(o=>filaOferta(o,false)).join('');
+  box.innerHTML='<div class="meta" style="padding:4px 2px">'+escHtml(t('nResultados',{n:act.length}))+'</div>'+html;
 }
 function renderAvisos(){
   const box=document.getElementById('listaAvisos'); if(!box)return;
-  if(!avisosNegocio.length){box.innerHTML='<div class="meta">'+t('ofAvisosVacios')+'</div>';return;}
-  box.innerHTML=avisosNegocio.map(a=>'<div class="ofertaRow"><b>'+escHtml(a.titulo)+'</b><br><span>'+escHtml(a.texto)+'</span><br><span class="meta">'+escHtml(a.negocioNombre||'')+' · '+fmtFechaCorta(a.creadoEn)+'</span></div>').join('');
+  if(!avisosNegocio.length){box.innerHTML='<div class="meta" style="padding:4px 2px">'+escHtml(t('nResultados',{n:0}))+'</div><div class="meta">'+t('ofAvisosVacios')+'</div>';return;}
+  box.innerHTML='<div class="meta" style="padding:4px 2px">'+escHtml(t('nResultados',{n:avisosNegocio.length}))+'</div>'+avisosNegocio.map(a=>'<div class="ofertaRow"><b>'+escHtml(a.titulo)+'</b><br><span>'+escHtml(a.texto)+'</span><br><span class="meta">'+escHtml(a.negocioNombre||'')+' · '+fmtFechaCorta(a.creadoEn)+'</span></div>').join('');
 }
 function renderOfertasCard(b){
   const box=document.getElementById('cOfertas'); if(!box)return;
@@ -7732,18 +7854,20 @@ function renderOfertasCard(b){
     const ahora=Date.now();
     const act=lista.filter(o=>o.estado==='activa'&&o.desde<=ahora&&o.hasta>=ahora);
     const visibles=act.filter(o=>!o.soloPremium||esPremium());
-    const ocultas=act.length-visibles.length;
+    const bloqueadas=act.filter(o=>o.soloPremium&&!esPremium());
+    const ocultas=bloqueadas.length;
     if(!visibles.length&&!ocultas){box.style.display='none';box.innerHTML='';return;}
     let html='';
     if(ocultas>0)html+='<div class="meta" style="margin:4px 0">'+t('ofExclusivas',{n:ocultas})+' · '+t('ofVerPremium')+'</div>';
     html+=visibles.map(o=>filaOferta(o,true)).join('');
+    html+=bloqueadas.map(o=>filaOferta(o,false)).join('');
     box.innerHTML=html; box.style.display='block';
   }).catch(()=>{});
 }
 async function publicarOferta(){
   const neg=miNegocio();
-  if(!neg){mostrarZonaEstado(t('negFaltaNombre'),4000);return;}
-  if(!esPremiumNegocio()){mostrarZonaEstado(t('negRequierePlan'),5000);return;}
+  if(!neg){mostrarZonaEstado(t('ofSinNegocioPropio'),4000);return;}
+  if(!esPremiumNegocio()){mostrarZonaEstado(t('premDemoAviso'),6000);return;} /* PN-01 DEMO: ofertas/avisos son derecho premium; bloqueados en demo */
   const titulo=document.getElementById('ofTituloInp').value.trim();
   if(!titulo){mostrarZonaEstado(t('ofFaltaTitulo'),4000);document.getElementById('ofTituloInp').focus();return;}
   const desdeV=document.getElementById('ofDesdeInp').value;
@@ -7758,7 +7882,6 @@ async function publicarOferta(){
   try{
     await OfertasDB.publicar({
       negocioId:neg.id,negocioNombre:neg.nombre,titulo:titulo,
-      descripcion:document.getElementById('ofDescInp').value.trim(),
       descuento:descPct,desde:desde,hasta:hasta,
       soloPremium:document.getElementById('ofSoloPremiumInp').checked
     });
@@ -7773,8 +7896,8 @@ async function publicarOferta(){
 }
 async function publicarAviso(){
   const neg=miNegocio();
-  if(!neg){mostrarZonaEstado(t('negFaltaNombre'),4000);return;}
-  if(!esPremiumNegocio()){mostrarZonaEstado(t('negRequierePlan'),5000);return;}
+  if(!neg){mostrarZonaEstado(t('ofSinNegocioPropio'),4000);return;}
+  if(!esPremiumNegocio()){mostrarZonaEstado(t('premDemoAviso'),6000);return;} /* PN-01 DEMO: ofertas/avisos son derecho premium; bloqueados en demo */
   const titulo=document.getElementById('ofAvisoTituloInp').value.trim();
   if(!titulo){mostrarZonaEstado(t('ofFaltaTitulo'),4000);document.getElementById('ofAvisoTituloInp').focus();return;}
   const texto=document.getElementById('ofAvisoTextoInp').value.trim();
@@ -7805,7 +7928,7 @@ document.getElementById('negLogoInput').addEventListener('change',async e=>{
   try{
     negLogoTemp=await fotoPetMiniatura(file);
     const prev=document.getElementById('negLogoPrev');
-    prev.src=negLogoTemp; prev.style.display='block';
+    prev.src=sanUrl(negLogoTemp)||''; prev.style.display='block';
   }catch(err){negLogoTemp=null;}
 });
 document.getElementById('negMiUbicacion').addEventListener('click',()=>{
@@ -7821,8 +7944,8 @@ document.getElementById('ofTabOfertas').addEventListener('click',()=>mostrarTabO
 document.getElementById('ofTabAvisos').addEventListener('click',()=>mostrarTabOfertas('avisos'));
 document.getElementById('bNuevaOferta').addEventListener('click',()=>{
   const neg=miNegocio();
-  if(!neg){mostrarZonaEstado(t('negFaltaNombre'),4000);return;}
-  if(!esPremiumNegocio()){mostrarZonaEstado(t('negRequierePlan'),5000);return;}
+  if(!neg){mostrarZonaEstado(t('ofSinNegocioPropio'),4000);return;}
+  if(!esPremiumNegocio()){mostrarZonaEstado(t('premDemoAviso'),6000);return;} /* PN-01 DEMO: ofertas/avisos son derecho premium; bloqueados en demo */
   const f=document.getElementById('formOferta');
   f.style.display=f.style.display==='block'?'none':'block';
   if(f.style.display==='block'){
@@ -7833,8 +7956,8 @@ document.getElementById('bNuevaOferta').addEventListener('click',()=>{
 });
 document.getElementById('bNuevoAviso').addEventListener('click',()=>{
   const neg=miNegocio();
-  if(!neg){mostrarZonaEstado(t('negFaltaNombre'),4000);return;}
-  if(!esPremiumNegocio()){mostrarZonaEstado(t('negRequierePlan'),5000);return;}
+  if(!neg){mostrarZonaEstado(t('ofSinNegocioPropio'),4000);return;}
+  if(!esPremiumNegocio()){mostrarZonaEstado(t('premDemoAviso'),6000);return;} /* PN-01 DEMO: ofertas/avisos son derecho premium; bloqueados en demo */
   const f=document.getElementById('formAviso');
   f.style.display=f.style.display==='block'?'none':'block';
 });
@@ -7916,6 +8039,13 @@ document.getElementById('apLaVi').addEventListener('click',()=>{
 });
 document.getElementById('apEnviarAv').addEventListener('click',enviarAvistamiento);
 document.getElementById('apCancelarAv').addEventListener('click',()=>{document.getElementById('apAvForm').style.display='none';mostrarPinPunto(false);});
+document.getElementById('apDenunciar').addEventListener('click',e=>{
+  e.preventDefault();
+  const f=document.getElementById('apRepForm');
+  const abrir=f.style.display!=='block';
+  f.style.display=abrir?'block':'none';
+  document.getElementById('apAvForm').style.display='none';
+});
 document.getElementById('apReportar').addEventListener('click',()=>{
   const f=document.getElementById('apRepForm');
   const abrir=f.style.display!=='block';
@@ -7936,7 +8066,7 @@ document.getElementById('apCompartir').addEventListener('click',()=>{
 });
 
 /* ---------- Arranque: Firebase en segundo plano + primera carga de alertas ---------- */
-fbInit().then(ok=>{fbListo=ok;if(ok){cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();restaurarPremium();}});
+fbInit().then(ok=>{fbListo=ok;if(ok){cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();restaurarPremium();}else if(FB.sesionError){mostrarZonaEstado(t('fbSesionError'),6000);}}); /* PN-08: sesión explícita sin perder datos locales */
 if(window.map.loaded()){cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();}
 else window.map.on('load',()=>{cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();});
 /* v10.13 — respaldo si 'load' no se dispara: carga premium por temporizador */
