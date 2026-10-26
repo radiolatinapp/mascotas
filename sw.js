@@ -20,6 +20,7 @@ const CACHE_PREFIX = 'petnear-v';
 const SHELL = [
   './',
   'index.html',
+  'firebase.js', /* imprescindible: sin él la app no arranca offline (fbConfigEfectiva is not defined) — hallazgo verificación v10.17, 1ª visita offline */
   'manifest.json',
   'icono-192.png',
   'icono-512.png',
