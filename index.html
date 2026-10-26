@@ -246,7 +246,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.17</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.18</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -659,7 +659,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 </div>
 <div class="panel" id="panelAcerca" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="menuAcerca">About PetNear</h3><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Close</button></div>
-  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.17</div></div></div>
+  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.18</div></div></div>
   <div class="meta" style="margin-top:8px" data-i18n="aceTexto">PetNear helps you find vets, pet stores, pharmacies and shelters for your pet, near you.</div>
   <div class="meta" style="margin-top:6px" data-i18n="aceIdiomas">Available in 8 languages</div>
 </div>
@@ -4210,7 +4210,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.17':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.17';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.18':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.18';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -4570,10 +4570,7 @@ function ciudadDePunto(lat,lng){
   for(const slug in CIUDADES_TODAS){const c=CIUDADES_TODAS[slug];const b=c._caja;if(lng>=b[0]&&lng<=b[2]&&lat>=b[1]&&lat<=b[3])return slug;}
   return null;
 }
-function cargarCiudadesCercanas(){
-  if(!window.map)return 0;
-  const c=window.map.getCenter(); if(!c)return 0;
-  const slug=ciudadDePunto(c.lat,c.lng);
+function cargarCiudadSlug(slug){
   if(!slug||ciudadesCargadas.has(slug))return 0;
   ciudadesCargadas.add(slug);
   const ciudad=CIUDADES_TODAS[slug];
@@ -4583,8 +4580,19 @@ function cargarCiudadesCercanas(){
     if(NEGOCIOS.some(x=>claveLugar(x)===claveLugar(p)))return;
     NEGOCIOS.push(p); crearPin(p); n++;
   });
-  if(n)aplicarFiltros();
+  if(n){aplicarFiltros(); if(document.getElementById('panelCategorias').style.display==='block')renderCategorias();}
   return n;
+}
+function cargarCiudadesCercanas(){
+  if(!window.map)return 0;
+  const c=window.map.getCenter(); if(!c)return 0;
+  return cargarCiudadSlug(ciudadDePunto(c.lat,c.lng));
+}
+/* v10.18 — Ciudad del usuario: sus lugares se cargan aunque el mapa esté
+   en otro sitio (p. ej. durante el vuelo del GPS), para que los conteos
+   no den 0 cuando los datos existen. YOU es [lng, lat]. */
+function cargarCiudadUsuario(){
+  return cargarCiudadSlug(ciudadDePunto(YOU[1],YOU[0]));
 }
 function claveLugar(b){return b.n+'|'+(+b.lat).toFixed(5)+'|'+(+b.lng).toFixed(5);}
 function actualizarMLng(){M_LNG=111320*Math.cos((YOU[1]*Math.PI)/180);}
@@ -5021,7 +5029,7 @@ if(navigator.geolocation){
     if(!aceptarFix(p.coords.latitude,p.coords.longitude,p.coords.accuracy))return;
     YOU[0]=p.coords.longitude; YOU[1]=p.coords.latitude; youMarker.setLngLat(YOU);
     actualizarMLng();
-    if(!gpsListo){gpsListo=true; window.map.easeTo({center:YOU,zoom:Math.max(window.map.getZoom(),13),duration:900}); cargarZona(true);}
+    if(!gpsListo){gpsListo=true; cargarCiudadUsuario(); window.map.easeTo({center:YOU,zoom:Math.max(window.map.getZoom(),13),duration:900}); cargarZona(true);}
   },()=>{avisoGpsDenegado();},{enableHighAccuracy:true,timeout:10000});
   navigator.geolocation.watchPosition(p=>{
     if(!aceptarFix(p.coords.latitude,p.coords.longitude,p.coords.accuracy))return;
@@ -5277,13 +5285,31 @@ function sugerenciasCercanas(){
 function lugaresEnVista(){
   const b=window.map.getBounds(); if(!b)return [];
   return todosLugares().filter(x=>x.lng>=b.getWest()&&x.lng<=b.getEast()&&x.lat>=b.getSouth()&&x.lat<=b.getNorth());
-}function conteoCat(c){
+}
+/* v10.18 — Conteos por ciudad del usuario + viewport: si el usuario está
+   en una ciudad pre-cargada, se cuentan sus lugares (caja de la ciudad);
+   si no, los que están a <120 km (mismo radio que eventos). La vista se
+   suma como complemento (unión sin duplicados). Eventos y perdidas no cambian. */
+function lugaresCiudadUsuario(){
+  const slug=ciudadDePunto(YOU[1],YOU[0]);
+  if(slug){const b=CIUDADES_TODAS[slug]._caja; return todosLugares().filter(x=>x.lng>=b[0]&&x.lng<=b[2]&&x.lat>=b[1]&&x.lat<=b[3]);}
+  return todosLugares().filter(x=>distanciaA(x)<120000);
+}
+function lugaresConteo(){
+  const vista=lugaresEnVista();
+  const ciudad=lugaresCiudadUsuario();
+  const seen=new Set(vista.map(claveLugar));
+  const out=vista.slice();
+  for(const b of ciudad){const k=claveLugar(b); if(!seen.has(k)){seen.add(k); out.push(b);}}
+  return out;
+}
+function conteoCat(c){
   if(c==='evento')return eventosCercanos().length;
   if(c==='perdida')return alertasEnVista().length;
-  const vista=lugaresEnVista();
-  if(c==='todos')return vista.length;
-  if(c==='h24')return vista.filter(b=>b.h24===true).length;
-  return vista.filter(b=>b.cat===c).length;
+  const lista=lugaresConteo();
+  if(c==='todos')return lista.length;
+  if(c==='h24')return lista.filter(b=>b.h24===true).length;
+  return lista.filter(b=>b.cat===c).length;
 }
 function renderCategorias(){
   const box=document.getElementById('listaCategorias'); if(!box)return;
@@ -5361,8 +5387,10 @@ function renderLista(){
   form.style.display='none';
   titulo.textContent=etiquetaCat(filtroCat);
   let lista;
-  /* v10.3 — H7: la lista es la del mapa visible (como el conteo), no la de todo el mundo. */
-  const enVista=lugaresEnVista();
+  /* v10.18 — la lista es la misma unión que el conteo (ciudad del usuario
+     + mapa visible), no solo la vista: si no, el conteo diría 12 y la lista
+     saldría vacía. */
+  const enVista=lugaresConteo();
   if(filtroCat==='h24')lista=ordenarLista(enVista.filter(es24h));
   else lista=ordenarLista(enVista.filter(b=>filtroCat==='todos'||b.cat===filtroCat));
   lista=lista.slice(0,60);
@@ -6212,7 +6240,7 @@ document.getElementById('bMascota').addEventListener('click',()=>mostrarPanel('p
 cargarMascota();
 crearPinesEventosUsuario();
 crearPinesEventos();
-window.map.on('load',()=>{cargarZona(true);cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();actualizarPinesCiudad();});
+window.map.on('load',()=>{cargarCiudadUsuario();cargarZona(true);cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();actualizarPinesCiudad();});
 
 /* ---------- La mascota: parte de TU ubicación y te sigue en el viaje ---------- */
 const dogEl=document.createElement('div');

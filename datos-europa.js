@@ -2,7 +2,7 @@
 // cat: vet=Veterinarias, tienda=Tiendas de mascotas, refugio=Refugios y guarderías, zoo=Zoológicos
 // horas: null = sin dato publicado. rating: solo si existe dato verificado (aquí nunca se inventa).
 // Todo proviene de OpenStreetMap (ODbL) vía Overpass; sin nombre o sin coordenadas el lugar se descarta.
-// Ciudades cargadas: 56/56 (5482 lugares).
+// Ciudades cargadas: 56/56 (5480 lugares; v10.18: eliminados 2 de Helsinki fuera del radio ±0.3°).
 const CIUDADES_EUROPA = {
  "madrid": {nombre:"Madrid", centro:[40.416782, -3.703507], tz:"Europe/Madrid", lugares:[
   {n:"Clínica Veterinaria Ópera", cat:"vet", lat:40.416235, lng:-3.710931, dir:"9 Calle de los Señores de Luzón, Madrid", tel:"+34 915 41 56 29", horas:null, nota:"Dato de OpenStreetMap"},
@@ -4354,7 +4354,6 @@ const CIUDADES_EUROPA = {
   {n:"Lemmikkitaivas", cat:"tienda", lat:60.149551, lng:24.654879, dir:"8 Espoonlahdenkatu, Helsinki", tel:"+358 9 8025559", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Tassu", cat:"vet", lat:60.303286, lng:25.04396, dir:"6E Kyläkaivontie, Helsinki", tel:"+3589 875 1335", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Musti ja Mirri", cat:"tienda", lat:60.203795, lng:24.659676, dir:"11 Siltakatu, Helsinki", tel:"0800 305 305", horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Talliklinikka", cat:"vet", lat:60.209144, lng:24.643196, dir:"7 Pitäjänristi, Helsinki", tel:"+358 50 5664862", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Koiraparkki", cat:"refugio", lat:60.166799, lng:24.936162, tel:"+358 45 6133212", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Musti ja Mirri", cat:"tienda", lat:60.178868, lng:24.949607, dir:"12 Siltasaarenkatu, Helsinki", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Musti ja Mirri", cat:"tienda", lat:60.163528, lng:24.91025, dir:"21 Itämerenkatu, Helsinki", horas:null, nota:"Dato de OpenStreetMap"},
@@ -4397,7 +4396,6 @@ const CIUDADES_EUROPA = {
   {n:"Eläinsairaala Huoma", cat:"vet", lat:60.296665, lng:25.057666, dir:"6 Urheilutie, Helsinki", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Eläinlääkäriasema Peninkulma", cat:"vet", lat:60.309583, lng:25.031165, dir:"20 Leinikkitie, Helsinki", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Musti ja Mirri", cat:"tienda", lat:60.313184, lng:24.847621, dir:"69 Vantaankoskentie, Helsinki", horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"9lives Espoo", cat:"vet", lat:60.210368, lng:24.642713, dir:"8 Espoontie, Helsinki", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Musti ja Mirri", cat:"tienda", lat:60.169633, lng:24.93349, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Kissaklinikka Felina", cat:"vet", lat:60.166932, lng:24.924136, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Animagi HauMau", cat:"vet", lat:60.170108, lng:24.923185, horas:null, nota:"Dato de OpenStreetMap"},

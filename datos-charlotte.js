@@ -21,7 +21,7 @@ const NEGOCIOS_CHARLOTTE = [
  {n:"Long Animal Hospital & Emergency Center", cat:"vet", lat:35.202502, lng:-80.864914, dir:"2523 South Blvd, Charlotte, NC", tel:"+17045232996", horas:[7,20], rating:4.6, h24:true, nota:"Urgencias 24 h, desde 1948"},
  {n:"Animal Medical Hospital", cat:"vet", lat:35.197698, lng:-80.794201, dir:"3832 Monroe Rd, Charlotte, NC", tel:"+17043344684", horas:[7,20], rating:4.6, h24:true, nota:"Urgencias 24/7, hospitalización"},
  {n:"Hollywood Feed", cat:"tienda", lat:35.198529, lng:-80.85242, dir:"2400 Park Rd, Charlotte, NC", tel:"+19802565884", horas:[9,19.5], nota:"Comida natural, autolavado"},
- {n:"Pet Supplies Plus Elizabeth", cat:"tienda", lat:35.212396, lng:-80.817153, dir:"2001 E 7th St, Charlotte, NC", tel:"+17048178360", horas:[9,21], rating:5.0, nota:"Grooming y autolavado"},
+ {n:"Pet Supplies Plus Elizabeth", cat:"tienda", lat:35.212396, lng:-80.817153, dir:"2001 E 7th St, Charlotte, NC", tel:"+17048178360", horas:[9,21], rating:4.5, nota:"Grooming y autolavado"},
  {n:"Pet Supplies Plus Pineville-Matthews", cat:"tienda", lat:35.086673, lng:-80.847649, dir:"7601 Pineville-Matthews Rd, Charlotte, NC", tel:"+19808196163", horas:[9,21], nota:"Sur de Charlotte"},
  {n:"Four Dogs Pet Supplies", cat:"tienda", lat:35.243352, lng:-80.8107, dir:"2630 N Davidson St, Charlotte, NC", tel:"+19802986046", horas:[10,19], rating:4.9, nota:"NoDa, ultra premium"},
  {n:"Pet Wants Uptown", cat:"tienda", lat:35.226699, lng:-80.843288, dir:"101 S Tryon St #3, Charlotte, NC", tel:"+17047721738", horas:[10,16], nota:"Comida fresca mensual"},
@@ -31,8 +31,40 @@ const NEGOCIOS_CHARLOTTE = [
  {n:"Monroe Road Animal Hospital", cat:"farma", lat:35.199242, lng:-80.795487, dir:"3736 Monroe Rd, Charlotte, NC 28205", tel:"+17043333336", horas:[7.75,18], rating:4.5, nota:"Farmacia propia y en línea, exóticos"},
  {n:"CARE Charlotte Animal Referral & Emergency", cat:"farma", lat:35.194385, lng:-80.798519, dir:"3726 Latrobe Dr, Charlotte, NC 28211", tel:"+17044572300", horas:null, h24:true, nota:"Urgencias 24 h, 365 días — hospital de referencia"},
  // --- Zoológicos y acuarios ---
- {n:"Lazy 5 Ranch", cat:"zoo", lat:35.622964, lng:-80.720769, dir:"15100 Mooresville Rd, Mooresville, NC 28115", tel:"+17046635100", horas:[9,17], rating:4.7, nota:"Safari en carro, +750 animales de 6 continentes; solo efectivo o cheque"},
+ {n:"Lazy 5 Ranch", cat:"zoo", lat:35.622964, lng:-80.720769, dir:"15100 Mooresville Rd, Mooresville, NC 28115", tel:"+17046635100", horas:[9,16], rating:4.7, nota:"Safari en carro, +750 animales de 6 continentes; solo efectivo o cheque"},
  {n:"SEA LIFE Charlotte-Concord", cat:"zoo", lat:35.369233, lng:-80.725108, dir:"8111 Concord Mills Blvd, Concord, NC 28027", tel:"+17044561955", horas:[10,18], rating:4.0, nota:"Túnel oceánico 180°, piscina táctil, tiburones y rayas"},
+ {n:"Carolina Raptor Center", cat:"zoo", lat:35.3503494, lng:-80.9183712, dir:"6000 Sample Rd, Huntersville, NC 28078", horas:null, nota:"Dato de OpenStreetMap"},
+ // --- Parques para perros (OpenStreetMap) ---
+ {n:"Lucky Dog Bark and Brew", cat:"parque", lat:35.2338452, lng:-80.8725736, dir:"2220 Thrift Rd, Charlotte, NC 28208", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Heather Ridge Dog Park", cat:"parque", lat:35.2930975, lng:-80.7341031, horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Agility Park", cat:"parque", lat:35.0288987, lng:-80.9626626, horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Pet Station Dog Park", cat:"parque", lat:35.1434311, lng:-80.864321, horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Canine Commons Dog Park", cat:"parque", lat:35.0761841, lng:-80.892893, dir:"181 Lake Dr, Pineville, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Weddington Road Bark Park", cat:"parque", lat:35.3723237, lng:-80.7041531, dir:"8955 Weddington Rd, Concord, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"McAlpine Creek Dog Park", cat:"parque", lat:35.1525195, lng:-80.7449955, dir:"8617 Monroe Rd, Charlotte, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"The Vineyards on Lake Wylie Dog Park", cat:"parque", lat:35.2286691, lng:-80.9960801, horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Rosedale Dog park", cat:"parque", lat:35.4099492, lng:-80.8658513, horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"9th Street Dog Park", cat:"parque", lat:35.2339839, lng:-80.8413403, dir:"417 W 9th St, Charlotte, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Skiptown", cat:"parque", lat:35.2092087, lng:-80.8643671, dir:"222 Rampart St, Charlotte, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Broadstone Ayrsley Dog Park", cat:"parque", lat:35.1322047, lng:-80.9329177, horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Story University North Dog Park", cat:"parque", lat:35.3498027, lng:-80.7009049, dir:"3800 Morehead Rd, Charlotte, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ // --- Peluquerías (OpenStreetMap) ---
+ {n:"Million Dollar Dog, Inc", cat:"peluqueria", lat:35.2473792, lng:-81.0185364, dir:"7202 Wilkinson Blvd, Belmont, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"QC Canine Design", cat:"peluqueria", lat:35.2350646, lng:-80.8405603, horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Bubbly Paws", cat:"peluqueria", lat:35.199421, lng:-80.8685335, dir:"141 New Bern St, Charlotte, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Whiskers Dog Spa", cat:"peluqueria", lat:35.1468553, lng:-80.8085411, horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Splash and Dash", cat:"peluqueria", lat:35.1777435, lng:-80.7561693, horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Tiffany's Pet Salon", cat:"peluqueria", lat:35.1728188, lng:-80.6567494, dir:"11300 Lawyers Rd, Mint Hill, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Grateful Pets", cat:"peluqueria", lat:35.1475769, lng:-80.7457742, horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Zoom Room Huntersville-Lake Norman", cat:"peluqueria", lat:35.4123763, lng:-80.854674, dir:"Statesville Rd, Huntersville, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Feline Fabulous", cat:"peluqueria", lat:35.2218266, lng:-80.8196102, horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Woof Gang Bakery & Grooming", cat:"peluqueria", lat:35.2209162, lng:-80.8136904, dir:"1311 Pecan Ave, Charlotte, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Four Paws Dog Retreat", cat:"peluqueria", lat:35.1140681, lng:-80.9118884, dir:"10901 Downs Rd, Pineville, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Grateful Pets Pet Grooming & Boarding", cat:"peluqueria", lat:35.3222069, lng:-80.9539366, dir:"10317 Rozzelles Ferry Rd, Charlotte, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Zoom Room Dog Training - Fort Mill", cat:"peluqueria", lat:34.9834174, lng:-80.9400518, dir:"5525 Arden Mill Dr, Fort Mill, SC", horas:null, nota:"Dato de OpenStreetMap"},
+ // --- Refugios (OpenStreetMap) ---
+ {n:"Cabarrus County Animal Shelter", cat:"refugio", lat:35.3724337, lng:-80.5625683, dir:"244 Betsy Carpenter Pl SW, Concord, NC", horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Carolina Waterfowl Rescue", cat:"refugio", lat:35.0900204, lng:-80.594814, dir:"5403 Poplin Rd, Indian Trail, NC", horas:null, nota:"Dato de OpenStreetMap"},
  // --- Granjas para visitar ---
  {n:"Carrigan Farms", cat:"granja", lat:35.600222, lng:-80.768861, dir:"1261 Oakridge Farm Hwy, Mooresville, NC 28115", tel:"+17046641450", horas:null, rating:4.4, nota:"Granja familiar de 300 acres: fresas, manzanas, calabazas; horario por temporada, confirma antes de ir"},
  // --- Refugio / perrera municipal ---
@@ -47,9 +79,9 @@ const NEGOCIOS_CHARLOTTE = [
  {n:"Triple C Brewing Company", cat:"resto", lat:35.201254, lng:-80.8695, dir:"2900 Griffith St, Charlotte, NC 28203", tel:"+17043723212", horas:[12,22], rating:4.7, nota:"Patio dog-friendly, jornadas de adopción y música en vivo"},
  {n:"Birdsong Brewing Co.", cat:"resto", lat:35.230819, lng:-80.826593, dir:"1016 N Davidson St, Charlotte, NC", tel:"+17043321810", horas:[11,22], rating:4.7, nota:"Patio dog-friendly en NoDa, food trucks"},
  {n:"Seoul Food Meat Company", cat:"resto", lat:35.219257, lng:-80.857579, dir:"1400 S Church St, Charlotte, NC 28203", tel:"+19802995143", horas:[11.5,24], rating:4.8, nota:"South End, parque para perros y patio trasero, karaoke"},
- {n:"Optimist Hall", cat:"resto", lat:35.234325, lng:-80.827256, dir:"1115 N Brevard St, Charlotte, NC", tel:"+19807010040", horas:[7,22], rating:4.0, nota:"Food hall, perros permitidos en la zona exterior"},
- {n:"The Suffolk Punch", cat:"resto", lat:35.20044, lng:-80.86906, dir:"2911 Griffith St, Charlotte, NC 28203", tel:"+17043198650", horas:[9,22.75], nota:"South End, patio dog-friendly, café y cervecería"},
- {n:"Lucky Dog Bark & Brew Steele Creek", cat:"resto", lat:35.10666, lng:-80.95914, dir:"13835 S Lakes Dr, Charlotte, NC 28273", tel:null, horas:null, nota:"Bar + parque para perros sin correa, eventos y adopciones; membresía $10/año o $10/día"}
+ {n:"Optimist Hall", cat:"resto", lat:35.234325, lng:-80.827256, dir:"1115 N Brevard St, Charlotte, NC", tel:"+19807010040", horas:[7,22], rating:4.7, nota:"Food hall, perros permitidos en la zona exterior"},
+ {n:"The Suffolk Punch", cat:"resto", lat:35.20044, lng:-80.86906, dir:"2911 Griffith St, Charlotte, NC 28203", tel:"+17043198650", horas:[11,24], rating:4.4, nota:"South End, patio dog-friendly, café y cervecería"},
+ {n:"Lucky Dog Bark & Brew Steele Creek", cat:"resto", lat:35.10666, lng:-80.95914, dir:"13835 S Lakes Dr, Charlotte, NC 28273", tel:"+19804436097", horas:[6.5,21], nota:"Bar + parque para perros sin correa, eventos y adopciones; membresía $10/año o $10/día"}
 ];
 // Eventos locales de animales en Charlotte (series recurrentes verificadas; confirmar fecha con el organizador).
 // fecha: texto libre (sin fecha exacta inventada). Los usuarios pueden publicar sus propios eventos desde la app.

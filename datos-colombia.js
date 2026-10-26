@@ -1,8 +1,8 @@
 // Lugares de animales en Colombia extraídos de OpenStreetMap (verificado 2026-10-24).
-// cat: vet=Veterinarias, tienda=Tiendas de mascotas, refugio=Refugios y guarderías, zoo=Zoológicos
+// cat: vet=Veterinarias, tienda=Tiendas de mascotas, refugio=Refugios y guarderías, zoo=Zoológicos, parque=Parques caninos, peluqueria=Peluquerías
 // horas: null = sin dato publicado. rating: solo si existe dato verificado (aquí nunca se inventa).
 // Todo proviene de OpenStreetMap (ODbL) vía Overpass; sin nombre o sin coordenadas el lugar se descarta.
-// Ciudades cargadas: 20/20 (427 lugares).
+// Ciudades cargadas: 20/20 (451 lugares).
 const CIUDADES_COLOMBIA = {
  "bogota": {nombre:"Bogotá", centro:[4.653382, -74.083633], tz:"America/Bogota", lugares:[
   {n:"Pet Shop Variedades La 65", cat:"tienda", lat:4.653497, lng:-74.067093, dir:"Avenida Carrera 17, Bogotá", tel:"+57 310 3087941", horas:null, nota:"Dato de OpenStreetMap"},
@@ -212,7 +212,15 @@ const CIUDADES_COLOMBIA = {
   {n:"Maskotienda", cat:"tienda", lat:6.169609, lng:-75.584465, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinaria Induamerica", cat:"vet", lat:6.1673, lng:-75.619961, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Ay Lola Pets", cat:"tienda", lat:6.169655, lng:-75.638677, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Finca hotel perronalidad", cat:"refugio", lat:6.146413, lng:-75.566754, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Finca hotel perronalidad", cat:"refugio", lat:6.146413, lng:-75.566754, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque de las masacotas", cat:"parque", lat:6.279068, lng:-75.592189, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"SPA Bigotes Y Patitas", cat:"peluqueria", lat:6.240652, lng:-75.607961, tel:"+57 323 5820243", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Tu Mejor Versión Pets", cat:"peluqueria", lat:6.244512, lng:-75.610603, tel:"+57 315 3165093", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Tienda y baño de mascotas", cat:"peluqueria", lat:6.17146, lng:-75.640942, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque el mirador", cat:"parque", lat:6.251082, lng:-75.53841, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Pet Club Laureles", cat:"peluqueria", lat:6.247329, lng:-75.59591, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque Canino", cat:"parque", lat:6.329552, lng:-75.568307, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque los naranjos", cat:"parque", lat:6.197923, lng:-75.560791, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "cali": {nombre:"Cali", centro:[3.451999, -76.532526], tz:"America/Bogota", lugares:[
   {n:"Zoológico de Cali", cat:"zoo", lat:3.448418, lng:-76.55849, dir:"14 Carrera 2 Oeste, Cali", tel:"+57 602 4880888", horas:null, nota:"Dato de OpenStreetMap"},
@@ -241,7 +249,8 @@ const CIUDADES_COLOMBIA = {
   {n:"Lanitas", cat:"vet", lat:3.490497, lng:-76.497232, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Dra. Natalia Sanchez", cat:"vet", lat:3.380851, lng:-76.531223, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinario Oscar Bernal Cock", cat:"vet", lat:3.374798, lng:-76.546574, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Paraiso de la Mascota", cat:"refugio", lat:3.33843, lng:-76.549226, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Paraiso de la Mascota", cat:"refugio", lat:3.33843, lng:-76.549226, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque para perros parque natura", cat:"parque", lat:3.260704, lng:-76.556984, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "barranquilla": {nombre:"Barranquilla", centro:[10.99386, -74.792612], tz:"America/Bogota", lugares:[
   {n:"MasKoticas", cat:"vet", lat:10.988289, lng:-74.791416, dir:"54 - 12 Carrera 45, Barranquilla", tel:"+57 301 7880553", horas:null, nota:"Dato de OpenStreetMap"},
@@ -257,7 +266,8 @@ const CIUDADES_COLOMBIA = {
   {n:"Mi Corral", cat:"vet", lat:11.023353, lng:-74.861939, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"+cotas", cat:"vet", lat:11.022586, lng:-74.863062, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Little Paws", cat:"tienda", lat:11.026047, lng:-74.862004, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Agro-Veterinaria El Proveedor", cat:"vet", lat:11.019992, lng:-74.869, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Agro-Veterinaria El Proveedor", cat:"vet", lat:11.019992, lng:-74.869, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque de Mascotas", cat:"parque", lat:11.019486, lng:-74.792305, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "bucaramanga": {nombre:"Bucaramanga", centro:[7.127459, -73.11913], tz:"America/Bogota", lugares:[
   {n:"Pet Loving", cat:"tienda", lat:7.121269, lng:-73.110368, dir:"34-72 Calle 42, Bucaramanga", tel:"+57 607 6321984", horas:null, nota:"Dato de OpenStreetMap"},
@@ -279,7 +289,8 @@ const CIUDADES_COLOMBIA = {
   {n:"Corredor del Perezoso", cat:"zoo", lat:7.068336, lng:-73.089195, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Tortugitas para niños", cat:"zoo", lat:7.061229, lng:-73.095869, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"CDMB Centro de rescate de Fauna silvestre Finca La Esperanza", cat:"refugio", lat:7.071048, lng:-73.073465, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Zoológico de Aves la Fantasía", cat:"zoo", lat:7.013429, lng:-73.059886, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Zoológico de Aves la Fantasía", cat:"zoo", lat:7.013429, lng:-73.059886, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Complejo Canino MUNDOG", cat:"parque", lat:7.056754, lng:-73.111884, dir:"Finca Potosi Vereda Aranzoque, Bucaramanga", horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "cartagena": {nombre:"Cartagena", centro:[10.426557, -75.544167], tz:"America/Bogota", lugares:[
   {n:"Clínica Veterinaria Crespo", cat:"vet", lat:10.445398, lng:-75.517592, dir:"3-88 Calle 70A, Cartagena", tel:"+57 605 6662463", horas:null, nota:"Dato de OpenStreetMap"},
@@ -301,7 +312,8 @@ const CIUDADES_COLOMBIA = {
   {n:"Fix Vet", cat:"vet", lat:10.390846, lng:-75.484465, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Centro Médico Veterinario 24 Horas", cat:"vet", lat:10.394066, lng:-75.482365, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Servican", cat:"vet", lat:10.391656, lng:-75.482224, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Los Peces de Pablo", cat:"tienda", lat:10.392161, lng:-75.481631, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Los Peces de Pablo", cat:"tienda", lat:10.392161, lng:-75.481631, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Peluquería Canina Fashion Style", cat:"peluqueria", lat:10.387935, lng:-75.481705, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "pereira": {nombre:"Pereira", centro:[4.814316, -75.694678], tz:"America/Bogota", lugares:[
   {n:"Contegral", cat:"vet", lat:4.810432, lng:-75.695263, dir:"Carrera 12, Pereira", tel:"+57 606 3240523;+57 606 3257139", horas:null, nota:"Dato de OpenStreetMap"},
@@ -329,7 +341,10 @@ const CIUDADES_COLOMBIA = {
   {n:"veteriana santa monica", cat:"vet", lat:4.824236, lng:-75.68044, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Clínica Veterinaria", cat:"vet", lat:4.827318, lng:-75.680982, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Vet House", cat:"vet", lat:4.814023, lng:-75.674003, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Huella Segura", cat:"vet", lat:4.73013, lng:-75.683628, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Huella Segura", cat:"vet", lat:4.73013, lng:-75.683628, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Magic Pets", cat:"peluqueria", lat:4.802762, lng:-75.696788, dir:"Carrera 21, Pereira", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque para Mascotas", cat:"parque", lat:4.797758, lng:-75.754752, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque Cancha Villavicencio", cat:"parque", lat:4.812177, lng:-75.681301, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "manizales": {nombre:"Manizales", centro:[5.066891, -75.506666], tz:"America/Bogota", lugares:[
   {n:"Concentrados del centro", cat:"tienda", lat:5.065819, lng:-75.491269, dir:"56-120 Avenida Kevin Ángel, Manizales", tel:"+57 321 7270741", horas:null, nota:"Dato de OpenStreetMap"},
@@ -452,7 +467,15 @@ const CIUDADES_COLOMBIA = {
   {n:"Producción de cabros de engorde", cat:"refugio", lat:5.534908, lng:-73.293258, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinaria", cat:"vet", lat:5.561069, lng:-73.281288, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinaria", cat:"vet", lat:5.512936, lng:-73.245502, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Producción y Comercialización de Huevo Semicriollo", cat:"refugio", lat:5.610942, lng:-73.238607, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Producción y Comercialización de Huevo Semicriollo", cat:"refugio", lat:5.610942, lng:-73.238607, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Drogueria Veterinaria", cat:"vet", lat:5.58523, lng:-73.5426, dir:"Carrera 3 Calle 5, Tunja", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Veterinaria El Corcel", cat:"vet", lat:5.754659, lng:-73.437057, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Ceagro syngenta", cat:"vet", lat:5.755736, lng:-73.436132, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Onimaux", cat:"tienda", lat:5.634063, lng:-73.526124, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Mundo Vet", cat:"vet", lat:5.401613, lng:-73.334522, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Veterinaria el porky", cat:"vet", lat:5.384427, lng:-73.363894, dir:"Carrera 2, Tunja", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Agroveterinaria Somex", cat:"vet", lat:5.565955, lng:-73.184493, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"El Establo", cat:"vet", lat:5.565826, lng:-73.184728, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "monteria": {nombre:"Montería", centro:[8.750936, -75.878681], tz:"America/Bogota", lugares:[
   {n:"Montorrico", cat:"vet", lat:8.757845, lng:-75.873207, horas:null, nota:"Dato de OpenStreetMap"}
@@ -469,6 +492,7 @@ const CIUDADES_COLOMBIA = {
  "riohacha": {nombre:"Riohacha", centro:[11.544939, -72.915052], tz:"America/Bogota", lugares:[
   {n:"RioCanes", cat:"refugio", lat:11.548707, lng:-72.916566, dir:"Calle 7 #15-195, Riohacha", tel:"+57 300 5314423", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Riopet Veterinaria", cat:"vet", lat:11.549361, lng:-72.91165, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Veterinaria Mymaskot", cat:"vet", lat:11.547742, lng:-72.908159, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Veterinaria Mymaskot", cat:"vet", lat:11.547742, lng:-72.908159, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"La PerruQuerria (Peluqueria Canina)", cat:"peluqueria", lat:11.546626, lng:-72.911161, dir:"Calle 12, Riohacha", horas:null, nota:"Dato de OpenStreetMap"}
  ]}
 };

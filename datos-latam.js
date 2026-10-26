@@ -1,5 +1,5 @@
-// Lugares de animales en América Latina extraídos de OpenStreetMap (verificado 2026-10-25).
-// cat: vet=Veterinarias, tienda=Tiendas de mascotas, refugio=Refugios y guarderías, zoo=Zoológicos
+// Lugares de animales en América Latina extraídos de OpenStreetMap (verificado 2026-10-26).
+// cat: vet=Veterinarias, tienda=Tiendas de mascotas, refugio=Refugios y guarderías, zoo=Zoológicos, parque=Parques para perros, peluqueria=Peluquerías caninas
 // horas: null = sin dato publicado. rating: solo si existe dato verificado (aquí nunca se inventa).
 // Todo proviene de OpenStreetMap (ODbL) vía Overpass; sin nombre o sin coordenadas el lugar se descarta.
 // Ciudades cargadas: 62/62 (3723 lugares).
