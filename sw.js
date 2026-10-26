@@ -1,4 +1,4 @@
-/* PetNear — service worker (v10.16; corrección auditoría PN-13 / PN-14 / PN-27).
+/* PetNear — service worker (v10.17; corrección auditoría PN-13 / PN-14 / PN-27).
    Solo same-origin. NO intercepta teselas ni APIs externas
    (CARTO/OpenFreeMap/Overpass/OSRM/Firebase).
    - PN-13: precaché mínima del app shell, por recurso y con registro de
@@ -7,12 +7,12 @@
    - PN-14: estrategias separadas por ruta; solo se cachean respuestas
      r.ok, same-origin, no privadas y dentro del tamaño límite. Nada de
      404/500, nada privado, nada enorme. Límite de entradas y de edad.
-   - PN-27: mismo nombre de caché (petnear-v116; el coordinador lo sube
+   - PN-27: mismo nombre de caché (petnear-v117
      a v117 al integrar). skipWaiting()/clients.claim() se mantienen,
      pero la activación limpia primero TODAS las cachés viejas
      (petnear-v*) y solo después reclama los clientes, para no mezclar
      versiones entre pestañas. */
-const CACHE = 'petnear-v116';
+const CACHE = 'petnear-v117';
 const CACHE_PREFIX = 'petnear-v';
 
 /* PN-13 — app shell mínimo: solo lo imprescindible para abrir la app
