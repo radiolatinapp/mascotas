@@ -1,0 +1,366 @@
+rules_version = '2';
+// PetNear — Reglas Firestore v10.17
+// Corrección de la auditoría integral v10.16 (26-oct-2026), hallazgos
+// PN-01, PN-02, PN-03, PN-04, PN-05, PN-06 y PN-26.
+// Proyecto Firebase "mascotas-cerca-de-ti" (Spark, gratis).
+// Pegar en: Firebase Console > Firestore Database > Reglas.
+// SIN BACKEND: no hay Cloud Functions ni servidor propio. Todo lo que
+// estas reglas no pueden imponer desde el cliente queda documentado
+// como limitación (ver notas PN-01, PN-02 y PN-06 abajo). Nada de esto
+// requiere plan Blaze ni ningún servicio pago.
+//
+// Modelo: colecciones "alertas", "adopciones", "negocios", "ofertas",
+// "avisos" y "premium"; subcolecciones "avistamientos" y "reportes".
+// Privacidad: el dueño NUNCA publica su dirección; solo el punto de último
+// avistamiento (lat/lng) y una zona textual. Los reportes son 1 por usuario.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- Utilidades de validación (PN-04) ----------
+    function esDueno() {
+      return request.auth != null && request.auth.uid == resource.data.creadoPor;
+    }
+    // String con límite de longitud (abuso de cuota / documentos gigantes).
+    function esStr(v, max) {
+      return v is string && v.size() <= max;
+    }
+    // Foto como dataURL Base64 o ausente (la app la manda como null cuando
+    // no hay foto). Máx. 200.000 caracteres (~150 KB de imagen).
+    function esFoto(v) {
+      return v == null || (v is string && v.size() <= 200000);
+    }
+    function esLat(v) {
+      return v is number && v >= -90 && v <= 90;
+    }
+    function esLng(v) {
+      return v is number && v >= -180 && v <= 180;
+    }
+    function esTs(v) {
+      return v is timestamp;
+    }
+    // PN-26: el negocioId debe existir y pertenecer al usuario que escribe.
+    // Si el negocio no existe, get() no tiene .data y la regla falla:
+    // denegado. Así nadie publica ofertas ni avisos a nombre de un
+    // negocio ajeno.
+    function esNegocioPropio(negocioId) {
+      return get(/databases/$(database)/documents/negocios/$(negocioId)).data.creadoPor == request.auth.uid;
+    }
+    // ¿Cambió esta clave en este update? (request.resource.data es el
+    // documento fusionado tras el PATCH.)
+    function cambio(clave) {
+      return clave in request.resource.data.diff(resource.data).affectedKeys();
+    }
+    // PN-05: la renovación solo puede pasar de false a true UNA vez, y la
+    // expiración solo puede cambiar junto a esa renovación, hacia adelante.
+    // No hay forma de alargar la expiración a voluntad ni de renovar dos
+    // veces.
+    function renovacionValida() {
+      return (!cambio('renovada')
+              || (resource.data.renovada == false
+                  && request.resource.data.renovada == true))
+        && (!cambio('expiraEn')
+            || (cambio('renovada')
+                && resource.data.renovada == false
+                && request.resource.data.renovada == true
+                && request.resource.data.expiraEn is timestamp
+                && request.resource.data.expiraEn > resource.data.expiraEn));
+    }
+
+    // ---------- Tipos y rangos por colección (PN-04) ----------
+    // d es el documento (en create el nuevo; en update el fusionado).
+    function tiposAlerta(d) {
+      return esStr(d.tipo, 50)
+        && esStr(d.especie, 50)
+        && esStr(d.nombre, 100)
+        && esStr(d.descripcion, 1000)
+        && esFoto(d.fotoUrl)
+        && (d.fotoRuta == null || esStr(d.fotoRuta, 500))
+        && esLat(d.lat) && esLng(d.lng)
+        && esStr(d.zonaTexto, 200)
+        && esStr(d.geohash, 20)
+        && esTs(d.fechaPerdida) && esTs(d.creadoEn) && esTs(d.expiraEn)
+        && esStr(d.estado, 50)
+        && esStr(d.contactoTipo, 50)
+        && esStr(d.contactoValor, 100)
+        && esStr(d.creadoPor, 100)
+        && d.avistamientos is int && d.avistamientos >= 0
+        && d.reportes is int && d.reportes >= 0
+        && d.renovada is bool
+        && esStr(d.idioma, 10);
+    }
+    function tiposAdopcion(d) {
+      return esStr(d.tipo, 50)
+        && esStr(d.especie, 50)
+        && esStr(d.nombre, 100)
+        && esStr(d.edad, 50)
+        && esStr(d.tamano, 50)
+        && esStr(d.descripcion, 1000)
+        && esFoto(d.fotoUrl)
+        && esLat(d.lat) && esLng(d.lng)
+        && esStr(d.zonaTexto, 200)
+        && esStr(d.geohash, 20)
+        && esTs(d.fechaPublicacion) && esTs(d.creadoEn) && esTs(d.expiraEn)
+        && esStr(d.estado, 50)
+        && esStr(d.contactoTipo, 50)
+        && esStr(d.contactoValor, 100)
+        && esStr(d.creadoPor, 100)
+        && d.reportes is int && d.reportes >= 0
+        && d.renovada is bool
+        && esStr(d.idioma, 10);
+    }
+    function tiposNegocio(d) {
+      return esStr(d.nombre, 100)
+        && esStr(d.categoria, 50)
+        && esStr(d.descripcion, 1000)
+        && esStr(d.telefono, 50)
+        && esStr(d.whatsapp, 50)
+        && esStr(d.direccion, 200)
+        && esStr(d.zonaTexto, 200)
+        && esStr(d.horarios, 500)
+        && esStr(d.beneficioPremium, 500)
+        && esFoto(d.logoUrl)
+        && esLat(d.lat) && esLng(d.lng)
+        && esStr(d.geohash, 20)
+        && esStr(d.estado, 50)
+        && d.premium is bool
+        && esStr(d.creadoPor, 100)
+        && esTs(d.creadoEn)
+        && esStr(d.idioma, 10);
+    }
+    // PN-02: la oferta pública es SOLO teaser (sin 'descripcion'). La
+    // descripción exclusiva no se puede escribir desde el cliente ni en
+    // create ni en update, así que nunca llega a existir en el documento
+    // y la lectura pública no puede filtrarla. (Las reglas de Firestore
+    // no pueden filtrar campos en lectura: la protección es en escritura.)
+    function tiposOferta(d) {
+      return esStr(d.negocioId, 100)
+        && esStr(d.negocioNombre, 100)
+        && esStr(d.titulo, 100)
+        && d.descuento is int && d.descuento >= 0 && d.descuento <= 100
+        && esTs(d.desde) && esTs(d.hasta)
+        && d.soloPremium is bool
+        && esStr(d.estado, 50)
+        && esStr(d.creadoPor, 100)
+        && esTs(d.creadoEn)
+        && esStr(d.idioma, 10);
+    }
+    function tiposAviso(d) {
+      return esStr(d.negocioId, 100)
+        && esStr(d.negocioNombre, 100)
+        && esStr(d.titulo, 100)
+        && esStr(d.texto, 1000)
+        && esStr(d.creadoPor, 100)
+        && esTs(d.creadoEn)
+        && esStr(d.idioma, 10);
+    }
+
+    // ---------- Transiciones de estado (PN-05) ----------
+    // Alertas: activa -> encontrada / resuelta / oculta; encontrada o
+    // resuelta -> oculta. Nunca se vuelve atrás (oculta o resuelta no
+    // pueden volver a activa). 'encontrada' es el estado que usa la app
+    // (botón "Marcar como encontrada"); 'resuelta' se admite como
+    // sinónimo. 'oculta' la pone el propio dueño.
+    function transicionAlerta() {
+      return !cambio('estado')
+        || (resource.data.estado == 'activa'
+            && request.resource.data.estado in ['encontrada', 'resuelta', 'oculta'])
+        || (resource.data.estado in ['encontrada', 'resuelta']
+            && request.resource.data.estado == 'oculta');
+    }
+    // Adopciones: disponible -> adoptado / oculta; adoptado -> oculta.
+    function transicionAdopcion() {
+      return !cambio('estado')
+        || (resource.data.estado == 'disponible'
+            && request.resource.data.estado in ['adoptado', 'oculta'])
+        || (resource.data.estado == 'adoptado'
+            && request.resource.data.estado == 'oculta');
+    }
+
+    match /alertas/{alertaId} {
+      // Lectura pública: cualquiera ve las alertas activas.
+      // PN-06: el ocultado por 3 reportes es SOLO un filtro del cliente
+      // (la app no muestra alertas con reportes >= 3). NO es moderación
+      // autoritativa: sin backend no se puede imponer que una alerta
+      // reportada deje de ser legible por consulta directa a la API.
+      // Los contadores no los puede tocar el dueño (PN-05) y el reporte
+      // es 1 por usuario (ver subcolección reportes).
+      allow read: if true;
+      // Crear: solo anónimo autenticado, dueño = su uid, campos exactos,
+      // estado activa, contadores en 0, renovada en false, tipos y rangos
+      // validados (PN-04).
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(['tipo','especie','nombre','descripcion','fotoUrl','fotoRuta','lat','lng','zonaTexto','geohash','fechaPerdida','creadoEn','expiraEn','estado','contactoTipo','contactoValor','creadoPor','avistamientos','reportes','renovada','idioma'])
+        && request.resource.data.creadoPor == request.auth.uid
+        && request.resource.data.estado == 'activa'
+        && request.resource.data.avistamientos == 0
+        && request.resource.data.reportes == 0
+        && request.resource.data.renovada == false
+        && tiposAlerta(request.resource.data);
+      // Actualizar: solo el dueño; PN-05: NO puede tocar 'avistamientos',
+      // 'reportes' ni 'expiraEn' a voluntad (la expiración solo cambia
+      // junto a la renovación única, ver renovacionValida). Solo estado
+      // (con transición válida), contactoValor y la renovación única.
+      allow update: if esDueno()
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['estado','expiraEn','renovada','contactoValor'])
+        && tiposAlerta(request.resource.data)
+        && transicionAlerta()
+        && renovacionValida();
+      allow delete: if esDueno();
+      match /avistamientos/{avId} {
+        allow read: if true;
+        allow create: if request.auth != null
+          && request.resource.data.creadoPor == request.auth.uid
+          && request.resource.data.keys().hasOnly(['creadoPor','creadoEn','nota','lat','lng','fotoUrl','idioma'])
+          && esTs(request.resource.data.creadoEn)
+          && esStr(request.resource.data.nota, 500)
+          && esLat(request.resource.data.lat)
+          && esLng(request.resource.data.lng)
+          && esFoto(request.resource.data.fotoUrl)
+          && esStr(request.resource.data.idioma, 10);
+        allow update, delete: if false;
+      }
+      match /reportes/{uid} {
+        // Cada usuario ve solo su propio reporte. 1 reporte por usuario:
+        // el id del documento es el uid y no se puede actualizar ni borrar.
+        allow read: if request.auth != null && request.auth.uid == uid;
+        allow create: if request.auth != null && request.auth.uid == uid
+          && request.resource.data.keys().hasOnly(['motivo','creadoEn'])
+          && esStr(request.resource.data.motivo, 500)
+          && esTs(request.resource.data.creadoEn);
+        allow update, delete: if false;
+      }
+    }
+
+    /* ---------- Adopciones (mismo modelo que "alertas") ---------- */
+    match /adopciones/{adopcionId} {
+      // Lectura pública: cualquiera ve las adopciones disponibles.
+      // PN-06: igual que en alertas, el ocultado por 3 reportes es solo
+      // filtro del cliente, no moderación autoritativa.
+      allow read: if true;
+      // Crear: solo anónimo autenticado, dueño = su uid, campos exactos,
+      // estado disponible, reportes en 0, renovada en false, tipos y
+      // rangos validados (PN-04).
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(['tipo','especie','nombre','edad','tamano','descripcion','fotoUrl','lat','lng','zonaTexto','geohash','fechaPublicacion','creadoEn','expiraEn','estado','contactoTipo','contactoValor','creadoPor','reportes','renovada','idioma'])
+        && request.resource.data.creadoPor == request.auth.uid
+        && request.resource.data.estado == 'disponible'
+        && request.resource.data.reportes == 0
+        && request.resource.data.renovada == false
+        && tiposAdopcion(request.resource.data);
+      // Actualizar: solo el dueño; PN-05: NO puede tocar 'reportes' ni
+      // 'expiraEn' a voluntad (ver renovacionValida). Solo estado (con
+      // transición válida), contactoValor y la renovación única.
+      // (La app v10.16 no actualiza contactoValor en adopciones, pero la
+      // regla lo permite igual que en alertas.)
+      allow update: if esDueno()
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['estado','expiraEn','renovada','contactoValor'])
+        && tiposAdopcion(request.resource.data)
+        && transicionAdopcion()
+        && renovacionValida();
+      allow delete: if esDueno();
+      match /reportes/{uid} {
+        // Cada usuario ve solo su propio reporte. 1 reporte por usuario.
+        allow read: if request.auth != null && request.auth.uid == uid;
+        allow create: if request.auth != null && request.auth.uid == uid
+          && request.resource.data.keys().hasOnly(['motivo','creadoEn'])
+          && esStr(request.resource.data.motivo, 500)
+          && esTs(request.resource.data.creadoEn);
+        allow update, delete: if false;
+      }
+    }
+
+    /* ---------- Portal Premium: negocios, ofertas, avisos, premium ---------- */
+    match /negocios/{negocioId} {
+      // Lectura pública: cualquiera ve los negocios activos (pin dorado si premium).
+      allow read: if true;
+      // Crear: solo anónimo autenticado, dueño = su uid, campos exactos,
+      // estado activo, tipos y rangos validados (PN-04).
+      // PN-03: 'premium' DEBE ser false al crear. Antes bastaba con que
+      // fuera booleano y la app lo ponía en true según su Premium local:
+      // cualquiera se autodeclaraba negocio premium (pin dorado) sin
+      // pagar. Solo un proceso de servidor futuro podrá ponerlo en true.
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(['nombre','categoria','descripcion','telefono','whatsapp','direccion','zonaTexto','horarios','beneficioPremium','logoUrl','lat','lng','geohash','estado','premium','creadoPor','creadoEn','idioma'])
+        && request.resource.data.creadoPor == request.auth.uid
+        && request.resource.data.estado == 'activo'
+        && request.resource.data.premium == false
+        && tiposNegocio(request.resource.data);
+      // Actualizar: solo el dueño; nunca toca premium, estado ni creadoPor
+      // (la lista de claves ya lo impedía; se conserva y se verifica).
+      allow update: if esDueno()
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['nombre','categoria','descripcion','telefono','whatsapp','direccion','zonaTexto','horarios','beneficioPremium','logoUrl','lat','lng','geohash'])
+        && tiposNegocio(request.resource.data);
+      allow delete: if esDueno();
+    }
+    match /ofertas/{ofertaId} {
+      // Lectura pública: la oferta es solo teaser (negocio, título,
+      // descuento, fechas, flag soloPremium). PN-02: los detalles
+      // exclusivos NO existen en el documento porque ningún cliente
+      // puede escribir 'descripcion' (ni en create ni en update).
+      allow read: if true;
+      // Crear: solo anónimo autenticado, dueño = su uid, campos exactos
+      // SIN 'descripcion', estado activa, descuento entero entre 0 y 100,
+      // tipos y rangos validados (PN-04).
+      // PN-26: el negocioId debe existir y pertenecer al usuario.
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(['negocioId','negocioNombre','titulo','descuento','desde','hasta','soloPremium','estado','creadoPor','creadoEn','idioma'])
+        && request.resource.data.creadoPor == request.auth.uid
+        && request.resource.data.estado == 'activa'
+        && request.resource.data.descuento is int
+        && request.resource.data.descuento >= 0
+        && request.resource.data.descuento <= 100
+        && esNegocioPropio(request.resource.data.negocioId)
+        && tiposOferta(request.resource.data);
+      // Actualizar: solo el dueño; solo estado, descuento, fechas y el
+      // flag soloPremium. PN-02: 'descripcion' tampoco se puede añadir
+      // por update. El estado solo puede ser 'activa' o 'inactiva'.
+      allow update: if esDueno()
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['estado','descuento','desde','hasta','soloPremium'])
+        && tiposOferta(request.resource.data)
+        && request.resource.data.estado in ['activa', 'inactiva'];
+      allow delete: if esDueno();
+    }
+    match /avisos/{avisoId} {
+      // Lectura pública: cualquiera ve los avisos de los negocios.
+      allow read: if true;
+      // Crear: solo anónimo autenticado, dueño = su uid, campos exactos,
+      // tipos validados (PN-04).
+      // PN-26: el negocioId debe existir y pertenecer al usuario.
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(['negocioId','negocioNombre','titulo','texto','creadoPor','creadoEn','idioma'])
+        && request.resource.data.creadoPor == request.auth.uid
+        && esNegocioPropio(request.resource.data.negocioId)
+        && tiposAviso(request.resource.data);
+      // Actualizar: solo el dueño; solo el texto.
+      allow update: if esDueno()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['texto'])
+        && tiposAviso(request.resource.data);
+      allow delete: if esDueno();
+    }
+    match /premium/{uid} {
+      // PN-01 (CRÍTICO): Premium autoconcedido, CORREGIDO.
+      // Antes el propio usuario podía crear su documento con
+      // estado == 'activo' y la app leía el plan desde localStorage:
+      // cualquiera se daba Premium gratis.
+      // Ahora el cliente NO puede escribir aquí bajo ninguna condición:
+      // create, update y delete son `if false`. Solo el dueño puede
+      // LEER su propio documento.
+      // El documento solo podrá escribirlo un proceso de SERVIDOR futuro
+      // (Cloud Function / verificador de compras con Admin SDK) que
+      // valide la compra y la vigencia contra Google Play y actualice
+      // Firestore con privilegios de servidor. ESE PROCESO NO EXISTE
+      // HOY: Premium queda en modo DEMO/informativo, sin cobros reales
+      // y sin derechos reales. Ningún pago falso ni localStorage activa
+      // nada. Cuando exista el verificador, estas reglas deberán abrir
+      // la escritura solo a ese proceso (nunca al cliente).
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}
