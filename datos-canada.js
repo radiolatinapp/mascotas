@@ -1,8 +1,8 @@
-// Lugares de animales en Canadá extraídos de OpenStreetMap (verificado 2026-10-25).
-// cat: vet=Veterinarias, tienda=Tiendas de mascotas, refugio=Refugios y guarderías, zoo=Zoológicos
+// Lugares de animales en Canadá extraídos de OpenStreetMap (verificado 2026-10-26).
+// cat: vet=Veterinarias, tienda=Tiendas de mascotas, refugio=Refugios y guarderías, zoo=Zoológicos, parque=Parques para perros, peluqueria=Peluquerías caninas
 // horas: null = sin dato publicado. rating: solo si existe dato verificado (aquí nunca se inventa).
 // Todo proviene de OpenStreetMap (ODbL) vía Overpass; sin nombre o sin coordenadas el lugar se descarta.
-// Ciudades cargadas: 31/31 (2028 lugares).
+// Ciudades cargadas: 31/31 (2074 lugares).
 const CIUDADES_CANADA = {
  "toronto": {nombre:"Toronto", centro:[43.653482, -79.383935], tz:"America/Toronto", lugares:[
   {n:"The Animal Clinic", cat:"vet", lat:43.657195, lng:-79.37605, dir:"106 Mutual Street, Toronto", tel:"+1-416-868-1545", horas:null, nota:"Dato de OpenStreetMap"},
@@ -309,7 +309,6 @@ const CIUDADES_CANADA = {
   {n:"Central Park Animal Hospital", cat:"vet", lat:49.233107, lng:-123.013956, dir:"4079 Grange Street, Vancouver", tel:"+1-604-336-7387", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Hollyburn Veterinary Hospital", cat:"vet", lat:49.327943, lng:-123.153471, dir:"1365 Marine Drive, Vancouver", tel:"+1 604 922 6011", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Ambleside Animal Hospital", cat:"vet", lat:49.328402, lng:-123.15583, dir:"1455 Marine Drive, Vancouver", tel:"+1 604 922 4157", horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"North Burnaby Pet Hospital", cat:"vet", lat:49.281184, lng:-123.004756, dir:"4431 Hastings Street, Vancouver", tel:"+1-604-298-9941", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Amore Pet Foods", cat:"tienda", lat:49.280842, lng:-123.001677, dir:"4540 Hastings Street, Vancouver", tel:"+1-778-892-6673", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Bosley's by Pet Valu", cat:"tienda", lat:49.206571, lng:-123.031185, dir:"8515 River District Crossing, Vancouver", tel:"+1 604 431 8778", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Dr.Jean Hsu", cat:"vet", lat:49.1837, lng:-123.125962, dir:"8888 Odlin Crescent, Vancouver", tel:"+1 778 926 2353", horas:null, nota:"Dato de OpenStreetMap"},
@@ -368,7 +367,8 @@ const CIUDADES_CANADA = {
   {n:"City Dog", cat:"refugio", lat:49.276353, lng:-123.126587, dir:"1250 Granville Street, Vancouver", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"NHV Natural Pet", cat:"tienda", lat:49.266081, lng:-123.140334, dir:"1574 West 6th Avenue, Vancouver", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"The Doghouse", cat:"tienda", lat:49.269308, lng:-123.138686, dir:"Anderson Street, Vancouver", horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Cascadia Natural Pet Supply", cat:"tienda", lat:49.244216, lng:-123.101115, dir:"4512 Main Street, Vancouver", horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Cascadia Natural Pet Supply", cat:"tienda", lat:49.244216, lng:-123.101115, dir:"4512 Main Street, Vancouver", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Fetching Forever Dog Daycare & Spa", cat:"peluqueria", lat:49.25816, lng:-123.114806, dir:"3080 Cambie Street, Vancouver", tel:"+1-604-977-3647", horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "calgary": {nombre:"Calgary", centro:[51.045606, -114.057541], tz:"America/Edmonton", lugares:[
   {n:"Dogtopia", cat:"refugio", lat:51.037709, lng:-114.062682, dir:"115 17 Avenue SE, Calgary", tel:"+1 403 910 2338", horas:null, nota:"Dato de OpenStreetMap"},
@@ -588,7 +588,31 @@ const CIUDADES_CANADA = {
   {n:"Mr. Pet's", cat:"tienda", lat:53.652615, lng:-113.62984, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Pet Valu", cat:"tienda", lat:53.409773, lng:-113.443411, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"The Bone & Biscuit Co.", cat:"tienda", lat:53.407608, lng:-113.534561, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"PetSmart", cat:"tienda", lat:53.666599, lng:-113.634175, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"PetSmart", cat:"tienda", lat:53.666599, lng:-113.634175, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"DK’s Pet Grooming", cat:"peluqueria", lat:53.557279, lng:-113.502612, dir:"10543 Kingsway NW, Edmonton", tel:"+1-780-429-0242", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Sadie's Pet Stop", cat:"peluqueria", lat:53.49468, lng:-113.517862, dir:"5716 111 Street NW, Edmonton", tel:"+1 780-448-1737", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Happy Pet Spa", cat:"peluqueria", lat:53.539184, lng:-113.326884, dir:"246 Kaska Road, Edmonton", tel:"+1-780-449-4779", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Wagsmore", cat:"peluqueria", lat:53.512933, lng:-113.257634, dir:"10 Ridgemont Way, Edmonton", tel:"+1-780-464-0769", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Warm Hearts & Wet Noses", cat:"peluqueria", lat:53.499465, lng:-113.488331, tel:"+1 780-466-3830", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"So Fetch!", cat:"peluqueria", lat:53.495072, lng:-113.49165, dir:"5805 Gateway Boulevard NW, Edmonton", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Off-Leash Area", cat:"parque", lat:53.481152, lng:-113.421461, dir:"4540 50 Street NW, Edmonton", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Canine Addiction", cat:"peluqueria", lat:53.536915, lng:-113.317878, tel:"+1 587-401-5442", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"The Posh Paw", cat:"peluqueria", lat:53.42202, lng:-113.473929, dir:"1223 91 Street SW, Edmonton", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"104th Avenue Off-Leash Dog Park", cat:"parque", lat:53.546531, lng:-113.495199, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"South Bark", cat:"parque", lat:53.517766, lng:-113.502676, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Lauderdale Dog Park", cat:"parque", lat:53.586194, lng:-113.513454, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Buena Vista Dog Park", cat:"parque", lat:53.516003, lng:-113.54666, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Doggie Stylz Salon", cat:"peluqueria", lat:53.506479, lng:-113.445368, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Belgravia Dog Park", cat:"parque", lat:53.507446, lng:-113.541269, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Pleasantview Dog Park", cat:"parque", lat:53.497902, lng:-113.514391, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Royal Gardens Corridor Off Leash Area", cat:"parque", lat:53.47857, lng:-113.521109, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Royal Gardens Corridor Off Leash Area", cat:"parque", lat:53.479539, lng:-113.526864, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Royal Gardens Corridor Off Leash Area", cat:"parque", lat:53.481709, lng:-113.536854, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Royal Gardens Corridor Off Leash Area", cat:"parque", lat:53.480285, lng:-113.531736, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Pet Spaw", cat:"peluqueria", lat:53.470777, lng:-113.493314, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Central Bark Off-Leash Dog Park", cat:"parque", lat:53.458029, lng:-113.512525, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Terwillegar Off-Leash Dog Park", cat:"parque", lat:53.482189, lng:-113.608582, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Sally Stewart Park off-leash area", cat:"parque", lat:53.549822, lng:-113.309893, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "ottawa": {nombre:"Ottawa", centro:[45.420878, -75.690111], tz:"America/Toronto", lugares:[
   {n:"Glebe Pet Hospital", cat:"vet", lat:45.407628, lng:-75.690848, dir:"Bank Street, Ottawa", tel:"+1 613-233-8326", horas:null, nota:"Dato de OpenStreetMap"},
@@ -764,7 +788,18 @@ const CIUDADES_CANADA = {
   {n:"Pet Valu", cat:"tienda", lat:49.821287, lng:-97.202883, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Petland", cat:"tienda", lat:49.821763, lng:-97.208298, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Bridgwater Veterinary Hospital & Wellness Center", cat:"vet", lat:49.798672, lng:-97.195067, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Pet Valu", cat:"tienda", lat:49.797741, lng:-97.197602, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Pet Valu", cat:"tienda", lat:49.797741, lng:-97.197602, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"The Pawsh Dog", cat:"peluqueria", lat:49.866242, lng:-97.16783, dir:"1103 Corydon Avenue, Winnipeg", tel:"+1 204-813-9054", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Fetching Style", cat:"peluqueria", lat:49.864073, lng:-97.19603, dir:"1681 Corydon Avenue, Winnipeg", tel:"+1-204-487-6784", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Downtown Dog Park", cat:"parque", lat:49.885702, lng:-97.136365, dir:"260 Assiniboine Avenue, Winnipeg", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Hip Pooch", cat:"peluqueria", lat:49.87014, lng:-97.155704, dir:"805 Corydon Avenue, Winnipeg", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Barks n' Bubbles Pet Spa", cat:"peluqueria", lat:49.868221, lng:-97.14631, dir:"453 Pembina Highway, Winnipeg", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Sophisticuts", cat:"peluqueria", lat:49.853603, lng:-97.111402, dir:"767 Saint Mary's Road, Winnipeg", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Brenda Leipsic Off-leash Dog Park", cat:"parque", lat:49.846348, lng:-97.170433, dir:"100 Hurst Way, Winnipeg", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"The Belly Rub Club", cat:"peluqueria", lat:49.868592, lng:-97.254054, dir:"3227 Roblin Boulevard, Winnipeg", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Maple Grove Off-Leash Dog Park", cat:"parque", lat:49.794883, lng:-97.127324, dir:"Kilkenny Drive, Winnipeg", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"The Pawsh Dog", cat:"peluqueria", lat:49.849107, lng:-97.195191, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Sturgeon Road and Silver Avenue Dog Park", cat:"parque", lat:49.896363, lng:-97.275217, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "quebec": {nombre:"Quebec", centro:[46.813743, -71.208406], tz:"America/Toronto", lugares:[
   {n:"Poils et Plumes", cat:"tienda", lat:46.811111, lng:-71.217861, dir:"770 Rue Saint-Jean, Quebec", tel:"+1-418-977-2311", horas:null, nota:"Dato de OpenStreetMap"},
@@ -901,7 +936,18 @@ const CIUDADES_CANADA = {
   {n:"Children's Farm Area", cat:"zoo", lat:43.405105, lng:-79.765774, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Bronte Road Animal Hospital", cat:"vet", lat:43.402994, lng:-79.730508, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"TailBlazers", cat:"tienda", lat:43.395286, lng:-79.710337, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Planted Aquaria", cat:"tienda", lat:43.39678, lng:-79.708878, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Planted Aquaria", cat:"tienda", lat:43.39678, lng:-79.708878, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"The Blue Collar", cat:"peluqueria", lat:43.255027, lng:-79.863634, dir:"189 King Street East, Hamilton", tel:"+1-905-519-9948", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"A&P K9 Training and Daycare", cat:"peluqueria", lat:43.252896, lng:-79.85453, dir:"479 King Street East, Hamilton", tel:"+1-365-883-4028", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Pa-La's Pride & Groom", cat:"peluqueria", lat:43.202784, lng:-79.895367, dir:"41 Rymal Road East, Hamilton", tel:"+1-905-388-5930", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Norton Leash Free Dog Park", cat:"parque", lat:43.400542, lng:-79.815643, dir:"3035 Tim Dobbie Drive, Hamilton", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Pathfinder Park", cat:"parque", lat:43.401712, lng:-79.799527, dir:"2270 Pathfinder Drive, Hamilton", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Corktown Dog Park", cat:"parque", lat:43.247741, lng:-79.860207, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Birch Avenue Dog Park", cat:"parque", lat:43.261069, lng:-79.839194, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Borer's Falls Dog Park", cat:"parque", lat:43.289655, lng:-79.926995, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Corporal Nathan Cirillo Leashfree Dog Park", cat:"parque", lat:43.228611, lng:-79.950867, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Pets N Groom", cat:"peluqueria", lat:43.375796, lng:-79.835947, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Day Use Leash Free area", cat:"parque", lat:43.3997, lng:-79.758393, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "halifax": {nombre:"Halifax", centro:[44.648618, -63.585949], tz:"America/Halifax", lugares:[
   {n:"Petite Urban Pooch", cat:"refugio", lat:44.652318, lng:-63.588915, dir:"2353 Agricola Street, Halifax", tel:"+1-902-877-1863", horas:null, nota:"Dato de OpenStreetMap"},

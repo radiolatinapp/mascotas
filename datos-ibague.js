@@ -23,5 +23,7 @@ const NEGOCIOS_IBAGUE = [
  {n:"Agropecuaria de la Hacienda", cat:"farma", lat:4.439315, lng:-75.2246, dir:"Cl. 28 #4c-85, Ibagué", tel:"+573124483181", horas:[8,17], nota:"Alimentos, concentrados y accesorios"},
  {n:"Comercializadora Agropecuaria del Tolima", cat:"farma", lat:4.439282, lng:-75.224559, dir:"Calle 28 4C-95, Ibagué", tel:"+573173763249", horas:[8,18], rating:4.2, nota:"Productos veterinarios, consulta y vacunación"},
  {n:"Agropecuaria Ibagué", cat:"farma", lat:4.439593, lng:-75.232004, dir:"Cra 4 #21-11, Ibagué", tel:"+573125329960", horas:[8,18], nota:"Abre todos los días"},
- {n:"Agroempresarios", cat:"tienda", lat:4.439149, lng:-75.238072, dir:"Cra. 1 #16-83, Ibagué", tel:"+573102817820", horas:[8,17.75], nota:"Mayorista de productos agropecuarios y de mascotas"}
+ {n:"Agroempresarios", cat:"tienda", lat:4.439149, lng:-75.238072, dir:"Cra. 1 #16-83, Ibagué", tel:"+573102817820", horas:[8,17.75], nota:"Mayorista de productos agropecuarios y de mascotas"},
+ {n:"Parque Temático Tacuraí", cat:"zoo", lat:4.4768664, lng:-75.2131132, horas:null, nota:"Dato de OpenStreetMap"},
+ {n:"Mariposario del Tolima", cat:"zoo", lat:4.4576703, lng:-75.195002, horas:null, nota:"Dato de OpenStreetMap"}
 ];

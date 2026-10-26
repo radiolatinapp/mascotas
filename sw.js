@@ -12,7 +12,7 @@
      pero la activación limpia primero TODAS las cachés viejas
      (petnear-v*) y solo después reclama los clientes, para no mezclar
      versiones entre pestañas. */
-const CACHE = 'petnear-v117';
+const CACHE = 'petnear-v119';
 const CACHE_PREFIX = 'petnear-v';
 
 /* PN-13 — app shell mínimo: solo lo imprescindible para abrir la app

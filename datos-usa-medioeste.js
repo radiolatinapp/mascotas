@@ -1434,7 +1434,7 @@ const CIUDADES_USA_MEDIOESTE = {
   {n:"Vetique", cat:"vet", lat:41.897842, lng:-87.631089, dir:"77 West Chestnut Street", tel:"+1 312-291-9656", horas:[10.0, 18.0], nota:"Dato de OpenStreetMap"},
   {n:"Near North Animal Hospital", cat:"vet", lat:41.904076, lng:-87.634298, dir:"1207 North Wells Street", tel:"+1-312-944-5350", horas:[8.0, 19.5], nota:"Dato de OpenStreetMap"},
   {n:"Pups Pet Club", cat:"tienda", lat:41.890901, lng:-87.636086, dir:"316 West Illinois Street", tel:"+1-312-883-2340", horas:[7.0, 19.0], nota:"Dato de OpenStreetMap"},
-  {n:"Doggie Works", cat:"refugio", lat:41.936992, lng:-87.687274, dir:"2340 West Nelson Street", tel:"+1 773-697-7339", horas:[7.0, 19.0], nota:"Dato de OpenStreetMap"},
+  {n:"Doggie Works", cat:"tienda", guarderia:true, lat:41.936992, lng:-87.687274, dir:"2340 West Nelson Street", tel:"+1 773-697-7339", horas:[7.0, 19.0], nota:"Dato de OpenStreetMap"},
   {n:"BLVD Vet River North", cat:"vet", lat:41.89372, lng:-87.639025, dir:"375 West Erie Street", tel:"+1 312-888-3630", horas:[8.0, 20.0], nota:"Dato de OpenStreetMap"},
   {n:"Kriser's Natural Pet", cat:"tienda", lat:41.911745, lng:-87.680076, dir:"1658 North Milwaukee Avenue", tel:"+1 773-235-1790", horas:[9.0, 20.0], nota:"Dato de OpenStreetMap"},
   {n:"Aeslin Pup Hub Noble Square", cat:"refugio", lat:41.896276, lng:-87.664347, dir:"1448 West Chicago Avenue", tel:"+1-312-374-3957", horas:[6.0, 20.0], nota:"Dato de OpenStreetMap"},
@@ -8268,7 +8268,7 @@ const CIUDADES_USA_MEDIOESTE = {
  "unity-village": {nombre:"Unity Village", centro:[38.951241, -94.401704], tz:"America/Chicago", lugares:[
   {n:"Petco", cat:"tienda", lat:38.931178, lng:-94.408327, dir:"1860 Northwest Chipman Road", tel:"+1 816-246-0169", horas:[9.0, 20.0], nota:"Dato de OpenStreetMap"},
   {n:"Brookside Barkery & Bath", cat:"tienda", lat:38.982056, lng:-94.359619, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Pete & Mac's", cat:"refugio", lat:38.955354, lng:-94.364657, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Pete & Mac's", cat:"tienda", guarderia:true, lat:38.955354, lng:-94.364657, dir:"600 NE Pavestone Drive, Lee's Summit", tel:"+1-816-246-1116", horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "university-city": {nombre:"University City", centro:[38.656908, -90.310344], tz:"America/Chicago", lugares:[
   {n:"Delmar Doggie Design", cat:"peluqueria", lat:38.654241, lng:-90.289301, dir:"5860 Delmar Boulevard", tel:"+13144549663", horas:null, nota:"Dato de OpenStreetMap"}

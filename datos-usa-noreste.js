@@ -4292,7 +4292,7 @@ const CIUDADES_USA_NORESTE = {
  ]},
  "maple-shade": {nombre:"Maple Shade", centro:[39.952613, -74.992391], tz:"America/New_York", lugares:[
   {"n": "PetSmart", "cat": "tienda", "lat": 39.942157, "lng": -74.960055, "dir": "1331 Nixon Drive", "horas": null, "nota": "Dato de OpenStreetMap"},
-  {"n": "Villa La Paws Pet Resort", "cat": "refugio", "lat": 39.947301, "lng": -74.976326, "horas": null, "nota": "Dato de OpenStreetMap"},
+  {"n": "Villa La Paws Pet Resort", "cat": "tienda", "guarderia": true, "lat": 39.947301, "lng": -74.976326, "dir": "119 Kings Highway, Maple Shade", "horas": null, "nota": "Dato de OpenStreetMap"},
   {"n": "Burl-Moor-Driben Animal Hospital", "cat": "vet", "lat": 39.95012, "lng": -74.970574, "horas": null, "nota": "Dato de OpenStreetMap"}
  ]},
  "maplewood-new-jersey": {nombre:"Maplewood", centro:[40.731212, -74.273481], tz:"America/New_York", lugares:[
@@ -5153,7 +5153,7 @@ const CIUDADES_USA_NORESTE = {
   {"n": "Veterinary Eye Center of New York City (Hell's Kitchen)", "cat": "vet", "lat": 40.764532, "lng": -73.987017, "dir": "357 West 52nd Street", "tel": "+1-646-838-3915", "horas": [7.5, 17.5], "nota": "Dato de OpenStreetMap"},
   {"n": "Pet Super Nanny", "cat": "refugio", "lat": 40.680144, "lng": -73.96084, "dir": "1000 Atlantic Avenue", "tel": "+1-347-240-6585", "horas": null, "nota": "Dato de OpenStreetMap"},
   {"n": "Mr. Friendly", "cat": "tienda", "lat": 40.688543, "lng": -73.955282, "dir": "228 Clifton Place", "tel": "+1-718-489-3575", "horas": [10.0, 19.0], "nota": "Dato de OpenStreetMap"},
-  {"n": "Paws & Rec", "cat": "refugio", "lat": 40.656664, "lng": -74.001649, "dir": "857 4th Avenue", "tel": "+1-718-954-9117", "horas": [7.0, 20.0], "nota": "Dato de OpenStreetMap"},
+  {"n": "Paws & Rec", "cat": "tienda", "guarderia": true, "lat": 40.656664, "lng": -74.001649, "dir": "857 4th Avenue", "tel": "+1-718-954-9117", "horas": [7.0, 20.0], "nota": "Dato de OpenStreetMap"},
   {"n": "Dog Park Daycare", "cat": "refugio", "lat": 40.723259, "lng": -73.950645, "dir": "607 Manhattan Avenue", "tel": "+1-347-294-0947", "horas": null, "nota": "Dato de OpenStreetMap"},
   {"n": "Barks and Rec Center", "cat": "refugio", "lat": 40.679407, "lng": -73.959697, "dir": "1025 Pacific Street", "tel": "+1-347-533-6561", "horas": [8.0, 20.0], "nota": "Dato de OpenStreetMap"},
   {"n": "BluePearl", "cat": "vet", "lat": 40.766832, "lng": -73.987635, "dir": "410 West 55th Street", "tel": "+1-212-767-0099", "horas": [0, 24], "nota": "Dato de OpenStreetMap"},
