@@ -18,21 +18,22 @@ window.addEventListener('DOMContentLoaded',function(){
   document.body.appendChild(d);
 });
 </script>
-<script src="vendor/maplibre-gl.js" onerror="errRecurso('maplibre')"></script>
-<script src="datos-ibague.js" onerror="errRecurso('datos-ibague')"></script>
-<script src="datos-charlotte.js" onerror="errRecurso('datos-charlotte')"></script>
-<script src="datos-colombia.js" onerror="errRecurso('datos-colombia')"></script>
-<script src="datos-usa.js" onerror="errRecurso('datos-usa')"></script>
-<script src="datos-usa-extra.js" onerror="errRecurso('datos-usa-extra')"></script>
-<script src="datos-usa-noreste.js" onerror="errRecurso('datos-usa-noreste')"></script>
-<script src="datos-usa-sureste.js" onerror="errRecurso('datos-usa-sureste')"></script>
-<script src="datos-usa-medioeste.js" onerror="errRecurso('datos-usa-medioeste')"></script>
-<script src="datos-usa-surcentral.js" onerror="errRecurso('datos-usa-surcentral')"></script>
-<script src="datos-usa-montana.js" onerror="errRecurso('datos-usa-montana')"></script>
-<script src="datos-usa-pacifico.js" onerror="errRecurso('datos-usa-pacifico')"></script>
-<script src="datos-europa.js" onerror="errRecurso('datos-europa')"></script>
-<script src="datos-latam.js" onerror="errRecurso('datos-latam')"></script>
-<script src="datos-canada.js" onerror="errRecurso('datos-canada')"></script>
+<script defer src="vendor/maplibre-gl.js" onerror="errRecurso('maplibre')"></script>
+<script defer src="firebase.js" onerror="errRecurso('firebase')"></script>
+<script defer src="datos-ibague.js" onerror="errRecurso('datos-ibague')"></script>
+<script defer src="datos-charlotte.js" onerror="errRecurso('datos-charlotte')"></script>
+<script defer src="datos-colombia.js" onerror="errRecurso('datos-colombia')"></script>
+<script defer src="datos-usa.js" onerror="errRecurso('datos-usa')"></script>
+<script defer src="datos-usa-extra.js" onerror="errRecurso('datos-usa-extra')"></script>
+<script defer src="datos-usa-noreste.js" onerror="errRecurso('datos-usa-noreste')"></script>
+<script defer src="datos-usa-sureste.js" onerror="errRecurso('datos-usa-sureste')"></script>
+<script defer src="datos-usa-medioeste.js" onerror="errRecurso('datos-usa-medioeste')"></script>
+<script defer src="datos-usa-surcentral.js" onerror="errRecurso('datos-usa-surcentral')"></script>
+<script defer src="datos-usa-montana.js" onerror="errRecurso('datos-usa-montana')"></script>
+<script defer src="datos-usa-pacifico.js" onerror="errRecurso('datos-usa-pacifico')"></script>
+<script defer src="datos-europa.js" onerror="errRecurso('datos-europa')"></script>
+<script defer src="datos-latam.js" onerror="errRecurso('datos-latam')"></script>
+<script defer src="datos-canada.js" onerror="errRecurso('datos-canada')"></script>
 <style>
 html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#EFEDE6;overflow:hidden}
 #map{position:absolute;inset:0}
@@ -56,6 +57,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .chip.on{background:#0E7C66;color:#fff}
 /* v10.15 — Menú hamburguesa: botón de 3 líneas arriba a la derecha y panel lateral. */
 /* v10.16 — Menú lateral a la medida: altura según el contenido (sin bottom:0), esquinas inferiores redondeadas y max-height con scroll interno en pantallas bajas. */
+/* v10.17 — Corrección auditoría (PN-01 a PN-30): Premium en modo demo sin derechos reales (reglas Firestore endurecidas), XSS con escHtml/sanUrl, auth anónima con refreshToken y renovación, paginación con nextPageToken, consultas por zona, SW con precaché mínima y estrategias por ruta, scripts con defer, Overpass con AbortController, avatares con preload metadata, caché geo con LRU, fotos con tope, frescura de datos y firebase.js extraído (PN-22). */
 .brandRow{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .burger{flex:none;width:42px;height:42px;border:0;border-radius:12px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s ease,transform .15s ease}
 .burger:active{transform:scale(.94);background:rgba(255,255,255,.3)}
@@ -244,7 +246,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.16</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.17</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -267,6 +269,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
   <div class="meta ocultarViaje" id="cDist"></div>
   <div class="meta ocultarViaje" id="cAviso" style="color:#B97E00;font-weight:700"></div>
   <div class="meta ocultarViaje" id="cHorarios"></div>
+  <div class="meta ocultarViaje" style="margin-top:4px" data-i18n="frescuraDatos">Datos verificados en Oct 2026; los horarios pueden cambiar, confirma con el negocio.</div>
   <div id="cOfertas" class="ocultarViaje" style="display:none;margin-top:8px"></div>
   <div class="meta ocultarViaje" id="visitasInfo" style="margin-top:4px"></div>
   <div class="btns ocultarViaje" id="filaVisitas" style="gap:4px;align-items:center">
@@ -588,6 +591,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
     <button class="chip" id="bCerrarLista" data-i18n="btnCerrar">Cerrar</button>
   </div>
   <div id="listaCuerpo"></div>
+  <div class="meta" style="margin-top:10px;padding:8px 2px 2px;border-top:1px solid #eee" data-i18n="frescuraDatos">Datos verificados en Oct 2026; los horarios pueden cambiar, confirma con el negocio.</div>
   <div id="listaEventosForm" style="display:none;margin-top:12px;border-top:2px solid #eee;padding-top:10px">
     <div style="font-weight:800;font-size:14px;margin-bottom:6px" data-i18n="publicaEvento">Publica tu evento</div>
     <input class="inputTxt" id="evNombre" data-i18n-ph="evNombre" placeholder="Nombre del evento">
@@ -655,11 +659,18 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 </div>
 <div class="panel" id="panelAcerca" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="menuAcerca">About PetNear</h3><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Close</button></div>
-  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.16</div></div></div>
+  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.17</div></div></div>
   <div class="meta" style="margin-top:8px" data-i18n="aceTexto">PetNear helps you find vets, pet stores, pharmacies and shelters for your pet, near you.</div>
   <div class="meta" style="margin-top:6px" data-i18n="aceIdiomas">Available in 8 languages</div>
 </div>
 <script>
+/* PN-16 (auditoria v10.16): MapLibre + los 14 datos-*.js del <head> ahora
+   llevan defer: se descargan en paralelo sin bloquear el parser y se
+   ejecutan en orden antes de DOMContentLoaded. Por eso TODA la
+   inicializacion de este script corre dentro de DOMContentLoaded: cuando
+   este listener se ejecuta, los datos ya estan definidos. El unico global
+   que usa el HTML (onclick="irAtras()") se re-exporta al final. */
+document.addEventListener('DOMContentLoaded',function(){
 /* ---------- v7: idiomas empaquetados + capa mundial ---------- */
 const IDIOMAS={es:'es-ES',en:'en-US',pt:'pt-BR',fr:'fr-FR',de:'de-DE',it:'it-IT',nl:'nl-NL',pl:'pl-PL'};
 const I18N={
@@ -691,6 +702,7 @@ const I18N={
   "btnCerrar": "Cerrar",
   "sortMejor": "Mejor valorados",
   "sortCerca": "Cerca de mí",
+  "frescuraDatos": "Datos verificados en Oct 2026; los horarios pueden cambiar, confirma con el negocio.",
   "publicaEvento": "Publica tu evento",
   "evNombre": "Nombre del evento",
   "evFecha": "Fecha (ej. 15 nov)",
@@ -1119,6 +1131,7 @@ const I18N={
   "btnCerrar": "Close",
   "sortMejor": "Top rated",
   "sortCerca": "Near me",
+  "frescuraDatos": "Data verified in Oct 2026; hours may change — please confirm with the business.",
   "publicaEvento": "Post your event",
   "evNombre": "Event name",
   "evFecha": "Date (e.g. Nov 15)",
@@ -1547,6 +1560,7 @@ const I18N={
   "btnCerrar": "Fechar",
   "sortMejor": "Melhor avaliados",
   "sortCerca": "Perto de mim",
+  "frescuraDatos": "Dados verificados em out. de 2026; os horários podem mudar, confirme com o estabelecimento.",
   "publicaEvento": "Publique seu evento",
   "evNombre": "Nome do evento",
   "evFecha": "Data (ex. 15 nov)",
@@ -1975,6 +1989,7 @@ const I18N={
   "btnCerrar": "Fermer",
   "sortMejor": "Mieux notés",
   "sortCerca": "Près de moi",
+  "frescuraDatos": "Données vérifiées en oct. 2026 ; les horaires peuvent changer, confirmez auprès de l’établissement.",
   "publicaEvento": "Publiez votre événement",
   "evNombre": "Nom de l'événement",
   "evFecha": "Date (ex. 15 nov.)",
@@ -2403,6 +2418,7 @@ const I18N={
   "btnCerrar": "Schließen",
   "sortMejor": "Beste Bewertung",
   "sortCerca": "In meiner Nähe",
+  "frescuraDatos": "Daten geprüft im Okt. 2026; Öffnungszeiten können sich ändern, bitte beim Geschäft bestätigen.",
   "publicaEvento": "Veranstaltung veröffentlichen",
   "evNombre": "Name der Veranstaltung",
   "evFecha": "Datum (z. B. 15. Nov.)",
@@ -2831,6 +2847,7 @@ const I18N={
   "btnCerrar": "Chiudi",
   "sortMejor": "Più votati",
   "sortCerca": "Vicino a me",
+  "frescuraDatos": "Dati verificati a ott. 2026; gli orari possono cambiare, conferma con l’attività.",
   "publicaEvento": "Pubblica il tuo evento",
   "evNombre": "Nome dell'evento",
   "evFecha": "Data (es. 15 nov)",
@@ -3259,6 +3276,7 @@ const I18N={
   "btnCerrar": "Sluiten",
   "sortMejor": "Best beoordeeld",
   "sortCerca": "Dichtbij mij",
+  "frescuraDatos": "Gegevens geverifieerd in okt. 2026; openingstijden kunnen wijzigen, bevestig bij het bedrijf.",
   "publicaEvento": "Plaats je evenement",
   "evNombre": "Naam van het evenement",
   "evFecha": "Datum (bijv. 15 nov.)",
@@ -3687,6 +3705,7 @@ const I18N={
   "btnCerrar": "Zamknij",
   "sortMejor": "Najlepiej oceniane",
   "sortCerca": "Blisko mnie",
+  "frescuraDatos": "Dane zweryfikowane w paź. 2026 r.; godziny mogą się zmienić, potwierdź w firmie.",
   "publicaEvento": "Opublikuj swoje wydarzenie",
   "evNombre": "Nazwa wydarzenia",
   "evFecha": "Data (np. 15 lis)",
@@ -4191,7 +4210,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.16':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.16';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.17':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.17';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -4700,6 +4719,31 @@ const REGIONES_PINES_HAMLET={
  latam:{archivo:'pins-hamlet-latam.js',global:'PINS_HAMLET_LATAM',oeste:-118,sur:-56,este:-34,norte:33}
 };
 const pinesHamletCargados=new Set(), pinesHamletCargando=new Set();
+/* PN-15 (auditoria v10.16): los 3 paquetes pins-hamlet-europa-*.js cubren
+   TODA Europa cada uno (no son recortes geograficos: mismo bbox, ~284k
+   pines c/u, ~17 MB c/u) y antes se disparaban los 3 en paralelo al entrar
+   en Europa con zoom>=9 (~51 MB de golpe). Ahora se cargan EN COLA, de uno
+   en uno: menos pico de red/CPU y si el usuario se va de la region, los
+   que faltan no se descargan. El arreglo real (repartir los 3 archivos por
+   zonas geograficas o tiles vectoriales) exige regenerar los paquetes y
+   queda como seguimiento documentado. La base .db de 205 MB NO se sirve:
+   no la referencia index.html ni sw.js y ningun script de publicacion la
+   sube al repo (despliegue por allowlist). */
+const _colaHamlet=[]; let _hamletEnCurso=false;
+function _procesarColaHamlet(){
+  if(_hamletEnCurso)return;
+  const id=_colaHamlet.shift();
+  if(!id)return;
+  const r=REGIONES_PINES_HAMLET[id];
+  if(!r||pinesHamletCargados.has(id)){_procesarColaHamlet();return;}
+  _hamletEnCurso=true; pinesHamletCargando.add(id);
+  const sc=document.createElement('script');
+  sc.src=r.archivo;
+  const fin=()=>{pinesHamletCargando.delete(id);_hamletEnCurso=false;_procesarColaHamlet();};
+  sc.onload=()=>{pinesHamletCargados.add(id);actualizarPinesPueblo();fin();};
+  sc.onerror=()=>{fin();};
+  document.head.appendChild(sc);
+}
 function pinesHamletDeRegion(id){
   if(id==='usa')return (typeof PINS_HAMLET_USA!=='undefined')?PINS_HAMLET_USA:null;
   if(id==='canada')return (typeof PINS_HAMLET_CANADA!=='undefined')?PINS_HAMLET_CANADA:null;
@@ -4711,13 +4755,8 @@ function pinesHamletDeRegion(id){
 }
 function cargarPinesHamletRegion(id){
   const r=REGIONES_PINES_HAMLET[id];
-  if(!r||pinesHamletCargados.has(id)||pinesHamletCargando.has(id))return;
-  pinesHamletCargando.add(id);
-  const sc=document.createElement('script');
-  sc.src=r.archivo;
-  sc.onload=()=>{pinesHamletCargados.add(id);pinesHamletCargando.delete(id);actualizarPinesPueblo();};
-  sc.onerror=()=>{pinesHamletCargando.delete(id);};
-  document.head.appendChild(sc);
+  if(!r||pinesHamletCargados.has(id)||pinesHamletCargando.has(id)||_colaHamlet.includes(id))return;
+  _colaHamlet.push(id); _procesarColaHamlet(); /* PN-15: en cola, uno a la vez */
 }
 const pinesCargados=new Set(), pinesCargando=new Set();
 function pinesDeRegion(id){
@@ -5219,7 +5258,22 @@ function eventosCercanos(){
   return [...propios,...base].sort((a,b)=>distanciaA(a)-distanciaA(b));
 }
 
-function todosLugares(){return NEGOCIOS.concat(marcadoresOSM.map(m=>m.b)).concat(alertas).concat(adopciones);}
+/* PN-18 (auditoria v10.16): todosLugares() se llamaba en cada tecla y en
+   cada render, reconstruyendo el universo entero. Memo de 1 s: los datos
+   cambian poco y 1 s de desfase maximo es invisible en la UI. */
+let _todosCache=null,_todosCacheAt=0;
+function todosLugares(){const ahora=Date.now();if(_todosCache&&ahora-_todosCacheAt<1000)return _todosCache;_todosCacheAt=ahora;_todosCache=NEGOCIOS.concat(marcadoresOSM.map(m=>m.b)).concat(alertas).concat(adopciones);return _todosCache;}
+/* PN-18: sugerencias sin texto (los 8 mas cercanos) cacheadas por zona:
+   solo se recalculan si el centro del mapa se movio >~1 km o cambio el zoom. */
+let _sugVaciasKey='',_sugVacias=[];
+function sugerenciasCercanas(){
+  let key='';
+  try{const c=window.map.getCenter();key=c.lat.toFixed(2)+','+c.lng.toFixed(2)+','+Math.floor(window.map.getZoom());}catch(e){}
+  if(key&&key===_sugVaciasKey)return _sugVacias;
+  _sugVaciasKey=key;
+  _sugVacias=todosLugares().map(b=>({b,d:distanciaA(b)})).sort((x,y)=>x.d-y.d).slice(0,8);
+  return _sugVacias;
+}
 function lugaresEnVista(){
   const b=window.map.getBounds(); if(!b)return [];
   return todosLugares().filter(x=>x.lng>=b.getWest()&&x.lng<=b.getEast()&&x.lat>=b.getSouth()&&x.lat<=b.getNorth());
@@ -5354,14 +5408,20 @@ document.getElementById('bCerrarCategorias').addEventListener('click',()=>irAtra
 document.getElementById('bCerrarLista').addEventListener('click',()=>irAtras());
 document.getElementById('sortMejor').addEventListener('click',()=>{sortMode='mejor';renderLista();});
 document.getElementById('sortCerca').addEventListener('click',()=>{sortMode='cerca';renderLista();});
+/* PN-18: debounce de 150 ms — antes cada tecla reordenaba todo el universo. */
+let _inputTimer=null;
 document.getElementById('buscador').addEventListener('input',e=>{
-  filtroTxt=e.target.value.trim().toLowerCase();
-  if(filtroTxt){
-    filtroCat='todos';
-    if(!tripActivo&&capaAbierta&&capaAbierta!=='card')irAtras();
-    else{document.getElementById('panelLista').style.display='none';document.getElementById('panelCategorias').style.display='none';}
-  }
-  aplicarFiltros();actualizarCiudadesSugeridas();renderSug();
+  clearTimeout(_inputTimer);
+  const valor=e.target.value;
+  _inputTimer=setTimeout(()=>{
+    filtroTxt=valor.trim().toLowerCase();
+    if(filtroTxt){
+      filtroCat='todos';
+      if(!tripActivo&&capaAbierta&&capaAbierta!=='card')irAtras();
+      else{document.getElementById('panelLista').style.display='none';document.getElementById('panelCategorias').style.display='none';}
+    }
+    aplicarFiltros();actualizarCiudadesSugeridas();renderSug();
+  },150);
 });
 /* ---------- Búsqueda por relevancia ---------- */
 function normalizar(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
@@ -5417,7 +5477,7 @@ async function buscarLugar(q){
     const nq=normalizar(q);
     const cache=leerCacheGeo();
     const hit=cache.items[nq];
-    if(hit&&Date.now()-hit.ts<30*864e5)return hit.res;
+    if(hit&&Date.now()-hit.ts<30*864e5){hit.ts=Date.now();guardarCacheGeo(cache);return hit.res;} /* PN-21: LRU real — el acceso refresca ts, asi guardarCacheGeo expulsa la entrada menos usada, no la mas antigua. TTL 30 dias y tope 100 entradas ya existian. */
     const espera=1100-(Date.now()-ultimoGeoAt);
     if(espera>0)await new Promise(r=>setTimeout(r,espera));
     ultimoGeoAt=Date.now();
@@ -5528,7 +5588,7 @@ function sugRow(b,d){
   }
   let lista;
   if(!q){
-    lista=todosLugares().map(b=>({b,d:distanciaA(b)})).sort((x,y)=>x.d-y.d).slice(0,8);
+    lista=sugerenciasCercanas(); /* PN-18: cache por viewport, no recalcular todo */
     if(document.activeElement!==document.getElementById('buscador')){box.style.display='none';return;}
     box.innerHTML=lista.map(({b,d})=>sugRow(b,d)).join('');
     box.style.display='block';
@@ -5965,26 +6025,53 @@ function zonaContenida(b){return zonasCargadas.some(z=>b.getWest()>=z[0]-0.15&&b
 function mostrarZonaEstado(txt,ms){const p=document.getElementById('zonaEstado');if(!p)return;clearTimeout(p._t);p.textContent=txt;p.style.display=txt?'':'none';p.style.pointerEvents=(typeof zonaError!=='undefined'&&zonaError)?'auto':'none';if(ms){p._t=setTimeout(()=>{p.style.display='none';},ms);}}
 document.getElementById('zonaEstado').addEventListener('click',()=>{if(zonaError)cargarZona(true);});
 
+/* PN-20 (auditoria v10.16) — INVENTARIO DE PROVEEDORES GRATUITOS.
+   Ver el detalle con limites y fallbacks en NOTA-proveedores.md.
+   - Nominatim (nominatim.openstreetmap.org): geocodificacion bajo demanda,
+     politica 1 req/s, sin autocompletado; fallo -> [] y la UI muestra
+     "sin resultados", la app no se rompe.
+   - Overpass (3 espejos, OVERPASS_URLS): carrera escalonada con
+     AbortController (PN-19); si los 3 fallan, cargarZona muestra
+     zonaError + "Reintentar" y reintenta 1 vez a los 5 s.
+   - OSRM (router.project-osrm.org + routing.openstreetmap.de): 2 hosts
+     alternos, 3 intentos; si fallan, ruta recta + aviso "sin ruta".
+   - Tiles: CARTO Voyager (basemaps.cartocdn.com) para ilustrado/actual,
+     OpenFreeMap (tiles.openfreemap.org) para 3D y OSM raster
+     (tile.openstreetmap.org) para satelite; sin tiles el mapa queda vacio
+     pero la app sigue funcionando (sin promesa de SLA).
+   Ninguno de estos servicios es de pago ni tiene SLA: si uno cae, la app
+   degrada con mensaje honesto, nunca con pantalla en blanco. */
 const OVERPASS_URLS=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter'];
 /* v10: carrera con arranque escalonado entre los 3 espejos Overpass.
    El principal (.de) se satura y tarda 20+s; esperar a que falle cada espejo
    en serie dejaba la pill en "Buscando..." más de 90 s. Ahora el primero
    arranca al instante, los otros a los 6 s y 12 s si nadie respondió;
    gana el primero que responde y los demás se ignoran. */
+/* PN-19 (auditoria v10.16): al primer exito se abortan TODAS las consultas
+   pendientes y se cancelan los arranques escalonados que aun no salieron
+   (antes las perdedoras seguian consumiendo ancho de banda y presionando
+   los espejos comunitarios). Minimo 1,5 s entre inicios de consulta
+   (frecuencia) y bbox ya limitado a 3 grados en cargarZona. */
+let ultimoOverpassInicio=0;
 function consultarOverpass(q){
   return new Promise((resolve,reject)=>{
     let done=false, fails=0; const total=OVERPASS_URLS.length;
+    const ctls=new Set(), timers=[];
+    const limpiar=()=>{timers.forEach(clearTimeout);timers.length=0;ctls.forEach(c=>{try{c.abort();}catch(e){}});ctls.clear();};
     const intentar=(u)=>{
-      const ctl=new AbortController();
+      if(done)return;
+      const ctl=new AbortController(); ctls.add(ctl);
       const to=setTimeout(()=>ctl.abort(),30000);
       fetch(u,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(q),signal:ctl.signal})
         .then(r=>{clearTimeout(to);if(!r.ok)throw new Error('http '+r.status);return r.json();})
-        .then(j=>{if(!done){done=true;resolve(j);}})
-        .catch(e=>{clearTimeout(to);if(done)return;if(++fails>=total)reject(e);});
+        .then(j=>{if(done)return;done=true;limpiar();resolve(j);})
+        .catch(e=>{clearTimeout(to);ctls.delete(ctl);if(done)return;if(++fails>=total){limpiar();reject(e);}});
     };
-    intentar(OVERPASS_URLS[0]);
-    setTimeout(()=>{if(!done)intentar(OVERPASS_URLS[1]);},6000);
-    setTimeout(()=>{if(!done)intentar(OVERPASS_URLS[2]);},12000);
+    const espera=Math.max(0,1500-(Date.now()-ultimoOverpassInicio));
+    ultimoOverpassInicio=Date.now()+espera;
+    timers.push(setTimeout(()=>intentar(OVERPASS_URLS[0]),espera));
+    timers.push(setTimeout(()=>{if(!done)intentar(OVERPASS_URLS[1]);},espera+6000));
+    timers.push(setTimeout(()=>{if(!done)intentar(OVERPASS_URLS[2]);},espera+12000));
   });
 }
 function esTextoLugar(q){
@@ -6159,7 +6246,7 @@ function aplicarModoMascota(){
     dogEl.style.border='4px solid #fff'; dogEl.style.boxShadow='0 6px 14px rgba(0,0,0,.45)';
     img.style.width='100%'; img.style.height='100%'; img.style.objectFit='cover';
     vid.style.width='100%'; vid.style.height='100%'; vid.style.objectFit='cover';
-    if(vid.dataset.av!==av.id){vid.src=av.mp4; vid.dataset.av=av.id; vid.preload='auto'; vid.load();}
+    if(vid.dataset.av!==av.id){vid.src=av.mp4; vid.dataset.av=av.id; vid.preload='metadata'; vid.poster=av.png; vid.load();} /* PN-17: antes preload='auto' descargaba el video entero (6-26 MB) al elegirlo; con 'metadata' solo baja cabecera y el video se descarga al reproducirse. Poster estatico = la foto del avatar. */
     img.src=av.png;
   } else if(petFoto){
     /* v10.11 — mascota principal con foto propia: círculo con la foto
@@ -6245,8 +6332,7 @@ requestAnimationFrame(loop);
    Si la app no logra conectar (Auth anónimo desactivado, sin red), las
    alertas se guardan solo en este teléfono (localStorage) y el panel lo avisa.
    ========================================================================== */
-const FIREBASE_CONFIG_PENDIENTE = false;
-const FIREBASE_CONFIG = {apiKey:'AIzaSyB-bIlyVxI5BJb9DMYb-W4Q3GhhWMvNgSU', authDomain:'mascotas-cerca-de-ti.firebaseapp.com', projectId:'mascotas-cerca-de-ti', storageBucket:'mascotas-cerca-de-ti.firebasestorage.app', messagingSenderId:'163918868521', appId:'1:163918868521:web:a0933fede8d5d0bb56ec38'};
+/* PN-22: FIREBASE_CONFIG y FIREBASE_CONFIG_PENDIENTE se mudaron a firebase.js (mismo directorio, cargado con defer antes que este script). */
 
 /* ---------- Utilidades ---------- */
 function escHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -6317,12 +6403,16 @@ function bajarFoto(file){
     img.src=URL.createObjectURL(file);
   });
 }
-/* Miniatura para Firestore sin Storage: máx. ~100 KB en Base64 dentro del
-   documento (límite 1 MiB por documento). Reintenta bajando tamaño/calidad;
-   si ni así cabe, devuelve null (la foto queda solo en el teléfono). */
+/* PN-12 (auditoria v10.16): miniatura para Firestore sin Storage: max ~100 KB
+   en Base64 dentro del documento (limite 1 MiB por documento). Reintenta
+   bajando tamano/calidad; si ni asi cabe, devuelve null (la foto queda solo
+   en el telefono). Pasos max 240 px y ultimo intento 120 px: la miniatura
+   es solo para la lista; la foto completa NO se sube (no hay Storage). */
+const FOTO_B64_MAX=136000; /* ~100 KB binarios: tope en fotoAMiniatura Y en escritura */
+function fotoUrlSegura(u){return (typeof u==='string'&&u.length>0&&u.length<=FOTO_B64_MAX)?u:null;} /* PN-12: guarda en escritura — ningun fotoUrl mayor que el tope entra a Firestore ni a localStorage */
 async function fotoAMiniatura(blob){
-  const LIMITE_B64=136000; /* ~100 KB binarios */
-  const pasos=[[320,0.62],[240,0.55],[180,0.5]];
+  const LIMITE_B64=FOTO_B64_MAX;
+  const pasos=[[240,0.6],[180,0.55],[160,0.5],[120,0.45]];
   for(const [max,q] of pasos){
     const url=await new Promise((res,rej)=>{
       const img=new Image();
@@ -6342,12 +6432,12 @@ async function fotoAMiniatura(blob){
 }
 
 /* ---------- Firestore por REST (sin SDK, sin clave de pago) ---------- */
-const FB={enabled:false,uid:null,idToken:null,refreshToken:null,tokenExpiraEn:0,renovacionTimer:null,sesionError:false,key:null,base:null,projectId:null};
-const FB_AUTH_LS='mascotas_fb_auth_v1'; /* uid + idToken + refreshToken (PN-07) */
-function fbConfigEfectiva(){
-  if(typeof window!=='undefined'&&window.__FB_OVERRIDE__)return window.__FB_OVERRIDE__;
-  return FIREBASE_CONFIG;
-}
+/* PN-22: el estado FB, la config, fbConfigEfectiva, fbHeaders y los
+   serializadores fsVal/fsFields/fsScalar/fsDocToObj viven ahora en
+   firebase.js (defer, antes que este script). Los globales se comparten
+   por el ambito lexico global de los scripts clasicos. fbInit y el resto
+   de llamadas REST quedan aqui; la extraccion completa por dominio
+   (alertas/adopciones/negocios/...) es trabajo futuro. */
 async function fbInit(){
   const cfg=fbConfigEfectiva();
   if(FIREBASE_CONFIG_PENDIENTE && !window.__FB_OVERRIDE__)return false;
@@ -6373,7 +6463,6 @@ async function fbInit(){
     FB.enabled=true; fbProgramarRenovacion(); return true;
   }catch(e){FB.sesionError=true;return false;}
 }
-function fbHeaders(){return {'Content-Type':'application/json','Authorization':'Bearer '+FB.idToken};}
 /* PN-07/08 — Auth anónima persistente (sin SDK, REST de Identity Toolkit).
    El refreshToken se guarda en localStorage, igual que la persistencia por
    defecto del SDK de Firebase Auth: con él se renueva el idToken sin crear
@@ -6453,38 +6542,6 @@ async function fbListarPorZona(coleccion,bounds,maxDocs){
     return (j||[]).map(x=>x.document).filter(Boolean);
   }catch(e){return null;}
 }
-function fsVal(v){
-  if(v==null)return {nullValue:null};
-  if(typeof v==='number')return Number.isInteger(v)?{integerValue:String(v)}:{doubleValue:v};
-  if(typeof v==='boolean')return {booleanValue:v};
-  if(v instanceof Date)return {timestampValue:v.toISOString()};
-  if(typeof v==='string')return {stringValue:v};
-  if(Array.isArray(v))return {arrayValue:{values:v.map(fsVal)}};
-  if(typeof v==='object'){const fields={};for(const k in v)fields[k]=fsVal(v[k]);return {mapValue:{fields}};}
-  return {stringValue:String(v)};
-}
-function fsFields(obj){const fields={};for(const k in obj)fields[k]=fsVal(obj[k]);return {fields};}
-function fsScalar(v){
-  if(!v)return null;
-  if(v.stringValue!==undefined)return v.stringValue;
-  if(v.integerValue!==undefined)return parseInt(v.integerValue,10);
-  if(v.doubleValue!==undefined)return v.doubleValue;
-  if(v.booleanValue!==undefined)return v.booleanValue;
-  if(v.timestampValue!==undefined)return new Date(v.timestampValue).getTime();
-  if(v.nullValue!==undefined)return null;
-  return null;
-}
-function fsDocToObj(doc){
-  const o={id:doc.name.split('/').pop()};
-  const f=doc.fields||{};
-  for(const k in f){
-    const v=f[k];
-    if(v.mapValue){o[k]={};for(const kk in (v.mapValue.fields||{}))o[k][kk]=fsScalar(v.mapValue.fields[kk]);}
-    else if(v.arrayValue){o[k]=(v.arrayValue.values||[]).map(fsScalar);}
-    else o[k]=fsScalar(v);
-  }
-  return o;
-}
 /* Sin Storage: la foto va como miniatura Base64 en fotoUrl (ver fotoAMiniatura). */
 /* PN-05/reglas v10.17: fbIncrementar ELIMINADO. Las reglas no permiten al
    dueño modificar contadores del documento padre (avistamientos/reportes):
@@ -6546,7 +6603,7 @@ const PerdidasDB={
       let fotoUrl=null, fotoNoCabe=false;
       if(d.fotoBlob){fotoUrl=await fotoAMiniatura(d.fotoBlob); if(fotoUrl===null)fotoNoCabe=true;}
       const doc={tipo:d.tipo||'perdida',especie:d.especie,nombre:d.nombre||'',descripcion:d.descripcion,
-        fotoUrl:fotoUrl,fotoRuta:null,lat:d.lat,lng:d.lng,zonaTexto:d.zonaTexto||'',
+        fotoUrl:fotoUrlSegura(fotoUrl),fotoRuta:null,lat:d.lat,lng:d.lng,zonaTexto:d.zonaTexto||'',
         geohash:geohashEncode(d.lat,d.lng,7),fechaPerdida:new Date(d.fechaPerdida),
         creadoEn:new Date(),expiraEn:new Date(Date.now()+DIAS_CADUCIDAD*864e5),
         estado:'activa',contactoTipo:d.contactoTipo||'ninguno',contactoValor:d.contactoValor||'',
@@ -6560,7 +6617,7 @@ const PerdidasDB={
     }
     const ahora=Date.now();
     let fotoUrl=null;
-    if(d.fotoBlob){fotoUrl=await new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.readAsDataURL(d.fotoBlob);});}
+    if(d.fotoBlob){fotoUrl=await fotoAMiniatura(d.fotoBlob);} /* PN-12: antes la foto completa sin limite en localStorage (cuota 5 MB); ahora miniatura <=100 KB */
     const a=normalizarAlerta({id:'loc-'+ahora.toString(36)+'-'+Math.random().toString(36).slice(2,7),
       tipo:d.tipo||'perdida',especie:d.especie,nombre:d.nombre||'',descripcion:d.descripcion,
       fotoUrl:fotoUrl,fotoRuta:null,lat:d.lat,lng:d.lng,zonaTexto:d.zonaTexto||'',
@@ -6573,7 +6630,7 @@ const PerdidasDB={
   async avistamiento(id,av){
     /* av: {nota,lat,lng,fotoUrl?} — el punto es donde se vio, no la casa */
     if(FB.enabled){
-      const doc={creadoPor:FB.uid,creadoEn:new Date(),nota:av.nota||'',lat:av.lat,lng:av.lng,fotoUrl:av.fotoUrl||null,idioma:idioma};
+      const doc={creadoPor:FB.uid,creadoEn:new Date(),nota:av.nota||'',lat:av.lat,lng:av.lng,fotoUrl:fotoUrlSegura(av.fotoUrl)||null,idioma:idioma}; /* PN-12: tope en escritura */
       const r=await fbFetch(FB.base+'/alertas/'+id+'/avistamientos',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
       if(!r.ok)throw new Error('fb av '+r.status);
       /* PN-05/reglas v10.17: NO incrementar 'avistamientos' en el padre.
@@ -6693,7 +6750,7 @@ const AdopcionesDB={
       let fotoUrl=null, fotoNoCabe=false;
       if(d.fotoBlob){fotoUrl=await fotoAMiniatura(d.fotoBlob); if(fotoUrl===null)fotoNoCabe=true;}
       const doc={tipo:'adopcion',especie:d.especie,nombre:d.nombre||'',edad:d.edad||'',tamano:d.tamano||'',
-        descripcion:d.descripcion,fotoUrl:fotoUrl,lat:d.lat,lng:d.lng,zonaTexto:d.zonaTexto||'',
+        descripcion:d.descripcion,fotoUrl:fotoUrlSegura(fotoUrl),lat:d.lat,lng:d.lng,zonaTexto:d.zonaTexto||'',
         geohash:geohashEncode(d.lat,d.lng,7),fechaPublicacion:new Date(),
         creadoEn:new Date(),expiraEn:new Date(Date.now()+DIAS_ADOPCION*864e5),
         estado:'disponible',contactoTipo:d.contactoTipo||'whatsapp',contactoValor:d.contactoValor||'',
@@ -6707,7 +6764,7 @@ const AdopcionesDB={
     }
     const ahora=Date.now();
     let fotoUrl=null;
-    if(d.fotoBlob){fotoUrl=await new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.readAsDataURL(d.fotoBlob);});}
+    if(d.fotoBlob){fotoUrl=await fotoAMiniatura(d.fotoBlob);} /* PN-12: antes la foto completa sin limite en localStorage; ahora miniatura <=100 KB */
     const a=normalizarAdopcion({id:'loc-'+ahora.toString(36)+'-'+Math.random().toString(36).slice(2,7),
       tipo:'adopcion',especie:d.especie,nombre:d.nombre||'',edad:d.edad||'',tamano:d.tamano||'',
       descripcion:d.descripcion,fotoUrl:fotoUrl,fotoRuta:null,lat:d.lat,lng:d.lng,zonaTexto:d.zonaTexto||'',
@@ -8102,4 +8159,7 @@ posicionarBannerPerdidas();
 if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0){
   try{navigator.serviceWorker.register('sw.js').catch(function(){});}catch(e){}
 }
+/* PN-16: exponer el unico global que usa el HTML (onclick="irAtras()"). */
+window.irAtras=irAtras;
+}); /* fin PN-16: inicializacion diferida a DOMContentLoaded */
 </script></body></html>
