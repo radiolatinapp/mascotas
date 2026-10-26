@@ -3725,6 +3725,8 @@ const REGIONES_PINES={
  latam:{archivo:'pins-latam.js',global:'PINS_LATAM',oeste:-118,sur:-56,este:-34,norte:33}
 };
 /* ---------- v10.10 — Pines de caseríos (hamlet/suburb) ----------
+   Europa va en 3 archivos (europa-1/2/3, ~17 MB c/u) porque la API de
+   GitHub rechaza subir un solo archivo de 48 MB (límite de la API).
    Segunda capa perezosa: los archivos pins-hamlet-<región>.js traen los
    lugares place=hamlet y place=suburb de OSM (tipo 'h'/'s'). Solo se
    descargan cuando el mapa entra en la región con zoom >= 9 (es cuando
@@ -3733,14 +3735,18 @@ const REGIONES_PINES={
 const REGIONES_PINES_HAMLET={
  usa:{archivo:'pins-hamlet-usa.js',global:'PINS_HAMLET_USA',oeste:-180,sur:15,este:-66,norte:72},
  canada:{archivo:'pins-hamlet-canada.js',global:'PINS_HAMLET_CANADA',oeste:-168,sur:41,este:-52,norte:84},
- europa:{archivo:'pins-hamlet-europa.js',global:'PINS_HAMLET_EUROPA',oeste:-25,sur:35,este:45,norte:72},
+ europa1:{archivo:'pins-hamlet-europa-1.js',global:'PINS_HAMLET_EUROPA_1',oeste:-25,sur:35,este:45,norte:72},
+ europa2:{archivo:'pins-hamlet-europa-2.js',global:'PINS_HAMLET_EUROPA_2',oeste:-25,sur:35,este:45,norte:72},
+ europa3:{archivo:'pins-hamlet-europa-3.js',global:'PINS_HAMLET_EUROPA_3',oeste:-25,sur:35,este:45,norte:72},
  latam:{archivo:'pins-hamlet-latam.js',global:'PINS_HAMLET_LATAM',oeste:-118,sur:-56,este:-34,norte:33}
 };
 const pinesHamletCargados=new Set(), pinesHamletCargando=new Set();
 function pinesHamletDeRegion(id){
   if(id==='usa')return (typeof PINS_HAMLET_USA!=='undefined')?PINS_HAMLET_USA:null;
   if(id==='canada')return (typeof PINS_HAMLET_CANADA!=='undefined')?PINS_HAMLET_CANADA:null;
-  if(id==='europa')return (typeof PINS_HAMLET_EUROPA!=='undefined')?PINS_HAMLET_EUROPA:null;
+  if(id==='europa1')return (typeof PINS_HAMLET_EUROPA_1!=='undefined')?PINS_HAMLET_EUROPA_1:null;
+  if(id==='europa2')return (typeof PINS_HAMLET_EUROPA_2!=='undefined')?PINS_HAMLET_EUROPA_2:null;
+  if(id==='europa3')return (typeof PINS_HAMLET_EUROPA_3!=='undefined')?PINS_HAMLET_EUROPA_3:null;
   if(id==='latam')return (typeof PINS_HAMLET_LATAM!=='undefined')?PINS_HAMLET_LATAM:null;
   return null;
 }
