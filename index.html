@@ -169,6 +169,18 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 #bannerPerdidas .bpVer{background:#c0392b;color:#fff;border:none;border-radius:9px;padding:6px 12px;font-weight:800;flex:none}
 #bannerPerdidas .bpX{background:transparent;border:none;font-size:16px;color:#7b1f16;padding:2px 6px;flex:none}
 /* v10.7 — Premium: beneficios y caja de precio. */
+/* v10.13 — Portal Premium: tarjetas de plan, ofertas y avisos. */
+.premCard{border:2px solid #e8e8e8;border-radius:14px;padding:12px;margin:10px 0;background:#fff}
+.premCard.gold{border-color:#e6a817;background:linear-gradient(180deg,#fffdf4,#fff)}
+.premCard h4{margin:0 0 2px;font-size:16px}
+.premPrecio{font-size:20px;font-weight:800;color:#0E7C66;margin:2px 0 8px}
+.premBen{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;margin:6px 0;color:#14342B}
+.premBen svg{flex:none;margin-top:1px}
+.youPremBadge{position:absolute;left:50%;top:-26px;transform:translateX(-50%);z-index:5;pointer-events:none}
+.ofertaRow{border:1px solid #eee;border-radius:12px;padding:10px;margin:8px 0;background:#fff}
+.ofertaRow .ofDescTag{color:#B97E00;font-weight:800}
+.ofLock{opacity:.8}
+.logoNegPrev{width:64px;height:64px;border-radius:12px;object-fit:cover;border:1px solid #ddd}
 .premBen{display:flex;gap:8px;align-items:center;padding:5px 0;font-size:14px}
 .premPrecioBox{background:#fff8dc;border:1.5px solid #e6a817;border-radius:12px;padding:10px;text-align:center;font-weight:800;margin:10px 0}
 </style></head><body>
@@ -200,7 +212,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.12</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.13</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -222,6 +234,8 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
   <div class="meta ocultarViaje" id="cDir"></div>
   <div class="meta ocultarViaje" id="cDist"></div>
   <div class="meta ocultarViaje" id="cAviso" style="color:#B97E00;font-weight:700"></div>
+  <div class="meta ocultarViaje" id="cHorarios"></div>
+  <div id="cOfertas" class="ocultarViaje" style="display:none;margin-top:8px"></div>
   <div class="meta ocultarViaje" id="visitasInfo" style="margin-top:4px"></div>
   <div class="btns ocultarViaje" id="filaVisitas" style="gap:4px;align-items:center">
     <span style="font-size:13px;color:#555;font-weight:700;flex:none" data-i18n="tuVisita">Tu visita:</span>
@@ -426,14 +440,105 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 </div>
 <div class="panel" id="panelPremium" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelPremium">Hazte premium</h3><button class="chip" id="bCerrarPremium" data-i18n="btnCerrar">Cerrar</button></div>
-  <p style="font-size:15px;font-weight:800;margin:10px 0 4px" data-i18n="premTitulo">Destaca tu negocio</p>
-  <p style="font-size:13px;margin:4px 0" data-i18n="premDesc">Con Premium tu negocio aparece con pin dorado en el mapa, WhatsApp directo y tus ofertas destacadas. Llega a más dueños de mascotas cerca de ti.</p>
-  <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#e6a817"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg><span data-i18n="premBenPin">Pin dorado en el mapa</span></div>
-  <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#25d366"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.5 14.1c-.2.6-1.2 1.2-1.7 1.2-.4.1-1 .1-1.6-.1-.4-.1-.9-.3-1.5-.6-2.6-1.1-4.3-3.7-4.4-3.9-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.7.3.2.5.1.7-.1l1-1.2c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.3.1.2.1.6-.1 1.1z"/></svg><span data-i18n="premBenWa">WhatsApp directo con los clientes</span></div>
-  <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#e6a817"><path d="M3 3h7.6L21 13.4 13.4 21 3 10.6V3zm5 4.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg><span data-i18n="premBenOferta">Tus ofertas destacadas</span></div>
-  <div class="premPrecioBox" data-i18n="premPrecio">Primer mes gratis, luego $25 USD/mes</div>
-  <div class="cBtns" style="margin-top:4px"><button class="btn iniciar" id="premInteresa" style="width:100%" data-i18n="premInteresa">Me interesa</button></div>
-  <p class="meta" style="margin-top:8px" data-i18n="premNota">El pago se activa con el equipo de la app. Sin permanencia: cancela cuando quieras.</p>
+  <div id="premEstado" style="display:none;margin-top:10px"></div>
+  <p style="font-size:13px;margin:8px 0" data-i18n="premPortalDesc">Elige el plan que te conviene. El cobro lo gestiona Google Play cuando instalas la app desde Play Store.</p>
+  <div class="premCard gold">
+    <h4 data-i18n="premPlanNegocio">Negocio</h4>
+    <div class="premPrecio" data-i18n="premPlanNegocioPrecio">$8 USD/mes</div>
+    <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#e6a817"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg><span data-i18n="premNegBen1">Pin dorado en el mapa con tu logo y tu nombre</span></div>
+    <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#0E7C66"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span data-i18n="premNegBen2">Registra tu negocio: horarios, WhatsApp y ubicación</span></div>
+    <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#e6a817"><path d="M3 3h7.6L21 13.4 13.4 21 3 10.6V3zm5 4.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg><span data-i18n="premNegBen3">Publica ofertas con fecha y hora</span></div>
+    <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#0E7C66"><path d="M4 5h16v11H8l-4 4V5zm3 4h10v2H7V9zm0 4h7v2H7v-2z"/></svg><span data-i18n="premNegBen4">Publica avisos para tus clientes</span></div>
+    <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#e6a817"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg><span data-i18n="premNegBen5">Beneficios exclusivos para usuarios premium</span></div>
+    <div class="cBtns" style="margin-top:8px"><button class="btn iniciar" id="premSubNegocio" style="width:100%" data-i18n="premSuscribirse">Suscribirse</button></div>
+  </div>
+  <div class="premCard">
+    <h4 data-i18n="premPlanUsuario">Usuario</h4>
+    <div class="premPrecio" data-i18n="premPlanUsuarioPrecio">$3 USD/mes</div>
+    <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#e6a817"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg><span data-i18n="premUsuBen1">Pin de usuario premium en el mapa</span></div>
+    <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#e6a817"><path d="M3 3h7.6L21 13.4 13.4 21 3 10.6V3zm5 4.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg><span data-i18n="premUsuBen2">Ofertas exclusivas y descuentos antes que los demás</span></div>
+    <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#0E7C66"><path d="M12 21s-7-4.5-7-9.5A4 4 0 0 1 12 8a4 4 0 0 1 7 3.5C19 16.5 12 21 12 21z"/></svg><span data-i18n="premUsuBen3">Beneficios premium de los negocios</span></div>
+    <div class="premBen"><svg width="18" height="18" viewBox="0 0 24 24" fill="#0E7C66"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1 14.5l-4-4 1.4-1.4 2.6 2.6 5.6-5.6L18 9.5l-7 7z"/></svg><span data-i18n="premUsuBen4">Sin publicidad</span></div>
+    <div class="cBtns" style="margin-top:8px"><button class="btn iniciar" id="premSubUsuario" style="width:100%" data-i18n="premSuscribirse">Suscribirse</button></div>
+  </div>
+  <div id="premBeneficiosBox" style="display:none;margin-top:10px">
+    <h4 style="font-size:15px;margin:6px 0" data-i18n="premBeneficios">Mis beneficios premium</h4>
+    <div id="listaBeneficios"></div>
+  </div>
+  <div class="cBtns" style="margin-top:10px;display:flex;gap:8px">
+    <button class="btn iniciar" id="premRegNegocio" style="flex:1" data-i18n="premRegNegocio">Registrar mi negocio</button>
+    <button class="btn" id="premVerOfertas" style="flex:1" data-i18n="premVerOfertas">Ver ofertas y avisos</button>
+  </div>
+  <p class="meta" style="margin-top:8px" data-i18n="premGestionPlay">Tu suscripción se gestiona en Google Play.</p>
+</div>
+<div class="panel" id="panelNegocioForm" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="negTitulo">Registrar mi negocio</h3><button class="chip" id="bCerrarFormNegocio" data-i18n="btnCerrar">Cerrar</button></div>
+  <p class="meta" id="negPlanNota" style="display:none;color:#B97E00;font-weight:700" data-i18n="negRequierePlan">Para publicar tu negocio necesitas el plan Negocio ($8/mes). Puedes registrarlo ahora y se activará con el plan.</p>
+  <label class="campoLabel" data-i18n="negNombre">Nombre del negocio</label>
+  <input id="negNombre" class="inputTxt" type="text" maxlength="80">
+  <label class="campoLabel" data-i18n="negLogo">Logo</label>
+  <div style="display:flex;gap:10px;align-items:center;margin:4px 0 8px">
+    <img id="negLogoPrev" class="logoNegPrev" style="display:none" alt="">
+    <button class="chip" id="negLogoBtn" type="button" data-i18n="negLogoElegir">Elegir logo</button>
+    <input type="file" id="negLogoInput" accept="image/*" style="display:none">
+    <span class="meta" data-i18n="negLogoDefecto">Sin logo: se usa el icono de la categoría.</span>
+  </div>
+  <label class="campoLabel" data-i18n="negCategoria">Categoría</label>
+  <select id="negCategoria" class="inputTxt"></select>
+  <label class="campoLabel" data-i18n="negDescripcion">Descripción</label>
+  <textarea id="negDescripcion" class="inputTxt" rows="3"></textarea>
+  <label class="campoLabel" data-i18n="negTelefono">Teléfono</label>
+  <input id="negTelefono" class="inputTxt" type="tel">
+  <label class="campoLabel" data-i18n="negWhatsapp">WhatsApp</label>
+  <input id="negWhatsapp" class="inputTxt" type="tel">
+  <label class="campoLabel" data-i18n="negDireccion">Dirección o zona</label>
+  <input id="negDireccion" class="inputTxt" type="text">
+  <label class="campoLabel" data-i18n="negHorarios">Horarios</label>
+  <input id="negHorarios" class="inputTxt" type="text" data-i18n-ph="negHorariosPh" placeholder="Ej.: Lun–Vie 9:00–18:00">
+  <label class="campoLabel" data-i18n="negBeneficio">Beneficio exclusivo para usuarios premium</label>
+  <input id="negBeneficio" class="inputTxt" type="text" data-i18n-ph="negBeneficioPh" placeholder="Ej.: 10% extra para usuarios premium">
+  <label class="campoLabel" data-i18n="negUbicacionAyuda">Mueve el mapa para poner el pin donde está tu negocio. No pongas tu dirección de casa.</label>
+  <div style="display:flex;gap:8px;align-items:center;margin:4px 0 8px">
+    <span class="meta" id="negCoords"></span>
+    <button class="chip" id="negMiUbicacion" type="button" data-i18n="negMiUbicacion">Usar mi ubicación</button>
+  </div>
+  <div style="margin-top:12px"><button class="btn iniciar" id="bGuardarNegocio" style="width:100%" data-i18n="negGuardar">Guardar negocio</button></div>
+</div>
+<div class="panel" id="panelOfertas" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="ofTitulo">Ofertas y avisos</h3><button class="chip" id="bCerrarOfertas" data-i18n="btnCerrar">Cerrar</button></div>
+  <div style="display:flex;gap:8px;margin-top:10px">
+    <button class="chip" id="ofTabOfertas" data-i18n="ofOfertas">Ofertas</button>
+    <button class="chip" id="ofTabAvisos" data-i18n="ofAvisos">Avisos</button>
+  </div>
+  <div id="ofSecOfertas">
+    <div id="listaOfertas"></div>
+    <div style="margin-top:10px"><button class="btn iniciar" id="bNuevaOferta" style="width:100%" data-i18n="ofNueva">Nueva oferta</button></div>
+    <div id="formOferta" style="display:none;margin-top:12px;border-top:2px solid #eee;padding-top:10px">
+      <label class="campoLabel" data-i18n="ofNuevaTitulo">Título de la oferta</label>
+      <input id="ofTituloInp" class="inputTxt" type="text" maxlength="80">
+      <label class="campoLabel" data-i18n="ofDescripcion">Descripción</label>
+      <textarea id="ofDescInp" class="inputTxt" rows="2"></textarea>
+      <label class="campoLabel" data-i18n="ofDescuento">Descuento %</label>
+      <input id="ofDescuentoInp" class="inputTxt" type="number" min="0" max="100" value="10">
+      <label class="campoLabel" data-i18n="ofDesde">Vigente desde</label>
+      <input id="ofDesdeInp" class="inputTxt" type="datetime-local">
+      <label class="campoLabel" data-i18n="ofHasta">Vigente hasta</label>
+      <input id="ofHastaInp" class="inputTxt" type="datetime-local">
+      <label style="display:flex;gap:6px;align-items:center;margin:8px 0"><input type="checkbox" id="ofSoloPremiumInp"> <span data-i18n="ofSoloPremium">Solo para usuarios premium</span></label>
+      <button class="btn iniciar" id="bGuardarOferta" style="width:100%" data-i18n="ofGuardar">Publicar oferta</button>
+    </div>
+  </div>
+  <div id="ofSecAvisos" style="display:none">
+    <div id="listaAvisos"></div>
+    <div style="margin-top:10px"><button class="btn iniciar" id="bNuevoAviso" style="width:100%" data-i18n="ofNuevoAviso">Nuevo aviso</button></div>
+    <div id="formAviso" style="display:none;margin-top:12px;border-top:2px solid #eee;padding-top:10px">
+      <label class="campoLabel" data-i18n="ofAvisoTitulo">Título del aviso</label>
+      <input id="ofAvisoTituloInp" class="inputTxt" type="text" maxlength="80">
+      <label class="campoLabel" data-i18n="ofAvisoTexto">Mensaje del aviso</label>
+      <textarea id="ofAvisoTextoInp" class="inputTxt" rows="3"></textarea>
+      <button class="btn iniciar" id="bGuardarAviso" style="width:100%" data-i18n="ofGuardarAviso">Publicar aviso</button>
+    </div>
+  </div>
 </div>
 <div class="panel" id="panelCategorias" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelQueBuscas">¿Qué buscas?</h3><button class="chip" id="bCerrarCategorias" data-i18n="btnCerrar">Cerrar</button></div>
@@ -466,7 +571,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
   <div id="listaFavoritos"></div>
 </div>
 <div class="panel" id="panelMascota" style="display:none">
-  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelMascota">Mi mascota</h3><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Cerrar</button></div>
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelMascota">Mi mascota</h3><span id="premInsigniaMascota" class="badgePremium" style="display:none" data-i18n="premInsignia">Premium</span><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Cerrar</button></div>
   <div style="font-size:13px;font-weight:700;color:#555;margin:4px 0 6px" data-i18n="misMascotas">Mis mascotas</div>
   <div id="listaMisMascotas"></div>
   <div id="formNuevaMascota" style="display:none;margin-top:8px;border-top:2px solid #eee;padding-top:10px">
@@ -815,14 +920,91 @@ const I18N={
   "premBenPin": "Pin dorado en el mapa",
   "premBenWa": "WhatsApp directo con los clientes",
   "premBenOferta": "Tus ofertas destacadas",
-  "premPrecio": "Primer mes gratis, luego $25 USD/mes",
+  "premPrecio": "Desde $3 USD/mes",
   "premInteresa": "Me interesa",
   "premBadge": "Premium",
-  "premNota": "El pago se activa con el equipo de la app. Sin permanencia: cancela cuando quieras.",
+  "premNota": "El cobro lo gestiona Google Play. Sin permanencia: cancela cuando quieras desde Google Play.",
   "avisoPerdidas": "Hay {n} mascotas perdidas cerca de ti",
   "avisoPerdidas1": "Hay 1 mascota perdida cerca de ti",
   "avisoVer": "Ver",
   "premWaMsg": "Hola, quiero que mi negocio sea Premium en Mascotas cerca de ti.",
+  "premPortalTitulo": "Portal Premium",
+  "premPortalDesc": "Elige el plan que te conviene. El cobro lo gestiona Google Play cuando instalas la app desde Play Store.",
+  "premPlanNegocio": "Negocio",
+  "premPlanNegocioPrecio": "$8 USD/mes",
+  "premPlanUsuario": "Usuario",
+  "premPlanUsuarioPrecio": "$3 USD/mes",
+  "premNegBen1": "Pin dorado en el mapa con tu logo y tu nombre",
+  "premNegBen2": "Registra tu negocio: horarios, WhatsApp y ubicación",
+  "premNegBen3": "Publica ofertas con fecha y hora",
+  "premNegBen4": "Publica avisos para tus clientes",
+  "premNegBen5": "Beneficios exclusivos para usuarios premium",
+  "premUsuBen1": "Pin de usuario premium en el mapa",
+  "premUsuBen2": "Ofertas exclusivas y descuentos antes que los demás",
+  "premUsuBen3": "Beneficios premium de los negocios",
+  "premUsuBen4": "Sin publicidad",
+  "premSuscribirse": "Suscribirse",
+  "premActivo": "Premium activo",
+  "premGestionPlay": "Tu suscripción se gestiona en Google Play.",
+  "premNoPlay": "La suscripción se gestiona por Google Play cuando instales la app desde Play Store.",
+  "premPlayNoDisponible": "Las suscripciones aún no están disponibles en Play Store. Vuelve a intentarlo cuando la app esté publicada.",
+  "premCompraOk": "¡Bienvenido a Premium! Tu plan ya está activo.",
+  "premCompraCancelada": "La compra no se completó.",
+  "negTitulo": "Registrar mi negocio",
+  "negNombre": "Nombre del negocio",
+  "negLogo": "Logo",
+  "negLogoElegir": "Elegir logo",
+  "negLogoDefecto": "Sin logo: se usa el icono de la categoría.",
+  "negCategoria": "Categoría",
+  "negDescripcion": "Descripción",
+  "negTelefono": "Teléfono",
+  "negWhatsapp": "WhatsApp",
+  "negDireccion": "Dirección o zona",
+  "negHorarios": "Horarios",
+  "negHorariosPh": "Ej.: Lun–Vie 9:00–18:00",
+  "negUbicacionAyuda": "Mueve el mapa para poner el pin donde está tu negocio. No pongas tu dirección de casa.",
+  "negMiUbicacion": "Usar mi ubicación",
+  "negGuardar": "Guardar negocio",
+  "negGuardado": "Tu negocio ya está en el mapa.",
+  "negFaltaNombre": "Escribe el nombre del negocio",
+  "negRequierePlan": "Para publicar tu negocio necesitas el plan Negocio ($8/mes). Puedes registrarlo ahora y se activará con el plan.",
+  "negPendiente": "Pendiente de activación Premium",
+  "negBeneficio": "Beneficio exclusivo para usuarios premium",
+  "negBeneficioPh": "Ej.: 10% extra para usuarios premium",
+  "ofTitulo": "Ofertas y avisos",
+  "ofOfertas": "Ofertas",
+  "ofAvisos": "Avisos",
+  "ofNueva": "Nueva oferta",
+  "ofNuevoAviso": "Nuevo aviso",
+  "ofNuevaTitulo": "Título de la oferta",
+  "ofDescripcion": "Descripción",
+  "ofDescuento": "Descuento %",
+  "ofDescuentoMal": "El descuento debe ser un número entre 0 y 100",
+  "ofDesde": "Vigente desde",
+  "ofHasta": "Vigente hasta",
+  "ofSoloPremium": "Solo para usuarios premium",
+  "ofGuardar": "Publicar oferta",
+  "ofGuardada": "Oferta publicada.",
+  "ofFaltaTitulo": "Escribe el título de la oferta",
+  "ofFaltaFechas": "Pon la fecha y hora de inicio y de fin",
+  "ofFechasMal": "La fecha de fin debe ser después de la de inicio",
+  "ofVacias": "Aún no hay ofertas activas por aquí.",
+  "ofSoloPremiumTag": "Solo Premium",
+  "ofExclusivas": "Hay {n} ofertas exclusivas para usuarios Premium",
+  "ofVerPremium": "Hazte premium para verlas",
+  "ofCaduca": "Hasta {f}",
+  "ofDescuentoTag": "{n}% de descuento",
+  "ofAvisoTitulo": "Título del aviso",
+  "ofAvisoTexto": "Mensaje del aviso",
+  "ofGuardarAviso": "Publicar aviso",
+  "ofAvisoGuardado": "Aviso publicado.",
+  "ofAvisosVacios": "Aún no hay avisos.",
+  "ofMiNegocio": "Mi negocio",
+  "premBeneficios": "Mis beneficios premium",
+  "premSinBeneficios": "Aún no hay beneficios premium por aquí.",
+  "premInsignia": "Premium",
+  "premVerOfertas": "Ver ofertas y avisos",
+  "premRegNegocio": "Registrar mi negocio",
   "adTel": "Teléfono"
  },
  "en": {
@@ -1144,14 +1326,91 @@ const I18N={
   "premBenPin": "Gold pin on the map",
   "premBenWa": "Direct WhatsApp with customers",
   "premBenOferta": "Your featured offers",
-  "premPrecio": "First month free, then $25 USD/month",
+  "premPrecio": "From $3 USD/month",
   "premInteresa": "I'm interested",
   "premBadge": "Premium",
-  "premNota": "Payment is activated with the app team. No commitment: cancel anytime.",
+  "premNota": "Billing is handled by Google Play. No commitment: cancel anytime from Google Play.",
   "avisoPerdidas": "There are {n} lost pets near you",
   "avisoPerdidas1": "There is 1 lost pet near you",
   "avisoVer": "View",
   "premWaMsg": "Hi, I want my business to go Premium in Pets Near You.",
+  "premPortalTitulo": "Premium Portal",
+  "premPortalDesc": "Choose the plan that suits you. Billing is handled by Google Play when you install the app from the Play Store.",
+  "premPlanNegocio": "Business",
+  "premPlanNegocioPrecio": "$8 USD/month",
+  "premPlanUsuario": "User",
+  "premPlanUsuarioPrecio": "$3 USD/month",
+  "premNegBen1": "Gold pin on the map with your logo and name",
+  "premNegBen2": "Register your business: hours, WhatsApp and location",
+  "premNegBen3": "Post offers with date and time",
+  "premNegBen4": "Post notices for your customers",
+  "premNegBen5": "Exclusive perks for premium users",
+  "premUsuBen1": "Premium user pin on the map",
+  "premUsuBen2": "Exclusive offers and discounts before everyone else",
+  "premUsuBen3": "Premium perks from businesses",
+  "premUsuBen4": "No ads",
+  "premSuscribirse": "Subscribe",
+  "premActivo": "Premium active",
+  "premGestionPlay": "Your subscription is managed in Google Play.",
+  "premNoPlay": "Subscriptions are handled by Google Play when you install the app from the Play Store.",
+  "premPlayNoDisponible": "Subscriptions are not available on the Play Store yet. Try again once the app is published.",
+  "premCompraOk": "Welcome to Premium! Your plan is now active.",
+  "premCompraCancelada": "The purchase was not completed.",
+  "negTitulo": "Register my business",
+  "negNombre": "Business name",
+  "negLogo": "Logo",
+  "negLogoElegir": "Choose logo",
+  "negLogoDefecto": "No logo: the category icon is used.",
+  "negCategoria": "Category",
+  "negDescripcion": "Description",
+  "negTelefono": "Phone",
+  "negWhatsapp": "WhatsApp",
+  "negDireccion": "Address or area",
+  "negHorarios": "Hours",
+  "negHorariosPh": "E.g.: Mon–Fri 9:00 AM–6:00 PM",
+  "negUbicacionAyuda": "Move the map to place the pin where your business is. Don't put your home address.",
+  "negMiUbicacion": "Use my location",
+  "negGuardar": "Save business",
+  "negGuardado": "Your business is now on the map.",
+  "negFaltaNombre": "Write the business name",
+  "negRequierePlan": "To publish your business you need the Business plan ($8/month). You can register it now and it will activate with the plan.",
+  "negPendiente": "Pending Premium activation",
+  "negBeneficio": "Exclusive perk for premium users",
+  "negBeneficioPh": "E.g.: 10% extra for premium users",
+  "ofTitulo": "Offers and notices",
+  "ofOfertas": "Offers",
+  "ofAvisos": "Notices",
+  "ofNueva": "New offer",
+  "ofNuevoAviso": "New notice",
+  "ofNuevaTitulo": "Offer title",
+  "ofDescripcion": "Description",
+  "ofDescuento": "Discount %",
+  "ofDescuentoMal": "The discount must be a number between 0 and 100",
+  "ofDesde": "Valid from",
+  "ofHasta": "Valid until",
+  "ofSoloPremium": "Premium users only",
+  "ofGuardar": "Post offer",
+  "ofGuardada": "Offer posted.",
+  "ofFaltaTitulo": "Write the offer title",
+  "ofFaltaFechas": "Set the start and end date and time",
+  "ofFechasMal": "The end date must be after the start date",
+  "ofVacias": "No active offers around here yet.",
+  "ofSoloPremiumTag": "Premium only",
+  "ofExclusivas": "There are {n} exclusive offers for Premium users",
+  "ofVerPremium": "Go premium to see them",
+  "ofCaduca": "Until {f}",
+  "ofDescuentoTag": "{n}% off",
+  "ofAvisoTitulo": "Notice title",
+  "ofAvisoTexto": "Notice message",
+  "ofGuardarAviso": "Post notice",
+  "ofAvisoGuardado": "Notice posted.",
+  "ofAvisosVacios": "No notices yet.",
+  "ofMiNegocio": "My business",
+  "premBeneficios": "My premium perks",
+  "premSinBeneficios": "No premium perks around here yet.",
+  "premInsignia": "Premium",
+  "premVerOfertas": "See offers and notices",
+  "premRegNegocio": "Register my business",
   "adTel": "Phone"
  },
  "pt": {
@@ -1473,14 +1732,91 @@ const I18N={
   "premBenPin": "Pin dourado no mapa",
   "premBenWa": "WhatsApp direto com os clientes",
   "premBenOferta": "Suas ofertas em destaque",
-  "premPrecio": "Primeiro mês grátis, depois $25 USD/mês",
+  "premPrecio": "A partir de US$ 3/mês",
   "premInteresa": "Tenho interesse",
   "premBadge": "Premium",
-  "premNota": "O pagamento é ativado com a equipe do app. Sem fidelidade: cancele quando quiser.",
+  "premNota": "A cobrança é feita pelo Google Play. Sem fidelidade: cancele quando quiser no Google Play.",
   "avisoPerdidas": "Há {n} animais perdidos perto de você",
   "avisoPerdidas1": "Há 1 animal perdido perto de você",
   "avisoVer": "Ver",
   "premWaMsg": "Olá, quero que meu negócio seja Premium no Pets Near You.",
+  "premPortalTitulo": "Portal Premium",
+  "premPortalDesc": "Escolha o plano ideal para você. A cobrança é feita pelo Google Play quando você instala o app pela Play Store.",
+  "premPlanNegocio": "Negócio",
+  "premPlanNegocioPrecio": "US$ 8/mês",
+  "premPlanUsuario": "Usuário",
+  "premPlanUsuarioPrecio": "US$ 3/mês",
+  "premNegBen1": "Pin dourado no mapa com seu logotipo e nome",
+  "premNegBen2": "Cadastre seu negócio: horários, WhatsApp e localização",
+  "premNegBen3": "Publique ofertas com data e hora",
+  "premNegBen4": "Publique avisos para seus clientes",
+  "premNegBen5": "Benefícios exclusivos para usuários premium",
+  "premUsuBen1": "Pin de usuário premium no mapa",
+  "premUsuBen2": "Ofertas exclusivas e descontos antes de todo mundo",
+  "premUsuBen3": "Benefícios premium dos negócios",
+  "premUsuBen4": "Sem publicidade",
+  "premSuscribirse": "Assinar",
+  "premActivo": "Premium ativo",
+  "premGestionPlay": "Sua assinatura é gerenciada no Google Play.",
+  "premNoPlay": "A assinatura é gerenciada pelo Google Play quando você instalar o app pela Play Store.",
+  "premPlayNoDisponible": "As assinaturas ainda não estão disponíveis na Play Store. Tente novamente quando o app for publicado.",
+  "premCompraOk": "Bem-vindo ao Premium! Seu plano já está ativo.",
+  "premCompraCancelada": "A compra não foi concluída.",
+  "negTitulo": "Cadastrar meu negócio",
+  "negNombre": "Nome do negócio",
+  "negLogo": "Logotipo",
+  "negLogoElegir": "Escolher logotipo",
+  "negLogoDefecto": "Sem logotipo: usa-se o ícone da categoria.",
+  "negCategoria": "Categoria",
+  "negDescripcion": "Descrição",
+  "negTelefono": "Telefone",
+  "negWhatsapp": "WhatsApp",
+  "negDireccion": "Endereço ou região",
+  "negHorarios": "Horários",
+  "negHorariosPh": "Ex.: Seg–Sex 9:00–18:00",
+  "negUbicacionAyuda": "Mova o mapa para colocar o pin onde fica seu negócio. Não coloque seu endereço de casa.",
+  "negMiUbicacion": "Usar minha localização",
+  "negGuardar": "Salvar negócio",
+  "negGuardado": "Seu negócio já está no mapa.",
+  "negFaltaNombre": "Escreva o nome do negócio",
+  "negRequierePlan": "Para publicar seu negócio você precisa do plano Negócio (US$ 8/mês). Você pode cadastrá-lo agora e ele será ativado com o plano.",
+  "negPendiente": "Aguardando ativação Premium",
+  "negBeneficio": "Benefício exclusivo para usuários premium",
+  "negBeneficioPh": "Ex.: 10% extra para usuários premium",
+  "ofTitulo": "Ofertas e avisos",
+  "ofOfertas": "Ofertas",
+  "ofAvisos": "Avisos",
+  "ofNueva": "Nova oferta",
+  "ofNuevoAviso": "Novo aviso",
+  "ofNuevaTitulo": "Título da oferta",
+  "ofDescripcion": "Descrição",
+  "ofDescuento": "Desconto %",
+  "ofDescuentoMal": "O desconto deve ser um número entre 0 e 100",
+  "ofDesde": "Válida desde",
+  "ofHasta": "Válida até",
+  "ofSoloPremium": "Somente para usuários premium",
+  "ofGuardar": "Publicar oferta",
+  "ofGuardada": "Oferta publicada.",
+  "ofFaltaTitulo": "Escreva o título da oferta",
+  "ofFaltaFechas": "Informe a data e a hora de início e de fim",
+  "ofFechasMal": "A data de fim deve ser depois da data de início",
+  "ofVacias": "Ainda não há ofertas ativas por aqui.",
+  "ofSoloPremiumTag": "Só Premium",
+  "ofExclusivas": "Há {n} ofertas exclusivas para usuários Premium",
+  "ofVerPremium": "Seja premium para vê-las",
+  "ofCaduca": "Até {f}",
+  "ofDescuentoTag": "{n}% de desconto",
+  "ofAvisoTitulo": "Título do aviso",
+  "ofAvisoTexto": "Mensagem do aviso",
+  "ofGuardarAviso": "Publicar aviso",
+  "ofAvisoGuardado": "Aviso publicado.",
+  "ofAvisosVacios": "Ainda não há avisos.",
+  "ofMiNegocio": "Meu negócio",
+  "premBeneficios": "Meus benefícios premium",
+  "premSinBeneficios": "Ainda não há benefícios premium por aqui.",
+  "premInsignia": "Premium",
+  "premVerOfertas": "Ver ofertas e avisos",
+  "premRegNegocio": "Cadastrar meu negócio",
   "adTel": "Telefone"
  },
  "fr": {
@@ -1802,14 +2138,91 @@ const I18N={
   "premBenPin": "Épingle dorée sur la carte",
   "premBenWa": "WhatsApp direct avec les clients",
   "premBenOferta": "Vos offres mises en avant",
-  "premPrecio": "Premier mois gratuit, puis 25 $ US/mois",
+  "premPrecio": "À partir de 3 $ US/mois",
   "premInteresa": "Ça m'intéresse",
   "premBadge": "Premium",
-  "premNota": "Le paiement s'active avec l'équipe de l'app. Sans engagement : résiliez quand vous voulez.",
+  "premNota": "La facturation est gérée par Google Play. Sans engagement : résiliez quand vous voulez depuis Google Play.",
   "avisoPerdidas": "Il y a {n} animaux perdus près de vous",
   "avisoPerdidas1": "Il y a 1 animal perdu près de vous",
   "avisoVer": "Voir",
   "premWaMsg": "Bonjour, je veux que mon commerce devienne Premium dans Pets Near You.",
+  "premPortalTitulo": "Portail Premium",
+  "premPortalDesc": "Choisissez le forfait qui vous convient. La facturation est gérée par Google Play lorsque vous installez l'application depuis le Play Store.",
+  "premPlanNegocio": "Commerce",
+  "premPlanNegocioPrecio": "8 $ US/mois",
+  "premPlanUsuario": "Utilisateur",
+  "premPlanUsuarioPrecio": "3 $ US/mois",
+  "premNegBen1": "Épingle dorée sur la carte avec votre logo et votre nom",
+  "premNegBen2": "Enregistrez votre commerce : horaires, WhatsApp et emplacement",
+  "premNegBen3": "Publiez des offres avec date et heure",
+  "premNegBen4": "Publiez des avis pour vos clients",
+  "premNegBen5": "Avantages exclusifs pour les utilisateurs premium",
+  "premUsuBen1": "Épingle d'utilisateur premium sur la carte",
+  "premUsuBen2": "Offres exclusives et réductions avant tout le monde",
+  "premUsuBen3": "Avantages premium des commerces",
+  "premUsuBen4": "Sans publicité",
+  "premSuscribirse": "S'abonner",
+  "premActivo": "Premium actif",
+  "premGestionPlay": "Votre abonnement est géré dans Google Play.",
+  "premNoPlay": "L'abonnement est géré par Google Play lorsque vous installez l'application depuis le Play Store.",
+  "premPlayNoDisponible": "Les abonnements ne sont pas encore disponibles sur le Play Store. Réessayez une fois l'application publiée.",
+  "premCompraOk": "Bienvenue dans Premium ! Votre forfait est maintenant actif.",
+  "premCompraCancelada": "L'achat n'a pas été terminé.",
+  "negTitulo": "Enregistrer mon commerce",
+  "negNombre": "Nom du commerce",
+  "negLogo": "Logo",
+  "negLogoElegir": "Choisir un logo",
+  "negLogoDefecto": "Sans logo : l'icône de la catégorie est utilisée.",
+  "negCategoria": "Catégorie",
+  "negDescripcion": "Description",
+  "negTelefono": "Téléphone",
+  "negWhatsapp": "WhatsApp",
+  "negDireccion": "Adresse ou quartier",
+  "negHorarios": "Horaires",
+  "negHorariosPh": "Ex. : lun.–ven. 9 h 00–18 h 00",
+  "negUbicacionAyuda": "Déplacez la carte pour placer l'épingle où se trouve votre commerce. Ne mettez pas votre adresse personnelle.",
+  "negMiUbicacion": "Utiliser ma position",
+  "negGuardar": "Enregistrer le commerce",
+  "negGuardado": "Votre commerce est maintenant sur la carte.",
+  "negFaltaNombre": "Écrivez le nom du commerce",
+  "negRequierePlan": "Pour publier votre commerce, il vous faut le forfait Commerce (8 $ US/mois). Vous pouvez l'enregistrer maintenant, il s'activera avec le forfait.",
+  "negPendiente": "En attente d'activation Premium",
+  "negBeneficio": "Avantage exclusif pour les utilisateurs premium",
+  "negBeneficioPh": "Ex. : 10 % supplémentaires pour les utilisateurs premium",
+  "ofTitulo": "Offres et avis",
+  "ofOfertas": "Offres",
+  "ofAvisos": "Avis",
+  "ofNueva": "Nouvelle offre",
+  "ofNuevoAviso": "Nouvel avis",
+  "ofNuevaTitulo": "Titre de l'offre",
+  "ofDescripcion": "Description",
+  "ofDescuento": "Réduction %",
+  "ofDescuentoMal": "La réduction doit être un nombre entre 0 et 100",
+  "ofDesde": "Valable à partir du",
+  "ofHasta": "Valable jusqu'au",
+  "ofSoloPremium": "Utilisateurs premium uniquement",
+  "ofGuardar": "Publier l'offre",
+  "ofGuardada": "Offre publiée.",
+  "ofFaltaTitulo": "Écrivez le titre de l'offre",
+  "ofFaltaFechas": "Indiquez la date et l'heure de début et de fin",
+  "ofFechasMal": "La date de fin doit être après la date de début",
+  "ofVacias": "Aucune offre active par ici pour le moment.",
+  "ofSoloPremiumTag": "Premium uniquement",
+  "ofExclusivas": "Il y a {n} offres exclusives pour les utilisateurs Premium",
+  "ofVerPremium": "Devenez premium pour les voir",
+  "ofCaduca": "Jusqu'au {f}",
+  "ofDescuentoTag": "{n} % de réduction",
+  "ofAvisoTitulo": "Titre de l'avis",
+  "ofAvisoTexto": "Message de l'avis",
+  "ofGuardarAviso": "Publier l'avis",
+  "ofAvisoGuardado": "Avis publié.",
+  "ofAvisosVacios": "Aucun avis pour le moment.",
+  "ofMiNegocio": "Mon commerce",
+  "premBeneficios": "Mes avantages premium",
+  "premSinBeneficios": "Aucun avantage premium par ici pour le moment.",
+  "premInsignia": "Premium",
+  "premVerOfertas": "Voir les offres et avis",
+  "premRegNegocio": "Enregistrer mon commerce",
   "adTel": "Téléphone"
  },
  "de": {
@@ -2131,14 +2544,91 @@ const I18N={
   "premBenPin": "Goldener Pin auf der Karte",
   "premBenWa": "Direktes WhatsApp mit Kunden",
   "premBenOferta": "Ihre hervorgehobenen Angebote",
-  "premPrecio": "Erster Monat gratis, dann 25 $ USD/Monat",
+  "premPrecio": "Ab 3 USD/Monat",
   "premInteresa": "Ich bin interessiert",
   "premBadge": "Premium",
-  "premNota": "Die Zahlung wird mit dem App-Team aktiviert. Keine Bindung: jederzeit kündbar.",
+  "premNota": "Die Abrechnung erfolgt über Google Play. Keine Bindung: jederzeit in Google Play kündbar.",
   "avisoPerdidas": "Es gibt {n} vermisste Tiere in deiner Nähe",
   "avisoPerdidas1": "Es gibt 1 vermisstes Tier in deiner Nähe",
   "avisoVer": "Ansehen",
   "premWaMsg": "Hallo, ich möchte, dass mein Geschäft Premium wird in Pets Near You.",
+  "premPortalTitulo": "Premium-Portal",
+  "premPortalDesc": "Wählen Sie den passenden Tarif. Die Abrechnung erfolgt über Google Play, wenn Sie die App aus dem Play Store installieren.",
+  "premPlanNegocio": "Geschäft",
+  "premPlanNegocioPrecio": "8 USD/Monat",
+  "premPlanUsuario": "Nutzer",
+  "premPlanUsuarioPrecio": "3 USD/Monat",
+  "premNegBen1": "Goldener Pin auf der Karte mit Ihrem Logo und Namen",
+  "premNegBen2": "Registrieren Sie Ihr Geschäft: Öffnungszeiten, WhatsApp und Standort",
+  "premNegBen3": "Angebote mit Datum und Uhrzeit veröffentlichen",
+  "premNegBen4": "Mitteilungen für Ihre Kunden veröffentlichen",
+  "premNegBen5": "Exklusive Vorteile für Premium-Nutzer",
+  "premUsuBen1": "Premium-Nutzer-Pin auf der Karte",
+  "premUsuBen2": "Exklusive Angebote und Rabatte vor allen anderen",
+  "premUsuBen3": "Premium-Vorteile der Geschäfte",
+  "premUsuBen4": "Keine Werbung",
+  "premSuscribirse": "Abonnieren",
+  "premActivo": "Premium aktiv",
+  "premGestionPlay": "Ihr Abonnement wird in Google Play verwaltet.",
+  "premNoPlay": "Das Abonnement wird über Google Play verwaltet, wenn Sie die App aus dem Play Store installieren.",
+  "premPlayNoDisponible": "Abonnements sind im Play Store noch nicht verfügbar. Versuchen Sie es erneut, sobald die App veröffentlicht ist.",
+  "premCompraOk": "Willkommen bei Premium! Ihr Tarif ist jetzt aktiv.",
+  "premCompraCancelada": "Der Kauf wurde nicht abgeschlossen.",
+  "negTitulo": "Mein Geschäft registrieren",
+  "negNombre": "Name des Geschäfts",
+  "negLogo": "Logo",
+  "negLogoElegir": "Logo wählen",
+  "negLogoDefecto": "Ohne Logo: Das Kategoriesymbol wird verwendet.",
+  "negCategoria": "Kategorie",
+  "negDescripcion": "Beschreibung",
+  "negTelefono": "Telefon",
+  "negWhatsapp": "WhatsApp",
+  "negDireccion": "Adresse oder Gegend",
+  "negHorarios": "Öffnungszeiten",
+  "negHorariosPh": "Z. B.: Mo–Fr 9:00–18:00 Uhr",
+  "negUbicacionAyuda": "Bewegen Sie die Karte, um den Pin dorthin zu setzen, wo Ihr Geschäft ist. Geben Sie nicht Ihre Wohnadresse an.",
+  "negMiUbicacion": "Meinen Standort verwenden",
+  "negGuardar": "Geschäft speichern",
+  "negGuardado": "Ihr Geschäft ist jetzt auf der Karte.",
+  "negFaltaNombre": "Schreiben Sie den Namen des Geschäfts",
+  "negRequierePlan": "Um Ihr Geschäft zu veröffentlichen, brauchen Sie den Geschäfts-Tarif (8 USD/Monat). Sie können es jetzt registrieren, es wird mit dem Tarif aktiviert.",
+  "negPendiente": "Premium-Aktivierung ausstehend",
+  "negBeneficio": "Exklusiver Vorteil für Premium-Nutzer",
+  "negBeneficioPh": "Z. B.: 10 % extra für Premium-Nutzer",
+  "ofTitulo": "Angebote und Mitteilungen",
+  "ofOfertas": "Angebote",
+  "ofAvisos": "Mitteilungen",
+  "ofNueva": "Neues Angebot",
+  "ofNuevoAviso": "Neue Mitteilung",
+  "ofNuevaTitulo": "Titel des Angebots",
+  "ofDescripcion": "Beschreibung",
+  "ofDescuento": "Rabatt %",
+  "ofDescuentoMal": "Der Rabatt muss eine Zahl zwischen 0 und 100 sein",
+  "ofDesde": "Gültig ab",
+  "ofHasta": "Gültig bis",
+  "ofSoloPremium": "Nur für Premium-Nutzer",
+  "ofGuardar": "Angebot veröffentlichen",
+  "ofGuardada": "Angebot veröffentlicht.",
+  "ofFaltaTitulo": "Schreiben Sie den Titel des Angebots",
+  "ofFaltaFechas": "Geben Sie Start- und Enddatum mit Uhrzeit an",
+  "ofFechasMal": "Das Enddatum muss nach dem Startdatum liegen",
+  "ofVacias": "Noch keine aktiven Angebote hier.",
+  "ofSoloPremiumTag": "Nur Premium",
+  "ofExclusivas": "Es gibt {n} exklusive Angebote für Premium-Nutzer",
+  "ofVerPremium": "Werden Sie Premium, um sie zu sehen",
+  "ofCaduca": "Bis {f}",
+  "ofDescuentoTag": "{n} % Rabatt",
+  "ofAvisoTitulo": "Titel der Mitteilung",
+  "ofAvisoTexto": "Text der Mitteilung",
+  "ofGuardarAviso": "Mitteilung veröffentlichen",
+  "ofAvisoGuardado": "Mitteilung veröffentlicht.",
+  "ofAvisosVacios": "Noch keine Mitteilungen.",
+  "ofMiNegocio": "Mein Geschäft",
+  "premBeneficios": "Meine Premium-Vorteile",
+  "premSinBeneficios": "Noch keine Premium-Vorteile hier.",
+  "premInsignia": "Premium",
+  "premVerOfertas": "Angebote und Mitteilungen ansehen",
+  "premRegNegocio": "Mein Geschäft registrieren",
   "adTel": "Telefon"
  },
  "it": {
@@ -2460,14 +2950,91 @@ const I18N={
   "premBenPin": "Pin dorato sulla mappa",
   "premBenWa": "WhatsApp diretto con i clienti",
   "premBenOferta": "Le tue offerte in evidenza",
-  "premPrecio": "Primo mese gratis, poi 25 $ USD/mese",
+  "premPrecio": "Da 3 USD/mese",
   "premInteresa": "Mi interessa",
   "premBadge": "Premium",
-  "premNota": "Il pagamento si attiva con il team dell'app. Nessun vincolo: disdici quando vuoi.",
+  "premNota": "Il pagamento è gestito da Google Play. Senza vincoli: disdici quando vuoi da Google Play.",
   "avisoPerdidas": "Ci sono {n} animali smarriti vicino a te",
   "avisoPerdidas1": "C'è 1 animale smarrito vicino a te",
   "avisoVer": "Vedi",
   "premWaMsg": "Ciao, voglio che la mia attività diventi Premium in Pets Near You.",
+  "premPortalTitulo": "Portale Premium",
+  "premPortalDesc": "Scegli il piano più adatto a te. Il pagamento è gestito da Google Play quando installi l'app dal Play Store.",
+  "premPlanNegocio": "Attività",
+  "premPlanNegocioPrecio": "8 USD/mese",
+  "premPlanUsuario": "Utente",
+  "premPlanUsuarioPrecio": "3 USD/mese",
+  "premNegBen1": "Pin dorato sulla mappa con il tuo logo e il tuo nome",
+  "premNegBen2": "Registra la tua attività: orari, WhatsApp e posizione",
+  "premNegBen3": "Pubblica offerte con data e ora",
+  "premNegBen4": "Pubblica avvisi per i tuoi clienti",
+  "premNegBen5": "Vantaggi esclusivi per gli utenti premium",
+  "premUsuBen1": "Pin utente premium sulla mappa",
+  "premUsuBen2": "Offerte esclusive e sconti prima di tutti gli altri",
+  "premUsuBen3": "Vantaggi premium delle attività",
+  "premUsuBen4": "Senza pubblicità",
+  "premSuscribirse": "Abbonati",
+  "premActivo": "Premium attivo",
+  "premGestionPlay": "Il tuo abbonamento è gestito in Google Play.",
+  "premNoPlay": "L'abbonamento è gestito da Google Play quando installi l'app dal Play Store.",
+  "premPlayNoDisponible": "Gli abbonamenti non sono ancora disponibili sul Play Store. Riprova quando l'app sarà pubblicata.",
+  "premCompraOk": "Benvenuto in Premium! Il tuo piano è ora attivo.",
+  "premCompraCancelada": "L'acquisto non è stato completato.",
+  "negTitulo": "Registra la mia attività",
+  "negNombre": "Nome dell'attività",
+  "negLogo": "Logo",
+  "negLogoElegir": "Scegli logo",
+  "negLogoDefecto": "Senza logo: viene usata l'icona della categoria.",
+  "negCategoria": "Categoria",
+  "negDescripcion": "Descrizione",
+  "negTelefono": "Telefono",
+  "negWhatsapp": "WhatsApp",
+  "negDireccion": "Indirizzo o zona",
+  "negHorarios": "Orari",
+  "negHorariosPh": "Es.: lun–ven 9:00–18:00",
+  "negUbicacionAyuda": "Sposta la mappa per mettere il pin dove si trova la tua attività. Non mettere l'indirizzo di casa.",
+  "negMiUbicacion": "Usa la mia posizione",
+  "negGuardar": "Salva attività",
+  "negGuardado": "La tua attività è ora sulla mappa.",
+  "negFaltaNombre": "Scrivi il nome dell'attività",
+  "negRequierePlan": "Per pubblicare la tua attività serve il piano Attività (8 USD/mese). Puoi registrarla ora e si attiverà con il piano.",
+  "negPendiente": "Attivazione Premium in sospeso",
+  "negBeneficio": "Vantaggio esclusivo per gli utenti premium",
+  "negBeneficioPh": "Es.: 10% in più per gli utenti premium",
+  "ofTitulo": "Offerte e avvisi",
+  "ofOfertas": "Offerte",
+  "ofAvisos": "Avvisi",
+  "ofNueva": "Nuova offerta",
+  "ofNuevoAviso": "Nuovo avviso",
+  "ofNuevaTitulo": "Titolo dell'offerta",
+  "ofDescripcion": "Descrizione",
+  "ofDescuento": "Sconto %",
+  "ofDescuentoMal": "Lo sconto deve essere un numero tra 0 e 100",
+  "ofDesde": "Valida dal",
+  "ofHasta": "Valida fino al",
+  "ofSoloPremium": "Solo per utenti premium",
+  "ofGuardar": "Pubblica offerta",
+  "ofGuardada": "Offerta pubblicata.",
+  "ofFaltaTitulo": "Scrivi il titolo dell'offerta",
+  "ofFaltaFechas": "Imposta la data e l'ora di inizio e di fine",
+  "ofFechasMal": "La data di fine deve essere dopo la data di inizio",
+  "ofVacias": "Ancora nessuna offerta attiva qui.",
+  "ofSoloPremiumTag": "Solo Premium",
+  "ofExclusivas": "Ci sono {n} offerte esclusive per gli utenti Premium",
+  "ofVerPremium": "Diventa premium per vederle",
+  "ofCaduca": "Fino al {f}",
+  "ofDescuentoTag": "{n}% di sconto",
+  "ofAvisoTitulo": "Titolo dell'avviso",
+  "ofAvisoTexto": "Messaggio dell'avviso",
+  "ofGuardarAviso": "Pubblica avviso",
+  "ofAvisoGuardado": "Avviso pubblicato.",
+  "ofAvisosVacios": "Ancora nessun avviso.",
+  "ofMiNegocio": "La mia attività",
+  "premBeneficios": "I miei vantaggi premium",
+  "premSinBeneficios": "Ancora nessun vantaggio premium qui.",
+  "premInsignia": "Premium",
+  "premVerOfertas": "Vedi offerte e avvisi",
+  "premRegNegocio": "Registra la mia attività",
   "adTel": "Telefono"
  },
  "nl": {
@@ -2789,14 +3356,91 @@ const I18N={
   "premBenPin": "Gouden pin op de kaart",
   "premBenWa": "Directe WhatsApp met klanten",
   "premBenOferta": "Je uitgelichte aanbiedingen",
-  "premPrecio": "Eerste maand gratis, daarna $25 USD/maand",
+  "premPrecio": "Vanaf $3 USD/maand",
   "premInteresa": "Ik heb interesse",
   "premBadge": "Premium",
-  "premNota": "Betaling wordt geactiveerd via het app-team. Geen verplichting: annuleer wanneer je wilt.",
+  "premNota": "De betaling verloopt via Google Play. Geen verplichtingen: zeg op wanneer je wilt via Google Play.",
   "avisoPerdidas": "Er zijn {n} vermiste huisdieren bij jou in de buurt",
   "avisoPerdidas1": "Er is 1 vermist huisdier bij jou in de buurt",
   "avisoVer": "Bekijk",
   "premWaMsg": "Hallo, ik wil dat mijn bedrijf Premium wordt in Pets Near You.",
+  "premPortalTitulo": "Premium-portaal",
+  "premPortalDesc": "Kies het abonnement dat bij je past. De betaling verloopt via Google Play wanneer je de app uit de Play Store installeert.",
+  "premPlanNegocio": "Bedrijf",
+  "premPlanNegocioPrecio": "$8 USD/maand",
+  "premPlanUsuario": "Gebruiker",
+  "premPlanUsuarioPrecio": "$3 USD/maand",
+  "premNegBen1": "Gouden pin op de kaart met je logo en naam",
+  "premNegBen2": "Registreer je bedrijf: openingstijden, WhatsApp en locatie",
+  "premNegBen3": "Plaats aanbiedingen met datum en tijd",
+  "premNegBen4": "Plaats meldingen voor je klanten",
+  "premNegBen5": "Exclusieve voordelen voor premiumgebruikers",
+  "premUsuBen1": "Premium-gebruikerspin op de kaart",
+  "premUsuBen2": "Exclusieve aanbiedingen en kortingen vóór iedereen",
+  "premUsuBen3": "Premiumvoordelen van bedrijven",
+  "premUsuBen4": "Geen advertenties",
+  "premSuscribirse": "Abonneren",
+  "premActivo": "Premium actief",
+  "premGestionPlay": "Je abonnement wordt beheerd in Google Play.",
+  "premNoPlay": "Het abonnement wordt beheerd via Google Play wanneer je de app uit de Play Store installeert.",
+  "premPlayNoDisponible": "Abonnementen zijn nog niet beschikbaar in de Play Store. Probeer het opnieuw zodra de app is gepubliceerd.",
+  "premCompraOk": "Welkom bij Premium! Je abonnement is nu actief.",
+  "premCompraCancelada": "De aankoop is niet voltooid.",
+  "negTitulo": "Mijn bedrijf registreren",
+  "negNombre": "Bedrijfsnaam",
+  "negLogo": "Logo",
+  "negLogoElegir": "Logo kiezen",
+  "negLogoDefecto": "Geen logo: het pictogram van de categorie wordt gebruikt.",
+  "negCategoria": "Categorie",
+  "negDescripcion": "Beschrijving",
+  "negTelefono": "Telefoon",
+  "negWhatsapp": "WhatsApp",
+  "negDireccion": "Adres of wijk",
+  "negHorarios": "Openingstijden",
+  "negHorariosPh": "Bijv.: ma–vr 9:00–18:00",
+  "negUbicacionAyuda": "Verplaats de kaart om de pin te zetten waar je bedrijf is. Zet je thuisadres er niet in.",
+  "negMiUbicacion": "Mijn locatie gebruiken",
+  "negGuardar": "Bedrijf opslaan",
+  "negGuardado": "Je bedrijf staat nu op de kaart.",
+  "negFaltaNombre": "Schrijf de naam van het bedrijf",
+  "negRequierePlan": "Om je bedrijf te publiceren heb je het Bedrijfsabonnement nodig ($8 USD/maand). Je kunt het nu registreren; het wordt geactiveerd met het abonnement.",
+  "negPendiente": "Premium-activering in afwachting",
+  "negBeneficio": "Exclusief voordeel voor premiumgebruikers",
+  "negBeneficioPh": "Bijv.: 10% extra voor premiumgebruikers",
+  "ofTitulo": "Aanbiedingen en meldingen",
+  "ofOfertas": "Aanbiedingen",
+  "ofAvisos": "Meldingen",
+  "ofNueva": "Nieuwe aanbieding",
+  "ofNuevoAviso": "Nieuwe melding",
+  "ofNuevaTitulo": "Titel van de aanbieding",
+  "ofDescripcion": "Beschrijving",
+  "ofDescuento": "Korting %",
+  "ofDescuentoMal": "De korting moet een getal tussen 0 en 100 zijn",
+  "ofDesde": "Geldig vanaf",
+  "ofHasta": "Geldig tot",
+  "ofSoloPremium": "Alleen voor premiumgebruikers",
+  "ofGuardar": "Aanbieding plaatsen",
+  "ofGuardada": "Aanbieding geplaatst.",
+  "ofFaltaTitulo": "Schrijf de titel van de aanbieding",
+  "ofFaltaFechas": "Stel de begin- en einddatum met tijd in",
+  "ofFechasMal": "De einddatum moet na de begindatum liggen",
+  "ofVacias": "Nog geen actieve aanbiedingen hier.",
+  "ofSoloPremiumTag": "Alleen Premium",
+  "ofExclusivas": "Er zijn {n} exclusieve aanbiedingen voor Premium-gebruikers",
+  "ofVerPremium": "Word premium om ze te zien",
+  "ofCaduca": "Tot {f}",
+  "ofDescuentoTag": "{n}% korting",
+  "ofAvisoTitulo": "Titel van de melding",
+  "ofAvisoTexto": "Bericht van de melding",
+  "ofGuardarAviso": "Melding plaatsen",
+  "ofAvisoGuardado": "Melding geplaatst.",
+  "ofAvisosVacios": "Nog geen meldingen.",
+  "ofMiNegocio": "Mijn bedrijf",
+  "premBeneficios": "Mijn premiumvoordelen",
+  "premSinBeneficios": "Nog geen premiumvoordelen hier.",
+  "premInsignia": "Premium",
+  "premVerOfertas": "Aanbiedingen en meldingen bekijken",
+  "premRegNegocio": "Mijn bedrijf registreren",
   "adTel": "Telefoon"
  },
  "pl": {
@@ -3118,14 +3762,91 @@ const I18N={
   "premBenPin": "Złota pinezka na mapie",
   "premBenWa": "Bezpośredni WhatsApp z klientami",
   "premBenOferta": "Twoje wyróżnione oferty",
-  "premPrecio": "Pierwszy miesiąc gratis, potem 25 $ USD/miesiąc",
+  "premPrecio": "Od 3 USD/mies.",
   "premInteresa": "Jestem zainteresowany",
   "premBadge": "Premium",
-  "premNota": "Płatność aktywuje zespół aplikacji. Bez zobowiązań: anuluj, kiedy chcesz.",
+  "premNota": "Płatności obsługuje Google Play. Bez zobowiązań: anuluj w dowolnym momencie w Google Play.",
   "avisoPerdidas": "W pobliżu jest {n} zaginionych zwierząt",
   "avisoPerdidas1": "W pobliżu jest 1 zaginione zwierzę",
   "avisoVer": "Zobacz",
   "premWaMsg": "Cześć, chcę, aby moja firma została Premium w Pets Near You.",
+  "premPortalTitulo": "Portal Premium",
+  "premPortalDesc": "Wybierz plan dla siebie. Płatności obsługuje Google Play, gdy zainstalujesz aplikację ze Sklepu Play.",
+  "premPlanNegocio": "Firma",
+  "premPlanNegocioPrecio": "8 USD/mies.",
+  "premPlanUsuario": "Użytkownik",
+  "premPlanUsuarioPrecio": "3 USD/mies.",
+  "premNegBen1": "Złota pinezka na mapie z Twoim logo i nazwą",
+  "premNegBen2": "Zarejestruj swoją firmę: godziny, WhatsApp i lokalizacja",
+  "premNegBen3": "Publikuj oferty z datą i godziną",
+  "premNegBen4": "Publikuj powiadomienia dla klientów",
+  "premNegBen5": "Ekskluzywne korzyści dla użytkowników premium",
+  "premUsuBen1": "Pinezka użytkownika premium na mapie",
+  "premUsuBen2": "Ekskluzywne oferty i zniżki przed innymi",
+  "premUsuBen3": "Korzyści premium od firm",
+  "premUsuBen4": "Bez reklam",
+  "premSuscribirse": "Subskrybuj",
+  "premActivo": "Premium aktywny",
+  "premGestionPlay": "Twoja subskrypcja jest zarządzana w Google Play.",
+  "premNoPlay": "Subskrypcja jest obsługiwana przez Google Play, gdy zainstalujesz aplikację ze Sklepu Play.",
+  "premPlayNoDisponible": "Subskrypcje nie są jeszcze dostępne w Sklepie Play. Spróbuj ponownie, gdy aplikacja zostanie opublikowana.",
+  "premCompraOk": "Witaj w Premium! Twój plan jest już aktywny.",
+  "premCompraCancelada": "Zakup nie został ukończony.",
+  "negTitulo": "Zarejestruj moją firmę",
+  "negNombre": "Nazwa firmy",
+  "negLogo": "Logo",
+  "negLogoElegir": "Wybierz logo",
+  "negLogoDefecto": "Bez logo: używana jest ikona kategorii.",
+  "negCategoria": "Kategoria",
+  "negDescripcion": "Opis",
+  "negTelefono": "Telefon",
+  "negWhatsapp": "WhatsApp",
+  "negDireccion": "Adres lub okolica",
+  "negHorarios": "Godziny otwarcia",
+  "negHorariosPh": "Np.: pn–pt 9:00–18:00",
+  "negUbicacionAyuda": "Przesuń mapę, aby ustawić pinezkę tam, gdzie jest Twoja firma. Nie podawaj adresu domowego.",
+  "negMiUbicacion": "Użyj mojej lokalizacji",
+  "negGuardar": "Zapisz firmę",
+  "negGuardado": "Twoja firma jest już na mapie.",
+  "negFaltaNombre": "Wpisz nazwę firmy",
+  "negRequierePlan": "Aby opublikować firmę, potrzebujesz planu Firma (8 USD/mies.). Możesz ją zarejestrować teraz, a aktywuje się wraz z planem.",
+  "negPendiente": "Oczekuje na aktywację Premium",
+  "negBeneficio": "Ekskluzywna korzyść dla użytkowników premium",
+  "negBeneficioPh": "Np.: 10% extra dla użytkowników premium",
+  "ofTitulo": "Oferty i powiadomienia",
+  "ofOfertas": "Oferty",
+  "ofAvisos": "Powiadomienia",
+  "ofNueva": "Nowa oferta",
+  "ofNuevoAviso": "Nowe powiadomienie",
+  "ofNuevaTitulo": "Tytuł oferty",
+  "ofDescripcion": "Opis",
+  "ofDescuento": "Zniżka %",
+  "ofDescuentoMal": "Zniżka musi być liczbą od 0 do 100",
+  "ofDesde": "Ważna od",
+  "ofHasta": "Ważna do",
+  "ofSoloPremium": "Tylko dla użytkowników premium",
+  "ofGuardar": "Opublikuj ofertę",
+  "ofGuardada": "Oferta opublikowana.",
+  "ofFaltaTitulo": "Wpisz tytuł oferty",
+  "ofFaltaFechas": "Podaj datę i godzinę rozpoczęcia i zakończenia",
+  "ofFechasMal": "Data zakończenia musi być późniejsza niż data rozpoczęcia",
+  "ofVacias": "Brak aktywnych ofert w pobliżu.",
+  "ofSoloPremiumTag": "Tylko Premium",
+  "ofExclusivas": "Jest {n} ekskluzywnych ofert dla użytkowników Premium",
+  "ofVerPremium": "Zostań premium, aby je zobaczyć",
+  "ofCaduca": "Do {f}",
+  "ofDescuentoTag": "{n}% zniżki",
+  "ofAvisoTitulo": "Tytuł powiadomienia",
+  "ofAvisoTexto": "Treść powiadomienia",
+  "ofGuardarAviso": "Opublikuj powiadomienie",
+  "ofAvisoGuardado": "Powiadomienie opublikowane.",
+  "ofAvisosVacios": "Brak powiadomień.",
+  "ofMiNegocio": "Moja firma",
+  "premBeneficios": "Moje korzyści premium",
+  "premSinBeneficios": "Brak korzyści premium w pobliżu.",
+  "premInsignia": "Premium",
+  "premVerOfertas": "Zobacz oferty i powiadomienia",
+  "premRegNegocio": "Zarejestruj moją firmę",
   "adTel": "Telefon"
  }
 };
@@ -3232,7 +3953,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.12':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.12';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.13':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.13';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -4088,6 +4809,10 @@ function seleccionar(b,volar){
   document.getElementById('cPremium').style.display=b.premium?'inline-block':'none';
   document.getElementById('cLogo').style.background=CAT[b.cat].col;
   document.getElementById('cLogo').innerHTML=glyph(CAT[b.cat].g,'#fff');
+  /* v10.13 — Negocio registrado: logo propio en la tarjeta + sus ofertas */
+  if(b.logoUrl){document.getElementById('cLogo').style.background='#fff';document.getElementById('cLogo').innerHTML='<img src="'+escHtml(b.logoUrl)+'" style="width:100%;height:100%;object-fit:cover;border-radius:10px" alt="">';}
+  document.getElementById('cHorarios').textContent=b.horariosTxt||'';
+  renderOfertasCard(b);
   document.getElementById('cEstrellas').textContent=b.rating?('★'.repeat(Math.round(b.rating))+' '+b.rating.toFixed(1)):'';
   document.getElementById('cEstado').innerHTML=textoEstado(b);
   document.getElementById('cDir').textContent=textoDir(b);
@@ -4097,6 +4822,8 @@ function seleccionar(b,volar){
     document.getElementById('bLlamar').href='tel:'+(String(b.tel).trim().startsWith('+')?'+':'')+dig;
     document.getElementById('bWa').href='https://wa.me/'+dig;
   }
+  /* v10.13 — el WhatsApp del negocio manda sobre el teléfono para el botón WA */
+  if(b.wa){document.getElementById('bWa').href='https://wa.me/'+normalizarTel(b.wa);}
   ocultarPreguntaLlegada();
   actualizarVisitasInfo();
   rutaEsReal=false; rutaDistancia=null; estadoRuta='calculando';
@@ -4147,7 +4874,7 @@ function cerrarCapa(){
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
-  ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
   if(typeof alertaSel!=='undefined'&&alertaSel){alertaSel=null;mostrarPinPunto(false);}
   if(typeof adopcionSel!=='undefined'&&adopcionSel){adopcionSel=null;mostrarPinPunto(false);}
   if(tipo==='card')deseleccionar();
@@ -4194,7 +4921,7 @@ function resetEstadoLimpio(){
     if(tripActivo)terminarViaje();
     if(seleccionado)deseleccionar();
     capaAbierta=null;
-    ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+    ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
     document.getElementById('card').style.display='none';
     document.getElementById('cardPerdida').style.display='none';
     document.getElementById('cardAdopcion').style.display='none';
@@ -5113,7 +5840,7 @@ async function cargarZona(forzar){
   }
   zonaCargando=false;
 }
-window.map.on('moveend',()=>{if(tripActivo)return;clearTimeout(zonaTimer);zonaTimer=setTimeout(()=>cargarZona(false),600);cargarCiudadesCercanas();actualizarPinesCiudad();crearPinesEventosUsuario();cargarAlertasZona();cargarAdopcionesZona();});
+window.map.on('moveend',()=>{if(tripActivo)return;clearTimeout(zonaTimer);zonaTimer=setTimeout(()=>cargarZona(false),600);cargarCiudadesCercanas();actualizarPinesCiudad();crearPinesEventosUsuario();cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();});
 window.map.on('zoomend',()=>actualizarPinesCiudad());
 function mostrarPanel(id){
   const el=document.getElementById(id);
@@ -5129,7 +5856,7 @@ document.getElementById('bMascota').addEventListener('click',()=>mostrarPanel('p
 cargarMascota();
 crearPinesEventosUsuario();
 crearPinesEventos();
-window.map.on('load',()=>{cargarZona(true);cargarAlertasZona();cargarAdopcionesZona();actualizarPinesCiudad();});
+window.map.on('load',()=>{cargarZona(true);cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();actualizarPinesCiudad();});
 
 /* ---------- La mascota: parte de TU ubicación y te sigue en el viaje ---------- */
 const dogEl=document.createElement('div');
@@ -5789,6 +6516,351 @@ function quitarPinAdopcion(id){
   adopciones=adopciones.filter(a=>a.id!==id);
 }
 
+/* ---------- v10.13 — Portal Premium (Google Play Billing) ----------
+   Cobro: Google Play Billing con la Digital Goods API
+   (navigator.getDigitalGoodsService('https://play.google.com/billing')).
+   SKUs de suscripción (se crean en Play Console al publicar la app):
+   premium_business_monthly ($8 USD/mes), premium_user_monthly ($3 USD/mes).
+   En la versión web/PWA el servicio NO existe: la app lo dice con
+   honestidad y NO cobra ni activa premium. La activación es v1, lado
+   cliente: el estado premium vive en Firestore (colección "premium", doc
+   por UID) + localStorage. La verificación del recibo en servidor queda
+   para después; aquí no se inventa ninguna compra.
+   Precios (orden del dueño 2026-10-26): Negocio $8/mes, Usuario $3/mes.
+   Sin publicidad: la app NO tiene contenedores de anuncios hoy. El flag
+   ADS_ENABLED existe para que, cuando los haya, se oculten al premium.
+   aplicarAds() marca body[data-ads] y oculta cualquier [data-ads-slot]. */
+const PREMIUM_CONFIG={
+  billingServiceUrl:'https://play.google.com/billing',
+  skus:{business:'premium_business_monthly',user:'premium_user_monthly'},
+  prices:{business:8,user:3},
+  currency:'USD'
+};
+const ADS_ENABLED=true;
+const premiumLS='mascotas_premium_v1';
+const negociosLS='mascotas_negocios_local_v1';
+const misNegociosLS='mascotas_mis_negocios_v1';
+const ofertasLS='mascotas_ofertas_local_v1';
+const avisosLS='mascotas_avisos_local_v1';
+function leerPremium(){try{return JSON.parse(localStorage.getItem(premiumLS))||null;}catch(e){return null;}}
+function guardarPremiumLocal(p){try{if(p)localStorage.setItem(premiumLS,JSON.stringify(p));else localStorage.removeItem(premiumLS);}catch(e){}}
+function esPremium(){const p=leerPremium();return !!(p&&p.estado==='activo'&&p.plan);}
+function esPremiumNegocio(){const p=leerPremium();return !!(p&&p.estado==='activo'&&p.plan==='business');}
+function esPremiumUsuario(){const p=leerPremium();return !!(p&&p.estado==='activo'&&p.plan==='user');}
+function aplicarAds(){
+  const prem=esPremium();
+  try{document.body.dataset.ads=prem?'off':'on';}catch(e){}
+  document.querySelectorAll('[data-ads-slot]').forEach(el=>{el.style.display=prem?'none':'';});
+}
+async function activarPremium(plan,purchaseToken){
+  const ahora=Date.now();
+  const p={plan:plan,estado:'activo',purchaseToken:purchaseToken||null,creadoEn:ahora,actualizadoEn:ahora};
+  guardarPremiumLocal(p);
+  if(FB.enabled){
+    try{
+      const url=FB.base+'/premium/'+FB.uid;
+      const doc={plan:plan,estado:'activo',purchaseToken:purchaseToken||'',creadoEn:new Date(ahora),actualizadoEn:new Date(ahora)};
+      await fetch(url,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
+    }catch(e){/* local ya guardado; la nube se sincroniza al restaurar */}
+  }
+  aplicarEstadoPremium();
+  return p;
+}
+async function restaurarPremium(){
+  aplicarEstadoPremium();
+  if(FB.enabled){
+    try{
+      const r=await fetch(FB.base+'/premium/'+FB.uid,{headers:fbHeaders()});
+      if(r.ok){
+        const j=await r.json();
+        const o=fsDocToObj(j);
+        if(o&&o.estado==='activo'&&(o.plan==='business'||o.plan==='user')){
+          guardarPremiumLocal({plan:o.plan,estado:'activo',purchaseToken:o.purchaseToken||null,creadoEn:o.creadoEn||Date.now(),actualizadoEn:o.actualizadoEn||Date.now()});
+          aplicarEstadoPremium();
+        }
+      }
+    }catch(e){}
+  }
+  /* Si la app viene de Play Store, refrescar desde las compras reales. */
+  try{
+    if('getDigitalGoodsService' in window){
+      const service=await navigator.getDigitalGoodsService(PREMIUM_CONFIG.billingServiceUrl);
+      if(service){
+        const compras=await service.listPurchases();
+        const skuActivo=(compras||[]).find(c=>c.itemId===PREMIUM_CONFIG.skus.business||c.itemId===PREMIUM_CONFIG.skus.user);
+        if(skuActivo){
+          const plan=skuActivo.itemId===PREMIUM_CONFIG.skus.business?'business':'user';
+          await activarPremium(plan,skuActivo.purchaseToken||null);
+        }
+      }
+    }
+  }catch(e){/* web/PWA: sin servicio, el estado local manda */}
+}
+async function comprarPremium(plan){
+  const sku=PREMIUM_CONFIG.skus[plan];
+  if(!sku)return false;
+  if(!('getDigitalGoodsService' in window)){mostrarZonaEstado(t('premNoPlay'),6000);return false;}
+  let service=null;
+  try{service=await navigator.getDigitalGoodsService(PREMIUM_CONFIG.billingServiceUrl);}catch(e){service=null;}
+  if(!service){mostrarZonaEstado(t('premNoPlay'),6000);return false;}
+  let details=[];
+  try{details=await service.getDetails([sku]);}catch(e){details=[];}
+  if(!details.length){mostrarZonaEstado(t('premPlayNoDisponible'),6000);return false;}
+  try{
+    const res=await service.purchase(details[0]);
+    let token=res&&res.purchaseToken?res.purchaseToken:null;
+    if(!token){
+      try{
+        const compras=await service.listPurchases();
+        const c=(compras||[]).find(x=>x.itemId===sku);
+        if(c)token=c.purchaseToken||null;
+      }catch(e){}
+    }
+    if(token){try{await service.acknowledge(token,'recurring');}catch(e){/* Play puede confirmar solo */}}
+    await activarPremium(plan,token);
+    mostrarZonaEstado(t('premCompraOk'),6000);
+    return true;
+  }catch(e){
+    mostrarZonaEstado(t('premCompraCancelada'),5000);
+    return false;
+  }
+}
+
+/* ---------- Negocios registrados (local + Firestore, espejo de AdopcionesDB) ----------
+   El logo va como dataURL JPEG de máx. 160 px (fotoPetMiniatura, como las
+   fotos de mascotas): ~6 KB, cabe en el documento sin Storage (Spark). */
+function leerNegociosLocal(){try{return JSON.parse(localStorage.getItem(negociosLS))||[];}catch(e){return [];}}
+function guardarNegociosLocal(a){try{localStorage.setItem(negociosLS,JSON.stringify(a));}catch(e){}}
+function leerMisNegocios(){try{return JSON.parse(localStorage.getItem(misNegociosLS))||[];}catch(e){return [];}}
+function guardarMisNegocios(a){try{localStorage.setItem(misNegociosLS,JSON.stringify(a));}catch(e){}}
+function normalizarNegocio(a){
+  const creadoEn=a.creadoEn||Date.now();
+  return {
+    id:a.id, tipo:'negocio', negocioId:a.id,
+    nombre:a.nombre||'', categoria:a.categoria||'tienda',
+    descripcion:a.descripcion||'', telefono:a.telefono||'', whatsapp:a.whatsapp||'',
+    direccion:a.direccion||'', zonaTexto:a.zonaTexto||'', horarios:a.horarios||'',
+    beneficioPremium:a.beneficioPremium||'', logoUrl:a.logoUrl||null,
+    lat:+a.lat, lng:+a.lng, geohash:a.geohash||geohashEncode(+a.lat,+a.lng,7),
+    estado:a.estado||'activo', premium:!!a.premium,
+    creadoPor:a.creadoPor||'', creadoEn:creadoEn, idioma:a.idioma||idioma,
+    /* forma de "lugar": reutiliza buscador, filtros, lista y tarjeta.
+       OJO: "horas" DEBE ser null o [apertura,cierre] numérico: textoEstado()
+       lo interpreta así y un texto libre ("Lun–Vie...") rompe fmtHora con
+       "Invalid time value". El horario en texto va en horariosTxt y se
+       muestra en la tarjeta (cHorarios). */
+    n:a.nombre||'', cat:a.categoria||'tienda', dir:a.direccion||a.zonaTexto||'',
+    tel:a.telefono||null, wa:a.whatsapp||null, horas:null, horariosTxt:a.horarios||'',
+    rating:null, nota:a.descripcion||''
+  };
+}
+const NegociosDB={
+  async listar(bounds){
+    const ahora=Date.now();
+    const ok=a=>a.estado==='activo'&&a.lng>=bounds.w&&a.lng<=bounds.e&&a.lat>=bounds.s&&a.lat<=bounds.n;
+    if(FB.enabled){
+      const r=await fetch(FB.base+'/negocios?pageSize=50&orderBy=creadoEn%20desc',{headers:fbHeaders()});
+      if(!r.ok)throw new Error('fb list neg '+r.status);
+      const j=await r.json();
+      return (j.documents||[]).map(fsDocToObj).map(normalizarNegocio).filter(ok);
+    }
+    return leerNegociosLocal().map(normalizarNegocio).filter(ok).sort((x,y)=>y.creadoEn-x.creadoEn).slice(0,50);
+  },
+  async publicar(d){
+    /* d: {nombre,categoria,descripcion,telefono,whatsapp,direccion,zonaTexto,
+           horarios,beneficioPremium,logoDataUrl,lat,lng} */
+    const premiumAhora=esPremiumNegocio();
+    if(FB.enabled){
+      const doc={nombre:d.nombre,categoria:d.categoria,descripcion:d.descripcion||'',
+        telefono:d.telefono||'',whatsapp:d.whatsapp||'',direccion:d.direccion||'',
+        zonaTexto:d.zonaTexto||'',horarios:d.horarios||'',beneficioPremium:d.beneficioPremium||'',
+        logoUrl:d.logoDataUrl||null,lat:d.lat,lng:d.lng,
+        geohash:geohashEncode(d.lat,d.lng,7),estado:'activo',premium:premiumAhora,
+        creadoPor:FB.uid,creadoEn:new Date(),idioma:idioma};
+      const r=await fetch(FB.base+'/negocios',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
+      if(!r.ok)throw new Error('fb create neg '+r.status);
+      const j=await r.json();
+      return normalizarNegocio({...doc,id:j.name.split('/').pop(),creadoEn:doc.creadoEn.getTime()});
+    }
+    const ahora=Date.now();
+    const a=normalizarNegocio({id:'loc-'+ahora.toString(36)+'-'+Math.random().toString(36).slice(2,7),
+      nombre:d.nombre,categoria:d.categoria,descripcion:d.descripcion||'',
+      telefono:d.telefono||'',whatsapp:d.whatsapp||'',direccion:d.direccion||'',
+      zonaTexto:d.zonaTexto||'',horarios:d.horarios||'',beneficioPremium:d.beneficioPremium||'',
+      logoUrl:d.logoDataUrl||null,lat:d.lat,lng:d.lng,
+      geohash:geohashEncode(d.lat,d.lng,7),estado:'activo',premium:premiumAhora,
+      creadoPor:uidAnon(),creadoEn:ahora,idioma:idioma});
+    const todas=leerNegociosLocal(); todas.unshift(a); guardarNegociosLocal(todas);
+    return a;
+  },
+  async actualizar(id,patch){
+    /* Solo el dueño; nunca toca premium, estado ni creadoPor. */
+    if(FB.enabled){
+      const url=FB.base+'/negocios/'+id+'?updateMask.fieldPaths='+Object.keys(patch).map(encodeURIComponent).join('&updateMask.fieldPaths=');
+      const r=await fetch(url,{method:'PATCH',headers:fbHeaders(),body:JSON.stringify(fsFields(patch))});
+      if(!r.ok)throw new Error('fb patch neg '+r.status);
+      const g=await fetch(FB.base+'/negocios/'+id,{headers:fbHeaders()});
+      if(!g.ok)throw new Error('fb get neg '+g.status);
+      return normalizarNegocio(fsDocToObj(await g.json()));
+    }
+    const todas=leerNegociosLocal(); const a=todas.find(x=>x.id===id); if(!a)return null;
+    Object.assign(a,patch); guardarNegociosLocal(todas);
+    return normalizarNegocio(a);
+  },
+  async borrar(id){
+    if(FB.enabled){
+      const r=await fetch(FB.base+'/negocios/'+id,{method:'DELETE',headers:fbHeaders()});
+      if(!r.ok)throw new Error('fb del neg '+r.status);
+      return true;
+    }
+    guardarNegociosLocal(leerNegociosLocal().filter(x=>x.id!==id)); return true;
+  }
+};
+let negocios=[];            /* negocios normalizados en la vista actual */
+let negociosCargando=false;
+function negociosEnVista(){
+  const b=window.map.getBounds(); if(!b)return negocios;
+  return negocios.filter(a=>a.lng>=b.getWest()&&a.lng<=b.getEast()&&a.lat>=b.getSouth()&&a.lat<=b.getNorth());
+}
+async function cargarNegociosZona(){
+  if(negociosCargando||!window.map)return;
+  const b=window.map.getBounds(); if(!b)return;
+  negociosCargando=true;
+  try{
+    const lista=await NegociosDB.listar({w:b.getWest(),s:b.getSouth(),e:b.getEast(),n:b.getNorth()});
+    negocios=lista;
+    lista.forEach(ng=>{
+      /* entra a NEGOCIOS como lugar: pin dorado si premium (crearPin ya lo hace) */
+      if(!NEGOCIOS.some(x=>x.negocioId===ng.id)&&!NEGOCIOS.some(x=>claveLugar(x)===claveLugar(ng))){
+        NEGOCIOS.push(ng); crearPin(ng);
+      }
+    });
+    aplicarFiltros();
+  }catch(e){}
+  negociosCargando=false;
+}
+function miNegocio(){
+  const ids=leerMisNegocios(); if(!ids.length)return null;
+  return negocios.find(x=>x.id===ids[0])
+    || leerNegociosLocal().map(normalizarNegocio).find(x=>x.id===ids[0]) || null;
+}
+
+/* ---------- Ofertas (local + Firestore) ----------
+   Visibilidad programada: la oferta solo se muestra entre desde y hasta
+   (fecha Y hora). soloPremium=true: solo la ven los usuarios premium. */
+function leerOfertasLocal(){try{return JSON.parse(localStorage.getItem(ofertasLS))||[];}catch(e){return [];}}
+function guardarOfertasLocal(a){try{localStorage.setItem(ofertasLS,JSON.stringify(a));}catch(e){}}
+function normalizarOferta(o){
+  return {
+    id:o.id, negocioId:o.negocioId||'', negocioNombre:o.negocioNombre||'',
+    titulo:o.titulo||'', descripcion:o.descripcion||'',
+    descuento:(typeof o.descuento==='number'?o.descuento:parseInt(o.descuento,10)||0),
+    desde:o.desde||0, hasta:o.hasta||0, soloPremium:!!o.soloPremium,
+    estado:o.estado||'activa', creadoPor:o.creadoPor||'',
+    creadoEn:o.creadoEn||Date.now(), idioma:o.idioma||idioma
+  };
+}
+const OfertasDB={
+  async listar(){
+    if(FB.enabled){
+      const r=await fetch(FB.base+'/ofertas?pageSize=100&orderBy=creadoEn%20desc',{headers:fbHeaders()});
+      if(!r.ok)throw new Error('fb list of '+r.status);
+      const j=await r.json();
+      return (j.documents||[]).map(fsDocToObj).map(normalizarOferta);
+    }
+    return leerOfertasLocal().map(normalizarOferta).sort((x,y)=>y.creadoEn-x.creadoEn).slice(0,100);
+  },
+  async porNegocio(negocioId){
+    const todas=await this.listar();
+    return todas.filter(o=>o.negocioId===negocioId);
+  },
+  async publicar(d){
+    /* d: {negocioId,negocioNombre,titulo,descripcion,descuento,desde,hasta,soloPremium} */
+    if(FB.enabled){
+      const doc={negocioId:d.negocioId,negocioNombre:d.negocioNombre||'',
+        titulo:d.titulo,descripcion:d.descripcion||'',descuento:Math.max(0,Math.min(100,d.descuento|0)),
+        desde:new Date(d.desde),hasta:new Date(d.hasta),soloPremium:!!d.soloPremium,
+        estado:'activa',creadoPor:FB.uid,creadoEn:new Date(),idioma:idioma};
+      const r=await fetch(FB.base+'/ofertas',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
+      if(!r.ok)throw new Error('fb create of '+r.status);
+      const j=await r.json();
+      return normalizarOferta({...doc,id:j.name.split('/').pop(),desde:doc.desde.getTime(),hasta:doc.hasta.getTime(),creadoEn:doc.creadoEn.getTime()});
+    }
+    const ahora=Date.now();
+    const o=normalizarOferta({id:'loc-'+ahora.toString(36)+'-'+Math.random().toString(36).slice(2,7),
+      negocioId:d.negocioId,negocioNombre:d.negocioNombre||'',titulo:d.titulo,
+      descripcion:d.descripcion||'',descuento:Math.max(0,Math.min(100,d.descuento|0)),
+      desde:d.desde,hasta:d.hasta,soloPremium:!!d.soloPremium,
+      estado:'activa',creadoPor:uidAnon(),creadoEn:ahora,idioma:idioma});
+    const todas=leerOfertasLocal(); todas.unshift(o); guardarOfertasLocal(todas);
+    return o;
+  }
+};
+let ofertas=[];             /* ofertas cargadas (todas, se filtran al mostrar) */
+let ofertasCargando=false;
+function ofertasActivas(){
+  const ahora=Date.now();
+  return ofertas.filter(o=>o.estado==='activa'&&o.desde<=ahora&&o.hasta>=ahora);
+}
+async function cargarOfertasZona(){
+  if(ofertasCargando)return;
+  ofertasCargando=true;
+  try{
+    ofertas=await OfertasDB.listar();
+    const p=document.getElementById('panelOfertas');
+    if(p&&p.style.display==='block'){renderOfertas();renderAvisos();}
+  }catch(e){}
+  ofertasCargando=false;
+}
+
+/* ---------- Avisos de negocios (local + Firestore) ----------
+   El aviso aparece en la pestaña "Avisos" del panel Ofertas y avisos. */
+function leerAvisosLocal(){try{return JSON.parse(localStorage.getItem(avisosLS))||[];}catch(e){return [];}}
+function guardarAvisosLocal(a){try{localStorage.setItem(avisosLS,JSON.stringify(a));}catch(e){}}
+function normalizarAviso(a){
+  return {
+    id:a.id, negocioId:a.negocioId||'', negocioNombre:a.negocioNombre||'',
+    titulo:a.titulo||'', texto:a.texto||'',
+    creadoPor:a.creadoPor||'', creadoEn:a.creadoEn||Date.now(), idioma:a.idioma||idioma
+  };
+}
+const AvisosDB={
+  async listar(){
+    if(FB.enabled){
+      const r=await fetch(FB.base+'/avisos?pageSize=50&orderBy=creadoEn%20desc',{headers:fbHeaders()});
+      if(!r.ok)throw new Error('fb list av '+r.status);
+      const j=await r.json();
+      return (j.documents||[]).map(fsDocToObj).map(normalizarAviso);
+    }
+    return leerAvisosLocal().map(normalizarAviso).sort((x,y)=>y.creadoEn-x.creadoEn).slice(0,50);
+  },
+  async publicar(d){
+    /* d: {negocioId,negocioNombre,titulo,texto} */
+    if(FB.enabled){
+      const doc={negocioId:d.negocioId,negocioNombre:d.negocioNombre||'',
+        titulo:d.titulo,texto:d.texto,creadoPor:FB.uid,creadoEn:new Date(),idioma:idioma};
+      const r=await fetch(FB.base+'/avisos',{method:'POST',headers:fbHeaders(),body:JSON.stringify(fsFields(doc))});
+      if(!r.ok)throw new Error('fb create av '+r.status);
+      const j=await r.json();
+      return normalizarAviso({...doc,id:j.name.split('/').pop(),creadoEn:doc.creadoEn.getTime()});
+    }
+    const ahora=Date.now();
+    const a=normalizarAviso({id:'loc-'+ahora.toString(36)+'-'+Math.random().toString(36).slice(2,7),
+      negocioId:d.negocioId,negocioNombre:d.negocioNombre||'',titulo:d.titulo,
+      texto:d.texto,creadoPor:uidAnon(),creadoEn:ahora,idioma:idioma});
+    const todas=leerAvisosLocal(); todas.unshift(a); guardarAvisosLocal(todas);
+    return a;
+  }
+};
+let avisosNegocio=[];       /* avisos cargados */
+async function cargarAvisosZona(){
+  try{
+    avisosNegocio=await AvisosDB.listar();
+    const p=document.getElementById('panelOfertas');
+    if(p&&p.style.display==='block')renderAvisos();
+  }catch(e){}
+}
+
 /* ---------- Marcador del punto (centro del mapa) para publicar/avistar ---------- */
 let pinPunto=null, pinPuntoVisible=false;
 function mostrarPinPunto(on){
@@ -6231,22 +7303,337 @@ async function accionDuenoAdopcion(accion){
 
 /* ---------- Cableado de botones ---------- */
 document.getElementById('bPerdidas').addEventListener('click',abrirPanelPerdidas);
-/* v10.7 — Premium: panel explicativo (sin cobro; solo visualización). */
+/* v10.13 — Portal Premium: dos planes, cobro por Google Play Billing. */
 function abrirPanelPremium(){
   const p=document.getElementById('panelPremium');
   if(p.style.display==='block'){irAtras();return;}
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelFavoritos'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelFavoritos','panelNegocioForm','panelOfertas'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
   p.style.display='block';
+  renderPortalPremium();
   fijarCapa('premium');
 }
 document.getElementById('bPremium').addEventListener('click',abrirPanelPremium);
 document.getElementById('bCerrarPremium').addEventListener('click',()=>irAtras());
-document.getElementById('premInteresa').addEventListener('click',()=>{
-  window.open('https://wa.me/19804750880?text='+encodeURIComponent(t('premWaMsg')),'_blank');
+
+/* ---------- v10.13 — Portal Premium: interfaz ---------- */
+function renderBeneficiosPremium(){
+  const box=document.getElementById('listaBeneficios'); if(!box)return;
+  const lista=negociosEnVista().filter(n=>n.premium&&n.beneficioPremium);
+  if(!lista.length){box.innerHTML='<div class="meta">'+t('premSinBeneficios')+'</div>';}
+  else box.innerHTML=lista.map(n=>'<div class="panelRow"><span style="flex:1;min-width:0"><b>'+escHtml(n.nombre)+'</b><br><span class="meta">'+escHtml(n.beneficioPremium)+'</span></span><span class="badgePremium">'+t('premInsignia')+'</span></div>').join('');
+  /* refresco: si los negocios aún no cargaron al abrir el portal, volver a
+     pintar cuando termine la carga (sin bucle: cargarNegociosZona no llama aquí). */
+  cargarNegociosZona().then(()=>{
+    const pp=document.getElementById('panelPremium');
+    if(!pp||pp.style.display!=='block')return;
+    const lista2=negociosEnVista().filter(n=>n.premium&&n.beneficioPremium);
+    if(lista2.length)box.innerHTML=lista2.map(n=>'<div class="panelRow"><span style="flex:1;min-width:0"><b>'+escHtml(n.nombre)+'</b><br><span class="meta">'+escHtml(n.beneficioPremium)+'</span></span><span class="badgePremium">'+t('premInsignia')+'</span></div>').join('');
+  }).catch(()=>{});
+}
+function renderPortalPremium(){
+  const p=leerPremium();
+  const estado=document.getElementById('premEstado');
+  const subN=document.getElementById('premSubNegocio');
+  const subU=document.getElementById('premSubUsuario');
+  if(p&&p.estado==='activo'){
+    estado.style.display='block';
+    estado.innerHTML='<div style="background:#FFF7D6;border:1px solid #e6a817;border-radius:12px;padding:10px 12px"><b>★ '+t('premActivo')+' · '+t(p.plan==='business'?'premPlanNegocio':'premPlanUsuario')+'</b><br><span class="meta">'+t('premGestionPlay')+'</span></div>';
+    if(subN)subN.style.display='none';
+    if(subU)subU.style.display='none';
+  }else{
+    estado.style.display='none';
+    estado.innerHTML='';
+    if(subN)subN.style.display='';
+    if(subU)subU.style.display='';
+  }
+  const btnReg=document.getElementById('premRegNegocio');
+  if(btnReg)btnReg.textContent=miNegocio()?t('ofMiNegocio'):t('premRegNegocio');
+  const benBox=document.getElementById('premBeneficiosBox');
+  if(benBox){benBox.style.display=esPremium()?'block':'none';if(esPremium())renderBeneficiosPremium();}
+}
+function aplicarEstadoPremium(){
+  aplicarAds();
+  const prem=esPremium();
+  const badge=document.getElementById('youPremBadge');
+  if(badge)badge.style.display=prem?'block':'none';
+  const ins=document.getElementById('premInsigniaMascota');
+  if(ins)ins.style.display=prem?'inline-block':'none';
+  try{document.body.dataset.premium=prem?(leerPremium().plan||'') :'';}catch(e){}
+  const pp=document.getElementById('panelPremium');
+  if(pp&&pp.style.display==='block')renderPortalPremium();
+  const po=document.getElementById('panelOfertas');
+  if(po&&po.style.display==='block'){renderOfertas();renderAvisos();}
+}
+/* v10.13 — Corona dorada sobre el marcador GPS cuando el usuario es premium. */
+const youPremBadge=document.createElement('div');
+youPremBadge.id='youPremBadge';
+youPremBadge.className='youPremBadge';
+youPremBadge.style.display='none';
+youPremBadge.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="#e6a817" stroke="#7a5b00" stroke-width="0.6"><path d="M3 8l4.5 3L12 4l4.5 7L21 8l-1.8 10H4.8L3 8zm2 12h14v2H5v-2z"/></svg>';
+youPremBadge.title='Premium';
+youEl.appendChild(youPremBadge);
+
+/* ---------- v10.13 — Formulario: registrar negocio ---------- */
+const NEG_CATS=['vet','tienda','farma','peluqueria','refugio','granja','zoo','parque','resto'];
+let negLogoTemp=null;
+function renderCategoriasNegocio(){
+  const sel=document.getElementById('negCategoria'); if(!sel)return;
+  sel.innerHTML=NEG_CATS.map(c=>'<option value="'+c+'">'+escHtml(catName(c))+'</option>').join('');
+}
+function actualizarCoordsNegocio(){
+  const el=document.getElementById('negCoords'); if(!el||!window.map)return;
+  const c=window.map.getCenter();
+  el.textContent=c.lat.toFixed(5)+', '+c.lng.toFixed(5);
+}
+function abrirFormNegocio(){
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelOfertas'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  document.getElementById('card').style.display='none';
+  document.getElementById('cardPerdida').style.display='none';
+  document.getElementById('cardAdopcion').style.display='none';
+  const f=document.getElementById('panelNegocioForm');
+  f.style.display='block';
+  fijarCapa('formNegocio');
+  mostrarPinPunto(true);
+  renderCategoriasNegocio();
+  const ex=miNegocio();
+  document.getElementById('negNombre').value=ex?ex.nombre:'';
+  document.getElementById('negDescripcion').value=ex?ex.descripcion:'';
+  document.getElementById('negTelefono').value=ex?ex.telefono:'';
+  document.getElementById('negWhatsapp').value=ex?ex.whatsapp:'';
+  document.getElementById('negDireccion').value=ex?(ex.direccion||ex.zonaTexto):'';
+  document.getElementById('negHorarios').value=ex?ex.horarios:'';
+  document.getElementById('negBeneficio').value=ex?ex.beneficioPremium:'';
+  if(ex)document.getElementById('negCategoria').value=ex.categoria;
+  negLogoTemp=ex?ex.logoUrl:null;
+  const prev=document.getElementById('negLogoPrev');
+  if(negLogoTemp){prev.src=negLogoTemp;prev.style.display='block';}else{prev.style.display='none';}
+  document.getElementById('negLogoInput').value='';
+  document.getElementById('negPlanNota').style.display=esPremiumNegocio()?'none':'block';
+  actualizarCoordsNegocio();
+}
+function cerrarFormNegocio(){mostrarPinPunto(false);irAtras();}
+async function publicarNegocio(){
+  const nombre=document.getElementById('negNombre').value.trim();
+  if(!nombre){mostrarZonaEstado(t('negFaltaNombre'),4000);document.getElementById('negNombre').focus();return;}
+  const desc=document.getElementById('negDescripcion').value.trim();
+  if(pareceDireccion(desc)||pareceDireccion(document.getElementById('negDireccion').value.trim())){
+    if(!confirm(t('pubConfirmDireccion')))return;
+  }
+  const btn=document.getElementById('bGuardarNegocio');
+  btn.disabled=true;
+  try{
+    const c=window.map.getCenter();
+    const d={
+      nombre:nombre,categoria:document.getElementById('negCategoria').value,
+      descripcion:desc,
+      telefono:document.getElementById('negTelefono').value.trim(),
+      whatsapp:document.getElementById('negWhatsapp').value.trim(),
+      direccion:document.getElementById('negDireccion').value.trim(),
+      zonaTexto:document.getElementById('negDireccion').value.trim(),
+      horarios:document.getElementById('negHorarios').value.trim(),
+      beneficioPremium:document.getElementById('negBeneficio').value.trim(),
+      logoDataUrl:negLogoTemp||null,lat:c.lat,lng:c.lng
+    };
+    const ex=miNegocio();
+    let neg;
+    if(ex&&ex.id){
+      neg=await NegociosDB.actualizar(ex.id,{
+        nombre:d.nombre,categoria:d.categoria,descripcion:d.descripcion,
+        telefono:d.telefono,whatsapp:d.whatsapp,direccion:d.direccion,
+        zonaTexto:d.zonaTexto,horarios:d.horarios,beneficioPremium:d.beneficioPremium,
+        logoUrl:d.logoDataUrl,lat:d.lat,lng:d.lng,geohash:geohashEncode(d.lat,d.lng,7)
+      });
+    }else{
+      neg=await NegociosDB.publicar(d);
+      const mis=leerMisNegocios(); if(!mis.includes(neg.id)){mis.push(neg.id);guardarMisNegocios(mis);}
+    }
+    mostrarPinPunto(false);
+    document.getElementById('panelNegocioForm').style.display='none';
+    mostrarZonaEstado(t('negGuardado'),6000);
+    await cargarNegociosZona();
+    const creado=negocios.find(x=>x.id===neg.id)||neg;
+    seleccionar(creado,false);
+  }catch(e){
+    mostrarZonaEstado(t('pubError'),5000);
+  }
+  btn.disabled=false;
+}
+
+/* ---------- v10.13 — Panel Ofertas y avisos ---------- */
+function fmtFechaInput(ts){
+  const d=new Date(ts);
+  const p=n=>String(n).padStart(2,'0');
+  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());
+}
+function fmtFechaCorta(ts){
+  try{return new Date(ts).toLocaleString(idioma,{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});}catch(e){return new Date(ts).toLocaleString();}
+}
+function mostrarTabOfertas(tab){
+  document.getElementById('ofSecOfertas').style.display=tab==='ofertas'?'block':'none';
+  document.getElementById('ofSecAvisos').style.display=tab==='avisos'?'block':'none';
+  document.getElementById('ofTabOfertas').classList.toggle('on',tab==='ofertas');
+  document.getElementById('ofTabAvisos').classList.toggle('on',tab==='avisos');
+}
+function abrirPanelOfertas(){
+  const p=document.getElementById('panelOfertas');
+  if(p.style.display==='block'){irAtras();return;}
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  document.getElementById('card').style.display='none';
+  document.getElementById('cardPerdida').style.display='none';
+  document.getElementById('cardAdopcion').style.display='none';
+  p.style.display='block';
+  mostrarTabOfertas('ofertas');
+  document.getElementById('formOferta').style.display='none';
+  document.getElementById('formAviso').style.display='none';
+  fijarCapa('ofertas');
+  renderOfertas(); renderAvisos();
+  cargarOfertasZona(); cargarAvisosZona();
+}
+function filaOferta(o,conDetalle){
+  const f=fmtFechaCorta(o.hasta);
+  if(!conDetalle){
+    return '<div class="ofertaRow ofLock"><b>'+escHtml(o.titulo)+'</b> <span class="badgePremium">'+t('ofSoloPremiumTag')+'</span><br><span class="meta">'+escHtml(o.negocioNombre||'')+'</span></div>';
+  }
+  return '<div class="ofertaRow"><b>'+escHtml(o.titulo)+'</b>'+(o.soloPremium?' <span class="badgePremium">'+t('ofSoloPremiumTag')+'</span>':'')+'<br><span class="ofDescTag">'+t('ofDescuentoTag',{n:o.descuento})+'</span><br><span>'+escHtml(o.descripcion||'')+'</span><br><span class="meta">'+escHtml(o.negocioNombre||'')+' · '+t('ofCaduca',{f:f})+'</span></div>';
+}
+function renderOfertas(){
+  const box=document.getElementById('listaOfertas'); if(!box)return;
+  const act=ofertasActivas();
+  const visibles=act.filter(o=>!o.soloPremium||esPremium());
+  const ocultas=act.length-visibles.length;
+  visibles.sort((a,b)=>((b.soloPremium?1:0)-(a.soloPremium?1:0))||(a.desde-b.desde));
+  let html='';
+  if(ocultas>0)html+='<div class="meta" style="margin:6px 0">'+t('ofExclusivas',{n:ocultas})+' · '+t('ofVerPremium')+'</div>';
+  if(!visibles.length&&!ocultas)html+='<div class="meta">'+t('ofVacias')+'</div>';
+  html+=visibles.map(o=>filaOferta(o,true)).join('');
+  box.innerHTML=html;
+}
+function renderAvisos(){
+  const box=document.getElementById('listaAvisos'); if(!box)return;
+  if(!avisosNegocio.length){box.innerHTML='<div class="meta">'+t('ofAvisosVacios')+'</div>';return;}
+  box.innerHTML=avisosNegocio.map(a=>'<div class="ofertaRow"><b>'+escHtml(a.titulo)+'</b><br><span>'+escHtml(a.texto)+'</span><br><span class="meta">'+escHtml(a.negocioNombre||'')+' · '+fmtFechaCorta(a.creadoEn)+'</span></div>').join('');
+}
+function renderOfertasCard(b){
+  const box=document.getElementById('cOfertas'); if(!box)return;
+  if(!b||!b.negocioId){box.style.display='none';box.innerHTML='';return;}
+  OfertasDB.porNegocio(b.negocioId).then(lista=>{
+    if(seleccionado!==b)return;
+    const ahora=Date.now();
+    const act=lista.filter(o=>o.estado==='activa'&&o.desde<=ahora&&o.hasta>=ahora);
+    const visibles=act.filter(o=>!o.soloPremium||esPremium());
+    const ocultas=act.length-visibles.length;
+    if(!visibles.length&&!ocultas){box.style.display='none';box.innerHTML='';return;}
+    let html='';
+    if(ocultas>0)html+='<div class="meta" style="margin:4px 0">'+t('ofExclusivas',{n:ocultas})+' · '+t('ofVerPremium')+'</div>';
+    html+=visibles.map(o=>filaOferta(o,true)).join('');
+    box.innerHTML=html; box.style.display='block';
+  }).catch(()=>{});
+}
+async function publicarOferta(){
+  const neg=miNegocio();
+  if(!neg){mostrarZonaEstado(t('negFaltaNombre'),4000);return;}
+  if(!esPremiumNegocio()){mostrarZonaEstado(t('negRequierePlan'),5000);return;}
+  const titulo=document.getElementById('ofTituloInp').value.trim();
+  if(!titulo){mostrarZonaEstado(t('ofFaltaTitulo'),4000);document.getElementById('ofTituloInp').focus();return;}
+  const desdeV=document.getElementById('ofDesdeInp').value;
+  const hastaV=document.getElementById('ofHastaInp').value;
+  if(!desdeV||!hastaV){mostrarZonaEstado(t('ofFaltaFechas'),4000);return;}
+  const desde=new Date(desdeV).getTime(), hasta=new Date(hastaV).getTime();
+  if(!(hasta>desde)){mostrarZonaEstado(t('ofFechasMal'),4000);return;}
+  const descPct=parseInt(document.getElementById('ofDescuentoInp').value,10);
+  if(isNaN(descPct)||descPct<0||descPct>100){mostrarZonaEstado(t('ofDescuentoMal'),4000);return;}
+  const btn=document.getElementById('bGuardarOferta');
+  btn.disabled=true;
+  try{
+    await OfertasDB.publicar({
+      negocioId:neg.id,negocioNombre:neg.nombre,titulo:titulo,
+      descripcion:document.getElementById('ofDescInp').value.trim(),
+      descuento:descPct,desde:desde,hasta:hasta,
+      soloPremium:document.getElementById('ofSoloPremiumInp').checked
+    });
+    document.getElementById('formOferta').style.display='none';
+    mostrarZonaEstado(t('ofGuardada'),5000);
+    await cargarOfertasZona();
+    renderOfertas();
+  }catch(e){
+    mostrarZonaEstado(t('pubError'),5000);
+  }
+  btn.disabled=false;
+}
+async function publicarAviso(){
+  const neg=miNegocio();
+  if(!neg){mostrarZonaEstado(t('negFaltaNombre'),4000);return;}
+  if(!esPremiumNegocio()){mostrarZonaEstado(t('negRequierePlan'),5000);return;}
+  const titulo=document.getElementById('ofAvisoTituloInp').value.trim();
+  if(!titulo){mostrarZonaEstado(t('ofFaltaTitulo'),4000);document.getElementById('ofAvisoTituloInp').focus();return;}
+  const texto=document.getElementById('ofAvisoTextoInp').value.trim();
+  const btn=document.getElementById('bGuardarAviso');
+  btn.disabled=true;
+  try{
+    await AvisosDB.publicar({negocioId:neg.id,negocioNombre:neg.nombre,titulo:titulo,texto:texto});
+    document.getElementById('formAviso').style.display='none';
+    mostrarZonaEstado(t('ofAvisoGuardado'),5000);
+    await cargarAvisosZona();
+    renderAvisos();
+  }catch(e){
+    mostrarZonaEstado(t('pubError'),5000);
+  }
+  btn.disabled=false;
+}
+
+/* ---------- v10.13 — Cableado del portal y los formularios ---------- */
+document.getElementById('premSubNegocio').addEventListener('click',()=>comprarPremium('business'));
+document.getElementById('premSubUsuario').addEventListener('click',()=>comprarPremium('user'));
+document.getElementById('premRegNegocio').addEventListener('click',abrirFormNegocio);
+document.getElementById('premVerOfertas').addEventListener('click',abrirPanelOfertas);
+document.getElementById('bCerrarFormNegocio').addEventListener('click',cerrarFormNegocio);
+document.getElementById('bGuardarNegocio').addEventListener('click',publicarNegocio);
+document.getElementById('negLogoBtn').addEventListener('click',()=>document.getElementById('negLogoInput').click());
+document.getElementById('negLogoInput').addEventListener('change',async e=>{
+  const file=e.target.files&&e.target.files[0]; if(!file)return;
+  try{
+    negLogoTemp=await fotoPetMiniatura(file);
+    const prev=document.getElementById('negLogoPrev');
+    prev.src=negLogoTemp; prev.style.display='block';
+  }catch(err){negLogoTemp=null;}
 });
+document.getElementById('negMiUbicacion').addEventListener('click',()=>{
+  irALugar({lng:YOU[0],lat:YOU[1]});
+  setTimeout(actualizarCoordsNegocio,800);
+});
+window.map.on('move',()=>{
+  const f=document.getElementById('panelNegocioForm');
+  if(f&&f.style.display==='block')actualizarCoordsNegocio();
+});
+document.getElementById('bCerrarOfertas').addEventListener('click',()=>irAtras());
+document.getElementById('ofTabOfertas').addEventListener('click',()=>mostrarTabOfertas('ofertas'));
+document.getElementById('ofTabAvisos').addEventListener('click',()=>mostrarTabOfertas('avisos'));
+document.getElementById('bNuevaOferta').addEventListener('click',()=>{
+  const neg=miNegocio();
+  if(!neg){mostrarZonaEstado(t('negFaltaNombre'),4000);return;}
+  if(!esPremiumNegocio()){mostrarZonaEstado(t('negRequierePlan'),5000);return;}
+  const f=document.getElementById('formOferta');
+  f.style.display=f.style.display==='block'?'none':'block';
+  if(f.style.display==='block'){
+    const ahora=Date.now();
+    if(!document.getElementById('ofDesdeInp').value)document.getElementById('ofDesdeInp').value=fmtFechaInput(ahora);
+    if(!document.getElementById('ofHastaInp').value)document.getElementById('ofHastaInp').value=fmtFechaInput(ahora+7*864e5);
+  }
+});
+document.getElementById('bNuevoAviso').addEventListener('click',()=>{
+  const neg=miNegocio();
+  if(!neg){mostrarZonaEstado(t('negFaltaNombre'),4000);return;}
+  if(!esPremiumNegocio()){mostrarZonaEstado(t('negRequierePlan'),5000);return;}
+  const f=document.getElementById('formAviso');
+  f.style.display=f.style.display==='block'?'none':'block';
+});
+document.getElementById('bGuardarOferta').addEventListener('click',publicarOferta);
+document.getElementById('bGuardarAviso').addEventListener('click',publicarAviso);
+/* Estado premium guardado (usuario que ya pagó): se restaura al cargar. */
+restaurarPremium();
 document.getElementById('bPubPerdida').addEventListener('click',abrirFormPerdida);
 document.getElementById('bCerrarPerdidas').addEventListener('click',()=>irAtras());
 document.getElementById('bCerrarFormPerdida').addEventListener('click',cerrarFormPerdida);
@@ -6341,9 +7728,11 @@ document.getElementById('apCompartir').addEventListener('click',()=>{
 });
 
 /* ---------- Arranque: Firebase en segundo plano + primera carga de alertas ---------- */
-fbInit().then(ok=>{fbListo=ok;if(ok){cargarAlertasZona();cargarAdopcionesZona();}});
-if(window.map.loaded()){cargarAlertasZona();cargarAdopcionesZona();}
-else window.map.on('load',()=>{cargarAlertasZona();cargarAdopcionesZona();});
+fbInit().then(ok=>{fbListo=ok;if(ok){cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();restaurarPremium();}});
+if(window.map.loaded()){cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();}
+else window.map.on('load',()=>{cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();});
+/* v10.13 — respaldo si 'load' no se dispara: carga premium por temporizador */
+setTimeout(()=>{cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();},1500);
 /* v10.7 — Enlace profundo ?adopcion=<id> (compartir): abre la adopción cuando cargue */
 (function(){
   let id=null; try{id=new URLSearchParams(location.search).get('adopcion');}catch(e){}
