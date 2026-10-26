@@ -4368,7 +4368,7 @@ function actualizarBanner(){
   const calleActual=(pasos[idxCalle]&&pasos[idxCalle].name)||'esta vía';
   const rest=Math.max(0,total-ultimoSnap.along);
   const eta=rutaDuracion&&rutaDistancia?Math.max(1,Math.round((rest/rutaDistancia)*(rutaDuracion/60))):null;
-  ban.innerHTML=`<div style="display:flex;gap:10px;align-items:center">${flechaSVG(st)}<div>${petNombre?`<div style="font-size:12.5px;opacity:.85">${t('vamos',{nombre:petNombre})}</div>`:''}<div style="font-size:16px;font-weight:800">${t('bannerEn',{d:fmtDist(dist),m:textoManeuver(st)})}</div><div style="font-size:12.5px;opacity:.85">${t('vasPor',{calle:calleActual})}${eta?` · ${t('llegasEn',{m:eta})}`:''}</div></div></div>`;
+  ban.innerHTML=`<div style="display:flex;gap:10px;align-items:center">${flechaSVG(st)}<div>${petNombre?`<div style="font-size:12.5px;opacity:.85">${t('vamos',{nombre:escHtml(petNombre)})}</div>`:''}<div style="font-size:16px;font-weight:800">${t('bannerEn',{d:fmtDist(dist),m:textoManeuver(st)})}</div><div style="font-size:12.5px;opacity:.85">${t('vasPor',{calle:calleActual})}${eta?` · ${t('llegasEn',{m:eta})}`:''}</div></div></div>`;
   ban.style.display='block';
 }
 function actualizarDistancia(){
