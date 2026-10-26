@@ -1,0 +1,43 @@
+rules_version = '2';
+// PetNear — Reglas Storage v10.17
+// Corrección de la auditoría integral v10.16 (26-oct-2026), hallazgo PN-25.
+// Proyecto Firebase "mascotas-cerca-de-ti" (Spark, gratis).
+// Pegar en: Firebase Console > Storage > Reglas.
+//
+// PN-25: STORAGE NO ESTÁ ACTIVADO en este proyecto. La app NO sube fotos
+// a Storage: la foto va como miniatura Base64 dentro del campo fotoUrl /
+// logoUrl del documento de Firestore (ver fotoAMiniatura en index.html).
+// Por eso aquí se DENIEGA TODO por defecto: ninguna lectura ni escritura
+// desde el cliente. Las reglas anteriores permitían lectura pública y
+// escritura del dueño en /alertas/{uid} y /avistamientos/{uid}, lo que
+// daba una falsa sensación de funcionalidad sobre un servicio que no
+// existe y sin validar el contenido real del archivo.
+//
+// CUANDO SE ACTIVE STORAGE (decisión futura, con su plan y costos
+// verificados), estas reglas deberán sustituirse por unas que como mínimo:
+//   1. Solo el dueño de la carpeta puede escribir:
+//      request.auth != null && request.auth.uid == uid
+//   2. Solo imágenes reales: request.resource.contentType.matches('image/.*')
+//      (el MIME lo declara el cliente y se puede falsificar: hay que
+//      validar además la cabecera real del archivo en el servidor o con
+//      una Cloud Function cuando exista backend).
+//   3. Tamaño máximo: request.resource.size < 2 * 1024 * 1024 (2 MB).
+//   4. Rutas limitadas a /alertas/{uid}/{archivo} y
+//      /avistamientos/{uid}/{archivo}; nada fuera de ahí.
+//   5. Borrado solo por el dueño de la carpeta.
+//   6. Lectura pública solo si la foto debe verse en el mapa y en la
+//      tarjeta; si no, lectura solo para usuarios autenticados.
+//   7. Limpieza de archivos huérfanos (foto subida cuyo documento se
+//      borró) con un proceso de servidor; el cliente no puede hacerlo
+//      de forma fiable.
+// Hasta entonces: DENEGACIÓN TOTAL. Si algún día una subida a Storage
+// empieza a dar PERMISSION_DENIED, es ESTA regla actuando: significa que
+// alguien activó Storage o cambió la app para usarlo sin actualizar
+// estas reglas.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
