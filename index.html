@@ -3880,8 +3880,19 @@ function actualizarPinesPueblo(){
   const tope=z<5?15:z<6?60:z<8?200:500;
   const top=cands.slice(0,tope);
   const vistos=new Set();
+  /* v10.10 — adelgazado espacial para TODOS los pines: en zonas densas
+     (Segovia, Francia) hay cientos de aldeas y caseríos en el viewport y
+     las píldoras se amontonan hasta tapar el mapa. Solo se muestra un pin
+     por celda de pantalla (160x60 px, tamaño de la píldora), así quedan
+     repartidos y legibles. Al acercar, la misma zona cubre más celdas y
+     aparecen más pines. */
+  const GRID_X=160, GRID_Y=60, celdasPines=new Set();
   for(const [id,p] of top){
     const key=id+':'+p[0];
+    const pt=window.map.project([p[3],p[2]]);
+    const celda=Math.floor(pt.x/GRID_X)+':'+Math.floor(pt.y/GRID_Y);
+    if(celdasPines.has(celda))continue;
+    celdasPines.add(celda);
     vistos.add(key);
     let m=marcadoresPueblo.get(key);
     if(!m){
