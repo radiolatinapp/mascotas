@@ -279,7 +279,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:420px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:458px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.19</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.20</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -692,7 +692,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 </div>
 <div class="panel" id="panelAcerca" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="menuAcerca">About PetNear</h3><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Close</button></div>
-  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.19</div></div></div>
+  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.20</div></div></div>
   <div class="meta" style="margin-top:8px" data-i18n="aceTexto">PetNear helps you find vets, pet stores, pharmacies and shelters for your pet, near you.</div>
   <div class="meta" style="margin-top:6px" data-i18n="aceIdiomas">Available in 8 languages</div>
 </div>
@@ -4254,7 +4254,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.19':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.19';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.20':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.20';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY

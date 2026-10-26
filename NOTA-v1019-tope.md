@@ -13,9 +13,16 @@
 
 ## 1. El nuevo tope
 
-(PENDIENTE: rellenar con el máximo real tras el agregado y la justificación
-con números. Marco: máximo teórico antes del filtrado = 120 + 167 (Londres)
-= 287; el tope debe cubrirlo con margen.)
+**El nuevo tope es 300 lugares por ciudad.** Máximo real tras el
+agregado: Londres, 267 lugares (120 + 147 agregados). El tope 300 lo
+cubre con un margen de 33. El máximo teórico antes del filtrado era
+120 + 167 (Londres, candidatos con nombre) = 287; también queda
+cubierto. El tope se aplica en la cosecha (`MAX_LUGARES` en
+`cosecha-europa.py`, `cosecha-latam.py` y `cosecha-canada.py`,
+actualizado de 120 a 300 en la v10.20) y se documenta en
+`COMO_CARGAR_CIUDADES.md`. `cosecha-ciudades.py` (Colombia y EE. UU.)
+queda en 120: no es ámbito de esta ampliación; alinearlo queda
+pendiente para una futura recosecha de esas regiones.
 
 ## 2. Conteos por ciudad antes/después
 
@@ -48,7 +55,12 @@ adiestramiento, duplicados descartados, agregados, después.)
 
 ## 4. Verificación
 
-(PENDIENTE: verificados/fallidos por ciudad y en total.)
+Verificación por ID de OSM en vivo (`verificar-v1019-tope.py`, lotes de
+100): **2.599 verificados, 0 fallidos, de 2.599.** Detalle por ciudad en
+`verificar-v1019-tope.json`. La verificación se hizo en dos pasadas: la
+VM se reinició a las 22:51 UTC en mitad del lote 8 y el verificador es
+reanudable — retomó en el lote 8 sin perder los 700 ya verificados.
+Cero lugares purgados: no hizo falta excluir nada tras la verificación.
 
 ## 5. Lo que quedó pendiente y por qué
 
