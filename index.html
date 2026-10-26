@@ -200,7 +200,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.11</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.12</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -3232,7 +3232,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.11':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.11';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.12':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.12';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -3725,6 +3725,8 @@ const REGIONES_PINES={
  latam:{archivo:'pins-latam.js',global:'PINS_LATAM',oeste:-118,sur:-56,este:-34,norte:33}
 };
 /* ---------- v10.10 — Pines de caseríos (hamlet/suburb) ----------
+   Europa va en 3 archivos (europa-1/2/3, ~17 MB c/u) porque la API de
+   GitHub rechaza subir un solo archivo de 48 MB (límite de la API).
    Segunda capa perezosa: los archivos pins-hamlet-<región>.js traen los
    lugares place=hamlet y place=suburb de OSM (tipo 'h'/'s'). Solo se
    descargan cuando el mapa entra en la región con zoom >= 9 (es cuando
@@ -3733,14 +3735,18 @@ const REGIONES_PINES={
 const REGIONES_PINES_HAMLET={
  usa:{archivo:'pins-hamlet-usa.js',global:'PINS_HAMLET_USA',oeste:-180,sur:15,este:-66,norte:72},
  canada:{archivo:'pins-hamlet-canada.js',global:'PINS_HAMLET_CANADA',oeste:-168,sur:41,este:-52,norte:84},
- europa:{archivo:'pins-hamlet-europa.js',global:'PINS_HAMLET_EUROPA',oeste:-25,sur:35,este:45,norte:72},
+ europa1:{archivo:'pins-hamlet-europa-1.js',global:'PINS_HAMLET_EUROPA_1',oeste:-25,sur:35,este:45,norte:72},
+ europa2:{archivo:'pins-hamlet-europa-2.js',global:'PINS_HAMLET_EUROPA_2',oeste:-25,sur:35,este:45,norte:72},
+ europa3:{archivo:'pins-hamlet-europa-3.js',global:'PINS_HAMLET_EUROPA_3',oeste:-25,sur:35,este:45,norte:72},
  latam:{archivo:'pins-hamlet-latam.js',global:'PINS_HAMLET_LATAM',oeste:-118,sur:-56,este:-34,norte:33}
 };
 const pinesHamletCargados=new Set(), pinesHamletCargando=new Set();
 function pinesHamletDeRegion(id){
   if(id==='usa')return (typeof PINS_HAMLET_USA!=='undefined')?PINS_HAMLET_USA:null;
   if(id==='canada')return (typeof PINS_HAMLET_CANADA!=='undefined')?PINS_HAMLET_CANADA:null;
-  if(id==='europa')return (typeof PINS_HAMLET_EUROPA!=='undefined')?PINS_HAMLET_EUROPA:null;
+  if(id==='europa1')return (typeof PINS_HAMLET_EUROPA_1!=='undefined')?PINS_HAMLET_EUROPA_1:null;
+  if(id==='europa2')return (typeof PINS_HAMLET_EUROPA_2!=='undefined')?PINS_HAMLET_EUROPA_2:null;
+  if(id==='europa3')return (typeof PINS_HAMLET_EUROPA_3!=='undefined')?PINS_HAMLET_EUROPA_3:null;
   if(id==='latam')return (typeof PINS_HAMLET_LATAM!=='undefined')?PINS_HAMLET_LATAM:null;
   return null;
 }
@@ -3874,8 +3880,19 @@ function actualizarPinesPueblo(){
   const tope=z<5?15:z<6?60:z<8?200:500;
   const top=cands.slice(0,tope);
   const vistos=new Set();
+  /* v10.10 — adelgazado espacial para TODOS los pines: en zonas densas
+     (Segovia, Francia) hay cientos de aldeas y caseríos en el viewport y
+     las píldoras se amontonan hasta tapar el mapa. Solo se muestra un pin
+     por celda de pantalla (160x60 px, tamaño de la píldora), así quedan
+     repartidos y legibles. Al acercar, la misma zona cubre más celdas y
+     aparecen más pines. */
+  const GRID_X=160, GRID_Y=60, celdasPines=new Set();
   for(const [id,p] of top){
     const key=id+':'+p[0];
+    const pt=window.map.project([p[3],p[2]]);
+    const celda=Math.floor(pt.x/GRID_X)+':'+Math.floor(pt.y/GRID_Y);
+    if(celdasPines.has(celda))continue;
+    celdasPines.add(celda);
     vistos.add(key);
     let m=marcadoresPueblo.get(key);
     if(!m){
