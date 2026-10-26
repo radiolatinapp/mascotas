@@ -54,6 +54,9 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .chip{border:0;background:rgba(255,255,255,.97);border-radius:18px;padding:7px 13px;font-size:13px;font-weight:700;color:#333;box-shadow:0 2px 5px rgba(0,0,0,.25);display:flex;align-items:center;gap:5px;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
 .chip:active{transform:scale(.96)}
 .zonaEstado{position:absolute;top:238px;left:12px;z-index:6;border:0;background:rgba(20,52,43,.88);color:#fff;border-radius:18px;padding:7px 13px;font-size:12.5px;font-weight:700;box-shadow:0 2px 5px rgba(0,0,0,.25);display:flex;align-items:center;white-space:normal;line-height:1.35;cursor:pointer;max-width:58vw;text-align:left;animation:fadeIn .25s ease}
+/* v10.19 — Letrero de ciudad con información compartida (Guadalajara/Zapopan):
+   píldora visible en la barra superior, debajo de los chips. */
+.avisoCiudad{position:absolute;top:284px;left:12px;z-index:6;max-width:66vw;background:#FFF3CD;border:1.5px solid #E6C87A;color:#6B4E00;border-radius:12px;padding:8px 11px;font-size:12.5px;font-weight:700;line-height:1.35;box-shadow:0 2px 5px rgba(0,0,0,.18)}
 .chip.on{background:#0E7C66;color:#fff}
 /* v10.15 — Menú hamburguesa: botón de 3 líneas arriba a la derecha y panel lateral. */
 /* v10.16 — Menú lateral a la medida: altura según el contenido (sin bottom:0), esquinas inferiores redondeadas y max-height con scroll interno en pantallas bajas. */
@@ -79,15 +82,40 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .menuIdiomaRow select{margin-left:auto;max-width:150px}
 
 .dot{width:9px;height:9px;border-radius:50%}
-.views{position:absolute;top:196px;right:12px;z-index:6;display:flex;border-radius:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.35)}
-.views button{border:0;padding:8px 10px;font-size:13px;font-weight:800;background:#fff;color:#444;cursor:pointer;transition:background .2s ease,color .2s ease}
-.views button.on{background:#14342B;color:#fff}
-.gpsbtn{position:absolute;top:234px;right:12px;z-index:6;border:0;border-radius:20px;padding:9px 15px;font-size:13px;font-weight:800;background:#fff;color:#444;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer;transition:transform .15s ease,background .2s ease}
+/* v10.19 — Controles del mapa estilo Google Maps: botón compacto de capas
+   con miniatura del estilo actual + panel desplegable con las 4 vistas,
+   y botones redondos de ubicación (Mi ubicación / Modo GPS) en la misma
+   columna derecha. Iconos SVG reales, cero emojis. */
+.capasBtn{position:absolute;top:196px;right:12px;z-index:7;width:48px;height:48px;border:2px solid #fff;border-radius:12px;overflow:hidden;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.35);padding:0;transition:transform .15s ease}
+.capasBtn:active{transform:scale(.93)}
+.capasThumb{position:absolute;inset:0}
+.capasBtn[data-vista="ilus"] .capasThumb{background:#f2efe6}
+.capasBtn[data-vista="sat"] .capasThumb{background:linear-gradient(135deg,#1d3a2a,#2d5a3d)}
+.capasBtn[data-vista="3d"] .capasThumb{background:#e8ecef}
+.capasBtn[data-vista="actual"] .capasThumb{background:#f2efe6}
+.capasIcon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.capasIcon svg{filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));stroke:#14342B}
+#btnCapas[data-vista="sat"] .capasIcon svg{stroke:#fff}
+.views{position:absolute;top:252px;right:12px;z-index:8;display:none;width:236px;box-sizing:border-box;background:#fff;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.35);padding:10px;grid-template-columns:1fr 1fr;gap:8px}
+.views.abierto{display:grid}
+.views button{position:relative;border:2px solid #e8e8e8;border-radius:12px;padding:0 0 6px;background:#fff;cursor:pointer;overflow:hidden;text-align:left;transition:border-color .15s ease,transform .15s ease}
+.views button:active{transform:scale(.96)}
+.views button.on{border-color:#0E7C66}
+.views .thumb{display:block;height:56px;position:relative}
+.views .thumb svg{display:block;width:100%;height:100%}
+.views .vistaLbl{display:block;padding:5px 8px 0;font-size:12.5px;font-weight:800;color:#14342B}
+.views .vistaCheck{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:#0E7C66;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s ease}
+.views button.on .vistaCheck{opacity:1}
+.thumb-actual .pulso{animation:pulsoVivo 1.6s ease infinite}
+@keyframes pulsoVivo{0%{opacity:.95}50%{opacity:.2}100%{opacity:.95}}
+.gpsbtn{position:absolute;right:12px;z-index:6;width:46px;height:46px;border:0;border-radius:50%;background:#fff;color:#14342B;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s ease,background .2s ease,color .2s ease}
 .gpsbtn:active,.brujula:active,.zoomBtn:active{transform:scale(.93)}
+#btnYo{top:256px}
+#btnGps{top:310px}
 .atrasBtn{position:absolute;top:196px;left:12px;z-index:7;border:0;border-radius:20px;padding:8px 13px;font-size:13.5px;font-weight:800;background:#fff;color:#14342B;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer;display:flex;align-items:center;gap:6px;transition:transform .15s ease}
 .atrasBtn:active{transform:scale(.96)}
 .gpsbtn.on{background:#0E7C66;color:#fff}
-.brujula{position:absolute;top:314px;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.brujula{position:absolute;top:364px;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .zoomBtn{position:absolute;right:12px;z-index:6;width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;font-size:19px;font-weight:800;color:#333}
 .logoBox{width:54px;height:54px;border-radius:15px;flex:none;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .logoBox svg{width:30px;height:30px}
@@ -227,6 +255,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
     <span id="zonaEstado" class="zonaEstado" style="display:none"></span>
   </div>
 </div>
+<div id="avisoCiudad" class="avisoCiudad" style="display:none"></div>
 <div id="menuFondo" class="menuFondo" style="display:none"></div>
 <aside id="menuLateral" class="menuLateral" aria-label="PetNear">
   <div class="menuHead"><img src="icono-512.png" alt="PetNear"><span>PetNear</span><button id="bCerrarMenu" class="menuX" data-i18n-title="menuTitulo" title="Menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="3" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
@@ -237,16 +266,20 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
   <button class="menuItem" id="mAyuda"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span data-i18n="menuAyuda">Help</span></button>
   <button class="menuItem" id="mAcerca"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span data-i18n="menuAcerca">About PetNear</span></button>
 </aside>
-<div class="views">
-  <button id="vIlus" class="on" data-i18n="viewIlus">Illustrated</button><button id="vSat" data-i18n="viewSat">Satellite</button><button id="v3d" data-i18n="view3d">3D map</button><button id="vActual" data-i18n="viewActual">Live</button>
+<button id="btnCapas" class="capasBtn" data-vista="ilus" title="Map style" data-i18n-title="capasTitulo" aria-label="Map style"><span class="capasThumb"></span><span class="capasIcon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span></button>
+<div class="views" id="capasPop">
+  <button id="vIlus" class="on" type="button"><span class="thumb thumb-ilus"><svg viewBox="0 0 100 56" preserveAspectRatio="none"><rect width="100" height="56" fill="#f2efe6"/><path d="M0 40 Q25 30 50 38 T100 34" stroke="#fff" stroke-width="5" fill="none"/><path d="M30 0 Q34 28 28 56" stroke="#f6d98a" stroke-width="4" fill="none"/><path d="M70 0 Q66 28 74 56" stroke="#f6d98a" stroke-width="4" fill="none"/><circle cx="78" cy="14" r="9" fill="#cfe6b8"/><circle cx="18" cy="48" r="7" fill="#cfe6b8"/></svg></span><span class="vistaLbl" data-i18n="viewIlus">Illustrated</span><span class="vistaCheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span></button>
+  <button id="vSat" type="button"><span class="thumb thumb-sat"><svg viewBox="0 0 100 56" preserveAspectRatio="none"><rect width="100" height="56" fill="#22402e"/><path d="M0 44 Q30 36 60 42 T100 38" stroke="#3d6b4f" stroke-width="6" fill="none"/><path d="M40 0 Q44 28 38 56" stroke="#4a7a5c" stroke-width="5" fill="none"/><rect x="58" y="8" width="18" height="12" rx="2" fill="#2d5a3d"/><rect x="14" y="10" width="14" height="10" rx="2" fill="#2d5a3d"/><rect x="70" y="36" width="16" height="10" rx="2" fill="#2d5a3d"/></svg></span><span class="vistaLbl" data-i18n="viewSat">Satellite</span><span class="vistaCheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span></button>
+  <button id="v3d" type="button"><span class="thumb thumb-3d"><svg viewBox="0 0 100 56" preserveAspectRatio="none"><rect width="100" height="56" fill="#eef0ee"/><polygon points="30,26 42,20 54,26 42,32" fill="#d8d3c8"/><polygon points="30,26 42,32 42,44 30,38" fill="#b3ac9c"/><polygon points="42,32 54,26 54,38 42,44" fill="#8f887a"/><polygon points="62,34 72,29 82,34 72,39" fill="#d8d3c8"/><polygon points="62,34 72,39 72,48 62,43" fill="#b3ac9c"/><polygon points="72,39 82,34 82,43 72,48" fill="#8f887a"/><rect x="8" y="40" width="14" height="10" rx="2" fill="#cfe6b8"/></svg></span><span class="vistaLbl" data-i18n="view3d">3D map</span><span class="vistaCheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span></button>
+  <button id="vActual" type="button"><span class="thumb thumb-actual"><svg viewBox="0 0 100 56" preserveAspectRatio="none"><rect width="100" height="56" fill="#f2efe6"/><path d="M0 40 Q25 30 50 38 T100 34" stroke="#fff" stroke-width="5" fill="none"/><path d="M30 0 Q34 28 28 56" stroke="#f6d98a" stroke-width="4" fill="none"/><circle class="pulso" cx="52" cy="26" r="7" fill="#E5322D"/><circle cx="52" cy="26" r="2.5" fill="#fff"/></svg></span><span class="vistaLbl" data-i18n="viewActual">Live</span><span class="vistaCheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span></button>
 </div>
 <button id="btnAtras" class="atrasBtn" style="display:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg><span data-i18n="btnAtras">Atrás</span></button>
-<button id="btnGps" class="gpsbtn on" data-i18n="btnGps">GPS mode</button>
-<button id="btnYo" class="gpsbtn" style="top:272px" data-i18n="btnYo">My location</button>
+<button id="btnGps" class="gpsbtn on" title="GPS mode" data-i18n-title="btnGps" aria-label="GPS mode"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L19 21 L12 17 L5 21 Z"/></svg></button>
+<button id="btnYo" class="gpsbtn" title="My location" data-i18n-title="btnYo" aria-label="My location"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><line x1="12" y1="1.5" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22.5" y2="12"/></svg></button>
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
-<button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
-<button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.18</div>
+<button id="btnZoomMas" class="zoomBtn" style="top:420px">+</button>
+<button id="btnZoomMenos" class="zoomBtn" style="top:458px">−</button>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.19</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -659,7 +692,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 </div>
 <div class="panel" id="panelAcerca" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="menuAcerca">About PetNear</h3><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Close</button></div>
-  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.18</div></div></div>
+  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.19</div></div></div>
   <div class="meta" style="margin-top:8px" data-i18n="aceTexto">PetNear helps you find vets, pet stores, pharmacies and shelters for your pet, near you.</div>
   <div class="meta" style="margin-top:6px" data-i18n="aceIdiomas">Available in 8 languages</div>
 </div>
@@ -684,6 +717,7 @@ const I18N={
   "viewSat": "Satélite",
   "view3d": "Mapa 3D",
   "viewActual": "Actual",
+  "capasTitulo": "Estilo de mapa",
   "btnGps": "Modo GPS",
   "btnYo": "Mi ubicación",
   "compassTitle": "Norte",
@@ -805,6 +839,7 @@ const I18N={
   "unLugar": "1 lugar",
   "lugaresN": "{n} lugares",
   "tocaCiudad": "toca una ciudad para verlos",
+  "ciudadComparte": "Esta ciudad comparte su información con {otra}",
   "unPueblo": "1 pueblo",
   "pueblosN": "{n} pueblos",
   "tocaPueblo": "toca un pueblo para verlo",
@@ -1113,6 +1148,7 @@ const I18N={
   "viewSat": "Satellite",
   "view3d": "3D map",
   "viewActual": "Live",
+  "capasTitulo": "Map style",
   "btnGps": "GPS mode",
   "btnYo": "My location",
   "compassTitle": "North",
@@ -1234,6 +1270,7 @@ const I18N={
   "unLugar": "1 place",
   "lugaresN": "{n} places",
   "tocaCiudad": "tap a city to see them",
+  "ciudadComparte": "This city shares its information with {otra}",
   "unPueblo": "1 town",
   "pueblosN": "{n} towns",
   "tocaPueblo": "tap a town to see it",
@@ -1663,6 +1700,7 @@ const I18N={
   "unLugar": "1 lugar",
   "lugaresN": "{n} lugares",
   "tocaCiudad": "toque numa cidade para vê-los",
+  "ciudadComparte": "Esta cidade compartilha suas informações com {otra}",
   "unPueblo": "1 vila",
   "pueblosN": "{n} vilas",
   "tocaPueblo": "toque numa vila para vê-la",
@@ -2092,6 +2130,7 @@ const I18N={
   "unLugar": "1 lieu",
   "lugaresN": "{n} lieux",
   "tocaCiudad": "touchez une ville pour les voir",
+  "ciudadComparte": "Cette ville partage ses informations avec {otra}",
   "unPueblo": "1 village",
   "pueblosN": "{n} villages",
   "tocaPueblo": "touchez un village pour le voir",
@@ -2521,6 +2560,7 @@ const I18N={
   "unLugar": "1 Ort",
   "lugaresN": "{n} Orte",
   "tocaCiudad": "tippe auf eine Stadt, um sie zu sehen",
+  "ciudadComparte": "Diese Stadt teilt ihre Informationen mit {otra}",
   "unPueblo": "1 Dorf",
   "pueblosN": "{n} Dörfer",
   "tocaPueblo": "tippe auf ein Dorf, um es zu sehen",
@@ -2950,6 +2990,7 @@ const I18N={
   "unLugar": "1 luogo",
   "lugaresN": "{n} luoghi",
   "tocaCiudad": "tocca una città per vederli",
+  "ciudadComparte": "Questa città condivide le sue informazioni con {otra}",
   "unPueblo": "1 paese",
   "pueblosN": "{n} paesi",
   "tocaPueblo": "tocca un paese per vederlo",
@@ -3379,6 +3420,7 @@ const I18N={
   "unLugar": "1 plek",
   "lugaresN": "{n} plekken",
   "tocaCiudad": "tik op een stad om ze te zien",
+  "ciudadComparte": "Deze stad deelt haar informatie met {otra}",
   "unPueblo": "1 dorp",
   "pueblosN": "{n} dorpen",
   "tocaPueblo": "tik op een dorp om het te zien",
@@ -3808,6 +3850,7 @@ const I18N={
   "unLugar": "1 miejsce",
   "lugaresN": "{n} miejsc",
   "tocaCiudad": "dotknij miasto, aby je zobaczyć",
+  "ciudadComparte": "To miasto udostępnia swoje informacje miastu {otra}",
   "unPueblo": "1 miasteczko",
   "pueblosN": "{n} miasteczek",
   "tocaPueblo": "dotknij miasteczka, aby je zobaczyć",
@@ -4180,6 +4223,7 @@ function applyLang(){
   mostrarBotonesViaje();
   refrescarTarjeta();
   if(document.getElementById('sug').style.display==='block')renderSug();
+  actualizarAvisoCiudad();
 }
 const BASE='https://tiles.basemaps.cartocdn.com/v/20261001-03';
 /* v10.2 — Clave CARTO (opcional, plan gratis).
@@ -4210,7 +4254,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.18':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.18';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.19':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.19';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -4680,6 +4724,41 @@ function actualizarPinesCiudad(){
   }
 }
 crearPinesCiudad();
+/* ---------- v10.19 — Letrero de ciudad con información compartida ----------
+   Guadalajara y Zapopan comparten la misma lista de lugares (la copia
+   canónica vive en Guadalajara; Zapopan usa la misma referencia, sin copia
+   duplicada). Cuando el centro del mapa —o, si no hay mapa, la ubicación
+   del usuario— cae en una ciudad con `comparteCon`, se muestra el aviso en
+   la barra superior. Si el punto cae en la caja de ambas, se elige la ciudad
+   de centro más cercano (así, estando en Zapopan, el letrero nombra a
+   Zapopan y no a Guadalajara: ciudadDePunto devolvería siempre la primera,
+   Guadalajara). */
+function ciudadActualSlug(){
+  let best=null,bestD=Infinity;
+  const puntos=[];
+  if(window.map){try{const c=window.map.getCenter();if(c)puntos.push([c.lat,c.lng]);}catch(e){}}
+  puntos.push([YOU[1],YOU[0]]);
+  for(const pt of puntos){
+    for(const slug in CIUDADES_TODAS){
+      const c=CIUDADES_TODAS[slug];if(!c._caja)continue;
+      const b=c._caja;
+      if(pt[1]>=b[0]&&pt[1]<=b[2]&&pt[0]>=b[1]&&pt[0]<=b[3]){
+        const d=(pt[0]-c.centro[0])*(pt[0]-c.centro[0])+(pt[1]-c.centro[1])*(pt[1]-c.centro[1]);
+        if(d<bestD){bestD=d;best=slug;}
+      }
+    }
+    if(best)return best;
+  }
+  return best;
+}
+function actualizarAvisoCiudad(){
+  const el=document.getElementById('avisoCiudad');if(!el)return;
+  const slug=ciudadActualSlug();
+  const c=slug?CIUDADES_TODAS[slug]:null;
+  const otra=c&&c.comparteCon?CIUDADES_TODAS[c.comparteCon]:null;
+  if(otra){el.textContent=t('ciudadComparte',{otra:otra.nombre});el.style.display='';}
+  else el.style.display='none';
+}
 /* ---------- v10.6 — Pines de pueblo (EE. UU., 26.935 pueblos) ----------
    PINS_USA trae todos los pueblos de EE. UU. (city/town/village) con su
    población. Al alejar (zoom < 11) se muestran los pueblos del viewport,
@@ -5671,11 +5750,15 @@ function vista(btn,style,opts){
   const o={...opts};
   if(o.pitch>0)o.zoom=Math.max(window.map.getZoom(),14);
   window.map.setStyle(style);window.map.easeTo(o);
+  const cp=document.getElementById('capasPop');if(cp)cp.classList.remove('abierto');
+  const bc=document.getElementById('btnCapas');if(bc)bc.dataset.vista=btn.id.slice(1).toLowerCase();
 }
-document.getElementById('vIlus').addEventListener('click',e=>vista(e.target,ilustradoStyle(),{pitch:0}));
-document.getElementById('vSat').addEventListener('click',e=>vista(e.target,satStyle(),{pitch:50}));
-document.getElementById('v3d').addEventListener('click',e=>vista(e.target,mapa3dStyle(),{pitch:58}));
-document.getElementById('vActual').addEventListener('click',e=>vista(e.target,actualStyle(),{pitch:0}));
+document.getElementById('vIlus').addEventListener('click',e=>vista(e.currentTarget,ilustradoStyle(),{pitch:0}));
+document.getElementById('vSat').addEventListener('click',e=>vista(e.currentTarget,satStyle(),{pitch:50}));
+document.getElementById('v3d').addEventListener('click',e=>vista(e.currentTarget,mapa3dStyle(),{pitch:58}));
+document.getElementById('vActual').addEventListener('click',e=>vista(e.currentTarget,actualStyle(),{pitch:0}));
+document.getElementById('btnCapas').addEventListener('click',e=>{e.stopPropagation();document.getElementById('capasPop').classList.toggle('abierto');});
+document.addEventListener('click',e=>{const p=document.getElementById('capasPop');if(p&&p.classList.contains('abierto')&&!e.target.closest('#capasPop')&&!e.target.closest('#btnCapas'))p.classList.remove('abierto');});
 
 /* ---------- Botones GPS / Mi ubicación / Brújula ---------- */
 document.getElementById('btnGps').addEventListener('click',()=>{
@@ -6194,7 +6277,7 @@ async function cargarZona(forzar){
   }
   zonaCargando=false;
 }
-window.map.on('moveend',()=>{if(tripActivo)return;clearTimeout(zonaTimer);zonaTimer=setTimeout(()=>cargarZona(false),600);cargarCiudadesCercanas();actualizarPinesCiudad();crearPinesEventosUsuario();cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();});
+window.map.on('moveend',()=>{if(tripActivo)return;clearTimeout(zonaTimer);zonaTimer=setTimeout(()=>cargarZona(false),600);cargarCiudadesCercanas();actualizarPinesCiudad();actualizarAvisoCiudad();crearPinesEventosUsuario();cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();});
 window.map.on('zoomend',()=>actualizarPinesCiudad());
 function mostrarPanel(id){
   const el=document.getElementById(id);

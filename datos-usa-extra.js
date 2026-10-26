@@ -2,7 +2,7 @@
 // cat: vet=Veterinarias, tienda=Tiendas de mascotas, refugio=Refugios y guarderías, zoo=Zoológicos
 // horas: null = sin dato publicado. rating: solo si existe dato verificado (aquí nunca se inventa).
 // Todo proviene de OpenStreetMap (ODbL) vía Overpass; sin nombre o sin coordenadas el lugar se descarta.
-// Ciudades cargadas: 29/29 (1736 lugares).
+// Ciudades cargadas: 29/29 (1735 lugares; v10.19: eliminado Camp Barkalot, cerrado).
 const CIUDADES_USA_EXTRA = {
  "detroit": {nombre:"Detroit", centro:[42.331551, -83.04664], tz:"America/Detroit", lugares:[
   {n:"3 Dogs 1 Cat", cat:"tienda", lat:42.348198, lng:-83.039552, dir:"2714 Riopelle Street, Detroit", tel:"+1-313-888-9803", horas:null, nota:"Dato de OpenStreetMap"},
@@ -833,7 +833,7 @@ const CIUDADES_USA_EXTRA = {
   {n:"Family Animal Medicine", cat:"vet", lat:36.304258, lng:-95.820838, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Branscum Vet", cat:"vet", lat:35.991524, lng:-96.16279, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Premier Animal Wellness and Surgery", cat:"vet", lat:35.989597, lng:-95.796908, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Top Dog Ranch", cat:"refugio", lat:35.988994, lng:-95.778867, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Top Dog Ranch", cat:"tienda", guarderia:true, lat:35.988994, lng:-95.778867, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "minneapolis": {nombre:"Minneapolis", centro:[44.9773, -93.265469], tz:"America/Chicago", lugares:[
   {n:"Vet Partners Pet Hospital", cat:"vet", lat:44.975713, lng:-93.253252, dir:"1030 Washington Avenue South, Minneapolis", tel:"+1-612-746-0300", horas:null, nota:"Dato de OpenStreetMap"},
@@ -1197,7 +1197,6 @@ const CIUDADES_USA_EXTRA = {
   {n:"Veternary Emergency & Specialty Center", cat:"vet", lat:37.458764, lng:-77.656529, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "salt-lake-city": {nombre:"Salt Lake City", centro:[40.75962, -111.886797], tz:"America/Denver", lugares:[
-  {n:"Camp Barkalot", cat:"refugio", lat:40.738204, lng:-111.901447, dir:"360 West Whitney Avenue, Salt Lake City", tel:"+1-801-485-2030", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"PetSmart", cat:"tienda", lat:40.729436, lng:-111.902251, dir:"389 West 1830 South, Salt Lake City", tel:"+1 801-466-0313", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Highland Park Pet Hospital", cat:"vet", lat:40.724106, lng:-111.865647, dir:"2148 South 900 East, Salt Lake City", tel:"+1-385-243-2273", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Best Friends Pet Adoption Center", cat:"refugio", lat:40.726569, lng:-111.859047, dir:"2005 South 1100 East, Salt Lake City", tel:"+1-801-574-2454", horas:null, nota:"Dato de OpenStreetMap"},
