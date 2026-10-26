@@ -200,7 +200,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.11</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.12</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -3232,7 +3232,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.11':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.11';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.12':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.12';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
