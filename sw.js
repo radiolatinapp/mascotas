@@ -1,7 +1,7 @@
-/* PetNear — service worker mínimo (v10.14).
+/* PetNear — service worker mínimo (v10.15).
    Solo same-origin, network-first con fallback a caché.
    NO intercepta teselas ni APIs externas (CARTO/OpenFreeMap/Overpass/OSRM/Firebase). */
-const CACHE='petnear-v114';
+const CACHE='petnear-v115';
 const NUCLEO=['./','index.html','manifest.json','icono-192.png','icono-512.png',
  'vendor/maplibre-gl.css','vendor/maplibre-gl.js',
  'datos-ibague.js','datos-charlotte.js','datos-colombia.js','datos-usa.js','datos-usa-extra.js','datos-usa-noreste.js','datos-usa-sureste.js','datos-usa-medioeste.js','datos-usa-surcentral.js','datos-usa-montana.js','datos-usa-pacifico.js','datos-europa.js','datos-latam.js','datos-canada.js',

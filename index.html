@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es"><head><meta charset="utf-8">
+<html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#0E7C66">
 <title>PetNear</title>
@@ -54,6 +54,27 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .chip:active{transform:scale(.96)}
 .zonaEstado{position:absolute;top:238px;left:12px;z-index:6;border:0;background:rgba(20,52,43,.88);color:#fff;border-radius:18px;padding:7px 13px;font-size:12.5px;font-weight:700;box-shadow:0 2px 5px rgba(0,0,0,.25);display:flex;align-items:center;white-space:normal;line-height:1.35;cursor:pointer;max-width:58vw;text-align:left;animation:fadeIn .25s ease}
 .chip.on{background:#0E7C66;color:#fff}
+/* v10.15 — Menú hamburguesa: botón de 3 líneas arriba a la derecha y panel lateral. */
+.brandRow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.burger{flex:none;width:42px;height:42px;border:0;border-radius:12px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s ease,transform .15s ease}
+.burger:active{transform:scale(.94);background:rgba(255,255,255,.3)}
+.menuFondo{position:fixed;inset:0;background:rgba(20,52,43,.45);z-index:40}
+.menuLateral{position:fixed;top:0;right:0;bottom:0;width:min(320px,86vw);background:#fff;z-index:41;box-shadow:-10px 0 30px rgba(0,0,0,.35);padding:16px 14px;overflow-y:auto;transform:translateX(105%);visibility:hidden;transition:transform .28s ease,visibility 0s .28s}
+.menuLateral.abierto{transform:none;visibility:visible;transition:transform .28s ease}
+.menuHead{display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid #eee;margin-bottom:6px}
+.menuHead img{width:42px;height:42px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.menuHead span{font-size:20px;font-weight:800;color:#14342B;flex:1}
+.menuX{flex:none;width:32px;height:32px;border:0;border-radius:50%;background:#EEF2EE;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.menuItem{display:flex;align-items:center;gap:12px;width:100%;border:0;background:#fff;border-radius:12px;padding:12px 10px;font-size:15px;font-weight:700;color:#14342B;cursor:pointer;text-align:left;transition:background .15s ease}
+.menuItem:hover{background:#F2F7F2}
+.menuItem:active{background:#E4F2EC}
+.menuItem svg{flex:none}
+.menuItem.gold{background:linear-gradient(135deg,#f7c948,#e6a817);color:#3d2c00;margin:4px 0}
+.menuItem.gold:hover{filter:brightness(1.05)}
+.menuIdiomaRow{cursor:default}
+.menuIdiomaRow:hover{background:#fff}
+.menuIdiomaRow select{margin-left:auto;max-width:150px}
+
 .dot{width:9px;height:9px;border-radius:50%}
 .views{position:absolute;top:196px;right:12px;z-index:6;display:flex;border-radius:20px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.35)}
 .views button{border:0;padding:8px 10px;font-size:13px;font-weight:800;background:#fff;color:#444;cursor:pointer;transition:background .2s ease,color .2s ease}
@@ -171,6 +192,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 /* v10.7 — Premium: beneficios y caja de precio. */
 /* v10.13 — Portal Premium: tarjetas de plan, ofertas y avisos. */
 /* v10.14 — PetNear: nuevo nombre (antes "Mascotas cerca de ti") y nuevo logo oficial (labrador chocolate realista). */
+/* v10.15 — Menú hamburguesa + inglés por defecto: botón de 3 líneas arriba a la derecha, fila de 4 píldoras, panel lateral (Mis visitas, Hazte premium, idioma, Configuración, Ayuda, Acerca) y paneles nuevos; el idioma por defecto pasa a inglés (los 8 idiomas se mantienen y se guardan en localStorage). */
 .premCard{border:2px solid #e8e8e8;border-radius:14px;padding:12px;margin:10px 0;background:#fff}
 .premCard.gold{border-color:#e6a817;background:linear-gradient(180deg,#fffdf4,#fff)}
 .premCard h4{margin:0 0 2px;font-size:16px}
@@ -188,32 +210,40 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <div id="bannerPerdidas"><span id="bpTxt"></span><button class="bpVer" id="bpVer" data-i18n="avisoVer">Ver</button><button class="bpX" id="bpX" aria-label="Cerrar">✕</button></div>
 <div id="map"></div>
 <div class="topbar">
-  <div class="brand"><img src="icono-512.png" alt="PetNear"><span data-i18n="appTitle">PetNear</span></div>
-  <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="buscador" type="text" data-i18n-ph="searchPh" placeholder="Buscar veterinarias, tiendas, zoológicos, restaurantes…"></div>
+  <div class="brandRow"><div class="brand"><img src="icono-512.png" alt="PetNear"><span data-i18n="appTitle">PetNear</span></div><button id="bMenu" class="burger" data-i18n-title="menuTitulo" title="Menu" aria-label="Menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
+  <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="buscador" type="text" data-i18n-ph="searchPh" placeholder="Search vets, pet stores, zoos, restaurants…"></div>
   <div id="sug" class="sug"></div>
   <div style="display:flex;gap:8px;margin-top:10px">
-    <button class="catBtn" id="bCategorias"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg><span data-i18n="btnCategorias">Categorías</span></button>
+    <button class="catBtn" id="bCategorias"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg><span data-i18n="btnCategorias">Categories</span></button>
   </div>
   <div class="chips" id="acciones" style="margin-top:6px">
-    <button class="chip" id="bVisitas" data-i18n="btnVisitas">Mis visitas</button>
-    <button class="chip" id="bFavoritos" data-i18n="btnFavoritos">Favoritos</button>
-    <button class="chip" id="bMascota" data-i18n="btnMascota">Mi mascota</button>
-    <button class="chip" id="bPerdidas" data-i18n="btnPerdida">Mascota perdida</button>
-    <button class="chip" id="bAdopciones" data-i18n="btnAdopcion">Adopciones</button>
-    <button class="chip gold" id="bPremium" data-i18n="btnPremium">Hazte premium</button>
-    <span id="zonaEstado" class="zonaEstado" style="display:none"></span><select id="selIdioma" class="chip" style="appearance:none;-webkit-appearance:none" aria-label="Idioma"><option value="es">Español</option><option value="en">English</option><option value="pt">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="nl">Nederlands</option><option value="pl">Polski</option></select>
+    <button class="chip" id="bPerdidas" data-i18n="btnPerdida">Lost pet</button>
+    <button class="chip" id="bAdopciones" data-i18n="btnAdopcion">Adoptions</button>
+    <button class="chip" id="bMascota" data-i18n="btnMascota">My pet</button>
+    <button class="chip" id="bFavoritos" data-i18n="btnFavoritos">Favorites</button>
+    <span id="zonaEstado" class="zonaEstado" style="display:none"></span>
   </div>
 </div>
+<div id="menuFondo" class="menuFondo" style="display:none"></div>
+<aside id="menuLateral" class="menuLateral" aria-label="PetNear">
+  <div class="menuHead"><img src="icono-512.png" alt="PetNear"><span>PetNear</span><button id="bCerrarMenu" class="menuX" data-i18n-title="menuTitulo" title="Menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="3" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+  <button class="menuItem" id="mVisitas"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span data-i18n="btnVisitas">My visits</span></button>
+  <button class="menuItem gold" id="mPremium"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#8a6508" stroke-width="2" stroke-linejoin="round"><path d="M3 8l4.5 3L12 5l4.5 6L21 8l-1.6 9.5a1.5 1.5 0 0 1-1.5 1.3H6.1a1.5 1.5 0 0 1-1.5-1.3L3 8z"/></svg><span data-i18n="btnPremium">Go premium</span></button>
+  <div class="menuItem menuIdiomaRow"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span data-i18n="menuIdioma">Language</span><select id="selIdioma" class="chip" style="appearance:none;-webkit-appearance:none" aria-label="Language"><option value="es">Español</option><option value="en">English</option><option value="pt">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="nl">Nederlands</option><option value="pl">Polski</option></select></div>
+  <button class="menuItem" id="mConfig"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span data-i18n="menuConfig">Settings</span></button>
+  <button class="menuItem" id="mAyuda"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span data-i18n="menuAyuda">Help</span></button>
+  <button class="menuItem" id="mAcerca"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span data-i18n="menuAcerca">About PetNear</span></button>
+</aside>
 <div class="views">
-  <button id="vIlus" class="on" data-i18n="viewIlus">Ilustrado</button><button id="vSat" data-i18n="viewSat">Satélite</button><button id="v3d" data-i18n="view3d">Mapa 3D</button><button id="vActual" data-i18n="viewActual">Actual</button>
+  <button id="vIlus" class="on" data-i18n="viewIlus">Illustrated</button><button id="vSat" data-i18n="viewSat">Satellite</button><button id="v3d" data-i18n="view3d">3D map</button><button id="vActual" data-i18n="viewActual">Live</button>
 </div>
 <button id="btnAtras" class="atrasBtn" style="display:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg><span data-i18n="btnAtras">Atrás</span></button>
-<button id="btnGps" class="gpsbtn on" data-i18n="btnGps">Modo GPS</button>
-<button id="btnYo" class="gpsbtn" style="top:272px" data-i18n="btnYo">Mi ubicación</button>
+<button id="btnGps" class="gpsbtn on" data-i18n="btnGps">GPS mode</button>
+<button id="btnYo" class="gpsbtn" style="top:272px" data-i18n="btnYo">My location</button>
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.14</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.15</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -597,6 +627,32 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
   <div class="meta" style="margin-top:6px" data-i18n="avatarNota">Tu perrito corre en el mapa cuando viajas; cuando paras, se sienta.</div>
   <button class="btn iniciar" id="bGuardarMascota" style="margin-top:14px;width:100%" data-i18n="btnGuardar">Guardar</button>
   <div class="meta" style="margin-top:6px" data-i18n="petNota">El nombre aparece en el banner del viaje y el color tiñe a tu mascota en el mapa.</div>
+</div>
+<div class="panel" id="panelConfig" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="menuConfig">Settings</h3><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Close</button></div>
+  <div style="font-size:13px;font-weight:700;color:#555;margin:10px 0 6px" data-i18n="cfgMapa">Map style</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap">
+    <button class="chip" id="cfgVIlus" data-i18n="viewIlus">Illustrated</button>
+    <button class="chip" id="cfgVSat" data-i18n="viewSat">Satellite</button>
+    <button class="chip" id="cfgV3d" data-i18n="view3d">3D map</button>
+    <button class="chip" id="cfgVActual" data-i18n="viewActual">Live</button>
+  </div>
+  <div style="font-size:13px;font-weight:700;color:#555;margin:12px 0 6px" data-i18n="cfgGps">GPS mode</div>
+  <button class="chip" id="cfgGps" data-i18n="btnGps">GPS mode</button>
+</div>
+<div class="panel" id="panelAyuda" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="menuAyuda">Help</h3><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Close</button></div>
+  <div class="meta" style="margin-top:8px" data-i18n="ayu1">Find vets, pet stores, shelters and more on the map or with the search bar.</div>
+  <div class="meta" style="margin-top:6px" data-i18n="ayu2">Tap a place to see its details, call or get directions.</div>
+  <div class="meta" style="margin-top:6px" data-i18n="ayu3">Log your visits with the stars and save your favorite places.</div>
+  <div class="meta" style="margin-top:6px" data-i18n="ayu4">Lost your pet? Post it in Lost pet to alert everyone nearby.</div>
+  <div class="meta" style="margin-top:6px" data-i18n="ayu5">In Adoptions you will find pets looking for a home.</div>
+</div>
+<div class="panel" id="panelAcerca" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="menuAcerca">About PetNear</h3><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Close</button></div>
+  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.15</div></div></div>
+  <div class="meta" style="margin-top:8px" data-i18n="aceTexto">PetNear helps you find vets, pet stores, pharmacies and shelters for your pet, near you.</div>
+  <div class="meta" style="margin-top:6px" data-i18n="aceIdiomas">Available in 8 languages</div>
 </div>
 <script>
 /* ---------- v7: idiomas empaquetados + capa mundial ---------- */
@@ -1006,7 +1062,22 @@ const I18N={
   "premInsignia": "Premium",
   "premVerOfertas": "Ver ofertas y avisos",
   "premRegNegocio": "Registrar mi negocio",
-  "adTel": "Teléfono"
+  "adTel": "Teléfono",
+  "menuTitulo": "Menú",
+  "menuIdioma": "Idioma",
+  "menuConfig": "Configuración",
+  "menuAyuda": "Ayuda",
+  "menuAcerca": "Acerca de PetNear",
+  "cfgMapa": "Estilo de mapa",
+  "cfgGps": "Modo GPS",
+  "ayu1": "Busca veterinarias, tiendas, refugios y más en el mapa o con el buscador.",
+  "ayu2": "Toca un lugar para ver sus datos, llamar o pedir cómo llegar.",
+  "ayu3": "Registra tus visitas con las estrellas y guarda tus lugares favoritos.",
+  "ayu4": "¿Perdiste a tu mascota? Publícala en Mascota perdida para avisar a todos cerca.",
+  "ayu5": "En Adopciones encuentras mascotas que buscan un hogar.",
+  "aceTexto": "PetNear te ayuda a encontrar veterinarias, tiendas, farmacias y refugios para tu mascota, cerca de ti.",
+  "aceVersion": "Versión",
+  "aceIdiomas": "Disponible en 8 idiomas"
  },
  "en": {
   "appTitle": "PetNear",
@@ -1412,7 +1483,22 @@ const I18N={
   "premInsignia": "Premium",
   "premVerOfertas": "See offers and notices",
   "premRegNegocio": "Register my business",
-  "adTel": "Phone"
+  "adTel": "Phone",
+  "menuTitulo": "Menu",
+  "menuIdioma": "Language",
+  "menuConfig": "Settings",
+  "menuAyuda": "Help",
+  "menuAcerca": "About PetNear",
+  "cfgMapa": "Map style",
+  "cfgGps": "GPS mode",
+  "ayu1": "Find vets, pet stores, shelters and more on the map or with the search bar.",
+  "ayu2": "Tap a place to see its details, call or get directions.",
+  "ayu3": "Log your visits with the stars and save your favorite places.",
+  "ayu4": "Lost your pet? Post it in Lost pet to alert everyone nearby.",
+  "ayu5": "In Adoptions you will find pets looking for a home.",
+  "aceTexto": "PetNear helps you find vets, pet stores, pharmacies and shelters for your pet, near you.",
+  "aceVersion": "Version",
+  "aceIdiomas": "Available in 8 languages"
  },
  "pt": {
   "appTitle": "PetNear",
@@ -1818,7 +1904,22 @@ const I18N={
   "premInsignia": "Premium",
   "premVerOfertas": "Ver ofertas e avisos",
   "premRegNegocio": "Cadastrar meu negócio",
-  "adTel": "Telefone"
+  "adTel": "Telefone",
+  "menuTitulo": "Menu",
+  "menuIdioma": "Idioma",
+  "menuConfig": "Configurações",
+  "menuAyuda": "Ajuda",
+  "menuAcerca": "Sobre o PetNear",
+  "cfgMapa": "Estilo do mapa",
+  "cfgGps": "Modo GPS",
+  "ayu1": "Encontre veterinários, pet shops, abrigos e mais no mapa ou na busca.",
+  "ayu2": "Toque em um lugar para ver os dados, ligar ou traçar a rota.",
+  "ayu3": "Registre suas visitas com as estrelas e salve seus lugares favoritos.",
+  "ayu4": "Perdeu seu pet? Publique em Pet perdido para avisar quem está perto.",
+  "ayu5": "Em Adoções você encontra pets procurando um lar.",
+  "aceTexto": "O PetNear ajuda você a encontrar veterinários, pet shops, farmácias e abrigos para seu pet, perto de você.",
+  "aceVersion": "Versão",
+  "aceIdiomas": "Disponível em 8 idiomas"
  },
  "fr": {
   "appTitle": "PetNear",
@@ -2224,7 +2325,22 @@ const I18N={
   "premInsignia": "Premium",
   "premVerOfertas": "Voir les offres et avis",
   "premRegNegocio": "Enregistrer mon commerce",
-  "adTel": "Téléphone"
+  "adTel": "Téléphone",
+  "menuTitulo": "Menu",
+  "menuIdioma": "Langue",
+  "menuConfig": "Réglages",
+  "menuAyuda": "Aide",
+  "menuAcerca": "À propos de PetNear",
+  "cfgMapa": "Style de carte",
+  "cfgGps": "Mode GPS",
+  "ayu1": "Trouvez vétérinaires, animaleries, refuges et plus sur la carte ou avec la recherche.",
+  "ayu2": "Touchez un lieu pour voir ses infos, appeler ou obtenir l'itinéraire.",
+  "ayu3": "Enregistrez vos visites avec les étoiles et gardez vos lieux favoris.",
+  "ayu4": "Vous avez perdu votre animal ? Publiez-le dans Animal perdu pour alerter les environs.",
+  "ayu5": "Dans Adoptions, trouvez des animaux qui cherchent un foyer.",
+  "aceTexto": "PetNear vous aide à trouver vétérinaires, animaleries, pharmacies et refuges pour votre animal, près de chez vous.",
+  "aceVersion": "Version",
+  "aceIdiomas": "Disponible en 8 langues"
  },
  "de": {
   "appTitle": "PetNear",
@@ -2630,7 +2746,22 @@ const I18N={
   "premInsignia": "Premium",
   "premVerOfertas": "Angebote und Mitteilungen ansehen",
   "premRegNegocio": "Mein Geschäft registrieren",
-  "adTel": "Telefon"
+  "adTel": "Telefon",
+  "menuTitulo": "Menü",
+  "menuIdioma": "Sprache",
+  "menuConfig": "Einstellungen",
+  "menuAyuda": "Hilfe",
+  "menuAcerca": "Über PetNear",
+  "cfgMapa": "Kartenstil",
+  "cfgGps": "GPS-Modus",
+  "ayu1": "Finde Tierärzte, Tierhandlungen, Tierheime und mehr auf der Karte oder über die Suche.",
+  "ayu2": "Tippe auf einen Ort, um Details zu sehen, anzurufen oder den Weg zu finden.",
+  "ayu3": "Bewerte deine Besuche mit Sternen und speichere deine Lieblingsorte.",
+  "ayu4": "Haustier verloren? Melde es unter Vermisst, um alle in der Nähe zu warnen.",
+  "ayu5": "Unter Adoption findest du Tiere, die ein Zuhause suchen.",
+  "aceTexto": "PetNear hilft dir, Tierärzte, Tierhandlungen, Apotheken und Tierheime für dein Haustier in deiner Nähe zu finden.",
+  "aceVersion": "Version",
+  "aceIdiomas": "Verfügbar in 8 Sprachen"
  },
  "it": {
   "appTitle": "PetNear",
@@ -3036,7 +3167,22 @@ const I18N={
   "premInsignia": "Premium",
   "premVerOfertas": "Vedi offerte e avvisi",
   "premRegNegocio": "Registra la mia attività",
-  "adTel": "Telefono"
+  "adTel": "Telefono",
+  "menuTitulo": "Menu",
+  "menuIdioma": "Lingua",
+  "menuConfig": "Impostazioni",
+  "menuAyuda": "Aiuto",
+  "menuAcerca": "Informazioni su PetNear",
+  "cfgMapa": "Stile mappa",
+  "cfgGps": "Modalità GPS",
+  "ayu1": "Trova veterinari, negozi per animali, rifugi e altro sulla mappa o con la ricerca.",
+  "ayu2": "Tocca un luogo per vedere i dettagli, chiamare o ottenere indicazioni.",
+  "ayu3": "Registra le visite con le stelle e salva i tuoi luoghi preferiti.",
+  "ayu4": "Hai perso il tuo animale? Pubblicalo in Animale smarrito per avvisare chi è vicino.",
+  "ayu5": "In Adozioni trovi animali che cercano casa.",
+  "aceTexto": "PetNear ti aiuta a trovare veterinari, negozi per animali, farmacie e rifugi per il tuo animale, vicino a te.",
+  "aceVersion": "Versione",
+  "aceIdiomas": "Disponibile in 8 lingue"
  },
  "nl": {
   "appTitle": "PetNear",
@@ -3442,7 +3588,22 @@ const I18N={
   "premInsignia": "Premium",
   "premVerOfertas": "Aanbiedingen en meldingen bekijken",
   "premRegNegocio": "Mijn bedrijf registreren",
-  "adTel": "Telefoon"
+  "adTel": "Telefoon",
+  "menuTitulo": "Menu",
+  "menuIdioma": "Taal",
+  "menuConfig": "Instellingen",
+  "menuAyuda": "Help",
+  "menuAcerca": "Over PetNear",
+  "cfgMapa": "Kaartstijl",
+  "cfgGps": "GPS-modus",
+  "ayu1": "Vind dierenartsen, dierenwinkels, asielen en meer op de kaart of met de zoekbalk.",
+  "ayu2": "Tik op een plek voor details, bellen of een routebeschrijving.",
+  "ayu3": "Leg je bezoeken vast met sterren en bewaar je favoriete plekken.",
+  "ayu4": "Huisdier kwijt? Plaats het bij Huisdier vermist om iedereen in de buurt te waarschuwen.",
+  "ayu5": "Bij Adoptie vind je dieren die een thuis zoeken.",
+  "aceTexto": "PetNear helpt je dierenartsen, dierenwinkels, apotheken en asielen voor je huisdier in de buurt te vinden.",
+  "aceVersion": "Versie",
+  "aceIdiomas": "Beschikbaar in 8 talen"
  },
  "pl": {
   "appTitle": "PetNear",
@@ -3848,11 +4009,26 @@ const I18N={
   "premInsignia": "Premium",
   "premVerOfertas": "Zobacz oferty i powiadomienia",
   "premRegNegocio": "Zarejestruj moją firmę",
-  "adTel": "Telefon"
+  "adTel": "Telefon",
+  "menuTitulo": "Menu",
+  "menuIdioma": "Język",
+  "menuConfig": "Ustawienia",
+  "menuAyuda": "Pomoc",
+  "menuAcerca": "O PetNear",
+  "cfgMapa": "Styl mapy",
+  "cfgGps": "Tryb GPS",
+  "ayu1": "Znajdź weterynarzy, sklepy zoologiczne, schroniska i więcej na mapie lub w wyszukiwarce.",
+  "ayu2": "Dotknij miejsce, aby zobaczyć szczegóły, zadzwonić lub wyznaczyć trasę.",
+  "ayu3": "Zapisuj wizyty gwiazdkami i zapisuj ulubione miejsca.",
+  "ayu4": "Zgubiłeś zwierzaka? Opublikuj w Zaginione zwierzę, aby powiadomić okolicę.",
+  "ayu5": "W Adopcje znajdziesz zwierzęta szukające domu.",
+  "aceTexto": "PetNear pomaga znaleźć weterynarzy, sklepy zoologiczne, apteki i schroniska dla twojego zwierzaka w pobliżu.",
+  "aceVersion": "Wersja",
+  "aceIdiomas": "Dostępne w 8 językach"
  }
 };
-let idioma='es';
-function t(k,vars){let s=(I18N[idioma]&&I18N[idioma][k])||I18N.es[k]||k;if(vars)for(const v in vars)s=s.split('{'+v+'}').join(String(vars[v]));return s;}
+let idioma='en';
+function t(k,vars){let s=(I18N[idioma]&&I18N[idioma][k])||I18N.en[k]||k;if(vars)for(const v in vars)s=s.split('{'+v+'}').join(String(vars[v]));return s;}
 /* v10.3 — H9: un error JS no capturado ya no pasa en silencio: aviso visible (una sola vez, se cierra al tocarlo). */
 let bannerErrorMostrado=false;
 window.addEventListener('error',function(){
@@ -3865,7 +4041,7 @@ window.addEventListener('error',function(){
     document.body.appendChild(d);
   }catch(e){}
 });
-function LOCALE(){return IDIOMAS[idioma]||'es-ES';}
+function LOCALE(){return IDIOMAS[idioma]||'en-US';}
 function catName(c){return t('cat.'+c);}
 function etiquetaCat(c){return c==='todos'?t('menu.todos'):c==='h24'?t('menu.h24'):catName(c);}
 function vezPalabra(n){return t(n===1?'vez':'veces');}
@@ -3887,12 +4063,12 @@ function textoDir(b){
   return s;
 }
 function detectarIdioma(){
-  let l='es';
+  let l='en';
   try{const g=localStorage.getItem('mascotas_idioma_v1');if(g&&IDIOMAS[g])l=g;
-  else{const nav=(navigator.language||'es').slice(0,2).toLowerCase();if(IDIOMAS[nav])l=nav;}}catch(e){}
+  else{const nav=(navigator.language||'en').slice(0,2).toLowerCase();if(IDIOMAS[nav])l=nav;}}catch(e){}
   idioma=l;
 }
-function setLang(l){if(!IDIOMAS[l])l='es';idioma=l;try{localStorage.setItem('mascotas_idioma_v1',l);}catch(e){}applyLang();}
+function setLang(l){if(!IDIOMAS[l])l='en';idioma=l;try{localStorage.setItem('mascotas_idioma_v1',l);}catch(e){}applyLang();}
 function refrescarTarjeta(){
   if(!seleccionado)return;
   document.getElementById('cNombre').textContent=seleccionado.n;
@@ -3954,7 +4130,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.14':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.14';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.15':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.15';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -4875,7 +5051,7 @@ function cerrarCapa(){
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
-  ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
   if(typeof alertaSel!=='undefined'&&alertaSel){alertaSel=null;mostrarPinPunto(false);}
   if(typeof adopcionSel!=='undefined'&&adopcionSel){adopcionSel=null;mostrarPinPunto(false);}
   if(tipo==='card')deseleccionar();
@@ -4922,7 +5098,7 @@ function resetEstadoLimpio(){
     if(tripActivo)terminarViaje();
     if(seleccionado)deseleccionar();
     capaAbierta=null;
-    ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+    ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
     document.getElementById('card').style.display='none';
     document.getElementById('cardPerdida').style.display='none';
     document.getElementById('cardAdopcion').style.display='none';
@@ -5480,7 +5656,7 @@ function renderFavoritos(){
 function abrirPanelFavoritos(){
   const p=document.getElementById('panelFavoritos');
   if(p.style.display==='block'){irAtras();return;}
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
@@ -5846,13 +6022,43 @@ window.map.on('zoomend',()=>actualizarPinesCiudad());
 function mostrarPanel(id){
   const el=document.getElementById(id);
   if(el&&el.style.display==='block'){irAtras();return;}
-  ['panelVisitas','panelMascota'].forEach(p=>{const e2=document.getElementById(p); if(e2)e2.style.display=(p===id)?'block':'none';});
+  ['panelVisitas','panelMascota','panelConfig','panelAyuda','panelAcerca'].forEach(p=>{const e2=document.getElementById(p); if(e2)e2.style.display=(p===id)?'block':'none';});
   if(id==='panelVisitas')renderVisitas();
   if(id==='panelMascota'){document.getElementById('petNombre').value=petNombre;renderColoresMascota();renderAvatares();renderMisMascotas();renderMisAvatarSelect();}
   if(id==='panelVisitas'||id==='panelMascota'){const pf=document.getElementById('panelFavoritos');if(pf)pf.style.display='none';}
   fijarCapa(id==='panelVisitas'?'visitas':'mascota');
 }
-document.getElementById('bVisitas').addEventListener('click',()=>mostrarPanel('panelVisitas'));
+/* v10.15 — Menú hamburguesa + paneles Configuración, Ayuda y Acerca. */
+function abrirMenu(){const f=document.getElementById('menuFondo');if(f)f.style.display='block';requestAnimationFrame(()=>{const m=document.getElementById('menuLateral');if(m)m.classList.add('abierto');});}
+function cerrarMenu(){const m=document.getElementById('menuLateral');if(m)m.classList.remove('abierto');const f=document.getElementById('menuFondo');if(f)f.style.display='none';}
+function abrirPanelInfo(id,tipo){
+  const p=document.getElementById(id);
+  if(p.style.display==='block'){irAtras();return;}
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas','panelConfig','panelAyuda','panelAcerca'].forEach(x=>{const e=document.getElementById(x);if(e)e.style.display='none';});
+  document.getElementById('card').style.display='none';
+  document.getElementById('cardPerdida').style.display='none';
+  document.getElementById('cardAdopcion').style.display='none';
+  if(id==='panelConfig')sincronizarConfig();
+  p.style.display='block';
+  fijarCapa(tipo);
+}
+function sincronizarConfig(){
+  [['vIlus','cfgVIlus'],['vSat','cfgVSat'],['v3d','cfgV3d'],['vActual','cfgVActual']].forEach(([a,b])=>{const x=document.getElementById(a),y=document.getElementById(b);if(x&&y)y.classList.toggle('on',x.classList.contains('on'));});
+  const g=document.getElementById('cfgGps');if(g)g.classList.toggle('on',!!follow);
+}
+document.getElementById('bMenu').addEventListener('click',abrirMenu);
+document.getElementById('bCerrarMenu').addEventListener('click',cerrarMenu);
+document.getElementById('menuFondo').addEventListener('click',cerrarMenu);
+document.getElementById('mVisitas').addEventListener('click',()=>{cerrarMenu();mostrarPanel('panelVisitas');});
+document.getElementById('mPremium').addEventListener('click',()=>{cerrarMenu();abrirPanelPremium();});
+document.getElementById('mConfig').addEventListener('click',()=>{cerrarMenu();abrirPanelInfo('panelConfig','config');});
+document.getElementById('mAyuda').addEventListener('click',()=>{cerrarMenu();abrirPanelInfo('panelAyuda','ayuda');});
+document.getElementById('mAcerca').addEventListener('click',()=>{cerrarMenu();abrirPanelInfo('panelAcerca','acerca');});
+document.getElementById('cfgVIlus').addEventListener('click',()=>{document.getElementById('vIlus').click();sincronizarConfig();});
+document.getElementById('cfgVSat').addEventListener('click',()=>{document.getElementById('vSat').click();sincronizarConfig();});
+document.getElementById('cfgV3d').addEventListener('click',()=>{document.getElementById('v3d').click();sincronizarConfig();});
+document.getElementById('cfgVActual').addEventListener('click',()=>{document.getElementById('vActual').click();sincronizarConfig();});
+document.getElementById('cfgGps').addEventListener('click',()=>{document.getElementById('btnGps').click();sincronizarConfig();});
 document.getElementById('bMascota').addEventListener('click',()=>mostrarPanel('panelMascota'));
 cargarMascota();
 crearPinesEventosUsuario();
@@ -6997,7 +7203,7 @@ function renderAvistamientos(list){
 function abrirPanelPerdidas(){
   const p=document.getElementById('panelPerdidas');
   if(p.style.display==='block'){irAtras();return;}
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidaForm','panelFavoritos'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidaForm','panelFavoritos','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   p.style.display='block';
@@ -7043,7 +7249,7 @@ function renderPanelPerdidas(){
 function abrirPanelAdopciones(){
   const p=document.getElementById('panelAdopciones');
   if(p.style.display==='block'){irAtras();return;}
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopcionForm','panelFavoritos'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopcionForm','panelFavoritos','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
@@ -7088,7 +7294,7 @@ function renderPanelAdopciones(){
 /* ---------- Formulario: publicar mascota perdida ---------- */
 let especiePub='perro', fotoPubBlob=null, contactoPub='ninguno';
 function abrirFormPerdida(){
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   const f=document.getElementById('panelPerdidaForm');
@@ -7148,7 +7354,7 @@ async function publicarPerdida(){
 /* ---------- v10.7 — Formulario: publicar adopción ---------- */
 let especieAd='perro', tamAd='pequeno', fotoAdBlob=null, contactoAd='whatsapp';
 function abrirFormAdopcion(){
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelAdopciones'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelAdopciones','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
@@ -7308,7 +7514,7 @@ document.getElementById('bPerdidas').addEventListener('click',abrirPanelPerdidas
 function abrirPanelPremium(){
   const p=document.getElementById('panelPremium');
   if(p.style.display==='block'){irAtras();return;}
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelFavoritos','panelNegocioForm','panelOfertas'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelFavoritos','panelNegocioForm','panelOfertas','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
@@ -7316,7 +7522,7 @@ function abrirPanelPremium(){
   renderPortalPremium();
   fijarCapa('premium');
 }
-document.getElementById('bPremium').addEventListener('click',abrirPanelPremium);
+/* v10.15 — bPremium salió de la fila de píldoras: ahora es mPremium en el menú lateral. */
 document.getElementById('bCerrarPremium').addEventListener('click',()=>irAtras());
 
 /* ---------- v10.13 — Portal Premium: interfaz ---------- */
@@ -7390,7 +7596,7 @@ function actualizarCoordsNegocio(){
   el.textContent=c.lat.toFixed(5)+', '+c.lng.toFixed(5);
 }
 function abrirFormNegocio(){
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelOfertas'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelOfertas','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
@@ -7481,7 +7687,7 @@ function mostrarTabOfertas(tab){
 function abrirPanelOfertas(){
   const p=document.getElementById('panelOfertas');
   if(p.style.display==='block'){irAtras();return;}
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
