@@ -2,7 +2,7 @@
 <html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#0E7C66">
-<title>Mascotas cerca de ti</title>
+<title>PetNear</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icono-192.png">
 <link href="vendor/maplibre-gl.css" rel="stylesheet">
@@ -170,6 +170,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 #bannerPerdidas .bpX{background:transparent;border:none;font-size:16px;color:#7b1f16;padding:2px 6px;flex:none}
 /* v10.7 — Premium: beneficios y caja de precio. */
 /* v10.13 — Portal Premium: tarjetas de plan, ofertas y avisos. */
+/* v10.14 — PetNear: nuevo nombre (antes "Mascotas cerca de ti") y nuevo logo oficial (labrador chocolate realista). */
 .premCard{border:2px solid #e8e8e8;border-radius:14px;padding:12px;margin:10px 0;background:#fff}
 .premCard.gold{border-color:#e6a817;background:linear-gradient(180deg,#fffdf4,#fff)}
 .premCard h4{margin:0 0 2px;font-size:16px}
@@ -187,7 +188,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <div id="bannerPerdidas"><span id="bpTxt"></span><button class="bpVer" id="bpVer" data-i18n="avisoVer">Ver</button><button class="bpX" id="bpX" aria-label="Cerrar">✕</button></div>
 <div id="map"></div>
 <div class="topbar">
-  <div class="brand"><img src="icono-512.png" alt="Mascotas"><span data-i18n="appTitle">Mascotas cerca de ti</span></div>
+  <div class="brand"><img src="icono-512.png" alt="PetNear"><span data-i18n="appTitle">PetNear</span></div>
   <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="buscador" type="text" data-i18n-ph="searchPh" placeholder="Buscar veterinarias, tiendas, zoológicos, restaurantes…"></div>
   <div id="sug" class="sug"></div>
   <div style="display:flex;gap:8px;margin-top:10px">
@@ -212,7 +213,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.13</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.14</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -602,7 +603,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 const IDIOMAS={es:'es-ES',en:'en-US',pt:'pt-BR',fr:'fr-FR',de:'de-DE',it:'it-IT',nl:'nl-NL',pl:'pl-PL'};
 const I18N={
  "es": {
-  "appTitle": "Mascotas cerca de ti",
+  "appTitle": "PetNear",
   "searchPh": "Buscar veterinarias, tiendas, zoológicos, restaurantes…",
   "btnCategorias": "Categorías",
   "btnVisitas": "Mis visitas",
@@ -927,7 +928,7 @@ const I18N={
   "avisoPerdidas": "Hay {n} mascotas perdidas cerca de ti",
   "avisoPerdidas1": "Hay 1 mascota perdida cerca de ti",
   "avisoVer": "Ver",
-  "premWaMsg": "Hola, quiero que mi negocio sea Premium en Mascotas cerca de ti.",
+  "premWaMsg": "Hola, quiero que mi negocio sea Premium en PetNear.",
   "premPortalTitulo": "Portal Premium",
   "premPortalDesc": "Elige el plan que te conviene. El cobro lo gestiona Google Play cuando instalas la app desde Play Store.",
   "premPlanNegocio": "Negocio",
@@ -1008,7 +1009,7 @@ const I18N={
   "adTel": "Teléfono"
  },
  "en": {
-  "appTitle": "Pets Near You",
+  "appTitle": "PetNear",
   "searchPh": "Search vets, pet stores, zoos, restaurants…",
   "btnCategorias": "Categories",
   "btnVisitas": "My visits",
@@ -1333,7 +1334,7 @@ const I18N={
   "avisoPerdidas": "There are {n} lost pets near you",
   "avisoPerdidas1": "There is 1 lost pet near you",
   "avisoVer": "View",
-  "premWaMsg": "Hi, I want my business to go Premium in Pets Near You.",
+  "premWaMsg": "Hi, I want my business to go Premium in PetNear.",
   "premPortalTitulo": "Premium Portal",
   "premPortalDesc": "Choose the plan that suits you. Billing is handled by Google Play when you install the app from the Play Store.",
   "premPlanNegocio": "Business",
@@ -1414,7 +1415,7 @@ const I18N={
   "adTel": "Phone"
  },
  "pt": {
-  "appTitle": "Animais perto de você",
+  "appTitle": "PetNear",
   "searchPh": "Buscar veterinários, pet shops, zoológicos, restaurantes…",
   "btnCategorias": "Categorias",
   "btnVisitas": "Minhas visitas",
@@ -1739,7 +1740,7 @@ const I18N={
   "avisoPerdidas": "Há {n} animais perdidos perto de você",
   "avisoPerdidas1": "Há 1 animal perdido perto de você",
   "avisoVer": "Ver",
-  "premWaMsg": "Olá, quero que meu negócio seja Premium no Pets Near You.",
+  "premWaMsg": "Olá, quero que meu negócio seja Premium no PetNear.",
   "premPortalTitulo": "Portal Premium",
   "premPortalDesc": "Escolha o plano ideal para você. A cobrança é feita pelo Google Play quando você instala o app pela Play Store.",
   "premPlanNegocio": "Negócio",
@@ -1820,7 +1821,7 @@ const I18N={
   "adTel": "Telefone"
  },
  "fr": {
-  "appTitle": "Animaux près de chez vous",
+  "appTitle": "PetNear",
   "searchPh": "Rechercher vétérinaires, animaleries, zoos, restaurants…",
   "btnCategorias": "Catégories",
   "btnVisitas": "Mes visites",
@@ -2145,7 +2146,7 @@ const I18N={
   "avisoPerdidas": "Il y a {n} animaux perdus près de vous",
   "avisoPerdidas1": "Il y a 1 animal perdu près de vous",
   "avisoVer": "Voir",
-  "premWaMsg": "Bonjour, je veux que mon commerce devienne Premium dans Pets Near You.",
+  "premWaMsg": "Bonjour, je veux que mon commerce devienne Premium dans PetNear.",
   "premPortalTitulo": "Portail Premium",
   "premPortalDesc": "Choisissez le forfait qui vous convient. La facturation est gérée par Google Play lorsque vous installez l'application depuis le Play Store.",
   "premPlanNegocio": "Commerce",
@@ -2226,7 +2227,7 @@ const I18N={
   "adTel": "Téléphone"
  },
  "de": {
-  "appTitle": "Haustiere in deiner Nähe",
+  "appTitle": "PetNear",
   "searchPh": "Tierärzte, Tierhandlungen, Zoos, Restaurants suchen…",
   "btnCategorias": "Kategorien",
   "btnVisitas": "Meine Besuche",
@@ -2551,7 +2552,7 @@ const I18N={
   "avisoPerdidas": "Es gibt {n} vermisste Tiere in deiner Nähe",
   "avisoPerdidas1": "Es gibt 1 vermisstes Tier in deiner Nähe",
   "avisoVer": "Ansehen",
-  "premWaMsg": "Hallo, ich möchte, dass mein Geschäft Premium wird in Pets Near You.",
+  "premWaMsg": "Hallo, ich möchte, dass mein Geschäft Premium wird in PetNear.",
   "premPortalTitulo": "Premium-Portal",
   "premPortalDesc": "Wählen Sie den passenden Tarif. Die Abrechnung erfolgt über Google Play, wenn Sie die App aus dem Play Store installieren.",
   "premPlanNegocio": "Geschäft",
@@ -2632,7 +2633,7 @@ const I18N={
   "adTel": "Telefon"
  },
  "it": {
-  "appTitle": "Animali vicino a te",
+  "appTitle": "PetNear",
   "searchPh": "Cerca veterinari, negozi di animali, zoo, ristoranti…",
   "btnCategorias": "Categorie",
   "btnVisitas": "Le mie visite",
@@ -2957,7 +2958,7 @@ const I18N={
   "avisoPerdidas": "Ci sono {n} animali smarriti vicino a te",
   "avisoPerdidas1": "C'è 1 animale smarrito vicino a te",
   "avisoVer": "Vedi",
-  "premWaMsg": "Ciao, voglio che la mia attività diventi Premium in Pets Near You.",
+  "premWaMsg": "Ciao, voglio che la mia attività diventi Premium in PetNear.",
   "premPortalTitulo": "Portale Premium",
   "premPortalDesc": "Scegli il piano più adatto a te. Il pagamento è gestito da Google Play quando installi l'app dal Play Store.",
   "premPlanNegocio": "Attività",
@@ -3038,7 +3039,7 @@ const I18N={
   "adTel": "Telefono"
  },
  "nl": {
-  "appTitle": "Huisdieren bij jou in de buurt",
+  "appTitle": "PetNear",
   "searchPh": "Zoek dierenartsen, dierenwinkels, dierentuinen, restaurants…",
   "btnCategorias": "Categorieën",
   "btnVisitas": "Mijn bezoeken",
@@ -3363,7 +3364,7 @@ const I18N={
   "avisoPerdidas": "Er zijn {n} vermiste huisdieren bij jou in de buurt",
   "avisoPerdidas1": "Er is 1 vermist huisdier bij jou in de buurt",
   "avisoVer": "Bekijk",
-  "premWaMsg": "Hallo, ik wil dat mijn bedrijf Premium wordt in Pets Near You.",
+  "premWaMsg": "Hallo, ik wil dat mijn bedrijf Premium wordt in PetNear.",
   "premPortalTitulo": "Premium-portaal",
   "premPortalDesc": "Kies het abonnement dat bij je past. De betaling verloopt via Google Play wanneer je de app uit de Play Store installeert.",
   "premPlanNegocio": "Bedrijf",
@@ -3444,7 +3445,7 @@ const I18N={
   "adTel": "Telefoon"
  },
  "pl": {
-  "appTitle": "Zwierzaki blisko Ciebie",
+  "appTitle": "PetNear",
   "searchPh": "Szukaj weterynarzy, sklepów zoologicznych, zoo, restauracji…",
   "btnCategorias": "Kategorie",
   "btnVisitas": "Moje wizyty",
@@ -3769,7 +3770,7 @@ const I18N={
   "avisoPerdidas": "W pobliżu jest {n} zaginionych zwierząt",
   "avisoPerdidas1": "W pobliżu jest 1 zaginione zwierzę",
   "avisoVer": "Zobacz",
-  "premWaMsg": "Cześć, chcę, aby moja firma została Premium w Pets Near You.",
+  "premWaMsg": "Cześć, chcę, aby moja firma została Premium w PetNear.",
   "premPortalTitulo": "Portal Premium",
   "premPortalDesc": "Wybierz plan dla siebie. Płatności obsługuje Google Play, gdy zainstalujesz aplikację ze Sklepu Play.",
   "premPlanNegocio": "Firma",
@@ -3953,7 +3954,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.13':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.13';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.14':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.14';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
