@@ -21,8 +21,8 @@ cada una, 0 agregados: son de otro agente y ya están unificadas en 143).
 |---|---|---|---|
 | Europa (56 ciudades) | 5.480 | **7.345** | +1.865 |
 | LatAm (62 ciudades) | 3.769 | **3.917** | +148 |
-| Canadá (31 ciudades) | 2.074 | **2.660** | +586 |
-| **Total de la app** | **42.657** | **45.256** | **+2.599** |
+| Canadá (31 ciudades) | 2.074 | **2.674** | +600 (+586 tope, +14 unificación Ottawa/Gatineau) |
+| **Total de la app** | **42.657** | **45.270** | **+2.613 (+2.599 tope, +14 unificación)** |
 
 Totales de la cosecha (57 ciudades en tope): 2.907 candidatos OSM con
 nombre, 73 excluidos (escuelas/clubes de adiestramiento, veterinarias
@@ -140,13 +140,18 @@ Script `v1020_verify_tope.py`: **TODO PASS.**
 | São Paulo | 120 | 28 | 1 | 1 | 27 | 147 |
 | Zapopan | 143 | 10 | 0 | — | 0 (solo conteo) | 143 |
 
+**Nota (segundo commit del PR #15):** tras la unificación Ottawa/Gatineau,
+ambas quedan en **168 lugares** (no 161): la unión real es 154 compartidos
++ 7 solo-Ottawa + 7 solo-Gatineau. Ver `NOTA-v1020-ottawa-gatineau.md`.
+
 ## 6. Lo que quedó fuera o pendiente
 
-- **Ottawa y Gatineau comparten los mismos 41 lugares agregados**
-  (cajas solapadas, mismo patrón que Guadalajara/Zapopan antes de la
-  v10.19). La app fusiona duplicados al cargar, así que no se ven
-  dos veces en el mapa; unificarlas con `comparteCon` como GDL/ZAP
-  queda para decisión del dueño.
+- **Ottawa y Gatineau UNIFICADAS (v10.20, segundo commit del PR #15):**
+  el solape real es de **154 lugares** (no 41: los 41 eran solo los
+  agregados en esta pasada; 114 de los 120 originales también se
+  compartían). Unión: **168 lugares** en ambas ciudades, con
+  `comparteCon` y letrero en las dos. Detalle en
+  `NOTA-v1020-ottawa-gatineau.md`. Total de la app: 45.256 -> **45.270**.
 - **Parques y peluquerías de las ciudades SIN tope** (23 en Europa,
   resto en LatAm/Canadá): no se agregaron en esta pasada; el tope no
   las bloqueaba, pero la tarea era los candidatos que quedaron fuera
