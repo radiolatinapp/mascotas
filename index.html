@@ -237,7 +237,43 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .logoNegPrev{width:64px;height:64px;border-radius:12px;object-fit:cover;border:1px solid #ddd}
 .premBen{display:flex;gap:8px;align-items:center;padding:5px 0;font-size:14px}
 .premPrecioBox{background:#fff8dc;border:1.5px solid #e6a817;border-radius:12px;padding:10px;text-align:center;font-weight:800;margin:10px 0}
+/* v10.22 — Pantalla de inicio (splash) propia: logo transparente fusionado con el fondo, nombre PetNear y barra de carga con galleta (hueso SVG). */
+#splash{position:fixed;inset:0;z-index:9999;background:#E8F0E4;display:flex;align-items:center;justify-content:center;transition:opacity .55s ease}
+#splash.splash-out{opacity:0;pointer-events:none}
+.splash-inner{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px;max-width:340px}
+.splash-logo{width:196px;height:196px;object-fit:contain;filter:drop-shadow(0 10px 22px rgba(20,52,43,.18))}
+.splash-name{margin-top:14px;font-size:46px;line-height:1;font-weight:900;letter-spacing:.5px;color:#0E7C66}
+.splash-tag{margin-top:8px;font-size:15px;line-height:1.4;color:#3d5a4e}
+.splash-bar{position:relative;width:228px;height:12px;margin-top:30px;background:rgba(14,124,102,.14);border-radius:999px}
+.splash-fill{height:100%;width:0%;background:#0E7C66;border-radius:999px;transition:width .3s ease}
+.splash-bone{position:absolute;top:50%;left:0%;transform:translate(-50%,-50%);width:34px;height:20px;transition:left .3s ease;filter:drop-shadow(0 2px 3px rgba(20,52,43,.35));pointer-events:none}
+.splash-pct{margin-top:14px;font-size:13px;font-weight:700;color:#5a6d60}
 </style></head><body>
+<div id="splash" role="status" aria-label="PetNear"><div class="splash-inner"><img class="splash-logo" src="icono-512.png" alt="PetNear"><div class="splash-name">PetNear</div><div class="splash-tag" id="splashTag">Encuentra veterinarias, tiendas y más cerca de ti</div><div class="splash-bar"><div class="splash-fill" id="splashFill"></div><div class="splash-bone" id="splashBone"><svg width="34" height="20" viewBox="0 0 68 40" aria-hidden="true"><g fill="#ffffff" stroke="#0E7C66" stroke-width="2.5"><circle cx="13" cy="12" r="9"/><circle cx="13" cy="28" r="9"/><circle cx="55" cy="12" r="9"/><circle cx="55" cy="28" r="9"/><rect x="13" y="10" width="42" height="20" rx="6" stroke="none"/></g><rect x="13" y="10" width="42" height="20" rx="6" fill="#ffffff"/></svg></div></div><div class="splash-pct" id="splashPct">Cargando…</div></div></div>
+<script>
+/* v10.22 — Control del splash: avanza con la carga real y nunca bloquea la app. */
+(function(){
+  var splash=document.getElementById('splash'); if(!splash) return;
+  var fill=document.getElementById('splashFill'), bone=document.getElementById('splashBone'),
+      pct=document.getElementById('splashPct'), tag=document.getElementById('splashTag');
+  var es=(navigator.language||'en').toLowerCase().indexOf('es')===0;
+  if(!es && tag) tag.textContent='Find vets, pet stores and more near you';
+  var p=8, hidden=false;
+  function render(){
+    fill.style.width=p+'%'; bone.style.left=p+'%';
+    pct.textContent = p>=100 ? (es?'¡Listo!':'Ready!') : (es?'Cargando… ':'Loading… ')+p+'%';
+  }
+  function set(v){ p=Math.max(p,Math.min(100,v)); render(); }
+  function hide(){
+    if(hidden) return; hidden=true; set(100);
+    setTimeout(function(){ splash.classList.add('splash-out'); setTimeout(function(){ if(splash.parentNode) splash.parentNode.removeChild(splash); },600); },350);
+  }
+  window.__splash={set:set,hide:hide};
+  render();
+  var iv=setInterval(function(){ if(hidden){clearInterval(iv);return;} if(p<80) set(p+(p<40?3:2)); },220);
+  setTimeout(function(){ hide(); },8000);
+})();
+</script>
 <div id="bannerPerdidas"><span id="bpTxt"></span><button class="bpVer" id="bpVer" data-i18n="avisoVer">Ver</button><button class="bpX" id="bpX" aria-label="Cerrar">✕</button></div>
 <div id="map"></div>
 <div class="topbar">
@@ -279,7 +315,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:420px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:458px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.21</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.22</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -692,7 +728,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 </div>
 <div class="panel" id="panelAcerca" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="menuAcerca">About PetNear</h3><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Close</button></div>
-  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.21</div></div></div>
+  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.22</div></div></div>
   <div class="meta" style="margin-top:8px" data-i18n="aceTexto">PetNear helps you find vets, pet stores, pharmacies and shelters for your pet, near you.</div>
   <div class="meta" style="margin-top:6px" data-i18n="aceMascota">Nuestra mascota es Toby, el labrador chocolate.</div>
   <div class="meta" style="margin-top:6px" data-i18n="aceIdiomas">Available in 8 languages</div>
@@ -4263,7 +4299,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.21':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.21';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.22':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.22';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -4281,6 +4317,7 @@ function actualStyle(){return {version:8,sources:{
  layers:[{id:'osm',type:'raster',source:'osm'}]};}
 
 window.map=new maplibregl.Map({container:'map',style:ilustradoStyle(),center:[-75.2362,4.4425],zoom:14.7,pitch:0,bearing:0,attributionControl:false,fadeDuration:0});
+if(window.__splash)window.__splash.set(55); /* v10.22: splash al 55% cuando el mapa ya existe */
 
 /* ---------- Ruta ---------- */
 function curva(pts,muestras){
@@ -6334,7 +6371,7 @@ document.getElementById('bMascota').addEventListener('click',()=>mostrarPanel('p
 cargarMascota();
 crearPinesEventosUsuario();
 crearPinesEventos();
-window.map.on('load',()=>{cargarCiudadUsuario();cargarZona(true);cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();actualizarPinesCiudad();});
+window.map.on('load',()=>{cargarCiudadUsuario();cargarZona(true);cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();actualizarPinesCiudad();if(window.__splash)window.__splash.hide();}); /* v10.22: splash se desvanece cuando el mapa cargó */
 
 /* ---------- La mascota: parte de TU ubicación y te sigue en el viaje ---------- */
 const dogEl=document.createElement('div');
