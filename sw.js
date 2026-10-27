@@ -12,7 +12,7 @@
      pero la activación limpia primero TODAS las cachés viejas
      (petnear-v*) y solo después reclama los clientes, para no mezclar
      versiones entre pestañas. */
-const CACHE = 'petnear-v123';
+const CACHE = 'petnear-v124';
 const CACHE_PREFIX = 'petnear-v';
 
 /* PN-13 — app shell mínimo: solo lo imprescindible para abrir la app
@@ -22,8 +22,8 @@ const SHELL = [
   'index.html',
   'firebase.js', /* imprescindible: sin él la app no arranca offline (fbConfigEfectiva is not defined) — hallazgo verificación v10.17, 1ª visita offline */
   'manifest.json',
-  'icono-192.png',
-  'icono-512.png',
+  'icono-192-v3.png',
+  'icono-512-v3.png',
   'vendor/maplibre-gl.css',
   'vendor/maplibre-gl.js'
 ];
