@@ -1,8 +1,8 @@
-// Lugares de animales en América Latina extraídos de OpenStreetMap (verificado 2026-10-26).
+// Lugares de animales en América Latina extraídos de OpenStreetMap (verificado 2026-10-27).
 // cat: vet=Veterinarias, tienda=Tiendas de mascotas, refugio=Refugios y guarderías, zoo=Zoológicos, parque=Parques para perros, peluqueria=Peluquerías caninas
 // horas: null = sin dato publicado. rating: solo si existe dato verificado (aquí nunca se inventa).
 // Todo proviene de OpenStreetMap (ODbL) vía Overpass; sin nombre o sin coordenadas el lugar se descarta.
-// Ciudades cargadas: 62/62 (3917 lugares; v10.19: Guadalajara y Zapopan comparten 143; v10.20: +148 parques/peluquerías por ampliación del tope).
+// Ciudades cargadas: 62/62 (4040 lugares; v10.21: +123 parques/peluquerías de ciudades sin tope; v10.19: Guadalajara y Zapopan comparten 143; v10.20: +148 parques/peluquerías por ampliación del tope).
 const CIUDADES_LATAM = {
  "ciudad-de-mexico": {nombre:"Ciudad de México", centro:[19.43263, -99.133178], tz:"America/Mexico_City", lugares:[
   {n:"Centro Veterinario Norte", cat:"vet", lat:19.459981, lng:-99.127104, dir:"148 Calzada de Guadalupe, Ciudad de México", tel:"+52 55 5517 3665", horas:null, nota:"Dato de OpenStreetMap"},
@@ -356,7 +356,11 @@ const CIUDADES_LATAM = {
   {n:"clinica veterinaria", cat:"vet", lat:19.039271, lng:-98.314367, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"dogsy", cat:"tienda", lat:19.064624, lng:-98.312798, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Vazlor Veterinarias del ahorro", cat:"vet", lat:19.068453, lng:-98.314832, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Veterinaria Mivet", cat:"vet", lat:19.066186, lng:-98.316654, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Veterinaria Mivet", cat:"vet", lat:19.066186, lng:-98.316654, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Lanupret", cat:"peluqueria", lat:19.073159, lng:-98.276099, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Hotel SPA para perros y gatos", cat:"peluqueria", lat:19.044201, lng:-98.304956, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Alfa club de instrucción canina", cat:"parque", lat:19.057536, lng:-98.307832, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Dog House", cat:"peluqueria", lat:19.062884, lng:-98.318638, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "tijuana": {nombre:"Tijuana", centro:[32.536477, -117.037123], tz:"America/Tijuana", lugares:[
   {n:"VETERINARIA GUTIERREZ", cat:"vet", lat:32.529922, lng:-117.030437, dir:"8123-103 CALLE 7MA ZONA CENTRO, Tijuana", tel:"+52 664 638 4164", horas:null, nota:"Dato de OpenStreetMap"},
@@ -382,12 +386,25 @@ const CIUDADES_LATAM = {
   {n:"Tijuana Zoo", cat:"zoo", lat:32.498893, lng:-116.937428, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Otay Pet Vets", cat:"vet", lat:32.623053, lng:-116.970613, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Bonita Pet Supply", cat:"tienda", lat:32.660314, lng:-117.031565, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Banfield Pet Hospital", cat:"vet", lat:32.649054, lng:-116.966369, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Banfield Pet Hospital", cat:"vet", lat:32.649054, lng:-116.966369, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"El Perro Andalyz Veterinaria & Spa", cat:"peluqueria", lat:32.515447, lng:-117.02127, dir:"Boulevard Cuauhtémoc Sur Oriente, Tijuana", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Imperial Beach Dog Park", cat:"parque", lat:32.578915, lng:-117.115179, dir:"1075 8th Street, Tijuana", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Woof St", cat:"peluqueria", lat:32.658633, lng:-117.040314, dir:"4035 Bonita Road, Tijuana", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Diego RJ", cat:"peluqueria", lat:32.512502, lng:-116.986582, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"PetWash", cat:"peluqueria", lat:32.511158, lng:-116.987446, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Orion Dog Park", cat:"parque", lat:32.614423, lng:-116.962307, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Albergue", cat:"parque", lat:32.481906, lng:-116.907264, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Rohr Dog Park", cat:"parque", lat:32.664085, lng:-117.038363, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Perrera municipal", cat:"parque", lat:32.457675, lng:-116.903194, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Las Palmas Dog Park", cat:"parque", lat:32.669327, lng:-117.082597, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Fiddler's Cove Dog Run", cat:"parque", lat:32.652984, lng:-117.15077, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Coronado Dog Beach", cat:"parque", lat:32.686451, lng:-117.195167, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "leon": {nombre:"León", centro:[21.121965, -101.682977], tz:"America/Mexico_City", lugares:[
   {n:"Parque Zoológico de León - Zooleón", cat:"zoo", lat:21.185246, lng:-101.652358, dir:"Km 6 Carretera a Ibarrilla, León", tel:"+52 477 210 2335", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Petco", cat:"tienda", lat:21.117297, lng:-101.657001, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Expo Ganadera", cat:"refugio", lat:21.110788, lng:-101.656308, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Expo Ganadera", cat:"refugio", lat:21.110788, lng:-101.656308, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Área Canina", cat:"parque", lat:21.153853, lng:-101.693541, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "juarez": {nombre:"Ciudad Juárez", centro:[31.738974, -106.483206], tz:"America/Ciudad_Juarez", lugares:[
   {n:"Petco", cat:"tienda", lat:31.783796, lng:-106.415958, dir:"5994 Montana Avenue, Ciudad Juárez", tel:"+1 915-771-7400", horas:null, nota:"Dato de OpenStreetMap"},
@@ -402,7 +419,12 @@ const CIUDADES_LATAM = {
   {n:"Thierny", cat:"tienda", lat:31.676596, lng:-106.423095, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"ALAVAMA", cat:"vet", lat:31.637111, lng:-106.416929, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Madagaskar", cat:"vet", lat:31.62435, lng:-106.395514, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Pets' Barn", cat:"tienda", lat:31.76931, lng:-106.318502, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Pets' Barn", cat:"tienda", lat:31.76931, lng:-106.318502, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"E.T.A. Pets", cat:"peluqueria", lat:31.667755, lng:-106.40835, dir:"8122 Avenida Manuel J. Clouthier, Ciudad Juárez", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"MUTTZ El Paso", cat:"parque", lat:31.810465, lng:-106.529039, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Fort Bliss Family Homes Bark Park", cat:"parque", lat:31.822654, lng:-106.43157, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Paul's Grooming Shop", cat:"peluqueria", lat:31.765144, lng:-106.361875, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Best Friends Grooming", cat:"peluqueria", lat:31.766806, lng:-106.317404, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "zapopan": {nombre:"Zapopan", centro:[20.72112, -103.391367], tz:"America/Mexico_City", comparteCon:"guadalajara", lugares:[
   /* v10.19 — Zapopan comparte la lista de Guadalajara (misma referencia,
@@ -425,7 +447,8 @@ const CIUDADES_LATAM = {
   {n:"El caporal", cat:"vet", lat:21.014037, lng:-89.585418, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Coyucos Animal Boutique", cat:"tienda", lat:21.011957, lng:-89.580193, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Animaya", cat:"zoo", lat:20.98258, lng:-89.689999, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Santos", cat:"vet", lat:20.896946, lng:-89.639628, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Santos", cat:"vet", lat:20.896946, lng:-89.639628, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque canino TUNICH LUUM", cat:"parque", lat:21.004578, lng:-89.65014, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "cancun": {nombre:"Cancún", centro:[21.152747, -86.842576], tz:"America/Cancun", lugares:[
   {n:"Veterenario Pegasso", cat:"vet", lat:21.176382, lng:-86.837194, dir:"Avenida Miguel Hidalo, Cancún", horas:null, nota:"Dato de OpenStreetMap"},
@@ -461,7 +484,16 @@ const CIUDADES_LATAM = {
   {n:"Petco", cat:"tienda", lat:20.544726, lng:-100.429945, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Espuela de Oro", cat:"vet", lat:20.653286, lng:-100.382032, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinaria La Vida", cat:"vet", lat:20.545813, lng:-100.482229, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Tierra Paraíso", cat:"refugio", lat:20.508114, lng:-100.312889, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Tierra Paraíso", cat:"refugio", lat:20.508114, lng:-100.312889, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Diva", cat:"peluqueria", lat:20.65369, lng:-100.377883, tel:"+52 442 817 7772", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Colinas del Sur", cat:"parque", lat:20.552071, lng:-100.397288, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque Canino Omar Herrera", cat:"parque", lat:20.548187, lng:-100.424386, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque canino CAM", cat:"parque", lat:20.551232, lng:-100.44659, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque Canino Piramides", cat:"parque", lat:20.545311, lng:-100.454439, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"kukulcan", cat:"parque", lat:20.634955, lng:-100.471784, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque Canino Publico", cat:"parque", lat:20.64945, lng:-100.471165, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque Canino Monte Mayor", cat:"parque", lat:20.648235, lng:-100.476535, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque de perros de Zákia", cat:"parque", lat:20.657892, lng:-100.314753, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "toluca": {nombre:"Toluca", centro:[19.292545, -99.656901], tz:"America/Mexico_City", lugares:[
   {n:"Veterinaria Tolotzin", cat:"vet", lat:19.301805, lng:-99.642249, dir:"Avenida Isidro Fabela, Toluca", tel:"+52 722 272 4367", horas:null, nota:"Dato de OpenStreetMap"},
@@ -504,7 +536,10 @@ const CIUDADES_LATAM = {
   {n:"Hospital Veterinario de Grandes Especies UAEMEX", cat:"vet", lat:19.407003, lng:-99.691127, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Agro Veterinaria", cat:"vet", lat:19.421104, lng:-99.55654, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinaria Rayon", cat:"vet", lat:19.147335, lng:-99.575774, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Granja don Agus", cat:"vet", lat:19.411815, lng:-99.792983, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Granja don Agus", cat:"vet", lat:19.411815, lng:-99.792983, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Perrón", cat:"parque", lat:19.282935, lng:-99.665053, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque de Perros", cat:"parque", lat:19.272098, lng:-99.656333, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque canino", cat:"parque", lat:19.245343, lng:-99.578857, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "buenos-aires": {nombre:"Buenos Aires", centro:[-34.609558, -58.38879], tz:"America/Argentina/Buenos_Aires", lugares:[
   {n:"CE. DI. A. P. Veterinaria", cat:"vet", lat:-34.609493, lng:-58.394566, dir:"1988 Avenida Rivadavia, Buenos Aires", tel:"+54 11 4951-8132", horas:null, nota:"Dato de OpenStreetMap"},
@@ -726,7 +761,10 @@ const CIUDADES_LATAM = {
   {n:"Veterinária", cat:"vet", lat:-31.340222, lng:-64.290052, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"El Sitio Canino", cat:"vet", lat:-31.297461, lng:-64.236009, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"La CAlera", cat:"vet", lat:-31.347108, lng:-64.338393, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Eva Inguerman", cat:"vet", lat:-31.29564, lng:-64.289568, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Eva Inguerman", cat:"vet", lat:-31.29564, lng:-64.289568, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Oasis - Estética y Peluquería Canina", cat:"peluqueria", lat:-31.355398, lng:-64.184192, dir:"790 Avenida Circunvalación Noroeste, Córdoba", tel:"+543515060450", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Ponme Guapo", cat:"peluqueria", lat:-31.389324, lng:-64.171608, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Gusto Animal", cat:"peluqueria", lat:-31.404884, lng:-64.218974, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "rosario": {nombre:"Rosario", centro:[-32.959361, -60.661702], tz:"America/Argentina/Cordoba", lugares:[
   {n:"Instituto Municipal de Salud Animal", cat:"vet", lat:-32.955033, lng:-60.66953, dir:"1940 Avenida Francia, Rosario", tel:"+54 341 480-5463;+54 341 431-4048", horas:null, nota:"Dato de OpenStreetMap"},
@@ -799,7 +837,10 @@ const CIUDADES_LATAM = {
   {n:"Veterinaria Tassara", cat:"vet", lat:-32.846937, lng:-60.70216, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Bienestar animal", cat:"tienda", lat:-32.917953, lng:-60.808956, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Old Prince", cat:"tienda", lat:-32.920455, lng:-60.814977, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Jagua", cat:"vet", lat:-33.073605, lng:-60.576602, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Jagua", cat:"vet", lat:-33.073605, lng:-60.576602, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Peluquería Canina By Cele Fernández", cat:"peluqueria", lat:-32.909591, lng:-60.797294, dir:"Bulevar Bartolomé Mitre, Rosario", tel:"+54 341 598-5501", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"La Pelu de Larry", cat:"peluqueria", lat:-32.912185, lng:-60.811352, dir:"1798 Buenos Aires, Rosario", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Petshop El Molino", cat:"peluqueria", lat:-33.069774, lng:-60.583336, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "mendoza": {nombre:"Mendoza", centro:[-32.889415, -68.844618], tz:"America/Argentina/Mendoza", lugares:[
   {n:"Akuarium", cat:"tienda", lat:-32.886082, lng:-68.845615, dir:"656 Mariano Necochea, Mendoza", tel:"+54 261 420 3397", horas:null, nota:"Dato de OpenStreetMap"},
@@ -1347,7 +1388,12 @@ const CIUDADES_LATAM = {
   {n:"Pet Hotel do Bob", cat:"refugio", lat:-15.83652, lng:-47.742047, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"EmPatinhas Pet Shop", cat:"tienda", lat:-15.794693, lng:-48.034515, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinário 4 Patas", cat:"vet", lat:-15.881201, lng:-48.018518, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Veterinario", cat:"vet", lat:-15.884531, lng:-48.017959, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Veterinario", cat:"vet", lat:-15.884531, lng:-48.017959, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Área para pets da 407", cat:"parque", lat:-15.764832, lng:-47.878032, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parcão", cat:"parque", lat:-15.810806, lng:-47.926942, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parcão", cat:"parque", lat:-15.792724, lng:-47.941424, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parcão", cat:"parque", lat:-15.837205, lng:-48.016497, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Anjos de Patas", cat:"peluqueria", lat:-15.814203, lng:-48.031822, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "salvador": {nombre:"Salvador", centro:[-12.98225, -38.481277], tz:"America/Bahia", lugares:[
   {n:"Agromix", cat:"tienda", lat:-12.989524, lng:-38.491277, dir:"Avenida Dom João VI, Salvador", tel:"+55 71 3035-0481;+55 71 98425-2194", horas:null, nota:"Dato de OpenStreetMap"},
@@ -1544,7 +1590,9 @@ const CIUDADES_LATAM = {
   {n:"Sinal Rações", cat:"tienda", lat:-3.818429, lng:-38.615703, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Luan Rações", cat:"tienda", lat:-3.739495, lng:-38.612035, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Nutrivet PetShop | Loja De Artigos Animais, Ração, Piscina", cat:"tienda", lat:-3.89678, lng:-38.414173, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Centro de Zoonoses de Maracanaú", cat:"vet", lat:-3.914703, lng:-38.622945, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Centro de Zoonoses de Maracanaú", cat:"vet", lat:-3.914703, lng:-38.622945, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Santo Pet - Estética Animal", cat:"peluqueria", lat:-3.815732, lng:-38.497736, dir:"62 Rua Silveira da Mota, Fortaleza", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Amável Pet", cat:"peluqueria", lat:-3.743212, lng:-38.493227, dir:"1310 Rua Coronel Jucá, Fortaleza", horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "belo-horizonte": {nombre:"Belo Horizonte", centro:[-19.922732, -43.945095], tz:"America/Sao_Paulo", lugares:[
   {n:"VitaVet Clínica Veterinária", cat:"vet", lat:-19.92636, lng:-43.967331, dir:"397 Rua Monsenhor Horta, Belo Horizonte", tel:"+55 31 3586 2178", horas:null, nota:"Dato de OpenStreetMap"},
@@ -1593,7 +1641,9 @@ const CIUDADES_LATAM = {
   {n:"Hospital Veterinário", cat:"vet", lat:-19.87069, lng:-43.972148, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Empire Pet", cat:"tienda", lat:-19.87105, lng:-43.903258, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinária São Judas Tadeu", cat:"vet", lat:-19.977761, lng:-44.011889, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Empório do Criador", cat:"vet", lat:-20.000206, lng:-43.887731, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Empório do Criador", cat:"vet", lat:-20.000206, lng:-43.887731, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Pataki Patala", cat:"peluqueria", lat:-19.8957, lng:-43.903563, dir:"Avenida Elísio de Brito, Belo Horizonte", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Pet Shop", cat:"peluqueria", lat:-19.879445, lng:-43.900455, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "curitiba": {nombre:"Curitiba", centro:[-25.429596, -49.271272], tz:"America/Sao_Paulo", lugares:[
   {n:"Dog e Design", cat:"tienda", lat:-25.448283, lng:-49.272401, dir:"2916 Rua Brasílio Itiberê, Curitiba", tel:"+55413085-8382", horas:null, nota:"Dato de OpenStreetMap"},
@@ -1678,7 +1728,17 @@ const CIUDADES_LATAM = {
   {n:"Pet Clube Monicão", cat:"refugio", lat:-25.378499, lng:-49.154481, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"CVR - Clínica Veterinária Ribeira", cat:"vet", lat:-25.349622, lng:-49.164012, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Vet & Clin", cat:"vet", lat:-25.552719, lng:-49.191724, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Banho e Tosa", cat:"tienda", lat:-25.558521, lng:-49.196298, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Banho e Tosa", cat:"tienda", lat:-25.558521, lng:-49.196298, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Rei dos Animais", cat:"peluqueria", lat:-25.427811, lng:-49.24315, dir:"3188 Rua XV de Novembro, Curitiba", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"ParCão", cat:"parque", lat:-25.430117, lng:-49.202168, dir:"Rua Fênix, Curitiba", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"ParCão", cat:"parque", lat:-25.437868, lng:-49.148795, dir:"Estrada Ecológica, Curitiba", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Espaço Amigo Bicho", cat:"parque", lat:-25.426653, lng:-49.265735, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"ParCão", cat:"parque", lat:-25.432184, lng:-49.25272, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parcão", cat:"parque", lat:-25.410336, lng:-49.26808, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"ParCão", cat:"parque", lat:-25.435453, lng:-49.315158, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Espaço Pet UP Life", cat:"parque", lat:-25.51387, lng:-49.289384, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parcão", cat:"parque", lat:-25.515779, lng:-49.206696, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parcão", cat:"parque", lat:-25.513257, lng:-49.20246, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "porto-alegre": {nombre:"Porto Alegre", centro:[-30.0325, -51.230377], tz:"America/Sao_Paulo", lugares:[
   {n:"Pet Shop Cidade Bixo", cat:"tienda", lat:-30.038113, lng:-51.221883, dir:"549 Rua General Lima e Silva, Porto Alegre", tel:"+55 51 3224-7465", horas:null, nota:"Dato de OpenStreetMap"},
@@ -1751,7 +1811,16 @@ const CIUDADES_LATAM = {
   {n:"Agromania", cat:"tienda", lat:-29.993576, lng:-51.069482, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Agro Lara", cat:"tienda", lat:-29.948472, lng:-51.09425, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Banho e Tosa", cat:"tienda", lat:-29.993533, lng:-51.06922, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Hospital Veterinário", cat:"vet", lat:-29.887356, lng:-51.15636, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Hospital Veterinário", cat:"vet", lat:-29.887356, lng:-51.15636, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Uni Agropet", cat:"peluqueria", lat:-30.000751, lng:-51.059611, dir:"4281 Avenida Presidente Getúlio Vargas, Porto Alegre", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Cachorródromo dos Açorianos", cat:"parque", lat:-30.039055, lng:-51.228818, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Cachorródromo", cat:"parque", lat:-30.032743, lng:-51.238777, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Recanto do Amigo Fiel", cat:"parque", lat:-30.037162, lng:-51.216713, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Cachorródromo", cat:"parque", lat:-30.050395, lng:-51.231345, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Cachorrodromo Madame Kate", cat:"parque", lat:-30.035803, lng:-51.187233, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Cachorródromo", cat:"parque", lat:-30.026515, lng:-51.157086, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Mania de Bicho", cat:"peluqueria", lat:-29.994709, lng:-51.072789, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Cachorródromo", cat:"parque", lat:-30.115305, lng:-51.372309, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "recife": {nombre:"Recife", centro:[-8.058493, -34.884819], tz:"America/Recife", lugares:[
   {n:"Casa Leão", cat:"tienda", lat:-8.062869, lng:-34.87789, dir:"19 Rua Engenheiro Ubaldo Gomes de Matos, Recife", tel:"+55 :(81) 3062-3724", horas:null, nota:"Dato de OpenStreetMap"},
@@ -1814,7 +1883,13 @@ const CIUDADES_LATAM = {
   {n:"Canil Femea", cat:"refugio", lat:-8.114206, lng:-35.007085, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Canil Recanto do Boiadeiro", cat:"refugio", lat:-7.971322, lng:-35.001162, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinário Dr. David Victor", cat:"vet", lat:-7.911172, lng:-34.900723, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Clínica Veterinária Dr. David Victor", cat:"vet", lat:-7.910999, lng:-34.90086, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Clínica Veterinária Dr. David Victor", cat:"vet", lat:-7.910999, lng:-34.90086, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"ParCão", cat:"parque", lat:-8.031874, lng:-34.914047, dir:"Estrada do Encanamento, Recife", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"HS Pet Shop", cat:"peluqueria", lat:-8.047399, lng:-34.940784, dir:"50 Rua Manoel Estevão da Costa, Recife", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"ParCão", cat:"parque", lat:-8.036349, lng:-34.903508, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"PET Place", cat:"parque", lat:-8.092538, lng:-34.948635, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parcão Santos Dumont", cat:"parque", lat:-8.131284, lng:-34.908539, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"PET Place", cat:"parque", lat:-8.020507, lng:-35.007022, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "goiania": {nombre:"Goiânia", centro:[-16.680882, -49.253269], tz:"America/Sao_Paulo", lugares:[
   {n:"POSE Pet Boutique e Spa", cat:"tienda", lat:-16.689853, lng:-49.271598, dir:"755 Rua João de Abreu, Goiânia", tel:"+55 62 9 9244 9708", horas:null, nota:"Dato de OpenStreetMap"},
@@ -1829,7 +1904,9 @@ const CIUDADES_LATAM = {
   {n:"Veterinária Campos", cat:"vet", lat:-16.717354, lng:-49.320045, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Pet Vip", cat:"vet", lat:-16.728058, lng:-49.320644, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Centro de Zoonoses de Goiânia", cat:"vet", lat:-16.731425, lng:-49.163172, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"agrocães", cat:"vet", lat:-16.78103, lng:-49.276831, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"agrocães", cat:"vet", lat:-16.78103, lng:-49.276831, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Agro Pet Nova Era", cat:"peluqueria", lat:-16.748444, lng:-49.28089, dir:"Avenida São João, Goiânia", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"CANIL ANJOS DE PATAS", cat:"parque", lat:-16.735644, lng:-49.322026, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "belem": {nombre:"Belém", centro:[-1.45056, -48.468245], tz:"America/Belem", lugares:[
   {n:"Parque Zoobotânico do Museu Paraense Emílio Goeldi", cat:"zoo", lat:-1.453369, lng:-48.476601, dir:"376 Avenida Governador Magalhães Barata, Belém", tel:"+55 91 3211 1700", horas:null, nota:"Dato de OpenStreetMap"},
@@ -2027,7 +2104,8 @@ const CIUDADES_LATAM = {
   {n:"Mi Amiga Vet", cat:"vet", lat:-16.442245, lng:-71.53146, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Petconza tienda productos  Mascotas", cat:"tienda", lat:-16.45281, lng:-71.528646, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Spa Pequeños", cat:"vet", lat:-16.454037, lng:-71.530344, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Veterinaria Altacor", cat:"vet", lat:-16.333429, lng:-71.548238, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Veterinaria Altacor", cat:"vet", lat:-16.333429, lng:-71.548238, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"America Spa", cat:"peluqueria", lat:-16.409371, lng:-71.53389, dir:"1800 Avenida Independencia, Arequipa", horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "trujillo": {nombre:"Trujillo", centro:[-8.111678, -79.028774], tz:"America/Lima", lugares:[
   {n:"Veterinaria Trinidad", cat:"vet", lat:-8.125613, lng:-79.040732, dir:"155 Pasaje Los Mirlos, Trujillo", tel:"+51 942 243 214", horas:null, nota:"Dato de OpenStreetMap"},
@@ -2097,7 +2175,9 @@ const CIUDADES_LATAM = {
   {n:"Zoocriadero Vida Salvaje", cat:"zoo", lat:-8.075507, lng:-79.070284, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Amigo Fiel", cat:"vet", lat:-8.064447, lng:-79.058584, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Entre patas y colas", cat:"vet", lat:-8.064832, lng:-79.060205, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Zoologico Huanchaco", cat:"zoo", lat:-8.087716, lng:-79.091849, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Zoologico Huanchaco", cat:"zoo", lat:-8.087716, lng:-79.091849, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Central Pet", cat:"peluqueria", lat:-8.131314, lng:-79.040586, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Dr. Bigotes Spa", cat:"peluqueria", lat:-8.166621, lng:-79.010218, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "cusco": {nombre:"Cusco", centro:[-13.517089, -71.978536], tz:"America/Lima", lugares:[
   {n:"Dr. Patitas", cat:"vet", lat:-13.532575, lng:-71.938187, dir:"408 Calle Almagro, Cusco", tel:"+51 84 606829", horas:null, nota:"Dato de OpenStreetMap"},
@@ -2334,7 +2414,9 @@ const CIUDADES_LATAM = {
   {n:"Royal Pet", cat:"vet", lat:-33.051418, lng:-71.444871, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Mascotas Quilpué", cat:"tienda", lat:-33.045633, lng:-71.443698, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Exotic Pets", cat:"tienda", lat:-33.047996, lng:-71.443657, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Domy's Vet", cat:"tienda", lat:-33.046712, lng:-71.443133, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Domy's Vet", cat:"tienda", lat:-33.046712, lng:-71.443133, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Camada Pet Shop", cat:"peluqueria", lat:-32.942443, lng:-71.545703, dir:"842 Las Pelargonias, Valparaíso", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Traviezoos Pet Shop", cat:"peluqueria", lat:-33.028922, lng:-71.579362, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "concepcion": {nombre:"Concepción", centro:[-36.82707, -73.050206], tz:"America/Santiago", lugares:[
   {n:"Travesuras", cat:"tienda", lat:-36.823523, lng:-73.05022, dir:"729 Colo Colo, Concepción", tel:"+56 973 437 581", horas:null, nota:"Dato de OpenStreetMap"},
@@ -2386,7 +2468,8 @@ const CIUDADES_LATAM = {
   {n:"Fundo El Venado", cat:"zoo", lat:-36.863887, lng:-73.096551, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Super Zoo", cat:"tienda", lat:-36.85836, lng:-73.13231, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Booster", cat:"vet", lat:-36.919379, lng:-73.027744, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"El Carmen", cat:"tienda", lat:-36.73721, lng:-72.993709, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"El Carmen", cat:"tienda", lat:-36.73721, lng:-72.993709, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Carol Clean - Peluquería Canina", cat:"peluqueria", lat:-36.926304, lng:-73.033443, dir:"804 Chiguay, Concepción", horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "quito": {nombre:"Quito", centro:[-0.220164, -78.512327], tz:"America/Guayaquil", lugares:[
   {n:"pethouse", cat:"vet", lat:-0.206847, lng:-78.508886, dir:"Nicaragua, Quito", tel:"+593 0987013752;+593 0989297166", horas:null, nota:"Dato de OpenStreetMap"},
@@ -2717,7 +2800,8 @@ const CIUDADES_LATAM = {
   {n:"VETERINARIA DRA. VARGAS", cat:"vet", lat:-2.938251, lng:-78.965464, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"San Bernardo", cat:"vet", lat:-2.875367, lng:-79.071732, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinaria Su Mascota Feliz", cat:"vet", lat:-2.872331, lng:-79.071398, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"MasPet", cat:"vet", lat:-2.853961, lng:-78.916256, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"MasPet", cat:"vet", lat:-2.853961, lng:-78.916256, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Love Wash", cat:"peluqueria", lat:-2.909018, lng:-79.010611, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "caracas": {nombre:"Caracas", centro:[10.506093, -66.914601], tz:"America/Caracas", lugares:[
   {n:"Pet Shop Lac-Ram", cat:"tienda", lat:10.51617, lng:-66.901456, dir:"PB, LOC 1 Avenida Los Próceres, Caracas", tel:"+582125501801", horas:null, nota:"Dato de OpenStreetMap"},
@@ -2783,7 +2867,14 @@ const CIUDADES_LATAM = {
   {n:"Manchas Pets", cat:"vet", lat:10.418089, lng:-66.834163, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinaria Nestor Perez", cat:"vet", lat:10.37617, lng:-66.960427, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Mascotylandia", cat:"tienda", lat:10.603625, lng:-67.03057, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Agropecuaria Turumo - Veterinaria", cat:"vet", lat:10.47537, lng:-66.763738, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Agropecuaria Turumo - Veterinaria", cat:"vet", lat:10.47537, lng:-66.763738, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque de Perros Los Samanes", cat:"parque", lat:10.457549, lng:-66.855075, dir:"Avenida 2 de Los Samanes, Caracas", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque Canino La Urbina", cat:"parque", lat:10.487333, lng:-66.809165, dir:"Calle 14 de la Urbina, Caracas", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque canino Lomas del Ávila", cat:"parque", lat:10.482072, lng:-66.788659, dir:"Calle 16 de Palo Verde, Caracas", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque de Mascotas de La Lagunita", cat:"parque", lat:10.419036, lng:-66.821415, dir:"Av. Sur, Caracas", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque Canino", cat:"parque", lat:10.499621, lng:-66.889405, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque de Perros de Vizcaya", cat:"parque", lat:10.457099, lng:-66.844079, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque para perros", cat:"parque", lat:10.601986, lng:-67.019688, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "maracaibo": {nombre:"Maracaibo", centro:[10.649809, -71.64436], tz:"America/Caracas", lugares:[
   {n:"Peluquería y Tienda de Mascotas", cat:"tienda", lat:10.662833, lng:-71.63247, dir:"calle 70, Maracaibo", horas:null, nota:"Dato de OpenStreetMap"},
@@ -2795,7 +2886,8 @@ const CIUDADES_LATAM = {
  ]},
  "valencia-ve": {nombre:"Valencia", centro:[10.170026, -68.000399], tz:"America/Caracas", lugares:[
   {n:"Centro Veterinario Los Colorados", cat:"vet", lat:10.193044, lng:-68.008773, dir:"103-A-40 Calle 112 Guzmán Blanco, Valencia", horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"ZooAquarium Valencia", cat:"zoo", lat:10.188954, lng:-68.011139, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"ZooAquarium Valencia", cat:"zoo", lat:10.188954, lng:-68.011139, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque Canino", cat:"parque", lat:10.243759, lng:-68.010229, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "santa-cruz": {nombre:"Santa Cruz de la Sierra", centro:[-17.783422, -63.182085], tz:"America/La_Paz", lugares:[
   {n:"Servicios Veterinarios Fortaleza", cat:"vet", lat:-17.778131, lng:-63.173351, dir:"383 Calle Suárez Arana, Santa Cruz de la Sierra", tel:"+591 3 3367808", horas:null, nota:"Dato de OpenStreetMap"},
@@ -2971,7 +3063,13 @@ const CIUDADES_LATAM = {
   {n:"Laboratorio Veterinario Daniel & Cia", cat:"vet", lat:-16.528079, lng:-68.197127, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Urgencias veterinarias", cat:"vet", lat:-16.540022, lng:-68.077083, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Clínica Veterinaria CdVet", cat:"vet", lat:-16.525635, lng:-68.200722, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Peluditos", cat:"vet", lat:-16.595193, lng:-68.202716, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Peluditos", cat:"vet", lat:-16.595193, lng:-68.202716, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Kiltro's Spa", cat:"peluqueria", lat:-16.496212, lng:-68.123227, dir:"Calle Guerrilleros Lanza, La Paz", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Colmillo Blanco", cat:"peluqueria", lat:-16.487945, lng:-68.141669, tel:"+591 71911998; +591 2 2257837; +591 60535225; +591 64134339", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"TravieZOOs", cat:"peluqueria", lat:-16.521805, lng:-68.150527, dir:"Calle Arturo Ballivian Otero, La Paz", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque para Perros Plaza Litoral", cat:"parque", lat:-16.514934, lng:-68.086689, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Pet Shop", cat:"peluqueria", lat:-16.530031, lng:-68.195779, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Espacio recreacional para mascotas", cat:"parque", lat:-16.511757, lng:-68.058967, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "cochabamba": {nombre:"Cochabamba", centro:[-17.393611, -66.156898], tz:"America/La_Paz", lugares:[
   {n:"Central Vet", cat:"vet", lat:-17.390344, lng:-66.153268, dir:"0641 Calle República de Colombia, Cochabamba", tel:"+591 4 4230865", horas:null, nota:"Dato de OpenStreetMap"},
@@ -3275,7 +3373,8 @@ const CIUDADES_LATAM = {
   {n:"Agroveterinaria Alayon", cat:"tienda", lat:-34.902102, lng:-54.963709, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Emerick", cat:"tienda", lat:-34.90175, lng:-54.968584, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Lausana", cat:"vet", lat:-34.899801, lng:-54.993431, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Don Mateo", cat:"vet", lat:-34.888271, lng:-54.978804, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Don Mateo", cat:"vet", lat:-34.888271, lng:-54.978804, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque publico para perros", cat:"parque", lat:-34.902041, lng:-54.94906, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "ciudad-de-guatemala": {nombre:"Ciudad de Guatemala", centro:[14.641614, -90.513284], tz:"America/Guatemala", lugares:[
   {n:"Veterinaria El Pastor", cat:"vet", lat:14.590238, lng:-90.544716, dir:"Avenida Petapa, Ciudad de Guatemala", tel:"24420276", horas:null, nota:"Dato de OpenStreetMap"},
@@ -3349,7 +3448,11 @@ const CIUDADES_LATAM = {
   {n:"Veterinaria Los Carlos", cat:"vet", lat:14.526539, lng:-90.588206, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinaria La Valle", cat:"vet", lat:14.514528, lng:-90.574164, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Paws Veterinaria Grooming & Pet Shop", cat:"vet", lat:14.537389, lng:-90.415983, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Paws Veterinaria Grooming & Pet Shop", cat:"vet", lat:14.534601, lng:-90.41543, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Paws Veterinaria Grooming & Pet Shop", cat:"vet", lat:14.534601, lng:-90.41543, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Pet Zoo", cat:"peluqueria", lat:14.608401, lng:-90.549943, dir:"10a Avenida, Ciudad de Guatemala", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Pet Shop My Family", cat:"peluqueria", lat:14.608427, lng:-90.554186, dir:"17'47 14 Avenida, Ciudad de Guatemala", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"For Dogs", cat:"peluqueria", lat:14.529541, lng:-90.465, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque Municipal de San Pedro Sacatepéquez, Guatemala", cat:"parque", lat:14.686122, lng:-90.642516, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "san-salvador": {nombre:"San Salvador", centro:[13.735588, -89.200555], tz:"America/El_Salvador", lugares:[
   {n:"Veterinaria Grandes Amigos", cat:"vet", lat:13.722953, lng:-89.194924, dir:"1H Calle Ingeniero Alirio Cornejo, San Salvador", tel:"2101-5515", horas:null, nota:"Dato de OpenStreetMap"},
@@ -3478,7 +3581,8 @@ const CIUDADES_LATAM = {
   {n:"El rincón de las mascotas", cat:"vet", lat:12.064236, lng:-86.201465, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinaria Mundo Animal", cat:"vet", lat:12.055524, lng:-86.200141, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Las Huellas", cat:"vet", lat:12.048449, lng:-86.202439, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Zoológico Nacional", cat:"zoo", lat:12.040838, lng:-86.192939, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Zoológico Nacional", cat:"zoo", lat:12.040838, lng:-86.192939, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Pet Shop Puppy Dog Estética Canina", cat:"peluqueria", lat:12.15377, lng:-86.304584, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "san-jose-cr": {nombre:"San José", centro:[9.932737, -84.079668], tz:"America/Costa_Rica", lugares:[
   {n:"Dra. Gina Veterinaria", cat:"tienda", lat:9.941022, lng:-84.047195, dir:"Via 202, San José", tel:"2224-5294", horas:null, nota:"Dato de OpenStreetMap"},
@@ -3673,7 +3777,12 @@ const CIUDADES_LATAM = {
   {n:"Melo", cat:"tienda", lat:9.042435, lng:-79.417479, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Hospital veterinario Felix", cat:"vet", lat:8.946548, lng:-79.673543, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Veterinaria Fenix", cat:"vet", lat:8.946543, lng:-79.673635, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Veterinaria Del Sur Panamá", cat:"vet", lat:9.063129, lng:-79.418657, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Veterinaria Del Sur Panamá", cat:"vet", lat:9.063129, lng:-79.418657, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Legally Pet", cat:"peluqueria", lat:9.001436, lng:-79.530072, dir:"Calle 63a Oeste, Ciudad de Panamá", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Wash Clean", cat:"peluqueria", lat:9.0149, lng:-79.476799, dir:"Avenida Centenario, Ciudad de Panamá", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque para Perros", cat:"parque", lat:8.97558, lng:-79.527431, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Von Fuster", cat:"peluqueria", lat:8.978192, lng:-79.51979, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Perros chicos", cat:"parque", lat:9.002698, lng:-79.580757, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "la-habana": {nombre:"La Habana", centro:[23.135305, -82.358963], tz:"America/Havana", lugares:[
   {n:"Thali Entrepelos", cat:"tienda", lat:23.137227, lng:-82.355933, dir:"503 Obrapía, La Habana", tel:"+5358233020", horas:null, nota:"Dato de OpenStreetMap"},
@@ -3768,7 +3877,15 @@ const CIUDADES_LATAM = {
   {n:"Parque Zoológico Nacional de Cuba", cat:"zoo", lat:23.029415, lng:-82.391037, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Tienda de mascotas", cat:"tienda", lat:23.088266, lng:-82.472807, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Vida Animal", cat:"tienda", lat:23.005467, lng:-82.388837, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Zoonosis", cat:"vet", lat:23.030578, lng:-82.479374, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Zoonosis", cat:"vet", lat:23.030578, lng:-82.479374, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"DanyLam", cat:"peluqueria", lat:23.115061, lng:-82.37364, dir:"85 altos Trinidad, La Habana", tel:"+53 7 873 0452", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Animals Boutique", cat:"peluqueria", lat:23.138574, lng:-82.385287, dir:"Calle J, La Habana", tel:"+5378304148", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Salón de Belleza para Mascotas", cat:"peluqueria", lat:23.138683, lng:-82.395575, dir:"555 11, La Habana", tel:"+53 54 110658", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Salón de Belleza para Mascotas", cat:"peluqueria", lat:23.110043, lng:-82.423939, dir:"e/46 y 48 Avenida 19, La Habana", tel:"+53 72092818", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Salón de estética para mascotas", cat:"peluqueria", lat:23.059942, lng:-82.362809, dir:"22A Moisés Maestre, La Habana", tel:"+5352722273", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Peluquería Canina", cat:"peluqueria", lat:23.136923, lng:-82.368553, dir:"San Miguel, La Habana", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"ESBU Eugenio María de Hostos;Maskotin", cat:"peluqueria", lat:23.093516, lng:-82.378793, dir:"Juan Delgado, La Habana", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Entrenamiento Canino", cat:"parque", lat:23.102231, lng:-82.399421, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "santo-domingo": {nombre:"Santo Domingo", centro:[18.471386, -69.891844], tz:"America/Santo_Domingo", lugares:[
   {n:"Perro Mundo Pet Shop", cat:"vet", lat:18.477909, lng:-69.904289, dir:"15 Calle Cotubanamá, Santo Domingo", tel:"+18092215824", horas:null, nota:"Dato de OpenStreetMap"},
@@ -3826,7 +3943,8 @@ const CIUDADES_LATAM = {
   {n:"Agroveterinaria El Tanque", cat:"vet", lat:18.446929, lng:-69.988764, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Laboratorio Veterinario Central", cat:"vet", lat:18.518822, lng:-69.988675, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Chiquito Agroveterinaria", cat:"vet", lat:18.480276, lng:-69.77827, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Veterinaria La Bendición", cat:"vet", lat:18.490497, lng:-69.768087, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Veterinaria La Bendición", cat:"vet", lat:18.490497, lng:-69.768087, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"parque de perros", cat:"parque", lat:18.442885, lng:-69.955597, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "san-juan": {nombre:"San Juan", centro:[18.384239, -66.05344], tz:"America/Puerto_Rico", lugares:[
   {n:"Hospital Veterinario El Señorial", cat:"vet", lat:18.369806, lng:-66.06647, dir:"129 Avenida Winston Churchill, San Juan", tel:"+1 787-753-4722", horas:null, nota:"Dato de OpenStreetMap"},
@@ -3877,7 +3995,11 @@ const CIUDADES_LATAM = {
   {n:"PetSmart", cat:"tienda", lat:18.375236, lng:-65.927025, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"PetSmart", cat:"tienda", lat:18.359957, lng:-66.189203, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"PetSmart", cat:"tienda", lat:18.248816, lng:-66.021686, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Petco", cat:"tienda", lat:18.241703, lng:-66.034721, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Petco", cat:"tienda", lat:18.241703, lng:-66.034721, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Parque de Perros Arterial Hostos", cat:"parque", lat:18.431454, lng:-66.064832, dir:"Avenida Licenciado Eugenio María de Hostos, San Juan", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Metro Plaza Pet Park", cat:"parque", lat:18.45062, lng:-66.072286, dir:"Calle Ribot, San Juan", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Apple Paws Pet Grooming", cat:"peluqueria", lat:18.370387, lng:-65.900499, dir:"Carretera Canóvanas - Juncos, San Juan", horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"The Paw-lour", cat:"peluqueria", lat:18.446524, lng:-66.065928, horas:null, nota:"Dato de OpenStreetMap"}
  ]},
  "kingston": {nombre:"Kingston", centro:[17.971215, -76.792813], tz:"America/Jamaica", lugares:[
   {n:"Next to Nature", cat:"tienda", lat:18.016516, lng:-76.770793, dir:"100 Old Hope Road, Kingston", tel:"18769277357", horas:null, nota:"Dato de OpenStreetMap"},
@@ -3902,7 +4024,8 @@ const CIUDADES_LATAM = {
   {n:"Marathon Veterinary Clinic", cat:"vet", lat:25.05645, lng:-77.323759, dir:"9 Marathon Road, Nasáu", horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Ardastra Gardens, Zoo & Conservation Centre", cat:"zoo", lat:25.075877, lng:-77.362049, horas:null, nota:"Dato de OpenStreetMap"},
   {n:"Modernistic Garden and Pet", cat:"tienda", lat:25.018198, lng:-77.38531, horas:null, nota:"Dato de OpenStreetMap"},
-  {n:"Bahamas Department of Marine Resources", cat:"vet", lat:25.023144, lng:-77.401216, horas:null, nota:"Dato de OpenStreetMap"}
+  {n:"Bahamas Department of Marine Resources", cat:"vet", lat:25.023144, lng:-77.401216, horas:null, nota:"Dato de OpenStreetMap"},
+  {n:"Pawfection", cat:"peluqueria", lat:25.062339, lng:-77.313711, tel:"+1242 395-3647", horas:null, nota:"Dato de OpenStreetMap"}
  ]}
 };
 /* ---------- v10.19 — Guadalajara y Zapopan comparten información ----------
