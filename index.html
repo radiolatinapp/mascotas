@@ -279,7 +279,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
 <button id="btnZoomMas" class="zoomBtn" style="top:420px">+</button>
 <button id="btnZoomMenos" class="zoomBtn" style="top:458px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.20</div>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.21</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -692,8 +692,9 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 </div>
 <div class="panel" id="panelAcerca" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="menuAcerca">About PetNear</h3><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Close</button></div>
-  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.20</div></div></div>
+  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.21</div></div></div>
   <div class="meta" style="margin-top:8px" data-i18n="aceTexto">PetNear helps you find vets, pet stores, pharmacies and shelters for your pet, near you.</div>
+  <div class="meta" style="margin-top:6px" data-i18n="aceMascota">Nuestra mascota es Toby, el labrador chocolate.</div>
   <div class="meta" style="margin-top:6px" data-i18n="aceIdiomas">Available in 8 languages</div>
 </div>
 <script>
@@ -945,7 +946,7 @@ const I18N={
   "alDemo": "Alerta de prueba",
   "avatarTitulo": "Elige tu perrito",
   "avatarNota": "Tu perrito corre en el mapa cuando viajas; cuando paras, se sienta.",
-  "avatar.clasico": "Clásico",
+  "avatar.clasico": "Toby",
   "avatar.pug-negro": "Pug negro",
   "avatar.naranja-peludo": "Pomerania naranja",
   "avatar.husky": "Husky",
@@ -1135,6 +1136,7 @@ const I18N={
   "ayu4": "¿Perdiste a tu mascota? Publícala en Mascota perdida para avisar a todos cerca.",
   "ayu5": "En Adopciones encuentras mascotas que buscan un hogar.",
   "aceTexto": "PetNear te ayuda a encontrar veterinarias, tiendas, farmacias y refugios para tu mascota, cerca de ti.",
+  "aceMascota": "Nuestra mascota es Toby, el labrador chocolate.",
   "aceVersion": "Versión",
   "aceIdiomas": "Disponible en 8 idiomas"
  },
@@ -1376,7 +1378,7 @@ const I18N={
   "alDemo": "Test alert",
   "avatarTitulo": "Choose your puppy",
   "avatarNota": "Your puppy runs on the map when you travel; when you stop, it sits.",
-  "avatar.clasico": "Classic",
+  "avatar.clasico": "Toby",
   "avatar.pug-negro": "Black pug",
   "avatar.naranja-peludo": "Orange Pomeranian",
   "avatar.husky": "Husky",
@@ -1566,6 +1568,7 @@ const I18N={
   "ayu4": "Lost your pet? Post it in Lost pet to alert everyone nearby.",
   "ayu5": "In Adoptions you will find pets looking for a home.",
   "aceTexto": "PetNear helps you find vets, pet stores, pharmacies and shelters for your pet, near you.",
+  "aceMascota": "Our mascot is Toby, the chocolate Labrador.",
   "aceVersion": "Version",
   "aceIdiomas": "Available in 8 languages"
  },
@@ -1806,7 +1809,7 @@ const I18N={
   "alDemo": "Alerta de teste",
   "avatarTitulo": "Escolha seu filhote",
   "avatarNota": "Seu filhote corre no mapa quando você viaja; quando para, ele senta.",
-  "avatar.clasico": "Clássico",
+  "avatar.clasico": "Toby",
   "avatar.pug-negro": "Pug preto",
   "avatar.naranja-peludo": "Lulu-da-pomerânia laranja",
   "avatar.husky": "Husky",
@@ -1996,6 +1999,7 @@ const I18N={
   "ayu4": "Perdeu seu pet? Publique em Pet perdido para avisar quem está perto.",
   "ayu5": "Em Adoções você encontra pets procurando um lar.",
   "aceTexto": "O PetNear ajuda você a encontrar veterinários, pet shops, farmácias e abrigos para seu pet, perto de você.",
+  "aceMascota": "Nosso mascote é o Toby, o labrador chocolate.",
   "aceVersion": "Versão",
   "aceIdiomas": "Disponível em 8 idiomas"
  },
@@ -2236,7 +2240,7 @@ const I18N={
   "alDemo": "Alerte de test",
   "avatarTitulo": "Choisis ton chiot",
   "avatarNota": "Ton chiot court sur la carte quand tu voyages ; quand tu t'arrêtes, il s'assoit.",
-  "avatar.clasico": "Classique",
+  "avatar.clasico": "Toby",
   "avatar.pug-negro": "Carlin noir",
   "avatar.naranja-peludo": "Spitz orange",
   "avatar.husky": "Husky",
@@ -2426,6 +2430,7 @@ const I18N={
   "ayu4": "Vous avez perdu votre animal ? Publiez-le dans Animal perdu pour alerter les environs.",
   "ayu5": "Dans Adoptions, trouvez des animaux qui cherchent un foyer.",
   "aceTexto": "PetNear vous aide à trouver vétérinaires, animaleries, pharmacies et refuges pour votre animal, près de chez vous.",
+  "aceMascota": "Notre mascotte est Toby, le labrador chocolat.",
   "aceVersion": "Version",
   "aceIdiomas": "Disponible en 8 langues"
  },
@@ -2666,7 +2671,7 @@ const I18N={
   "alDemo": "Testmeldung",
   "avatarTitulo": "Wähle deinen Welpen",
   "avatarNota": "Dein Welpe rennt auf der Karte, wenn du fährst; wenn du anhältst, setzt er sich.",
-  "avatar.clasico": "Klassisch",
+  "avatar.clasico": "Toby",
   "avatar.pug-negro": "Schwarzer Mops",
   "avatar.naranja-peludo": "Oranger Pomeranian",
   "avatar.husky": "Husky",
@@ -2856,6 +2861,7 @@ const I18N={
   "ayu4": "Haustier verloren? Melde es unter Vermisst, um alle in der Nähe zu warnen.",
   "ayu5": "Unter Adoption findest du Tiere, die ein Zuhause suchen.",
   "aceTexto": "PetNear hilft dir, Tierärzte, Tierhandlungen, Apotheken und Tierheime für dein Haustier in deiner Nähe zu finden.",
+  "aceMascota": "Unser Maskottchen ist Toby, der Schokoladen-Labrador.",
   "aceVersion": "Version",
   "aceIdiomas": "Verfügbar in 8 Sprachen"
  },
@@ -3096,7 +3102,7 @@ const I18N={
   "alDemo": "Avviso di prova",
   "avatarTitulo": "Scegli il tuo cucciolo",
   "avatarNota": "Il tuo cucciolo corre sulla mappa quando viaggi; quando ti fermi, si siede.",
-  "avatar.clasico": "Classico",
+  "avatar.clasico": "Toby",
   "avatar.pug-negro": "Carlino nero",
   "avatar.naranja-peludo": "Volpino arancione",
   "avatar.husky": "Husky",
@@ -3286,6 +3292,7 @@ const I18N={
   "ayu4": "Hai perso il tuo animale? Pubblicalo in Animale smarrito per avvisare chi è vicino.",
   "ayu5": "In Adozioni trovi animali che cercano casa.",
   "aceTexto": "PetNear ti aiuta a trovare veterinari, negozi per animali, farmacie e rifugi per il tuo animale, vicino a te.",
+  "aceMascota": "La nostra mascotte è Toby, il labrador cioccolato.",
   "aceVersion": "Versione",
   "aceIdiomas": "Disponibile in 8 lingue"
  },
@@ -3526,7 +3533,7 @@ const I18N={
   "alDemo": "Testmelding",
   "avatarTitulo": "Kies je puppy",
   "avatarNota": "Je puppy rent op de kaart als je reist; als je stopt, gaat hij zitten.",
-  "avatar.clasico": "Klassiek",
+  "avatar.clasico": "Toby",
   "avatar.pug-negro": "Zwarte mopshond",
   "avatar.naranja-peludo": "Oranje Pomeriaan",
   "avatar.husky": "Husky",
@@ -3716,6 +3723,7 @@ const I18N={
   "ayu4": "Huisdier kwijt? Plaats het bij Huisdier vermist om iedereen in de buurt te waarschuwen.",
   "ayu5": "Bij Adoptie vind je dieren die een thuis zoeken.",
   "aceTexto": "PetNear helpt je dierenartsen, dierenwinkels, apotheken en asielen voor je huisdier in de buurt te vinden.",
+  "aceMascota": "Onze mascotte is Toby, de chocolade labrador.",
   "aceVersion": "Versie",
   "aceIdiomas": "Beschikbaar in 8 talen"
  },
@@ -3956,7 +3964,7 @@ const I18N={
   "alDemo": "Zgłoszenie testowe",
   "avatarTitulo": "Wybierz swojego szczeniaka",
   "avatarNota": "Twój szczeniak biegnie po mapie, gdy podróżujesz; gdy się zatrzymasz, siada.",
-  "avatar.clasico": "Klasyczny",
+  "avatar.clasico": "Toby",
   "avatar.pug-negro": "Czarny mops",
   "avatar.naranja-peludo": "Pomarańczowy szpic",
   "avatar.husky": "Husky",
@@ -4146,6 +4154,7 @@ const I18N={
   "ayu4": "Zgubiłeś zwierzaka? Opublikuj w Zaginione zwierzę, aby powiadomić okolicę.",
   "ayu5": "W Adopcje znajdziesz zwierzęta szukające domu.",
   "aceTexto": "PetNear pomaga znaleźć weterynarzy, sklepy zoologiczne, apteki i schroniska dla twojego zwierzaka w pobliżu.",
+  "aceMascota": "Naszą maskotką jest Toby, czekoladowy labrador.",
   "aceVersion": "Wersja",
   "aceIdiomas": "Dostępne w 8 językach"
  }
@@ -4254,7 +4263,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.20':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.20';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.21':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.21';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -5909,7 +5918,9 @@ const mascotaLS='mascotas_mascota_v1';
 let petNombre='', petColor='original', petAvatar='clasico';
 /* v10.5 — Avatares de perritos (29 videos corriendo, cámara fija atrás).
    Solo se carga el video del perrito seleccionado (lazy); el resto solo usa
-   su PNG. El clásico (g1-g4/gstop) sigue siendo la mascota por defecto. */
+   su PNG. El clásico (g1-g4/gstop) sigue siendo la mascota por defecto.
+   v10.21 — la mascota clásica (labrador chocolate, logo oficial) se llama
+   Toby: su etiqueta en la rejilla es "Toby" y el panel Acerca lo presenta. */
 const AVATARES=[
  {id:'pug-negro',png:'mascota/avatares/pug-negro.png',mp4:'mascota/avatares/pug-negro.mp4'},
  {id:'naranja-peludo',png:'mascota/avatares/naranja-peludo.png',mp4:'mascota/avatares/naranja-peludo.mp4'},

@@ -155,7 +155,7 @@ ambas quedan en **168 lugares** (no 161): la unión real es 154 compartidos
 - **Parques y peluquerías de las ciudades SIN tope** (23 en Europa,
   resto en LatAm/Canadá): no se agregaron en esta pasada; el tope no
   las bloqueaba, pero la tarea era los candidatos que quedaron fuera
-  POR el tope.
+  POR el tope. **Hecho en v10.21** (+876 lugares, ver NOTA-v1021.md §3).
 - **El tope no garantiza mezcla por categoría en una re-cosecha:**
   una cosecha futura con el tope nuevo vuelve a ordenar por
   completitud y distancia y puede volver a dejar fuera
