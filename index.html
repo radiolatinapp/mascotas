@@ -4,7 +4,7 @@
 <meta name="theme-color" content="#0E7C66">
 <title>PetNear</title>
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icono-192.png">
+<link rel="icon" href="icono-192-v3.png">
 <link href="vendor/maplibre-gl.css" rel="stylesheet">
 <script>
 /* v10.3 — H9: si un archivo no carga, se avisa en pantalla (antes de que exista i18n). */
@@ -37,13 +37,13 @@ window.addEventListener('DOMContentLoaded',function(){
 <style>
 html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#EFEDE6;overflow:hidden}
 #map{position:absolute;inset:0}
-.topbar{position:absolute;top:0;left:0;right:0;z-index:6;padding:12px 12px 30px;background:linear-gradient(rgba(20,52,43,.85),rgba(20,52,43,0));pointer-events:none}
+.topbar{position:absolute;top:0;left:0;right:0;z-index:6;padding:12px 12px 0;background:transparent;pointer-events:none}
 .topbar>*{pointer-events:auto}
 .brand{display:flex;align-items:center;gap:9px;color:#fff;font-size:21px;font-weight:800;letter-spacing:.2px;text-shadow:0 1px 4px rgba(0,0,0,.45)}
 .brand img{width:36px;height:36px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.35);background:#fff}
-.search{margin-top:10px;background:#fff;border-radius:24px;padding:4px 8px 4px 16px;box-shadow:0 3px 10px rgba(0,0,0,.25);display:flex;gap:8px;align-items:center;transition:box-shadow .2s ease}
+.search{margin-top:0;background:#fff;border-radius:999px;padding:5px 6px 5px 8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:flex;gap:8px;align-items:center;transition:box-shadow .2s ease}
 .search:focus-within{box-shadow:0 3px 10px rgba(0,0,0,.25),0 0 0 3px rgba(14,124,102,.35)}
-.search input{border:0;outline:0;font-size:15px;width:100%;padding:8px 0;color:#333;background:transparent}
+.search input{border:0;outline:0;font-size:15px;flex:1;min-width:0;padding:8px 0;color:#333;background:transparent}
 .sug{position:absolute;top:100%;margin-top:6px;left:12px;right:12px;z-index:8;background:#fff;border-radius:16px;box-shadow:0 8px 22px rgba(0,0,0,.32);max-height:46vh;overflow:auto;display:none}
 .sugItem{display:flex;gap:10px;align-items:center;padding:11px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;transition:background .15s ease}
 .sugItem:hover{background:#F2F7F2}
@@ -53,11 +53,86 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .chip{border:0;background:rgba(255,255,255,.97);border-radius:18px;padding:7px 13px;font-size:13px;font-weight:700;color:#333;box-shadow:0 2px 5px rgba(0,0,0,.25);display:flex;align-items:center;gap:5px;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
 .chip:active{transform:scale(.96)}
-.zonaEstado{position:absolute;top:238px;left:12px;z-index:6;border:0;background:rgba(20,52,43,.88);color:#fff;border-radius:18px;padding:7px 13px;font-size:12.5px;font-weight:700;box-shadow:0 2px 5px rgba(0,0,0,.25);display:flex;align-items:center;white-space:normal;line-height:1.35;cursor:pointer;max-width:58vw;text-align:left;animation:fadeIn .25s ease}
+.zonaEstado{position:absolute;top:178px;left:12px;z-index:6;border:0;background:rgba(20,52,43,.88);color:#fff;border-radius:18px;padding:7px 13px;font-size:12.5px;font-weight:700;box-shadow:0 2px 5px rgba(0,0,0,.25);display:flex;align-items:center;white-space:normal;line-height:1.35;cursor:pointer;max-width:58vw;text-align:left;animation:fadeIn .25s ease}
 /* v10.19 — Letrero de ciudad con información compartida (Guadalajara/Zapopan):
    píldora visible en la barra superior, debajo de los chips. */
-.avisoCiudad{position:absolute;top:284px;left:12px;z-index:6;max-width:66vw;background:#FFF3CD;border:1.5px solid #E6C87A;color:#6B4E00;border-radius:12px;padding:8px 11px;font-size:12.5px;font-weight:700;line-height:1.35;box-shadow:0 2px 5px rgba(0,0,0,.18)}
+.avisoCiudad{position:absolute;top:130px;left:12px;z-index:6;max-width:66vw;background:#FFF3CD;border:1.5px solid #E6C87A;color:#6B4E00;border-radius:12px;padding:8px 11px;font-size:12.5px;font-weight:700;line-height:1.35;box-shadow:0 2px 5px rgba(0,0,0,.18)}
 .chip.on{background:#0E7C66;color:#fff}
+/* v10.24 — Rediseño estilo Google Maps: barra flotante + píldoras,
+   hoja inferior "Lugares cerca de ti", navegación inferior y pantalla
+   de "Cómo llegar". Verde PetNear #0E7C66, SVG reales, cero emojis. */
+.pillsRow{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:2px 2px 4px}
+.pillsRow::-webkit-scrollbar{display:none}
+.pill{flex:none;border:0;background:#fff;border-radius:999px;padding:9px 16px;font-size:14px;font-weight:700;color:#14342B;box-shadow:0 2px 6px rgba(0,0,0,.22);cursor:pointer;transition:transform .15s ease,background .15s ease,color .15s ease;white-space:nowrap}
+.pill:active{transform:scale(.96)}
+.pill.on{background:#0E7C66;color:#fff}
+.logoMini{flex:none;width:42px;height:42px;border-radius:50%;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.micBtn{flex:none;width:38px;height:38px;border:0;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.micBtn:active{background:#E4F2EC}
+.micBtn.escuchando{background:#0E7C66}
+.micBtn.escuchando svg{stroke:#fff}
+.avatarBtn{flex:none;width:38px;height:38px;border:0;border-radius:50%;padding:0;overflow:hidden;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.25);background:#0E7C66}
+.avatarBtn img{width:100%;height:100%;object-fit:cover;display:block}
+#hojaCercanos{position:absolute;left:0;right:0;bottom:calc(62px + env(safe-area-inset-bottom));z-index:7;background:#fff;border-radius:24px 24px 0 0;box-shadow:0 -6px 24px rgba(0,0,0,.28);padding:8px 16px 12px;max-height:34vh;overflow-y:auto;transition:max-height .3s ease}
+#hojaCercanos.expandida{max-height:62vh}
+.hojaTirador{display:block;width:44px;height:5px;border:0;border-radius:999px;background:#D8D8D8;margin:2px auto 8px;cursor:pointer;padding:0}
+.hojaHead{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.hojaHead h2{margin:0;font-size:21px;font-weight:800;color:#14342B}
+.hojaVerMas{flex:none;border:0;background:transparent;color:#0E7C66;font-size:13.5px;font-weight:800;cursor:pointer;padding:4px 2px}
+.hojaCard{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid #eee;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,.10);padding:12px;margin-top:10px;cursor:pointer}
+.hojaCard:active{background:#F2F7F2}
+.hojaCard .logoBox{width:56px;height:56px}
+.hojaInfo{flex:1;min-width:0}
+.hojaInfo .nm{font-size:16px;font-weight:800;color:#14342B;line-height:1.25}
+.hojaMeta{font-size:13px;color:#555;margin-top:3px;line-height:1.35}
+.hojaMeta .stars{color:#F5A800}
+.tagVerde{display:inline-block;background:#0E7C66;color:#fff;font-size:12px;font-weight:800;border-radius:999px;padding:4px 10px;margin-top:7px}
+.hojaDirBtn{flex:none;width:38px;height:38px;border:0;border-radius:50%;background:#E4F2EC;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:8px}
+.hojaDirBtn:active{background:#0E7C66}
+.hojaDirBtn:active svg{stroke:#fff}
+.hojaPie{font-size:11px;color:#999;margin-top:12px;line-height:1.4}
+#navInferior{position:fixed;left:0;right:0;bottom:0;z-index:9;height:62px;background:#fff;box-shadow:0 -2px 12px rgba(0,0,0,.14);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+.navBtn{flex:1;border:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12.5px;font-weight:700;color:#5f6368;cursor:pointer}
+.navBtn svg{width:24px;height:24px}
+.navBtn.on{color:#0E7C66}
+.navBtn:active{background:#F2F7F2}
+#panelDirecciones{top:0;bottom:calc(62px + env(safe-area-inset-bottom));left:0;right:0;max-height:none;border-radius:0;padding:calc(10px + env(safe-area-inset-top)) 16px 16px;overflow-y:auto}
+.dirHead{display:flex;gap:10px;align-items:flex-start}
+.dirBack{flex:none;width:40px;height:40px;border:0;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:6px}
+.dirBack:active{background:#EEF2EE}
+.dirCampos{flex:1;min-width:0;border:1px solid #e3e3e3;border-radius:16px;overflow:hidden}
+.dirCampo{display:flex;align-items:center;gap:11px;width:100%;border:0;background:#fff;padding:13px 12px;font-size:15px;font-weight:600;color:#14342B;cursor:pointer;text-align:left}
+.dirCampo .ph{color:#80868b;font-weight:600}
+.dirCampo .tx{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dirSep{height:1px;background:#e3e3e3;margin:0 12px}
+.dirDot{flex:none;width:12px;height:12px;border-radius:50%;background:#1A73E8;box-shadow:0 0 0 3px rgba(26,115,232,.18)}
+.dirPin{flex:none;display:flex}
+.dirSwap{flex:none;width:40px;height:40px;border:0;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:26px}
+.dirSwap:active{background:#EEF2EE}
+.dirModos{display:flex;gap:8px;margin-top:14px}
+.dirModo{flex:1;border:1.5px solid #e3e3e3;border-radius:14px;background:#fff;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:#5f6368;cursor:pointer}
+.dirModo.on{border-color:#0E7C66;color:#0E7C66;background:#EAF6F1}
+.dirAtajos{display:flex;gap:8px;margin-top:12px}
+.dirAtajo{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:1px solid #e3e3e3;border-radius:14px;background:#fff;padding:10px 4px 8px}
+.dirAtajo:active{background:#F2F7F2}
+.dirAtajo .lb{font-size:13.5px;font-weight:800;color:#14342B}
+.dirAtajo .sub{font-size:11.5px;color:#80868b;font-weight:600;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dirAtajo .setBtn{border:0;background:transparent;color:#0E7C66;font-size:11.5px;font-weight:800;cursor:pointer;padding:2px 4px}
+.dirAtajoMain{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;width:100%;padding:0}
+.dirSec{margin-top:16px}
+.dirSec h4{margin:0 0 4px;font-size:15px;font-weight:800;color:#14342B}
+.dirRecRow{display:flex;gap:12px;align-items:flex-start;padding:11px 2px;border-bottom:1px solid #f0f0f0;cursor:pointer}
+.dirRecRow:last-child{border-bottom:0}
+.dirRecRow .nm{font-size:14.5px;font-weight:700;color:#14342B;line-height:1.25}
+.dirRecRow .meta2{font-size:12.5px;color:#777;margin-top:2px;line-height:1.35}
+.dirBuscar{width:100%;box-sizing:border-box;border:1.5px solid #0E7C66;border-radius:12px;padding:11px 12px;font-size:15px;outline:0;margin-top:10px}
+.dirSugItem{display:flex;gap:10px;align-items:center;padding:11px 6px;border-bottom:1px solid #f0f0f0;cursor:pointer}
+.dirSugItem .nm{font-size:14.5px;font-weight:700;color:#14342B}
+.dirSugItem .cat{font-size:12px;color:#777}
+.dirOpt{display:flex;align-items:center;gap:11px;width:100%;border:0;background:#fff;padding:12px 6px;font-size:15px;font-weight:600;color:#14342B;cursor:pointer;text-align:left;border-bottom:1px solid #f0f0f0}
+#bDirIr{width:100%;margin-top:16px;padding:13px 0;font-size:16px}
+#bDirIr:disabled{opacity:.45;cursor:default}
+
 /* v10.15 — Menú hamburguesa: botón de 3 líneas arriba a la derecha y panel lateral. */
 /* v10.16 — Menú lateral a la medida: altura según el contenido (sin bottom:0), esquinas inferiores redondeadas y max-height con scroll interno en pantallas bajas. */
 /* v10.17 — Corrección auditoría (PN-01 a PN-30): Premium en modo demo sin derechos reales (reglas Firestore endurecidas), XSS con escHtml/sanUrl, auth anónima con refreshToken y renovación, paginación con nextPageToken, consultas por zona, SW con precaché mínima y estrategias por ruta, scripts con defer, Overpass con AbortController, avatares con preload metadata, caché geo con LRU, fotos con tope, frescura de datos y firebase.js extraído (PN-22). */
@@ -86,7 +161,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
    con miniatura del estilo actual + panel desplegable con las 4 vistas,
    y botones redondos de ubicación (Mi ubicación / Modo GPS) en la misma
    columna derecha. Iconos SVG reales, cero emojis. */
-.capasBtn{position:absolute;top:196px;right:12px;z-index:7;width:48px;height:48px;border:2px solid #fff;border-radius:12px;overflow:hidden;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.35);padding:0;transition:transform .15s ease}
+.capasBtn{position:absolute;top:140px;right:12px;z-index:7;width:48px;height:48px;border:2px solid #fff;border-radius:12px;overflow:hidden;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.35);padding:0;transition:transform .15s ease}
 .capasBtn:active{transform:scale(.93)}
 .capasThumb{position:absolute;inset:0}
 .capasBtn[data-vista="ilus"] .capasThumb{background:#f2efe6}
@@ -96,7 +171,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .capasIcon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 .capasIcon svg{filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));stroke:#14342B}
 #btnCapas[data-vista="sat"] .capasIcon svg{stroke:#fff}
-.views{position:absolute;top:252px;right:12px;z-index:8;display:none;width:236px;box-sizing:border-box;background:#fff;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.35);padding:10px;grid-template-columns:1fr 1fr;gap:8px}
+.views{position:absolute;top:196px;right:12px;z-index:8;display:none;width:236px;box-sizing:border-box;background:#fff;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.35);padding:10px;grid-template-columns:1fr 1fr;gap:8px}
 .views.abierto{display:grid}
 .views button{position:relative;border:2px solid #e8e8e8;border-radius:12px;padding:0 0 6px;background:#fff;cursor:pointer;overflow:hidden;text-align:left;transition:border-color .15s ease,transform .15s ease}
 .views button:active{transform:scale(.96)}
@@ -110,12 +185,12 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 @keyframes pulsoVivo{0%{opacity:.95}50%{opacity:.2}100%{opacity:.95}}
 .gpsbtn{position:absolute;right:12px;z-index:6;width:46px;height:46px;border:0;border-radius:50%;background:#fff;color:#14342B;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s ease,background .2s ease,color .2s ease}
 .gpsbtn:active,.brujula:active,.zoomBtn:active{transform:scale(.93)}
-#btnYo{top:256px}
-#btnGps{top:310px}
-.atrasBtn{position:absolute;top:196px;left:12px;z-index:7;border:0;border-radius:20px;padding:8px 13px;font-size:13.5px;font-weight:800;background:#fff;color:#14342B;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer;display:flex;align-items:center;gap:6px;transition:transform .15s ease}
+#btnYo{top:200px}
+#btnGps{top:254px}
+.atrasBtn{position:absolute;top:140px;left:12px;z-index:7;border:0;border-radius:20px;padding:8px 13px;font-size:13.5px;font-weight:800;background:#fff;color:#14342B;box-shadow:0 3px 10px rgba(0,0,0,.35);cursor:pointer;display:flex;align-items:center;gap:6px;transition:transform .15s ease}
 .atrasBtn:active{transform:scale(.96)}
 .gpsbtn.on{background:#0E7C66;color:#fff}
-.brujula{position:absolute;top:364px;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.brujula{position:absolute;top:308px;right:12px;z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .zoomBtn{position:absolute;right:12px;z-index:6;width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);border:0;cursor:pointer;font-size:19px;font-weight:800;color:#333}
 .logoBox{width:54px;height:54px;border-radius:15px;flex:none;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .logoBox svg{width:30px;height:30px}
@@ -141,7 +216,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .pinCiudad{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,#0E7C66,#0a5c4c);color:#fff;border:2.5px solid #fff;border-radius:999px;padding:8px 13px 8px 9px;font-size:14px;font-weight:700;line-height:1;box-shadow:0 6px 16px rgba(0,0,0,.45);cursor:pointer;white-space:nowrap;animation:pinPop .3s ease}
 .pinCiudad svg{flex:none;display:block}
 .cerrarCard{flex:none;width:30px;height:30px;border:0;border-radius:50%;background:#EEF2EE;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.panel{position:absolute;left:10px;right:10px;bottom:10px;z-index:7;background:#fff;border-radius:22px;box-shadow:0 12px 32px rgba(0,0,0,.38);padding:14px 15px;max-height:70vh;overflow-y:auto;animation:slideUp .3s ease}
+.panel{position:absolute;left:10px;right:10px;bottom:calc(72px + env(safe-area-inset-bottom));z-index:7;background:#fff;border-radius:22px;box-shadow:0 12px 32px rgba(0,0,0,.38);padding:14px 15px;max-height:70vh;overflow-y:auto;animation:slideUp .3s ease}
 @keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes pinPop{from{transform:rotate(-45deg) scale(.55);opacity:0}to{transform:rotate(-45deg) scale(1);opacity:1}}
@@ -172,7 +247,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .inputTxt{width:100%;border:2px solid #ddd;border-radius:12px;padding:10px 12px;font-size:15px;box-sizing:border-box}
 #card.viaje .ocultarViaje{display:none!important}
 .you{width:22px;height:22px;border-radius:50%;background:#2E7CF6;border:4px solid #fff;box-shadow:0 0 0 9px rgba(46,124,246,.28),0 2px 8px rgba(0,0,0,.4)}
-.card{position:absolute;left:10px;right:10px;bottom:10px;z-index:6;background:#fff;border-radius:22px;box-shadow:0 12px 32px rgba(0,0,0,.38);padding:14px 16px;max-height:62vh;overflow-y:auto;animation:slideUp .35s ease}
+.card{position:absolute;left:10px;right:10px;bottom:calc(72px + env(safe-area-inset-bottom));z-index:6;background:#fff;border-radius:22px;box-shadow:0 12px 32px rgba(0,0,0,.38);padding:14px 16px;max-height:62vh;overflow-y:auto;animation:slideUp .35s ease}
 .card h3{margin:0;font-size:18.5px;color:#14342B}
 .stars{color:#F5A623;font-size:14px;letter-spacing:1px}
 .meta{font-size:13.5px;color:#555;margin-top:2px}
@@ -217,7 +292,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .pin2.pinAdopcion{animation:pinPop .3s ease,pinPulseAd 2.4s infinite}
 @keyframes pinPulseAd{0%,100%{box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 0 0 rgba(236,72,153,.45)}50%{box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 0 12px rgba(236,72,153,0)}}
 /* v10.7 — Aviso de mascotas perdidas cerca (banner). */
-#bannerPerdidas{position:fixed;left:50%;transform:translateX(-50%);top:118px;z-index:40;display:none;align-items:center;gap:8px;background:#fff3f3;border:1.5px solid #c0392b;border-radius:14px;padding:8px 10px;max-width:min(92vw,430px);box-shadow:0 6px 20px rgba(0,0,0,.28);font-size:13px;font-weight:700;color:#7b1f16}
+#bannerPerdidas{position:fixed;left:50%;transform:translateX(-50%);top:132px;z-index:40;display:none;align-items:center;gap:8px;background:#fff3f3;border:1.5px solid #c0392b;border-radius:14px;padding:8px 10px;max-width:min(92vw,430px);box-shadow:0 6px 20px rgba(0,0,0,.28);font-size:13px;font-weight:700;color:#7b1f16}
 #bannerPerdidas .bpVer{background:#c0392b;color:#fff;border:none;border-radius:9px;padding:6px 12px;font-weight:800;flex:none}
 #bannerPerdidas .bpX{background:transparent;border:none;font-size:16px;color:#7b1f16;padding:2px 6px;flex:none}
 /* v10.7 — Premium: beneficios y caja de precio. */
@@ -249,7 +324,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 .splash-bone{position:absolute;top:50%;left:0%;transform:translate(-50%,-50%);width:34px;height:20px;transition:left .3s ease;filter:drop-shadow(0 2px 3px rgba(20,52,43,.35));pointer-events:none}
 .splash-pct{margin-top:14px;font-size:13px;font-weight:700;color:#5a6d60}
 </style></head><body>
-<div id="splash" role="status" aria-label="PetNear"><div class="splash-inner"><img class="splash-logo" src="icono-512.png" alt="PetNear"><div class="splash-name">PetNear</div><div class="splash-tag" id="splashTag">Encuentra veterinarias, tiendas y más cerca de ti</div><div class="splash-bar"><div class="splash-fill" id="splashFill"></div><div class="splash-bone" id="splashBone"><svg width="34" height="20" viewBox="0 0 68 40" aria-hidden="true"><g fill="#ffffff" stroke="#0E7C66" stroke-width="2.5"><circle cx="13" cy="12" r="9"/><circle cx="13" cy="28" r="9"/><circle cx="55" cy="12" r="9"/><circle cx="55" cy="28" r="9"/><rect x="13" y="10" width="42" height="20" rx="6" stroke="none"/></g><rect x="13" y="10" width="42" height="20" rx="6" fill="#ffffff"/></svg></div></div><div class="splash-pct" id="splashPct">Cargando…</div></div></div>
+<div id="splash" role="status" aria-label="PetNear"><div class="splash-inner"><img class="splash-logo" src="icono-512-v3.png" alt="PetNear"><div class="splash-name">PetNear</div><div class="splash-tag" id="splashTag">Encuentra veterinarias, tiendas y más cerca de ti</div><div class="splash-bar"><div class="splash-fill" id="splashFill"></div><div class="splash-bone" id="splashBone"><svg width="34" height="20" viewBox="0 0 68 40" aria-hidden="true"><g fill="#ffffff" stroke="#0E7C66" stroke-width="2.5"><circle cx="13" cy="12" r="9"/><circle cx="13" cy="28" r="9"/><circle cx="55" cy="12" r="9"/><circle cx="55" cy="28" r="9"/><rect x="13" y="10" width="42" height="20" rx="6" stroke="none"/></g><rect x="13" y="10" width="42" height="20" rx="6" fill="#ffffff"/></svg></div></div><div class="splash-pct" id="splashPct">Cargando…</div></div></div>
 <script>
 /* v10.22 — Control del splash: avanza con la carga real y nunca bloquea la app. */
 (function(){
@@ -277,25 +352,30 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <div id="bannerPerdidas"><span id="bpTxt"></span><button class="bpVer" id="bpVer" data-i18n="avisoVer">Ver</button><button class="bpX" id="bpX" aria-label="Cerrar">✕</button></div>
 <div id="map"></div>
 <div class="topbar">
-  <div class="brandRow"><div class="brand"><img src="icono-512.png" alt="PetNear"><span data-i18n="appTitle">PetNear</span></div><button id="bMenu" class="burger" data-i18n-title="menuTitulo" title="Menu" aria-label="Menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
-  <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="buscador" type="text" data-i18n-ph="searchPh" placeholder="Search vets, pet stores, zoos, restaurants…"></div>
+  <div class="search"><img class="logoMini" src="icono-192-v3.png" alt="PetNear"><input id="buscador" type="text" data-i18n-ph="searchPh" placeholder="Search vets, pet stores, parks…"><button id="bMic" class="micBtn" data-i18n-title="micTitulo" title="Voice search" aria-label="Voice search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7C66" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5"/></svg></button><button id="bAvatar" class="avatarBtn" data-i18n-title="menuTitulo" title="Menu" aria-label="Menu"><img src="icono-192-v3.png" alt="PetNear"></button></div>
   <div id="sug" class="sug"></div>
-  <div style="display:flex;gap:8px;margin-top:10px">
-    <button class="catBtn" id="bCategorias"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg><span data-i18n="btnCategorias">Categories</span></button>
-  </div>
-  <div class="chips" id="acciones" style="margin-top:6px">
-    <button class="chip" id="bPerdidas" data-i18n="btnPerdida">Lost pet</button>
-    <button class="chip" id="bAdopciones" data-i18n="btnAdopcion">Adoptions</button>
-    <button class="chip" id="bMascota" data-i18n="btnMascota">My pet</button>
-    <button class="chip" id="bFavoritos" data-i18n="btnFavoritos">Favorites</button>
-    <span id="zonaEstado" class="zonaEstado" style="display:none"></span>
-  </div>
+  <div class="pillsRow" id="pillsRow" role="tablist" aria-label="Categories"></div>
+  <span id="zonaEstado" class="zonaEstado" style="display:none"></span>
 </div>
 <div id="avisoCiudad" class="avisoCiudad" style="display:none"></div>
+<section id="hojaCercanos" aria-label="Lugares cerca de ti" style="display:none">
+  <button class="hojaTirador" id="hojaTirador" aria-label="Ver más"></button>
+  <div class="hojaHead"><h2 data-i18n="cercaTitulo">Lugares cerca de ti</h2><button class="hojaVerMas" id="hojaVerMas" data-i18n="verMas">Ver más</button></div>
+  <div id="hojaLista"></div>
+  <div class="hojaPie" id="hojaPie"></div>
+</section>
+<nav id="navInferior" aria-label="PetNear">
+  <button class="navBtn on" id="bNavExplorar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><polygon points="15.5 8.5 13.5 13.5 8.5 15.5 10.5 10.5" fill="currentColor" stroke="none"/></svg><span data-i18n="navExplorar">Explorar</span></button>
+  <button class="navBtn" id="bNavFavoritos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20S4 15.5 4 9.8A4.6 4.6 0 0 1 12 6.4a4.6 4.6 0 0 1 8 3.4C20 15.5 12 20 12 20z"/></svg><span data-i18n="btnFavoritos">Favoritos</span></button>
+  <button class="navBtn" id="bNavMascota"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4.5C4.8 5.6 4.2 8 4.8 10.5c.4 1.7 1.6 2.4 2.4 1.8"/><path d="M17.5 4.5c1.7 1.1 2.3 3.5 1.7 6-.4 1.7-1.6 2.4-2.4 1.8"/><path d="M12 5.5c-3.6 0-6 2.6-6 6 0 3.8 2.7 6.5 6 6.5s6-2.7 6-6.5c0-3.4-2.4-6-6-6z"/><circle cx="9.4" cy="10.6" r=".5" fill="currentColor" stroke="none"/><circle cx="14.6" cy="10.6" r=".5" fill="currentColor" stroke="none"/><path d="M12 13.2c-.7 0-1.1.5-1.1 1 0 .7.5 1.3 1.1 1.3s1.1-.6 1.1-1.3c0-.5-.4-1-1.1-1z" fill="currentColor" stroke="none"/></svg><span data-i18n="btnMascota">Mi mascota</span></button>
+</nav>
+
 <div id="menuFondo" class="menuFondo" style="display:none"></div>
 <aside id="menuLateral" class="menuLateral" aria-label="PetNear">
-  <div class="menuHead"><img src="icono-512.png" alt="PetNear"><span>PetNear</span><button id="bCerrarMenu" class="menuX" data-i18n-title="menuTitulo" title="Menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="3" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+  <div class="menuHead"><img src="icono-512-v3.png" alt="PetNear"><span>PetNear</span><button id="bCerrarMenu" class="menuX" data-i18n-title="menuTitulo" title="Menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="3" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
   <button class="menuItem" id="mVisitas"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span data-i18n="btnVisitas">My visits</span></button>
+  <button class="menuItem" id="mPerdidas"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2.4"><circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L20 20" stroke-linecap="round"/><ellipse cx="10" cy="11" rx="2.2" ry="1.8" fill="#14342B" stroke="none"/><circle cx="8" cy="8.4" r=".9" fill="#14342B" stroke="none"/><circle cx="12" cy="8.4" r=".9" fill="#14342B" stroke="none"/></svg><span data-i18n="btnPerdida">Lost pet</span></button>
+  <button class="menuItem" id="mAdopciones"><svg width="19" height="19" viewBox="0 0 24 24" fill="#14342B"><path d="M12 20S4 15.5 4 9.8A4.6 4.6 0 0 1 12 6.4a4.6 4.6 0 0 1 8 3.4C20 15.5 12 20 12 20z"/></svg><span data-i18n="btnAdopcion">Adoptions</span></button>
   <button class="menuItem gold" id="mPremium"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#8a6508" stroke-width="2" stroke-linejoin="round"><path d="M3 8l4.5 3L12 5l4.5 6L21 8l-1.6 9.5a1.5 1.5 0 0 1-1.5 1.3H6.1a1.5 1.5 0 0 1-1.5-1.3L3 8z"/></svg><span data-i18n="btnPremium">Go premium</span></button>
   <div class="menuItem menuIdiomaRow"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span data-i18n="menuIdioma">Language</span><select id="selIdioma" class="chip" style="appearance:none;-webkit-appearance:none" aria-label="Language"><option value="es">Español</option><option value="en">English</option><option value="pt">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="nl">Nederlands</option><option value="pl">Polski</option></select></div>
   <button class="menuItem" id="mConfig"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span data-i18n="menuConfig">Settings</span></button>
@@ -313,9 +393,9 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 <button id="btnGps" class="gpsbtn on" title="GPS mode" data-i18n-title="btnGps" aria-label="GPS mode"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L19 21 L12 17 L5 21 Z"/></svg></button>
 <button id="btnYo" class="gpsbtn" title="My location" data-i18n-title="btnYo" aria-label="My location"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><line x1="12" y1="1.5" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22.5" y2="12"/></svg></button>
 <button id="btnBrujula" class="brujula" title="Norte" data-i18n-title="compassTitle"><svg id="aguja" width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L17 12 L12 9.5 L7 12 Z" fill="#E5322D"/><path d="M12 22 L7 12 L12 14.5 L17 12 Z" fill="#888"/></svg></button>
-<button id="btnZoomMas" class="zoomBtn" style="top:420px">+</button>
-<button id="btnZoomMenos" class="zoomBtn" style="top:458px">−</button>
-<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.23</div>
+<button id="btnZoomMas" class="zoomBtn" style="top:364px">+</button>
+<button id="btnZoomMenos" class="zoomBtn" style="top:402px">−</button>
+<div class="attr" id="attrMapa">© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.24</div>
 <div class="card" id="card" style="display:none">
   <div id="bannerTurno" style="display:none;background:#14342B;color:#fff;border-radius:13px;padding:10px 12px;margin-bottom:10px"></div>
   <div id="pregLlegada" style="display:none;background:#F2F7F2;border-radius:13px;padding:10px 12px;margin-bottom:10px">
@@ -648,6 +728,43 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
     </div>
   </div>
 </div>
+<div class="panel" id="panelDirecciones" style="display:none">
+  <div class="dirHead">
+    <button id="bDirAtras" class="dirBack" aria-label="Atrás"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="dirCampos">
+      <button class="dirCampo" id="dirOrigenBtn"><span class="dirDot"></span><span class="tx" id="dirOrigenTxt">Tu ubicación</span></button>
+      <div class="dirSep"></div>
+      <button class="dirCampo" id="dirDestinoBtn"><span class="dirPin"><svg width="17" height="17" viewBox="0 0 24 24" fill="#E5322D"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="3" fill="#fff"/></svg></span><span class="tx ph" id="dirDestinoTxt">Elige un destino</span></button>
+    </div>
+    <button id="bDirSwap" class="dirSwap" data-i18n-title="dirIntercambiar" title="Intercambiar origen y destino" aria-label="Intercambiar origen y destino"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v13M7 17l-3-3M7 17l3-3M17 20V7M17 7l-3 3M17 7l3 3"/></svg></button>
+  </div>
+  <div class="dirModos" id="dirModos">
+    <button class="dirModo on" data-modo="driving"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 16l1.2-5.2A2 2 0 0 1 8.2 9h7.6a2 2 0 0 1 2 1.8L19 16"/><rect x="3.5" y="16" width="17" height="4.5" rx="1.2"/><circle cx="7.5" cy="20.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="16.5" cy="20.5" r="1.4" fill="currentColor" stroke="none"/></svg><span data-i18n="dirCarro">Carro</span></button>
+    <button class="dirModo" data-modo="transit"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="3" width="16" height="14" rx="2.5"/><path d="M4 10h16M8 20l1.5-3M16 20l-1.5-3"/><circle cx="8.5" cy="13.5" r=".6" fill="currentColor" stroke="none"/><circle cx="15.5" cy="13.5" r=".6" fill="currentColor" stroke="none"/></svg><span data-i18n="dirTransito">Transporte público</span></button>
+    <button class="dirModo" data-modo="walking"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="4.5" r="1.8"/><path d="M13 8l-2.5 5L8 14.5M13 8l2 3 3 .8M10.5 13L9 20.5M13.5 13.5 15 17l1 4"/></svg><span data-i18n="dirPie">A pie</span></button>
+  </div>
+  <div class="dirAtajos">
+    <div class="dirAtajo"><button class="dirAtajoMain" id="dirCasaMain"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linejoin="round"><path d="M4 11L12 4l8 7v9H4z"/><path d="M9 20v-6h6v6"/></svg><span class="lb" data-i18n="dirCasa">Casa</span><span class="sub" id="dirCasaSub">Establecer</span></button><button class="setBtn" id="dirCasaSet" style="display:none">Cambiar</button></div>
+    <div class="dirAtajo"><button class="dirAtajoMain" id="dirTrabajoMain"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg><span class="lb" data-i18n="dirTrabajo">Trabajo</span><span class="sub" id="dirTrabajoSub">Establecer</span></button><button class="setBtn" id="dirTrabajoSet" style="display:none">Cambiar</button></div>
+    <div class="dirAtajo"><button class="dirAtajoMain" id="dirMasBtn"><svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8" fill="#14342B"/><circle cx="12" cy="12" r="1.8" fill="#14342B"/><circle cx="19" cy="12" r="1.8" fill="#14342B"/></svg><span class="lb" data-i18n="dirMas">Más</span><span class="sub" data-i18n="btnFavoritos">Favoritos</span></button></div>
+  </div>
+  <div id="dirOrigenBox" style="display:none;margin-top:10px;border:1px solid #e3e3e3;border-radius:14px;overflow:hidden">
+    <button class="dirOpt" data-origen="yo"><span class="dirDot"></span><span data-i18n="dirOrigen">Tu ubicación</span></button>
+    <button class="dirOpt" data-origen="casa" id="dirOptCasa" style="display:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linejoin="round"><path d="M4 11L12 4l8 7v9H4z"/><path d="M9 20v-6h6v6"/></svg><span data-i18n="dirCasa">Casa</span></button>
+    <button class="dirOpt" data-origen="trabajo" id="dirOptTrabajo" style="display:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#14342B" stroke-width="2" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg><span data-i18n="dirTrabajo">Trabajo</span></button>
+  </div>
+  <div id="dirBuscadorBox" style="display:none">
+    <input class="dirBuscar" id="dirBuscar" type="text" data-i18n-ph="dirBuscarDestino" placeholder="Buscar un lugar de mascotas…">
+    <div id="dirSug"></div>
+  </div>
+  <div id="dirMasBox" style="display:none;margin-top:12px">
+    <div class="dirSec"><h4 data-i18n="panelFavoritos">Favoritos</h4><div id="dirMasFav"></div></div>
+    <div class="dirSec"><h4 data-i18n="btnVisitas">Mis visitas</h4><div id="dirMasVis"></div></div>
+  </div>
+  <div class="dirSec"><h4 data-i18n="dirRecientes">Recientes</h4><div id="dirRecientes"></div></div>
+  <button class="btn iniciar" id="bDirIr" data-i18n="btnIr">Cómo llegar</button>
+  <div class="meta" style="margin-top:8px" id="dirNota" data-i18n="dirAbreMaps">La ruta se abre en Google Maps</div>
+</div>
 <div class="panel" id="panelCategorias" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="panelQueBuscas">¿Qué buscas?</h3><button class="chip" id="bCerrarCategorias" data-i18n="btnCerrar">Cerrar</button></div>
   <div id="listaCategorias"></div>
@@ -728,7 +845,7 @@ html,body{margin:0;height:100%;font-family:'Segoe UI',system-ui,-apple-system,'H
 </div>
 <div class="panel" id="panelAcerca" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:center"><h3 data-i18n="menuAcerca">About PetNear</h3><button class="chip" data-i18n="btnCerrar" onclick="irAtras()">Close</button></div>
-  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.23</div></div></div>
+  <div style="display:flex;gap:11px;align-items:center;margin-top:10px"><img src="icono-512-v3.png" alt="PetNear" style="width:54px;height:54px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)"><div><div style="font-weight:800;font-size:17px;color:#14342B">PetNear</div><div class="meta"><span data-i18n="aceVersion">Version</span> v10.24</div></div></div>
   <div class="meta" style="margin-top:8px" data-i18n="aceTexto">PetNear helps you find vets, pet stores, pharmacies and shelters for your pet, near you.</div>
   <div class="meta" style="margin-top:6px" data-i18n="aceMascota">Nuestra mascota es Toby, el labrador chocolate.</div>
   <div class="meta" style="margin-top:6px" data-i18n="aceIdiomas">Available in 8 languages</div>
@@ -746,7 +863,43 @@ const IDIOMAS={es:'es-ES',en:'en-US',pt:'pt-BR',fr:'fr-FR',de:'de-DE',it:'it-IT'
 const I18N={
  "es": {
   "appTitle": "PetNear",
-  "searchPh": "Buscar veterinarias, tiendas, zoológicos, restaurantes…",
+  "searchPh": "Buscar veterinarias, tiendas, parques…",
+  "pill.vet": "Veterinarias",
+  "pill.guarderia": "Guarderías",
+  "pill.tienda": "Tiendas",
+  "pill.parque": "Parques",
+  "pill.peluqueria": "Peluquerías",
+  "pill.farma": "Farmacias",
+  "pill.zoo": "Zoológicos",
+  "pill.refugio": "Refugios",
+  "pill.resto": "Restaurantes",
+  "pill.adopcion": "Adopciones",
+  "pill.evento": "Eventos",
+  "cercaTitulo": "Lugares cerca de ti",
+  "navExplorar": "Explorar",
+  "verMas": "Ver más",
+  "verMenos": "Ver menos",
+  "micTitulo": "Búsqueda por voz",
+  "micNoVoz": "La búsqueda por voz no está disponible en este navegador",
+  "micEscuchando": "Escuchando…",
+  "sinCercanos": "No hay lugares cerca en esta zona todavía.",
+  "dirOrigen": "Tu ubicación",
+  "dirDestino": "Elige un destino",
+  "dirCasa": "Casa",
+  "dirTrabajo": "Trabajo",
+  "dirMas": "Más",
+  "dirEstablecer": "Establecer",
+  "dirCambiar": "Cambiar",
+  "dirGuardada": "Guardada",
+  "dirRecientes": "Recientes",
+  "dirSinRecientes": "Aún no tienes lugares recientes",
+  "dirFaltaDestino": "Elige un destino para ver la ruta",
+  "dirAbreMaps": "La ruta se abre en Google Maps",
+  "dirCarro": "Carro",
+  "dirTransito": "Transporte público",
+  "dirPie": "A pie",
+  "dirIntercambiar": "Intercambiar origen y destino",
+  "dirBuscarDestino": "Buscar un lugar de mascotas…",
   "btnCategorias": "Categorías",
   "btnVisitas": "Mis visitas",
   "btnMascota": "Mi mascota",
@@ -1178,7 +1331,43 @@ const I18N={
  },
  "en": {
   "appTitle": "PetNear",
-  "searchPh": "Search vets, pet stores, zoos, restaurants…",
+  "searchPh": "Search vets, pet stores, parks…",
+  "pill.vet": "Vets",
+  "pill.guarderia": "Boarding",
+  "pill.tienda": "Stores",
+  "pill.parque": "Parks",
+  "pill.peluqueria": "Grooming",
+  "pill.farma": "Pharmacies",
+  "pill.zoo": "Zoos",
+  "pill.refugio": "Shelters",
+  "pill.resto": "Restaurants",
+  "pill.adopcion": "Adoptions",
+  "pill.evento": "Events",
+  "cercaTitulo": "Places near you",
+  "navExplorar": "Explore",
+  "verMas": "Show more",
+  "verMenos": "Show less",
+  "micTitulo": "Voice search",
+  "micNoVoz": "Voice search is not available in this browser",
+  "micEscuchando": "Listening…",
+  "sinCercanos": "No places nearby in this area yet.",
+  "dirOrigen": "Your location",
+  "dirDestino": "Choose a destination",
+  "dirCasa": "Home",
+  "dirTrabajo": "Work",
+  "dirMas": "More",
+  "dirEstablecer": "Set",
+  "dirCambiar": "Change",
+  "dirGuardada": "Saved",
+  "dirRecientes": "Recent",
+  "dirSinRecientes": "No recent places yet",
+  "dirFaltaDestino": "Choose a destination to see the route",
+  "dirAbreMaps": "The route opens in Google Maps",
+  "dirCarro": "Car",
+  "dirTransito": "Public transit",
+  "dirPie": "On foot",
+  "dirIntercambiar": "Swap origin and destination",
+  "dirBuscarDestino": "Search a pet place…",
   "btnCategorias": "Categories",
   "btnVisitas": "My visits",
   "btnMascota": "My pet",
@@ -1610,7 +1799,43 @@ const I18N={
  },
  "pt": {
   "appTitle": "PetNear",
-  "searchPh": "Buscar veterinários, pet shops, zoológicos, restaurantes…",
+  "searchPh": "Buscar veterinários, pet shops, parques…",
+  "pill.vet": "Veterinárias",
+  "pill.guarderia": "Hospedagem",
+  "pill.tienda": "Lojas",
+  "pill.parque": "Parques",
+  "pill.peluqueria": "Tosas",
+  "pill.farma": "Farmácias",
+  "pill.zoo": "Zoológicos",
+  "pill.refugio": "Abrigos",
+  "pill.resto": "Restaurantes",
+  "pill.adopcion": "Adoções",
+  "pill.evento": "Eventos",
+  "cercaTitulo": "Lugares perto de você",
+  "navExplorar": "Explorar",
+  "verMas": "Ver mais",
+  "verMenos": "Ver menos",
+  "micTitulo": "Pesquisa por voz",
+  "micNoVoz": "A pesquisa por voz não está disponível neste navegador",
+  "micEscuchando": "Ouvindo…",
+  "sinCercanos": "Ainda não há lugares por perto nesta área.",
+  "dirOrigen": "Sua localização",
+  "dirDestino": "Escolha um destino",
+  "dirCasa": "Casa",
+  "dirTrabajo": "Trabalho",
+  "dirMas": "Mais",
+  "dirEstablecer": "Definir",
+  "dirCambiar": "Alterar",
+  "dirGuardada": "Salva",
+  "dirRecientes": "Recentes",
+  "dirSinRecientes": "Você ainda não tem lugares recentes",
+  "dirFaltaDestino": "Escolha um destino para ver a rota",
+  "dirAbreMaps": "A rota abre no Google Maps",
+  "dirCarro": "Carro",
+  "dirTransito": "Transporte público",
+  "dirPie": "A pé",
+  "dirIntercambiar": "Trocar origem e destino",
+  "dirBuscarDestino": "Buscar um lugar para pets…",
   "btnCategorias": "Categorias",
   "btnVisitas": "Minhas visitas",
   "btnMascota": "Meu pet",
@@ -2041,7 +2266,43 @@ const I18N={
  },
  "fr": {
   "appTitle": "PetNear",
-  "searchPh": "Rechercher vétérinaires, animaleries, zoos, restaurants…",
+  "searchPh": "Rechercher vétérinaires, animaleries, parcs…",
+  "pill.vet": "Vétérinaires",
+  "pill.guarderia": "Garderies",
+  "pill.tienda": "Boutiques",
+  "pill.parque": "Parcs",
+  "pill.peluqueria": "Toilettage",
+  "pill.farma": "Pharmacies",
+  "pill.zoo": "Zoos",
+  "pill.refugio": "Refuges",
+  "pill.resto": "Restaurants",
+  "pill.adopcion": "Adoptions",
+  "pill.evento": "Événements",
+  "cercaTitulo": "Lieux près de chez vous",
+  "navExplorar": "Explorer",
+  "verMas": "Voir plus",
+  "verMenos": "Voir moins",
+  "micTitulo": "Recherche vocale",
+  "micNoVoz": "La recherche vocale n'est pas disponible dans ce navigateur",
+  "micEscuchando": "Écoute…",
+  "sinCercanos": "Aucun lieu à proximité dans cette zone pour le moment.",
+  "dirOrigen": "Votre position",
+  "dirDestino": "Choisir une destination",
+  "dirCasa": "Maison",
+  "dirTrabajo": "Travail",
+  "dirMas": "Plus",
+  "dirEstablecer": "Définir",
+  "dirCambiar": "Modifier",
+  "dirGuardada": "Enregistrée",
+  "dirRecientes": "Récents",
+  "dirSinRecientes": "Aucun lieu récent pour le moment",
+  "dirFaltaDestino": "Choisissez une destination pour voir l'itinéraire",
+  "dirAbreMaps": "L'itinéraire s'ouvre dans Google Maps",
+  "dirCarro": "Voiture",
+  "dirTransito": "Transports en commun",
+  "dirPie": "À pied",
+  "dirIntercambiar": "Inverser le départ et la destination",
+  "dirBuscarDestino": "Rechercher un lieu pour animaux…",
   "btnCategorias": "Catégories",
   "btnVisitas": "Mes visites",
   "btnMascota": "Mon animal",
@@ -2472,7 +2733,43 @@ const I18N={
  },
  "de": {
   "appTitle": "PetNear",
-  "searchPh": "Tierärzte, Tierhandlungen, Zoos, Restaurants suchen…",
+  "searchPh": "Tierärzte, Tierläden, Parks suchen…",
+  "pill.vet": "Tierärzte",
+  "pill.guarderia": "Tierpensionen",
+  "pill.tienda": "Läden",
+  "pill.parque": "Parks",
+  "pill.peluqueria": "Pflegesalons",
+  "pill.farma": "Apotheken",
+  "pill.zoo": "Zoos",
+  "pill.refugio": "Tierheime",
+  "pill.resto": "Restaurants",
+  "pill.adopcion": "Adoptionen",
+  "pill.evento": "Veranstaltungen",
+  "cercaTitulo": "Orte in deiner Nähe",
+  "navExplorar": "Entdecken",
+  "verMas": "Mehr anzeigen",
+  "verMenos": "Weniger anzeigen",
+  "micTitulo": "Sprachsuche",
+  "micNoVoz": "Die Sprachsuche ist in diesem Browser nicht verfügbar",
+  "micEscuchando": "Ich höre zu…",
+  "sinCercanos": "Noch keine Orte in der Nähe in diesem Gebiet.",
+  "dirOrigen": "Dein Standort",
+  "dirDestino": "Ziel wählen",
+  "dirCasa": "Zuhause",
+  "dirTrabajo": "Arbeit",
+  "dirMas": "Mehr",
+  "dirEstablecer": "Festlegen",
+  "dirCambiar": "Ändern",
+  "dirGuardada": "Gespeichert",
+  "dirRecientes": "Letzte",
+  "dirSinRecientes": "Noch keine kürzlichen Orte",
+  "dirFaltaDestino": "Wähle ein Ziel, um die Route zu sehen",
+  "dirAbreMaps": "Die Route öffnet sich in Google Maps",
+  "dirCarro": "Auto",
+  "dirTransito": "Öffentliche Verkehrsmittel",
+  "dirPie": "Zu Fuß",
+  "dirIntercambiar": "Start und Ziel tauschen",
+  "dirBuscarDestino": "Tierort suchen…",
   "btnCategorias": "Kategorien",
   "btnVisitas": "Meine Besuche",
   "btnMascota": "Mein Haustier",
@@ -2903,7 +3200,43 @@ const I18N={
  },
  "it": {
   "appTitle": "PetNear",
-  "searchPh": "Cerca veterinari, negozi di animali, zoo, ristoranti…",
+  "searchPh": "Cerca veterinari, negozi, parchi…",
+  "pill.vet": "Veterinari",
+  "pill.guarderia": "Pensioni",
+  "pill.tienda": "Negozi",
+  "pill.parque": "Parchi",
+  "pill.peluqueria": "Toelettature",
+  "pill.farma": "Farmacie",
+  "pill.zoo": "Zoo",
+  "pill.refugio": "Rifugi",
+  "pill.resto": "Ristoranti",
+  "pill.adopcion": "Adozioni",
+  "pill.evento": "Eventi",
+  "cercaTitulo": "Luoghi vicino a te",
+  "navExplorar": "Esplora",
+  "verMas": "Mostra di più",
+  "verMenos": "Mostra di meno",
+  "micTitulo": "Ricerca vocale",
+  "micNoVoz": "La ricerca vocale non è disponibile in questo browser",
+  "micEscuchando": "Ascolto…",
+  "sinCercanos": "Ancora nessun luogo nelle vicinanze in questa zona.",
+  "dirOrigen": "La tua posizione",
+  "dirDestino": "Scegli una destinazione",
+  "dirCasa": "Casa",
+  "dirTrabajo": "Lavoro",
+  "dirMas": "Altro",
+  "dirEstablecer": "Imposta",
+  "dirCambiar": "Cambia",
+  "dirGuardada": "Salvata",
+  "dirRecientes": "Recenti",
+  "dirSinRecientes": "Ancora nessun luogo recente",
+  "dirFaltaDestino": "Scegli una destinazione per vedere il percorso",
+  "dirAbreMaps": "Il percorso si apre in Google Maps",
+  "dirCarro": "Auto",
+  "dirTransito": "Trasporto pubblico",
+  "dirPie": "A piedi",
+  "dirIntercambiar": "Scambia partenza e destinazione",
+  "dirBuscarDestino": "Cerca un luogo per animali…",
   "btnCategorias": "Categorie",
   "btnVisitas": "Le mie visite",
   "btnMascota": "Il mio animale",
@@ -3334,7 +3667,43 @@ const I18N={
  },
  "nl": {
   "appTitle": "PetNear",
-  "searchPh": "Zoek dierenartsen, dierenwinkels, dierentuinen, restaurants…",
+  "searchPh": "Zoek dierenartsen, winkels, parken…",
+  "pill.vet": "Dierenartsen",
+  "pill.guarderia": "Dierenpensions",
+  "pill.tienda": "Winkels",
+  "pill.parque": "Parken",
+  "pill.peluqueria": "Trimsalons",
+  "pill.farma": "Apotheken",
+  "pill.zoo": "Dierentuinen",
+  "pill.refugio": "Asielen",
+  "pill.resto": "Restaurants",
+  "pill.adopcion": "Adopties",
+  "pill.evento": "Evenementen",
+  "cercaTitulo": "Plekken bij jou in de buurt",
+  "navExplorar": "Verkennen",
+  "verMas": "Meer weergeven",
+  "verMenos": "Minder weergeven",
+  "micTitulo": "Spraakzoeken",
+  "micNoVoz": "Spraakzoeken is niet beschikbaar in deze browser",
+  "micEscuchando": "Luisteren…",
+  "sinCercanos": "Nog geen plekken in de buurt in dit gebied.",
+  "dirOrigen": "Jouw locatie",
+  "dirDestino": "Kies een bestemming",
+  "dirCasa": "Thuis",
+  "dirTrabajo": "Werk",
+  "dirMas": "Meer",
+  "dirEstablecer": "Instellen",
+  "dirCambiar": "Wijzigen",
+  "dirGuardada": "Opgeslagen",
+  "dirRecientes": "Recent",
+  "dirSinRecientes": "Nog geen recente plekken",
+  "dirFaltaDestino": "Kies een bestemming om de route te zien",
+  "dirAbreMaps": "De route opent in Google Maps",
+  "dirCarro": "Auto",
+  "dirTransito": "Openbaar vervoer",
+  "dirPie": "Te voet",
+  "dirIntercambiar": "Wissel vertrek en bestemming",
+  "dirBuscarDestino": "Zoek een dierenplek…",
   "btnCategorias": "Categorieën",
   "btnVisitas": "Mijn bezoeken",
   "btnMascota": "Mijn huisdier",
@@ -3765,7 +4134,43 @@ const I18N={
  },
  "pl": {
   "appTitle": "PetNear",
-  "searchPh": "Szukaj weterynarzy, sklepów zoologicznych, zoo, restauracji…",
+  "searchPh": "Szukaj weterynarzy, sklepów, parków…",
+  "pill.vet": "Weterynarze",
+  "pill.guarderia": "Hotele dla zwierząt",
+  "pill.tienda": "Sklepy",
+  "pill.parque": "Parki",
+  "pill.peluqueria": "Grooming",
+  "pill.farma": "Apteki",
+  "pill.zoo": "Zoo",
+  "pill.refugio": "Schroniska",
+  "pill.resto": "Restauracje",
+  "pill.adopcion": "Adopcje",
+  "pill.evento": "Wydarzenia",
+  "cercaTitulo": "Miejsca w pobliżu",
+  "navExplorar": "Odkrywaj",
+  "verMas": "Pokaż więcej",
+  "verMenos": "Pokaż mniej",
+  "micTitulo": "Wyszukiwanie głosowe",
+  "micNoVoz": "Wyszukiwanie głosowe nie jest dostępne w tej przeglądarce",
+  "micEscuchando": "Słucham…",
+  "sinCercanos": "W pobliżu nie ma jeszcze żadnych miejsc.",
+  "dirOrigen": "Twoja lokalizacja",
+  "dirDestino": "Wybierz miejsce docelowe",
+  "dirCasa": "Dom",
+  "dirTrabajo": "Praca",
+  "dirMas": "Więcej",
+  "dirEstablecer": "Ustaw",
+  "dirCambiar": "Zmień",
+  "dirGuardada": "Zapisano",
+  "dirRecientes": "Ostatnie",
+  "dirSinRecientes": "Nie masz jeszcze ostatnich miejsc",
+  "dirFaltaDestino": "Wybierz miejsce docelowe, aby zobaczyć trasę",
+  "dirAbreMaps": "Trasa otworzy się w Mapach Google",
+  "dirCarro": "Samochód",
+  "dirTransito": "Transport publiczny",
+  "dirPie": "Pieszo",
+  "dirIntercambiar": "Zamień początek i cel",
+  "dirBuscarDestino": "Szukaj miejsca dla zwierząt…",
   "btnCategorias": "Kategorie",
   "btnVisitas": "Moje wizyty",
   "btnMascota": "Mój zwierzak",
@@ -4211,7 +4616,7 @@ window.addEventListener('error',function(){
 });
 function LOCALE(){return IDIOMAS[idioma]||'en-US';}
 function catName(c){return t('cat.'+c);}
-function etiquetaCat(c){return c==='todos'?t('menu.todos'):c==='h24'?t('menu.h24'):catName(c);}
+function etiquetaCat(c){return c==='todos'?t('menu.todos'):c==='h24'?t('menu.h24'):c==='guarderia'?t('osmGuarderia'):catName(c);}
 function vezPalabra(n){return t(n===1?'vez':'veces');}
 function visitaPalabra(n){return t(n===1?'visitaSing':'visitaPlur');}
 function estrellaPalabra(n){return t(n===1?'estrella1':'estrellaN');}
@@ -4268,6 +4673,10 @@ function applyLang(){
   mostrarBotonesViaje();
   refrescarTarjeta();
   if(document.getElementById('sug').style.display==='block')renderSug();
+  renderPills();
+  if(document.getElementById('hojaCercanos').style.display!=='none')renderHoja();
+  if(document.getElementById('panelDirecciones').style.display==='block')renderDirecciones();
+  const hv=document.getElementById('hojaVerMas');if(hv)hv.textContent=t(document.getElementById('hojaCercanos').classList.contains('expandida')?'verMenos':'verMas');
   actualizarAvisoCiudad();
 }
 const BASE='https://tiles.basemaps.cartocdn.com/v/20261001-03';
@@ -4299,7 +4708,7 @@ if(CARTO_KEY){
 }
 function ilustradoStyle(){return CARTO_KEY?JSON.parse(JSON.stringify(VOYAGER)):OFM_STYLE;}
 /* Atribución honesta: sin clave CARTO el mapa es OpenFreeMap, no CARTO. */
-document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.23':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.23';
+document.getElementById('attrMapa').textContent=CARTO_KEY?'© OpenStreetMap · © CARTO · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.24':'© OpenStreetMap · © OpenFreeMap · Esri, Maxar, Earthstar Geographics · Overpass · OSRM · v10.24';
 function satStyle(){
   /* Sin clave CARTO, las calles sobre el satélite salen de OpenFreeMap. */
   const calles=CARTO_KEY
@@ -5121,6 +5530,7 @@ function terminarViaje(){
   window.map.easeTo({pitch:0,bearing:0,offset:[0,0],duration:700});
   mostrarBotonesViaje();
   actualizarDistancia();
+  actualizarHoja();
 }
 function iniciarViaje(){
   if(!seleccionado)return;
@@ -5132,6 +5542,7 @@ function iniciarViaje(){
   mostrarBotonesViaje();
   actualizarRestante();
   window.map.easeTo({pitch:65,zoom:17.5,offset:[0,140],duration:900});
+  actualizarHoja();
 }
 
 /* ---------- GPS real del teléfono (con filtro de ruido) ---------- */
@@ -5206,11 +5617,13 @@ function seleccionar(b,volar){
   if(tripActivo)terminarViaje();
   llegadaEn=null;
   seleccionado=b;
+  registrarReciente(b);
   actualizarBotonFavCard();
   fijarCapa('card');
   document.getElementById('panelLista').style.display='none';
   document.getElementById('panelCategorias').style.display='none';
   document.getElementById('panelFavoritos').style.display='none';
+  document.getElementById('panelDirecciones').style.display='none';
   document.getElementById('card').style.display='block';
   marcadores.forEach(m=>m.el.classList.toggle('sel',m.b===b));
   if(typeof marcadoresOSM!=='undefined')marcadoresOSM.forEach(m=>m.el.classList.toggle('sel',m.b===b));
@@ -5227,7 +5640,13 @@ function seleccionar(b,volar){
   document.getElementById('cEstrellas').textContent=b.rating?('★'.repeat(Math.round(b.rating))+' '+b.rating.toFixed(1)):'';
   document.getElementById('cEstado').innerHTML=textoEstado(b);
   document.getElementById('cDir').textContent=textoDir(b);
-  document.getElementById('filaContacto').style.display=b.tel?'':'none';
+  /* v10.24 — "Como llegar" siempre visible: antes toda la fila (incluido
+     #bIr) se ocultaba cuando el lugar no tenia telefono y no habia forma
+     de abrir Direcciones desde la tarjeta. Solo Llamar/WhatsApp dependen
+     del telefono. */
+  document.getElementById('filaContacto').style.display='';
+  document.getElementById('bLlamar').style.display=b.tel?'':'none';
+  document.getElementById('bWa').style.display=(b.tel||b.wa)?'':'none';
   if(b.tel){
     const dig=normalizarTel(b.tel);
     document.getElementById('bLlamar').href='tel:'+(String(b.tel).trim().startsWith('+')?'+':'')+dig;
@@ -5252,7 +5671,7 @@ function seleccionar(b,volar){
   pedirRuta(b,0,token);
   if(volar) window.map.easeTo({center:[b.lng,b.lat],zoom:Math.max(window.map.getZoom(),15)});
 }
-document.getElementById('bIr').addEventListener('click',()=>{if(seleccionado)seleccionar(seleccionado,true);});
+document.getElementById('bIr').addEventListener('click',()=>{if(seleccionado)abrirDirecciones(seleccionado);});
 document.getElementById('bIniciar').addEventListener('click',()=>iniciarViaje());
 document.getElementById('bTerminar').addEventListener('click',()=>terminarViaje());
 
@@ -5278,6 +5697,7 @@ function fijarCapa(tipo){
     try{history.pushState({mascotas:true,capa:tipo},'');}catch(e){}
   }else{capaAbierta=tipo;}
   actualizarBotonAtras();
+  actualizarHoja();
 }
 function cerrarCapa(){
   if(!capaAbierta)return;
@@ -5285,12 +5705,13 @@ function cerrarCapa(){
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
-  ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas','panelConfig','panelAyuda','panelAcerca','panelDirecciones'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
   if(typeof alertaSel!=='undefined'&&alertaSel){alertaSel=null;mostrarPinPunto(false);}
   if(typeof adopcionSel!=='undefined'&&adopcionSel){adopcionSel=null;mostrarPinPunto(false);}
   if(tipo==='card')deseleccionar();
   else if(seleccionado)document.getElementById('card').style.display='block';
   actualizarBotonAtras();
+  actualizarHoja();
 }
 function irAtras(){
   if(tripActivo){terminarViaje();return;}
@@ -5332,7 +5753,7 @@ function resetEstadoLimpio(){
     if(tripActivo)terminarViaje();
     if(seleccionado)deseleccionar();
     capaAbierta=null;
-    ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+    ['panelCategorias','panelLista','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas','panelConfig','panelAyuda','panelAcerca','panelDirecciones'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
     document.getElementById('card').style.display='none';
     document.getElementById('cardPerdida').style.display='none';
     document.getElementById('cardAdopcion').style.display='none';
@@ -5342,11 +5763,13 @@ function resetEstadoLimpio(){
     const sg=document.getElementById('sug'); if(sg)sg.style.display='none';
     ['evNombre','evFecha','evHora','evLugar'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
     filtroTxt=''; geoResultados=[]; geoPara=''; geoPendiente=false;
-    if(typeof filtroCat!=='undefined'&&filtroCat!=='todos'){filtroCat='todos';}
+    if(typeof filtroCat!=='undefined'&&filtroCat!=='vet'){filtroCat='vet';}
     if(typeof aplicarFiltros==='function')aplicarFiltros();
     follow=true; followPausado=false;
     const bg=document.getElementById('btnGps'); if(bg)bg.classList.add('on');
     actualizarBotonAtras();
+    renderPills();
+    actualizarHoja();
     window.map.easeTo({center:YOU,zoom:14.7,pitch:0,bearing:0,offset:[0,0],duration:600});
     cargarZona(true);
   }catch(e){}
@@ -5365,9 +5788,9 @@ document.addEventListener('visibilitychange',()=>{
 });
 
 /* ---------- Filtros y buscador con sugerencias ---------- */
-let filtroCat='todos', filtroTxt='';
+let filtroCat='vet', filtroTxt=''; /* v10.24 — filtro inicial Veterinarias, como la foto aprobada; tocar la píldora activa vuelve a Todos */
 function es24h(b){return b.h24===true;}
-function pasaCat(b){return filtroCat==='todos'||(filtroCat==='h24'?es24h(b):b.cat===filtroCat);}
+function pasaCat(b){return filtroCat==='todos'||(filtroCat==='h24'?es24h(b):filtroCat==='guarderia'?b.guarderia===true:b.cat===filtroCat);}
 function aplicarFiltros(){
   const okTxt=b=>!filtroTxt||puntajeBusqueda(b,filtroTxt)!=null;
   const ok=b=>pasaCat(b)&&okTxt(b);
@@ -5434,6 +5857,7 @@ function conteoCat(c){
   const lista=lugaresConteo();
   if(c==='todos')return lista.length;
   if(c==='h24')return lista.filter(b=>b.h24===true).length;
+  if(c==='guarderia')return lista.filter(b=>b.guarderia===true).length;
   return lista.filter(b=>b.cat===c).length;
 }
 function renderCategorias(){
@@ -5451,6 +5875,7 @@ function elegirCategoria(cat){
   document.getElementById('panelCategorias').style.display='none';
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
+  document.getElementById('panelDirecciones').style.display='none';
   document.getElementById('panelLista').style.display='block';
   fijarCapa('lista');
   renderLista();
@@ -5517,6 +5942,7 @@ function renderLista(){
      saldría vacía. */
   const enVista=lugaresConteo();
   if(filtroCat==='h24')lista=ordenarLista(enVista.filter(es24h));
+  else if(filtroCat==='guarderia')lista=ordenarLista(enVista.filter(b=>b.guarderia===true));
   else lista=ordenarLista(enVista.filter(b=>filtroCat==='todos'||b.cat===filtroCat));
   lista=lista.slice(0,60);
   if(!lista.length){cuerpo.innerHTML=filtroCat==='h24'?'<div class="meta" style="padding:10px 2px">'+t('sin24')+'</div>':'<div class="meta" style="padding:10px 2px">'+t('sinCat')+'</div>';return;}
@@ -5546,7 +5972,7 @@ function renderLista(){
     actualizarBotonFavCard();
   }));
 }
-document.getElementById('bCategorias').addEventListener('click',()=>{
+function abrirPanelCategorias(){
   const p=document.getElementById('panelCategorias');
   if(p.style.display==='block'){irAtras();return;}
   renderCategorias();
@@ -5554,9 +5980,332 @@ document.getElementById('bCategorias').addEventListener('click',()=>{
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
+  document.getElementById('panelDirecciones').style.display='none';
   p.style.display='block';
   fijarCapa('categorias');
+}
+/* ---------- v10.24 — Rediseño estilo Google Maps: píldoras, hoja
+   inferior, navegación inferior, micrófono y pantalla "Cómo llegar".
+   Todo con datos reales de la app; nada inventado ni simulado. ---------- */
+const PILL_CATS=['vet','tienda','parque','guarderia','peluqueria','farma','zoo','refugio','resto','adopcion','evento','h24','todos'];
+function etiquetaPildora(c){
+  if(c==='todos')return t('menu.todos');
+  if(c==='h24')return t('menu.h24');
+  if(c==='guarderia')return t('pill.guarderia');
+  return t('pill.'+c);
+}
+function renderPills(){
+  const box=document.getElementById('pillsRow'); if(!box)return;
+  box.innerHTML=PILL_CATS.map(c=>`<button class="pill${filtroCat===c&&c!=='todos'?' on':''}" data-cat="${c}" role="tab" aria-selected="${filtroCat===c&&c!=='todos'}">${escHtml(etiquetaPildora(c))}</button>`).join('')+
+    `<button class="pill" data-cat="__mas__">${escHtml(t('dirMas'))} ▾</button>`;
+  box.querySelectorAll('.pill').forEach(btn=>btn.addEventListener('click',()=>{
+    const c=btn.dataset.cat;
+    if(c==='__mas__'){abrirPanelCategorias();return;}
+    if(c==='evento'||c==='adopcion'){elegirCategoria(c);return;}
+    if(filtroCat===c){filtroCat='todos';}
+    else{filtroCat=c;}
+    aplicarFiltros();
+    renderPills();
+    renderHoja();
+    if(document.getElementById('panelLista').style.display==='block')renderLista();
+  }));
+}
+function fmtHora(h){const H=Math.floor(h),M=Math.round((h-H)*60);return H+':'+String(M).padStart(2,'0');}
+function lineaHoja(b){
+  const partes=[];
+  if(b.rating!=null)partes.push('<span class="stars">★</span> '+b.rating.toFixed(1));
+  partes.push('a '+fmtDist(distanciaA(b)));
+  if(b.h24)partes.push(t('abierto'));
+  else if(b.horas){const ab=abiertoEn(horaDeNegocio(b),b.horas[0],b.horas[1]);partes.push((ab?t('abierto'):t('cerrado'))+' · '+fmtHora(b.horas[0])+'–'+fmtHora(b.horas[1]));}
+  return partes.join(' · ');
+}
+function renderHoja(){
+  const box=document.getElementById('hojaLista'); if(!box||!window.map)return;
+  const pie=document.getElementById('hojaPie');
+  if(pie)pie.textContent=document.getElementById('attrMapa').textContent+' · '+t('frescuraDatos');
+  let lista=[];
+  try{lista=lugaresConteo().filter(b=>pasaCat(b)&&b.tipo!=='adopcion'&&b.cat!=='perdida');}catch(e){lista=[];}
+  lista=lista.slice().sort((a,b)=>distanciaA(a)-distanciaA(b)).slice(0,8);
+  if(!lista.length){box.innerHTML='<div class="meta" style="padding:10px 2px">'+escHtml(t('sinCercanos'))+'</div>';return;}
+  box.innerHTML=lista.map(b=>{
+    const c=CAT[b.cat]||CAT.vet;
+    const tag=escHtml(b.cat==='guarderia'?t('osmGuarderia'):catName(b.cat))+(b.h24?' · 24h':'');
+    return `<div class="hojaCard" data-k="${escHtml(claveLugar(b))}"><span class="logoBox" style="background:${c.col}">${glyph(c.g,'#fff')}</span><span class="hojaInfo"><span class="nm">${escHtml(b.n)}</span><br><span class="hojaMeta">${lineaHoja(b)}</span><br><span class="tagVerde">${tag}</span></span><button class="hojaDirBtn" data-dir="${escHtml(claveLugar(b))}" title="${escHtml(t('btnIr'))}" aria-label="${escHtml(t('btnIr'))}"><svg width="19" height="19" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11" fill="#0E7C66"/></svg></button></div>`;
+  }).join('');
+  box.querySelectorAll('.hojaCard').forEach(card=>card.addEventListener('click',()=>{
+    const b=todosLugares().find(x=>claveLugar(x)===card.dataset.k);
+    if(b)seleccionar(b,true);
+  }));
+  box.querySelectorAll('[data-dir]').forEach(btn=>btn.addEventListener('click',e=>{
+    e.stopPropagation();
+    const b=todosLugares().find(x=>claveLugar(x)===btn.dataset.dir);
+    if(b)abrirDirecciones(b);
+  }));
+}
+function hojaVisible(){return !capaAbierta&&!tripActivo&&!seleccionado;}
+function actualizarHoja(){
+  const hoja=document.getElementById('hojaCercanos'); if(!hoja)return;
+  const vis=hojaVisible();
+  hoja.style.display=vis?'block':'none';
+  if(vis)renderHoja();
+  actualizarNav();
+}
+function actualizarNav(){
+  const ex=document.getElementById('bNavExplorar'),fv=document.getElementById('bNavFavoritos'),mp=document.getElementById('bNavMascota');
+  if(ex)ex.classList.toggle('on',!capaAbierta&&!tripActivo);
+  if(fv)fv.classList.toggle('on',capaAbierta==='favoritos');
+  if(mp)mp.classList.toggle('on',capaAbierta==='mascota');
+}
+function irExplorar(){
+  if(tripActivo)return;
+  if(capaAbierta)irAtras();
+  actualizarHoja();
+}
+function alternarHoja(){
+  const hoja=document.getElementById('hojaCercanos'); if(!hoja)return;
+  const exp=hoja.classList.toggle('expandida');
+  document.getElementById('hojaVerMas').textContent=t(exp?'verMenos':'verMas');
+}
+document.getElementById('hojaTirador').addEventListener('click',alternarHoja);
+document.getElementById('hojaVerMas').addEventListener('click',alternarHoja);
+document.getElementById('bNavExplorar').addEventListener('click',irExplorar);
+renderPills();
+/* ---------- v10.24 — Búsqueda por voz (Web Speech API del navegador) ---------- */
+function iniciarVoz(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const btn=document.getElementById('bMic');
+  const input=document.getElementById('buscador');
+  const mostrarMicNoVoz=()=>{const sug=document.getElementById('sug');sug.innerHTML='<div class="sugItem"><span class="cat">'+escHtml(t('micNoVoz'))+'</span></div>';sug.style.display='block';};
+  if(!SR){mostrarMicNoVoz();return;}
+  try{
+    const rec=new SR();
+    rec.lang=LOCALE();
+    rec.interimResults=false; rec.maxAlternatives=1;
+    btn.classList.add('escuchando');
+    input.placeholder=t('micEscuchando');
+    rec.onresult=e=>{
+      const txt=(e.results[0]&&e.results[0][0]&&e.results[0][0].transcript)||'';
+      input.value=txt;
+      input.dispatchEvent(new Event('input',{bubbles:true}));
+      input.focus();
+    };
+    rec.onerror=()=>{btn.classList.remove('escuchando');input.placeholder=t('searchPh');mostrarMicNoVoz();};
+    rec.onend=()=>{btn.classList.remove('escuchando');input.placeholder=t('searchPh');};
+    rec.start();
+  }catch(e){btn.classList.remove('escuchando');input.placeholder=t('searchPh');mostrarMicNoVoz();}
+}
+document.getElementById('bMic').addEventListener('click',iniciarVoz);
+/* ---------- v10.24 — Recientes reales (lugares abiertos + visitas) ---------- */
+const recientesLS='mascotas_recientes_v1';
+function leerRecientesRaw(){try{return JSON.parse(localStorage.getItem(recientesLS))||[];}catch(e){return [];}}
+function guardarRecientes(a){try{localStorage.setItem(recientesLS,JSON.stringify(a));}catch(e){}}
+function registrarReciente(b){
+  if(!b||!b.n||b.lat==null||b.lng==null||b.tipo==='adopcion')return;
+  try{
+    let a=leerRecientesRaw().filter(x=>claveLugar(x)!==claveLugar(b));
+    a.unshift({n:b.n,cat:b.cat,lat:b.lat,lng:b.lng,dir:b.dir||'',horas:b.horas||null,rating:b.rating!=null?b.rating:null,h24:!!b.h24,ts:Date.now()});
+    guardarRecientes(a.slice(0,8));
+  }catch(e){}
+}
+function recientesLugares(){
+  const out=[];const seen=new Set();
+  leerRecientesRaw().forEach(r=>{const k=claveLugar(r);if(!seen.has(k)){seen.add(k);out.push(r);}});
+  try{
+    const vis=leerVisitas();
+    Object.keys(vis).forEach(k=>{
+      const partes=k.split('|'); if(partes.length<3)return;
+      const lat=+partes[1],lng=+partes[2];
+      if(!isFinite(lat)||!isFinite(lng))return;
+      const b=todosLugares().find(x=>claveLugar(x)===k);
+      const cand=b||{n:partes[0],cat:'vet',lat,lng,dir:'',horas:null,rating:null};
+      const kk=claveLugar(cand);
+      if(!seen.has(kk)){seen.add(kk);out.push(cand);}
+    });
+  }catch(e){}
+  return out.slice(0,8);
+}
+/* ---------- v10.24 — Pantalla "Cómo llegar" (abre Google Maps) ----------
+   PetNear no tiene motor de rutas propio: la ruta se abre en Google Maps
+   (o la app de mapas del teléfono) con las coordenadas reales del destino
+   y el modo elegido. Sin origen = Google Maps usa la ubicación actual. */
+const casaTrabajoLS='mascotas_casa_trabajo_v1';
+let dirDestino=null;
+let dirOrigen={tipo:'yo'};
+let dirModo='driving';
+function leerCasaTrabajo(){try{return JSON.parse(localStorage.getItem(casaTrabajoLS))||{};}catch(e){return {};}}
+function guardarCasaTrabajo(o){try{localStorage.setItem(casaTrabajoLS,JSON.stringify(o));}catch(e){}}
+function renderDirecciones(){
+  const ot=document.getElementById('dirOrigenTxt');
+  ot.textContent=dirOrigen.tipo==='yo'?t('dirOrigen'):(dirOrigen.n||t('dirOrigen'));
+  ot.classList.remove('ph');
+  const dt=document.getElementById('dirDestinoTxt');
+  if(dirDestino){dt.textContent=dirDestino.n;dt.classList.remove('ph');}
+  else{dt.textContent=t('dirDestino');dt.classList.add('ph');}
+  document.querySelectorAll('#dirModos .dirModo').forEach(m=>m.classList.toggle('on',m.dataset.modo===dirModo));
+  const ct=leerCasaTrabajo();
+  const casa=ct.casa, trabajo=ct.trabajo;
+  document.getElementById('dirCasaSub').textContent=casa?(t('dirGuardada')+(casa.lat!=null?' · '+fmtDist(distanciaA(casa)) : '')) : t('dirEstablecer');
+  document.getElementById('dirTrabajoSub').textContent=trabajo?(t('dirGuardada')+(trabajo.lat!=null?' · '+fmtDist(distanciaA(trabajo)) : '')) : t('dirEstablecer');
+  document.getElementById('dirCasaSet').style.display=casa?'':'none';
+  document.getElementById('dirCasaSet').textContent=t('dirCambiar');
+  document.getElementById('dirTrabajoSet').style.display=trabajo?'':'none';
+  document.getElementById('dirTrabajoSet').textContent=t('dirCambiar');
+  document.getElementById('dirOptCasa').style.display=casa?'':'none';
+  document.getElementById('dirOptTrabajo').style.display=trabajo?'':'none';
+  document.getElementById('bDirIr').disabled=!dirDestino;
+  document.getElementById('dirNota').textContent=dirDestino?t('dirAbreMaps'):t('dirFaltaDestino');
+  renderRecientesDir();
+}
+function renderRecientesDir(){
+  const box=document.getElementById('dirRecientes'); if(!box)return;
+  const lista=recientesLugares();
+  if(!lista.length){box.innerHTML='<div class="meta" style="padding:10px 2px">'+escHtml(t('dirSinRecientes'))+'</div>';return;}
+  box.innerHTML=lista.map((b,i)=>{
+    const c=CAT[b.cat]||CAT.vet;
+    let estado='';
+    if(b.h24)estado=t('abierto');
+    else if(b.horas){const ab=abiertoEn(horaDeNegocio(b),b.horas[0],b.horas[1]);estado=(ab?t('abierto'):t('cerrado'))+' · '+fmtHora(b.horas[0])+'–'+fmtHora(b.horas[1]);}
+    return `<div class="dirRecRow" data-i="${i}"><span style="flex:none;margin-top:2px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#80868b" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><span style="flex:1;min-width:0"><span class="nm">${escHtml(b.n)}</span><br><span class="meta2">${escHtml([b.dir||'',estado].filter(x=>x).join(' · '))}</span></span><span class="logoBox" style="background:${c.col};width:40px;height:40px">${glyph(c.g,'#fff')}</span></div>`;
+  }).join('');
+  box.querySelectorAll('.dirRecRow').forEach(row=>row.addEventListener('click',()=>{
+    const b=lista[+row.dataset.i]; if(!b)return;
+    dirDestino={n:b.n,cat:b.cat,lat:b.lat,lng:b.lng,dir:b.dir||'',horas:b.horas||null,rating:b.rating!=null?b.rating:null,h24:!!b.h24};
+    document.getElementById('dirBuscadorBox').style.display='none';
+    renderDirecciones();
+  }));
+}
+function urlGoogleMaps(){
+  if(!dirDestino)return null;
+  const dest=dirDestino.lat.toFixed(6)+','+dirDestino.lng.toFixed(6);
+  const params=new URLSearchParams({api:'1',destination:dest,travelmode:dirModo});
+  if(dirOrigen.tipo!=='yo'&&dirOrigen.lat!=null)params.set('origin',dirOrigen.lat.toFixed(6)+','+dirOrigen.lng.toFixed(6));
+  return 'https://www.google.com/maps/dir/?'+params.toString();
+}
+function abrirGoogleMaps(){
+  const url=urlGoogleMaps(); if(!url)return;
+  window.open(url,'_blank','noopener');
+}
+function abrirDirecciones(destino){
+  if(destino&&destino.lat!=null){
+    dirDestino={n:destino.n,cat:destino.cat,lat:destino.lat,lng:destino.lng,dir:destino.dir||'',horas:destino.horas||null,rating:destino.rating!=null?destino.rating:null,h24:!!destino.h24};
+  }
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas','panelConfig','panelAyuda','panelAcerca','panelDirecciones'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  document.getElementById('card').style.display='none';
+  document.getElementById('cardPerdida').style.display='none';
+  document.getElementById('cardAdopcion').style.display='none';
+  document.getElementById('sug').style.display='none';
+  document.getElementById('dirBuscadorBox').style.display='none';
+  document.getElementById('dirOrigenBox').style.display='none';
+  document.getElementById('dirMasBox').style.display='none';
+  renderDirecciones();
+  document.getElementById('panelDirecciones').style.display='block';
+  fijarCapa('direcciones');
+}
+function intercambiarDir(){
+  if(!dirDestino)return;
+  const dest={n:dirDestino.n,cat:dirDestino.cat,lat:dirDestino.lat,lng:dirDestino.lng,dir:dirDestino.dir,horas:dirDestino.horas,rating:dirDestino.rating,h24:dirDestino.h24};
+  if(dirOrigen.tipo==='yo'){dirOrigen=dest;dirDestino=null;}
+  else{const tmp={n:dirOrigen.n,cat:dirOrigen.cat,lat:dirOrigen.lat,lng:dirOrigen.lng,dir:dirOrigen.dir,horas:dirOrigen.horas,rating:dirOrigen.rating,h24:dirOrigen.h24};dirOrigen=dest;dirDestino=tmp;}
+  renderDirecciones();
+}
+function establecerCasaTrabajo(cual){
+  const ct=leerCasaTrabajo();
+  ct[cual]={lat:YOU[1],lng:YOU[0]};
+  guardarCasaTrabajo(ct);
+  renderDirecciones();
+}
+function usarCasaTrabajo(cual){
+  const ct=leerCasaTrabajo(); const p=ct[cual];
+  if(!p){establecerCasaTrabajo(cual);return;}
+  dirDestino={n:t(cual==='casa'?'dirCasa':'dirTrabajo'),cat:null,lat:p.lat,lng:p.lng,dir:'',horas:null,rating:null,h24:false};
+  renderDirecciones();
+}
+function renderDirSug(q){
+  const box=document.getElementById('dirSug'); if(!box)return;
+  const nq=normalizar(q||'');
+  let lista;
+  if(!nq){try{lista=sugerenciasCercanas().map(x=>x.b);}catch(e){lista=[];}}
+  else{lista=todosLugares().map(b=>({b,p:puntajeBusqueda(b,nq)})).filter(x=>x.p!=null).sort((x,y)=>y.p.score-x.p.score||x.p.dist-y.p.dist).slice(0,6).map(x=>x.b);}
+  if(!lista.length){box.innerHTML='<div class="dirSugItem"><span class="cat">'+escHtml(t('sinResultados'))+'</span></div>';return;}
+  box.innerHTML=lista.map(b=>{
+    const c=CAT[b.cat]||CAT.vet;
+    return `<div class="dirSugItem" data-k="${escHtml(claveLugar(b))}"><span class="logoBox" style="background:${c.col};width:40px;height:40px">${glyph(c.g,'#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${escHtml(b.n)}</span><br><span class="cat">${escHtml(b.dir||'')}</span></span></div>`;
+  }).join('');
+  box.querySelectorAll('.dirSugItem').forEach(row=>row.addEventListener('click',()=>{
+    const b=todosLugares().find(x=>claveLugar(x)===row.dataset.k); if(!b)return;
+    dirDestino={n:b.n,cat:b.cat,lat:b.lat,lng:b.lng,dir:b.dir||'',horas:b.horas||null,rating:b.rating!=null?b.rating:null,h24:!!b.h24};
+    document.getElementById('dirBuscadorBox').style.display='none';
+    renderDirecciones();
+  }));
+}
+function renderDirMas(){
+  const favBox=document.getElementById('dirMasFav');
+  const favs=Object.values(leerFavoritos());
+  favBox.innerHTML=!favs.length?'<div class="meta" style="padding:8px 2px">'+escHtml(t('favoritosVacios'))+'</div>':favs.map((f,i)=>{
+    const c=CAT[f.cat]||CAT.vet;
+    return `<div class="dirSugItem" data-fav="${i}"><span class="logoBox" style="background:${c.col};width:40px;height:40px">${glyph(c.g,'#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${escHtml(f.n)}</span><br><span class="cat">${escHtml(f.dir||'')}</span></span></div>`;
+  }).join('');
+  favBox.querySelectorAll('[data-fav]').forEach(row=>row.addEventListener('click',()=>{
+    const f=favs[+row.dataset.fav]; if(!f||f.lat==null)return;
+    dirDestino={n:f.n,cat:f.cat,lat:f.lat,lng:f.lng,dir:f.dir||'',horas:null,rating:f.rating!=null?f.rating:null,h24:false};
+    document.getElementById('dirMasBox').style.display='none';
+    renderDirecciones();
+  }));
+  const visBox=document.getElementById('dirMasVis');
+  const vis=recientesLugares();
+  visBox.innerHTML=!vis.length?'<div class="meta" style="padding:8px 2px">'+escHtml(t('dirSinRecientes'))+'</div>':vis.map((b,i)=>{
+    const c=CAT[b.cat]||CAT.vet;
+    return `<div class="dirSugItem" data-vis="${i}"><span class="logoBox" style="background:${c.col};width:40px;height:40px">${glyph(c.g,'#fff')}</span><span style="flex:1;min-width:0"><span class="nm">${escHtml(b.n)}</span><br><span class="cat">${escHtml(b.dir||'')}</span></span></div>`;
+  }).join('');
+  visBox.querySelectorAll('[data-vis]').forEach(row=>row.addEventListener('click',()=>{
+    const b=vis[+row.dataset.vis]; if(!b)return;
+    dirDestino={n:b.n,cat:b.cat,lat:b.lat,lng:b.lng,dir:b.dir||'',horas:b.horas||null,rating:b.rating!=null?b.rating:null,h24:!!b.h24};
+    document.getElementById('dirMasBox').style.display='none';
+    renderDirecciones();
+  }));
+}
+document.getElementById('dirOrigenBtn').addEventListener('click',()=>{
+  const box=document.getElementById('dirOrigenBox');
+  const show=box.style.display!=='block';
+  document.getElementById('dirBuscadorBox').style.display='none';
+  document.getElementById('dirMasBox').style.display='none';
+  box.style.display=show?'block':'none';
 });
+document.querySelectorAll('#dirOrigenBox .dirOpt').forEach(btn=>btn.addEventListener('click',()=>{
+  const cual=btn.dataset.origen;
+  if(cual==='yo')dirOrigen={tipo:'yo'};
+  else{const p=leerCasaTrabajo()[cual]; if(!p)return; dirOrigen={tipo:cual,n:t(cual==='casa'?'dirCasa':'dirTrabajo'),lat:p.lat,lng:p.lng};}
+  document.getElementById('dirOrigenBox').style.display='none';
+  renderDirecciones();
+}));
+document.getElementById('dirDestinoBtn').addEventListener('click',()=>{
+  const box=document.getElementById('dirBuscadorBox');
+  const show=box.style.display!=='block';
+  document.getElementById('dirOrigenBox').style.display='none';
+  document.getElementById('dirMasBox').style.display='none';
+  box.style.display=show?'block':'none';
+  if(show){const inp=document.getElementById('dirBuscar');inp.value='';renderDirSug('');inp.focus();}
+});
+document.getElementById('dirBuscar').addEventListener('input',e=>renderDirSug(e.target.value));
+document.querySelectorAll('#dirModos .dirModo').forEach(btn=>btn.addEventListener('click',()=>{
+  dirModo=btn.dataset.modo; renderDirecciones();
+}));
+document.getElementById('bDirSwap').addEventListener('click',intercambiarDir);
+document.getElementById('bDirAtras').addEventListener('click',()=>irAtras());
+document.getElementById('bDirIr').addEventListener('click',abrirGoogleMaps);
+document.getElementById('dirCasaMain').addEventListener('click',()=>usarCasaTrabajo('casa'));
+document.getElementById('dirTrabajoMain').addEventListener('click',()=>usarCasaTrabajo('trabajo'));
+document.getElementById('dirCasaSet').addEventListener('click',()=>establecerCasaTrabajo('casa'));
+document.getElementById('dirTrabajoSet').addEventListener('click',()=>establecerCasaTrabajo('trabajo'));
+document.getElementById('dirMasBtn').addEventListener('click',()=>{
+  const box=document.getElementById('dirMasBox');
+  const show=box.style.display!=='block';
+  document.getElementById('dirBuscadorBox').style.display='none';
+  document.getElementById('dirOrigenBox').style.display='none';
+  box.style.display=show?'block':'none';
+  if(show)renderDirMas();
+});
+
 document.getElementById('bCerrarCategorias').addEventListener('click',()=>irAtras());
 document.getElementById('bCerrarLista').addEventListener('click',()=>irAtras());
 document.getElementById('sortMejor').addEventListener('click',()=>{sortMode='mejor';renderLista();});
@@ -5935,7 +6684,7 @@ function renderFavoritos(){
 function abrirPanelFavoritos(){
   const p=document.getElementById('panelFavoritos');
   if(p.style.display==='block'){irAtras();return;}
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelConfig','panelAyuda','panelAcerca','panelDirecciones'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
@@ -5943,7 +6692,7 @@ function abrirPanelFavoritos(){
   p.style.display='block';
   fijarCapa('favoritos');
 }
-document.getElementById('bFavoritos').addEventListener('click',abrirPanelFavoritos);
+document.getElementById('bNavFavoritos').addEventListener('click',abrirPanelFavoritos);
 document.getElementById('bFavCard').addEventListener('click',()=>{
   if(!seleccionado)return;
   alternarFavorito(seleccionado);
@@ -6325,12 +7074,13 @@ async function cargarZona(forzar){
   }
   zonaCargando=false;
 }
-window.map.on('moveend',()=>{if(tripActivo)return;clearTimeout(zonaTimer);zonaTimer=setTimeout(()=>cargarZona(false),600);cargarCiudadesCercanas();actualizarPinesCiudad();actualizarAvisoCiudad();crearPinesEventosUsuario();cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();});
+window.map.on('moveend',()=>{if(tripActivo)return;clearTimeout(zonaTimer);zonaTimer=setTimeout(()=>cargarZona(false),600);cargarCiudadesCercanas();actualizarPinesCiudad();actualizarAvisoCiudad();crearPinesEventosUsuario();cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();if(document.getElementById('hojaCercanos').style.display!=='none')renderHoja();});
 window.map.on('zoomend',()=>actualizarPinesCiudad());
 function mostrarPanel(id){
   const el=document.getElementById(id);
   if(el&&el.style.display==='block'){irAtras();return;}
   ['panelVisitas','panelMascota','panelConfig','panelAyuda','panelAcerca'].forEach(p=>{const e2=document.getElementById(p); if(e2)e2.style.display=(p===id)?'block':'none';});
+  const pd=document.getElementById('panelDirecciones');if(pd)pd.style.display='none';
   if(id==='panelVisitas')renderVisitas();
   if(id==='panelMascota'){document.getElementById('petNombre').value=petNombre;renderColoresMascota();renderAvatares();renderMisMascotas();renderMisAvatarSelect();}
   if(id==='panelVisitas'||id==='panelMascota'){const pf=document.getElementById('panelFavoritos');if(pf)pf.style.display='none';}
@@ -6342,7 +7092,7 @@ function cerrarMenu(){const m=document.getElementById('menuLateral');if(m)m.clas
 function abrirPanelInfo(id,tipo){
   const p=document.getElementById(id);
   if(p.style.display==='block'){irAtras();return;}
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas','panelConfig','panelAyuda','panelAcerca'].forEach(x=>{const e=document.getElementById(x);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelPremium','panelFavoritos','panelNegocioForm','panelOfertas','panelConfig','panelAyuda','panelAcerca','panelDirecciones'].forEach(x=>{const e=document.getElementById(x);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
@@ -6354,7 +7104,7 @@ function sincronizarConfig(){
   [['vIlus','cfgVIlus'],['vSat','cfgVSat'],['v3d','cfgV3d'],['vActual','cfgVActual']].forEach(([a,b])=>{const x=document.getElementById(a),y=document.getElementById(b);if(x&&y)y.classList.toggle('on',x.classList.contains('on'));});
   const g=document.getElementById('cfgGps');if(g)g.classList.toggle('on',!!follow);
 }
-document.getElementById('bMenu').addEventListener('click',abrirMenu);
+document.getElementById('bAvatar').addEventListener('click',abrirMenu);
 document.getElementById('bCerrarMenu').addEventListener('click',cerrarMenu);
 document.getElementById('menuFondo').addEventListener('click',cerrarMenu);
 document.getElementById('mVisitas').addEventListener('click',()=>{cerrarMenu();mostrarPanel('panelVisitas');});
@@ -6367,11 +7117,20 @@ document.getElementById('cfgVSat').addEventListener('click',()=>{document.getEle
 document.getElementById('cfgV3d').addEventListener('click',()=>{document.getElementById('v3d').click();sincronizarConfig();});
 document.getElementById('cfgVActual').addEventListener('click',()=>{document.getElementById('vActual').click();sincronizarConfig();});
 document.getElementById('cfgGps').addEventListener('click',()=>{document.getElementById('btnGps').click();sincronizarConfig();});
-document.getElementById('bMascota').addEventListener('click',()=>mostrarPanel('panelMascota'));
+document.getElementById('bNavMascota').addEventListener('click',()=>mostrarPanel('panelMascota'));
 cargarMascota();
 crearPinesEventosUsuario();
 crearPinesEventos();
-window.map.on('load',()=>{cargarCiudadUsuario();cargarZona(true);cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();actualizarPinesCiudad();if(window.__splash)window.__splash.hide();}); /* v10.22: splash se desvanece cuando el mapa cargó */
+/* v10.24 - El evento 'load' de MapLibre NO se dispara solo: solo se emite
+   dentro de un frame de render, y con el mapa quieto el bucle se detiene
+   (verificado en Playwright: loaded()=true, 2 frames, 'load' nunca llega;
+   un triggerRepaint() lo dispara al instante). Antes solo lo cubrian el
+   fallback de 8 s del splash y la carga de zona por moveend. Ahora:
+   si el mapa ya cargo se corre directo; si no, se espera el evento Y se
+   sondea loaded() cada 500 ms (max. 20 s); alCargarMapa corre una sola vez. */
+let mapaCargado=false;
+function alCargarMapa(){if(mapaCargado)return;mapaCargado=true;cargarCiudadUsuario();cargarZona(true);cargarAlertasZona();cargarAdopcionesZona();cargarNegociosZona();cargarOfertasZona();cargarAvisosZona();actualizarPinesCiudad();renderPills();renderHoja();actualizarHoja();if(window.__splash)window.__splash.hide();}
+if(window.map.loaded())alCargarMapa();else{window.map.on('load',alCargarMapa);let intentosMapa=0;(function esperarMapa(){if(mapaCargado)return;if(window.map.loaded()){alCargarMapa();return;}if(++intentosMapa<40)setTimeout(esperarMapa,500);})();} /* v10.22: splash se desvanece cuando el mapa cargó */
 
 /* ---------- La mascota: parte de TU ubicación y te sigue en el viaje ---------- */
 const dogEl=document.createElement('div');
@@ -7541,7 +8300,7 @@ function renderAvistamientos(list){
 function abrirPanelPerdidas(){
   const p=document.getElementById('panelPerdidas');
   if(p.style.display==='block'){irAtras();return;}
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidaForm','panelFavoritos','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidaForm','panelFavoritos','panelConfig','panelAyuda','panelAcerca','panelDirecciones'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   p.style.display='block';
@@ -7588,7 +8347,7 @@ function renderPanelPerdidas(){
 function abrirPanelAdopciones(){
   const p=document.getElementById('panelAdopciones');
   if(p.style.display==='block'){irAtras();return;}
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopcionForm','panelFavoritos','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopcionForm','panelFavoritos','panelConfig','panelAyuda','panelAcerca','panelDirecciones'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
@@ -7851,12 +8610,12 @@ async function accionDuenoAdopcion(accion){
 }
 
 /* ---------- Cableado de botones ---------- */
-document.getElementById('bPerdidas').addEventListener('click',abrirPanelPerdidas);
+document.getElementById('mPerdidas').addEventListener('click',()=>{cerrarMenu();abrirPanelPerdidas();});
 /* v10.13 — Portal Premium: dos planes, cobro por Google Play Billing. */
 function abrirPanelPremium(){
   const p=document.getElementById('panelPremium');
   if(p.style.display==='block'){irAtras();return;}
-  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelFavoritos','panelNegocioForm','panelOfertas','panelConfig','panelAyuda','panelAcerca'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  ['panelLista','panelCategorias','panelVisitas','panelMascota','panelPerdidas','panelPerdidaForm','panelAdopciones','panelAdopcionForm','panelFavoritos','panelNegocioForm','panelOfertas','panelConfig','panelAyuda','panelAcerca','panelDirecciones'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   document.getElementById('card').style.display='none';
   document.getElementById('cardPerdida').style.display='none';
   document.getElementById('cardAdopcion').style.display='none';
@@ -8186,7 +8945,7 @@ document.getElementById('bCerrarPerdidas').addEventListener('click',()=>irAtras(
 document.getElementById('bCerrarFormPerdida').addEventListener('click',cerrarFormPerdida);
 document.getElementById('bPublicarPerdida').addEventListener('click',publicarPerdida);
 /* v10.7 — Cableado de Adopciones */
-document.getElementById('bAdopciones').addEventListener('click',abrirPanelAdopciones);
+document.getElementById('mAdopciones').addEventListener('click',()=>{cerrarMenu();abrirPanelAdopciones();});
 document.getElementById('bPubAdopcion').addEventListener('click',abrirFormAdopcion);
 document.getElementById('bCerrarAdopciones').addEventListener('click',()=>irAtras());
 document.getElementById('bCerrarFormAdopcion').addEventListener('click',cerrarFormAdopcion);
